@@ -1,9 +1,9 @@
 
 
 import React from "react";
-import { CALENDAR_WEEKS } from '../../../../utils/utils';
+import { WEEK_SHORT_NAMES } from '../../../../utils/utils';
 
-class Calendarweek extends React.PureComponent {
+class CalendarWeek extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {month: new Date().getMonth(), year: new Date().getFullYear() };
@@ -16,8 +16,8 @@ class Calendarweek extends React.PureComponent {
     componentDidUpdate(prevProps) {}
 
     render() {
-        const weekItems = CALENDAR_WEEKS.map((number, index) =>
-            <span className="WeekName" key={index}>{number}</span>
+        const weekItems = WEEK_SHORT_NAMES.map((number, index) =>
+            <span className="Day Medium-UPPER-Case" key={index}>{number}</span>
         );
     
         return (
@@ -28,4 +28,4 @@ class Calendarweek extends React.PureComponent {
     }
 }
 
-export default Calendarweek;
+export default CalendarWeek;

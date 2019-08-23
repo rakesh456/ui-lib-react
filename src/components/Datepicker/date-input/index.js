@@ -4,25 +4,51 @@ import React from "react";
 import { Input } from 'reactstrap';
 import '../date-picker.css';
 import { FaCalendar } from 'react-icons/lib/fa';
+import {
+    getDateDDMMYYYY
+} from "../../../utils/utils";
 
-class Dateinput extends React.PureComponent {
-    componentDidMount() {}
+class DateInput extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.state = { date: getDateDDMMYYYY(new Date()) };
+    }
 
-    componentDidUpdate(prevProps) {}
+    componentDidMount() {
+        this.setState({
+            date: getDateDDMMYYYY(this.props.value)
+        });
+
+    }
+
+    componentDidUpdate(prevProps) {
+        this.setState({
+            date: getDateDDMMYYYY(this.props.value)
+        });
+    }
+
+    handleChange(name, e) {
+        var change = {};
+        change[name] = e.target.value;
+        this.setState(change);
+    }
 
     render() {
         return (
-            <div className="DatepickerInput">
-                <FaCalendar className="TextDark CalenderIcon" />
+            <div className="Input-Border">
+                <span className="Grey"><FaCalendar className="Shape TextDark CalenderIcon" /></span>
                 <Input type="text"
-                placeholder="YYYY / MM / DD"
-                onFocus={this.props.onFocus}
-                onBlur={this.props.onBlur}
-              />
+                    value={this.state.date}
+                    className="Regular-UPPER-Case"
+                    placeholder="DD/MM/YYYY"
+                    onFocus={this.props.onFocus}
+                    onBlur={this.props.onBlur}
+                    onChange={this.handleChange.bind(this, this.state.date)}
+                />
             </div>
         );
     }
 }
 
-export default Dateinput;
+export default DateInput;
 

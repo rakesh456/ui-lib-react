@@ -1,21 +1,22 @@
 
 
 import React from "react";
-import Dateinput from "./date-input/index";
-import Calendardisplay from "./calendar-display/index";
+import DateInput from "./date-input/index";
+import CalendarDisplay from "./calendar-display/index";
 import './date-picker.css';
 
-class Datepicker extends React.PureComponent {
+class DatePicker extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {date: new Date(), isCalendarOpen: true };
+        this.state = {date: new Date(), isCalendarOpen: false };
     }
 
     toggleCalendar = () => this.setState({ isCalendarOpen: !this.state.isCalendarOpen })
 
     componentDidMount() {}
 
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate(prevProps) {
+    }
 
     handleChange = evt => evt.preventDefault();
 
@@ -30,19 +31,28 @@ class Datepicker extends React.PureComponent {
             isCalendarOpen: !this.state.isCalendarOpen
         });
     }
+    
+    onChange = () => {}
+
+    changeSelectedDate = (_date) => {
+        this.setState({
+            date: _date
+        });
+    }
 
     render() {
         const {isCalendarOpen} = this.state;
+
         return (
             <div className="DatepickerContainer">
-                <Dateinput onFocus={ this.onFocus } onBlur={ this.onBlur }  />
+                <DateInput onFocus={ this.onFocus } onBlur={ this.onBlur } value={this.state.date} />
                 {
-                    isCalendarOpen && <Calendardisplay />
+                    isCalendarOpen && <CalendarDisplay changeSelectedDate={this.changeSelectedDate}/>
                 }
             </div>
         );
     }
 }
 
-export default Datepicker;
+export default DatePicker;
 

@@ -4,26 +4,27 @@ import React from "react";
 import { getMonthNameByIndex } from '../../../../utils/utils';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 
-class Calendarmonth extends React.PureComponent {
+class CalendarMonth extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {month: new Date().getMonth(), year: new Date().getFullYear() };
+        this.state = {};
     }
 
     componentDidMount() {}
 
     componentDidUpdate(prevProps) {}
 
+
     render() {
-        const { month, year } = this.state;
+        const { month, year } = this.props;
         return (
             <div className="CalendarMonth TextCenter">
-                <FaCaretLeft className="PullLeft Icon" />
-                {getMonthNameByIndex(month)} {year}
-                <FaCaretRight className="PullRight Icon" />
+                <FaCaretLeft className="PullLeft Icon" onClick={this.props.goToPrevMonth} />
+                    <span className="Medium-UPPER-Case MonthName">{getMonthNameByIndex(month - 1)} {year}</span>
+                <FaCaretRight className="PullRight Icon" onClick={this.props.goToNextMonth} />
             </div>
         );
     }
 }
 
-export default Calendarmonth;
+export default CalendarMonth;
