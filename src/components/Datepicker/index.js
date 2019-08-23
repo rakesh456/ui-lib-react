@@ -4,55 +4,71 @@ import React from "react";
 import DateInput from "./date-input/index";
 import CalendarDisplay from "./calendar-display/index";
 import './date-picker.css';
+import {
+    getIsoDate
+} from "../../utils/calendar";
+import {
+    getDateDDMMYYYY
+} from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
+    
     constructor(props) {
         super(props);
-        this.state = {date: new Date(), isCalendarOpen: false };
+        this.state = {date: new Date(), shouldCalendarOpen: true };
+        this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
-
-    toggleCalendar = () => this.setState({ isCalendarOpen: !this.state.isCalendarOpen })
-
-    componentDidMount() {}
-
+    
+    toggleCalendar = () => {}
+    
+    componentDidMount() {
+    }
+    
     componentDidUpdate(prevProps) {
     }
 
     handleChange = evt => evt.preventDefault();
 
+    handleDateChange = date => {
+        const newDate = getIsoDate(date);
+        this.setState({ date: newDate, shouldCalendarOpen: false });
+	}
+
     onFocus = () =>  {
         this.setState({
-            isCalendarOpen: !this.state.isCalendarOpen
+            shouldCalendarOpen: !this.state.shouldCalendarOpen
         });
     }
 
     onBlur = () => {
-        this.setState({
-            isCalendarOpen: !this.state.isCalendarOpen
-        });
+        // if(newDate === currentDate){
+        //     this.setState({
+        //         shouldCalendarOpen: !this.state.shouldCalendarOpen
+        //     });
+        // }
     }
     
     onChange = () => {}
 
-    changeSelectedDate = (_date) => {
+    handleChildUnmount = (_date) => {
         this.setState({
-            date: _date
+            date: _date,
+            shouldCalendarOpen: false
         });
     }
 
     render() {
-        const {isCalendarOpen} = this.state;
+        const {shouldCalendarOpen, date} = this.state;
 
         return (
             <div className="DatepickerContainer">
-                <DateInput onFocus={ this.onFocus } onBlur={ this.onBlur } value={this.state.date} />
-                {
-                    isCalendarOpen && <CalendarDisplay changeSelectedDate={this.changeSelectedDate}/>
-                }
+                <DateInput onFocus={ this.onFocus } onBlur={ this.onBlur } value={date} />
+                {/* <Dropdown isOpen={shouldCalendarOpen} toggle={this.toggleCalendar}> */}
+                    {(shouldCalendarOpen)? <CalendarDisplay selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> : '' }
+                {/* </Dropdown> */}
             </div>
         );
     }
 }
 
 export default DatePicker;
-

@@ -124,6 +124,15 @@
     color: #fff;
 }
 
+.Hidden{
+    display: none;
+    visibility: hidden;
+}
+
+.Show{
+    display: block;
+}
+
 .TextCenter{
     text-align: center;
 }
@@ -188,6 +197,7 @@ input, input:focus{
 }
 .CalendarContainer .CalendarMonth .Icon{
     margin-top: 4px;
+    cursor: pointer;
 }
 
 .CalendarContainer .CalendarWeek .WeekName{

@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import {
+import calendar, {
     getIsoDate,
     isSameDay,
     isSameMonth
@@ -8,7 +8,8 @@ import {
 import {
     getStaticDays,
     splitArray,
-    getDateDDMMYYYY
+    getDateDDMMYYYY,
+    convertYYYYMMDD
 } from "../../../../utils/utils";
 
 class CalendarDays extends React.PureComponent {
@@ -18,27 +19,28 @@ class CalendarDays extends React.PureComponent {
     }
 
     componentDidMount() {
+        
         this.setState({
-            current: getDateDDMMYYYY(this.props.selectedDate)
+            current: this.props.selectedDate
         });
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selectedDate !== prevProps.selectDate) {
+        if (this.props.selectedDate === this.state.current) {
             this.setState({
-                current: getDateDDMMYYYY(this.props.selectedDate)
+                current: this.props.selectedDate
             });
         }
     }
 
     getCalendarDates = () => {
-        // const { month, year } = this.props;
-        // const { current } = this.state;
-        // const calendarMonth = month || +current.getMonth() + 1;
-        // const calendarYear = year || current.getFullYear();
+        const { month, year } = this.props;
+        const { current } = this.state;
+        const calendarMonth = month || +current.getMonth() + 1;
+        const calendarYear = year || current.getFullYear();
         
-        // return splitArray(calendar(calendarMonth, calendarYear), 7);
-        return splitArray(getStaticDays(), 7);
+        return splitArray(calendar(calendarMonth, calendarYear), 7);
+        // return splitArray(getStaticDays(), 7);
     };
 
     selectDate = (_date) => {
@@ -51,13 +53,14 @@ class CalendarDays extends React.PureComponent {
     renderCalendarDate = (date, index) => {
         const { month, year } = this.props;
         const { current, today } = this.state;
-        const _date = new Date(date.join("-"));
+        const _date = new Date(date);
         const props = { index, title: _date.toDateString() };
 
         const inMonth = month && year && isSameMonth(_date, new Date([year, month, 1].join("-")));
 
+        
         const isToday = isSameDay(_date, today);
-        const isCurrent = current && isSameDay(_date, current);
+        const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current)));
 
         return (
             <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={(inMonth) ? () => this.selectDate(_date) : () => { }}>

@@ -103,7 +103,8 @@ export const isSameDay = (date, basedate = new Date()) => {
     const dateDate = date.getDate();
     const dateMonth = +(date.getMonth()) + 1;
     const dateYear = date.getFullYear();
-    return (+basedateDate === +dateDate) && (+basedateMonth === +dateMonth) && (+basedateYear === +dateYear);
+
+    return (basedateDate === dateDate) && (basedateMonth === dateMonth) && (basedateYear === dateYear);
 }
 
 // (string) Formats the given date as YYYY-MM-DD

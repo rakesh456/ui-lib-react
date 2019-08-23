@@ -7,14 +7,13 @@ export function getMonthNameByIndex(index) {
     return MONTH_NAMES[index].toUpperCase();
 }
 
-export function splitArray(myArray, chunk_size){
+export function splitArray(array, chunk_size){
     var index = 0;
-    var arrayLength = myArray.length;
+    var arrayLength = array.length;
     var tempArray = [];
     
     for (index = 0; index < arrayLength; index += chunk_size) {
-        const myChunk = myArray.slice(index, index+chunk_size);
-        // Do something if you want with the group
+        const myChunk = array.slice(index, index+chunk_size);
         tempArray.push(myChunk);
     }
 
@@ -35,4 +34,17 @@ export function getDateDDMMYYYY(date) {
     if (day.length < 2) day = '0' + day;
 
     return [day, month, year].join('/');
+}
+
+export function convertYYYYMMDD(date) {
+
+    let d = date.split("/"),
+        month = '' + d[1],
+        day = '' + d[0],
+        year = d[2];
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
 }
