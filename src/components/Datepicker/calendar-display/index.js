@@ -1,10 +1,8 @@
-
-
 import React from "react";
 import CalendarWeek from "./calendar-week/index";
 import CalendarMonth from "./calendar-month/index";
 import CalendarDays from "./calendar-days/index";
-// import CalendarButtons from "./calendar-buttons/index";
+
 import '../date-picker.css';
 import {
     convertYYYYMMDD
@@ -65,8 +63,7 @@ class CalendarDisplay extends React.PureComponent {
             <div className="CalendarContainer shape-rounded-fill">
                 <CalendarMonth month={month} year={year} goToNextMonth={ this.goToNextMonth } goToPrevMonth={ this.goToPrevMonth } />
                 <CalendarWeek />
-                <CalendarDays selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />
-                {/* <CalendarButtons /> */}
+                <CalendarDays selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />                
             </div>
         );
     }

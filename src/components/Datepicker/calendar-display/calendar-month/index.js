@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { getMonthNameByIndex } from '../../../../utils/utils';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
