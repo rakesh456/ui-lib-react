@@ -62,14 +62,14 @@ class CalendarDays extends React.PureComponent {
         const isToday = isSameDay(_date, today);
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current)));
 
-        return (
-            <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={(inMonth) ? () => this.selectDate(_date) : () => { }}>
+        return (            
+            <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                 {
                     (inMonth) ?
                         <span className={(isCurrent) ? 'DaySelected' : ((isToday) ? 'DayCurrent' : 'NormalDay')}>{_date.getDate()}</span>
                         :
                         <span className='DisabledDay'>{_date.getDate()}</span>
-                }
+                }                
             </div>
         );
     }
@@ -98,7 +98,7 @@ class CalendarDays extends React.PureComponent {
             </div>
         );
     }
-
+ 
 }
 
 export default CalendarDays;

@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import DateInput from "./date-input/index";
 import CalendarDisplay from "./calendar-display/index";
@@ -15,7 +13,7 @@ class DatePicker extends React.PureComponent {
     
     constructor(props) {
         super(props);
-        this.state = {date: new Date(), shouldCalendarOpen: true };
+        this.state = {date: new Date(), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
     
