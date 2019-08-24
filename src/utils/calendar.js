@@ -118,3 +118,18 @@ export const getIsoDate = (date = new Date()) => {
     ].join('-');
 }
 
+export const checkDateInBetween = (date, from, to) => {
+    if(isDate(date)){
+        if(isDate(from) && isDate(to) && (date.getTime() < from.getTime() || date.getTime() > to.getTime())){
+            return false;
+        } else if(isDate(from) && date.getTime() >= from.getTime()){
+            return true;
+        } else if(isDate(to) && date.getTime() <= to.getTime()){
+            return true;
+        } else {
+            return false
+        }
+    } else {
+        return false;
+    }
+}

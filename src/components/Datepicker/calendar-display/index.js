@@ -63,7 +63,7 @@ class CalendarDisplay extends React.PureComponent {
             <div className="CalendarContainer shape-rounded-fill">
                 <CalendarMonth month={month} year={year} goToNextMonth={ this.goToNextMonth } goToPrevMonth={ this.goToPrevMonth } />
                 <CalendarWeek />
-                <CalendarDays selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />                
+                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />                
             </div>
         );
     }

@@ -53,6 +53,11 @@
     background-color: var(--text-white);
 }
 
+.Input-Border.Disabled{
+    cursor: default;
+    background-color: rgb(235, 235, 228);
+}
+
 .Regular-UPPER-Case {
     width: 149px;
     height: 24px;
@@ -96,13 +101,17 @@
     width: 20px;
     height: 20px;
     /* object-fit: contain; */
-    margin: 5px 5px 10px;
+    margin: 5px 5px;
     font-size: 10px;
 }
 
 .Day .DayCurrent,
-.DisabledDay{
+.NextPrevDay{
     color: #bbb;
+}
+
+.DisabledDay{
+    color: #c00;
 }
 
 .Day span:hover {
@@ -135,6 +144,14 @@
 
 .TextCenter{
     text-align: center;
+}
+
+.TextLeft{
+    text-align: left;
+}
+
+.TextRight{
+    text-align: right;
 }
 
 .PullRight{
@@ -174,6 +191,7 @@ input, input:focus{
     width: 150px;
     vertical-align: middle;
     outline: transparent;
+    margin: 7px 10px 0px;
 }
 
 .DatepickerContainer{

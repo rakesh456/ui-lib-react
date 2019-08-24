@@ -13,7 +13,7 @@ class DatePicker extends React.PureComponent {
     
     constructor(props) {
         super(props);
-        this.state = {date: new Date(), shouldCalendarOpen: false };
+        this.state = {date: new Date(), shouldCalendarOpen: true };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
     
@@ -34,7 +34,7 @@ class DatePicker extends React.PureComponent {
 
     onFocus = () =>  {
         this.setState({
-            shouldCalendarOpen: !this.state.shouldCalendarOpen
+            shouldCalendarOpen: true    
         });
     }
 
@@ -60,9 +60,9 @@ class DatePicker extends React.PureComponent {
 
         return (
             <div className="DatepickerContainer">
-                <DateInput onFocus={ this.onFocus } onBlur={ this.onBlur } value={date} />
+                <DateInput options={this.props.options} onFocus={ this.onFocus } onBlur={ this.onBlur } value={date} />
                 {/* <Dropdown isOpen={shouldCalendarOpen} toggle={this.toggleCalendar}> */}
-                    {(shouldCalendarOpen)? <CalendarDisplay selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> : '' }
+                    {(shouldCalendarOpen)? <CalendarDisplay options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> : '' }
                 {/* </Dropdown> */}
             </div>
         );

@@ -16,9 +16,8 @@ class DateInput extends React.PureComponent {
 
     componentDidMount() {
         this.setState({
-            date: getDateDDMMYYYY(this.props.value)
+            date: getDateDDMMYYYY(this.props.value),
         });
-
     }
 
     componentDidUpdate(prevProps) {
@@ -33,13 +32,25 @@ class DateInput extends React.PureComponent {
         this.setState(change);
     }
 
+    getIconAlignClass(){
+        const options = this.props.options;
+        return (options && options.iconAlignment === 'Left')? 'PullLeft' : 'PullRight';
+    }
+    
+    getDateAlignClass(){
+        const options = this.props.options;
+        return (options && options.dateStringAligngment === 'Right')? 'PullRight TextRight' : 'PullLeft TextLeft';
+    }
+
     render() {
+        const disable = (this.props.options && this.props.options.disable === true);
         return (
-            <div className="Input-Border">
-                <span className="Grey"><FaCalendar className="Shape TextDark CalenderIcon" /></span>
+            <div className={`Input-Border ${(disable)? 'Disabled': ''}`}>
+                <span className={this.getIconAlignClass()}><FaCalendar className="Shape TextDark CalenderIcon" /></span>
                 <Input type="text"
+                    disabled={disable}
                     value={this.state.date}
-                    className="Regular-UPPER-Case"
+                    className={`Regular-UPPER-Case ${this.getDateAlignClass()}`}
                     placeholder="DD/MM/YYYY"
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
