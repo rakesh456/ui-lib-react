@@ -87,7 +87,7 @@
 
 .shape-rounded-fill {
     width: 216px;
-    /* height: 182px; */
+    height: 216px;
     border-radius: 1px;
 }
 
@@ -209,6 +209,10 @@ input, input:focus{
     position: absolute;
 }
 
+.CalendarContainer .CalendarMonth{
+    display: inline-block;
+    width: 216px;
+}
 .CalendarContainer .CalendarMonth .MonthName{
     padding: 7px 0px;
     letter-spacing: 2px;

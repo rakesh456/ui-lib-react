@@ -32,25 +32,36 @@ class DateInput extends React.PureComponent {
         this.setState(change);
     }
 
-    getIconAlignClass(){
+    getIconAlignClass() {
         const options = this.props.options;
-        return (options && options.iconAlignment === 'Left')? 'PullLeft' : 'PullRight';
+        return (options && options.iconAlignment === 'Left') ? 'PullLeft' : 'PullRight';
     }
-    
-    getDateAlignClass(){
+
+    getDateAlignClass() {
         const options = this.props.options;
-        return (options && options.dateStringAligngment === 'Right')? 'PullRight TextRight' : 'PullLeft TextLeft';
+        return (options && options.dateStringAligngment === 'Right') ? 'PullRight TextRight' : 'PullLeft TextLeft';
+    }
+
+    gotoDate = date => evt => {
+        evt && evt.preventDefault();
+        const { date } = this.state;
+        const { onBlur } = this.props;
+
+        (date) &&
+            this.setState(this.state.date, () => {
+                typeof onBlur === "function" && onBlur(date);
+            });
     }
 
     render() {
         const disable = (this.props.options && this.props.options.disable === true);
         return (
-            <div className={`Input-Border ${(disable)? 'Disabled': ''}`}>
+            <div className={`Input-Border ${(disable) ? 'Disabled' : ''}`}>
                 <span className={this.getIconAlignClass()}><FaCalendar className="Shape TextDark CalenderIcon" /></span>
                 <Input type="text"
                     disabled={disable}
                     value={this.state.date}
-                    className={`Regular-UPPER-Case ${this.getDateAlignClass()}`}
+                    className={`Regular-UPPER-Case Calendar-Input ${this.getDateAlignClass()}`}
                     placeholder="DD/MM/YYYY"
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}

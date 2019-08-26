@@ -8,26 +8,36 @@ import {
     convertYYYYMMDD
 } from "../../../utils/utils";
 
+
+let modalRoot = null;
+
 class CalendarDisplay extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selectedDate = (this.props && this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate)) : new Date();
-        this.state = {month: selectedDate.getMonth() + 1, year: selectedDate.getFullYear()};
+        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate)) : new Date();
+        this.state = { month: selectedDate.getMonth() + 1, year: selectedDate.getFullYear() };
+        this.el = document.createElement('div');
     }
     
     componentDidMount() {
-        
+        modalRoot = document.getElementById('modalroot');
+        modalRoot.appendChild(this.el);
     }
 
     componentDidUpdate(prevProps) {
     }
 
+    componentWillUnmount() {
+        modalRoot = document.getElementById('modalroot');
+        modalRoot.removeChild(this.el);
+    }
+
     changeSelectedDate = (_date) => {
         this.props.changeSelectedDate(_date);
     }
-    
+
     goToPrevMonth = () => {
-        if(this.state.month === 1){
+        if (this.state.month === 1) {
             this.setState({
                 month: 12,
                 year: (this.state.year - 1)
@@ -38,9 +48,9 @@ class CalendarDisplay extends React.PureComponent {
             });
         }
     }
-    
+
     goToNextMonth = () => {
-        if(this.state.month === 12){
+        if (this.state.month === 12) {
             this.setState({
                 month: 1,
                 year: (this.state.year + 1)
@@ -60,14 +70,13 @@ class CalendarDisplay extends React.PureComponent {
         }
 
         return (
-            <div className="CalendarContainer shape-rounded-fill">
-                <CalendarMonth month={month} year={year} goToNextMonth={ this.goToNextMonth } goToPrevMonth={ this.goToPrevMonth } />
+            <div className="CalendarContainer shape-rounded-fill modal" style={this.props.style}>
+                <CalendarMonth month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <CalendarWeek />
-                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />                
+                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />
             </div>
         );
     }
-
 }
 
 export default CalendarDisplay;

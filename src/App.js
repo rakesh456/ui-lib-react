@@ -7,6 +7,7 @@ function App() {
 
   return (
     <div className="App">
+      <div id="modalroot"></div>
       <header className="App-header">
         <DatePicker options={options} />
       </header>

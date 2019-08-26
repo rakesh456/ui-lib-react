@@ -7,7 +7,6 @@ import calendar, {
 } from "../../../../utils/calendar";
 
 import {
-    getStaticDays,
     splitArray,
     getDateDDMMYYYY,
     convertYYYYMMDD
@@ -18,6 +17,10 @@ class CalendarDays extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = { current: getDateDDMMYYYY(new Date())};
+    }
+
+    dismiss() {
+        this.props.onBlur();
     }
     
     componentDidMount() {
@@ -45,10 +48,10 @@ class CalendarDays extends React.PureComponent {
     };
 
     selectDate = (_date) => {
+        this.props.changeSelectedDate(_date);
         this.setState({
             current: new Date(_date)
         });
-        this.props.changeSelectedDate(_date);
     }
 
     renderCalendarDate = (date, index) => {
@@ -67,6 +70,8 @@ class CalendarDays extends React.PureComponent {
         let upperDateLimit = (options && options.upperDateLimit)? ((isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
         const isEnabled = (isToday || checkDateInBetween(_date, lowerDateLimit, upperDateLimit))
 
+        const dayClassName = (isCurrent) ? 'DaySelected' : ((isToday) ? 'DayCurrent' : 'NormalDay');
+
         return (  
             <Fragment>     
                 {
@@ -74,7 +79,7 @@ class CalendarDays extends React.PureComponent {
                         <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={(isCurrent) ? 'DaySelected' : ((isToday) ? 'DayCurrent' : 'NormalDay')}>{_date.getDate()}</span>
+                                    <span className={`CalDay ${dayClassName}`}>{_date.getDate()}</span>
                                     :
                                     <span className='NextPrevDay'>{_date.getDate()}</span>
                             }                
