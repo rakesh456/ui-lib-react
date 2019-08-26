@@ -2,7 +2,7 @@ import React from "react";
 import DateInput from "./date-input/index";
 import CalendarDisplay from "./calendar-display/index";
 import CalendarPortal from "./calendar-display/portal";
-import './date-picker.css';
+import './date-picker.less';
 import {
     getIsoDate
 } from "../../utils/calendar";
@@ -16,7 +16,6 @@ class DatePicker extends React.PureComponent {
         super(props);
         this.state = { date: new Date(), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
-        this.setWrapperRef = this.setWrapperRef.bind(this);
         this.style = {};
     }
 
@@ -24,9 +23,7 @@ class DatePicker extends React.PureComponent {
         this.setState({ shouldCalendarOpen: false });
     }
 
-    toggleCalendar = () => { }
-
-    updateDimensions = () => {
+    updateDimensions(){
         let w = window,
             d = document,
             documentElement = d.documentElement,
@@ -55,10 +52,6 @@ class DatePicker extends React.PureComponent {
         const newDate = getIsoDate(date);
         
         this.setState({ date: newDate, shouldCalendarOpen: false });
-    }
-
-    setWrapperRef(node) {
-        this.wrapperRef = node;
     }
 
     onFocus = () => {

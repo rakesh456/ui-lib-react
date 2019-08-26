@@ -7,9 +7,6 @@ class CalendarPortal extends React.PureComponent {
     constructor(props) {
         super(props);
         this.el = document.createElement('div');
-        
-        const dimensions = this.el;
-        console.log(' 1dimensions', dimensions);
     }
     
     componentDidMount() {

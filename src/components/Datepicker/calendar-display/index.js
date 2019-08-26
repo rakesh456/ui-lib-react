@@ -3,7 +3,7 @@ import CalendarWeek from "./calendar-week/index";
 import CalendarMonth from "./calendar-month/index";
 import CalendarDays from "./calendar-days/index";
 
-import '../date-picker.css';
+import '../date-picker.less';
 import {
     convertYYYYMMDD
 } from "../../../utils/utils";
