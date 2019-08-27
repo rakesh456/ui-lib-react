@@ -2,7 +2,7 @@ import React from "react";
 import DateInput from "./date-input/index";
 import CalendarDisplay from "./calendar-display/index";
 import CalendarPortal from "./calendar-display/portal";
-import './date-picker.less';
+import './date-picker.css';
 import {
     getIsoDate
 } from "../../utils/calendar";
