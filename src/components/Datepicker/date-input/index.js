@@ -34,7 +34,7 @@ class DateInput extends React.PureComponent {
 
     getIconAlignClass() {
         const options = this.props.options;
-        return (options && options.iconAlignment === 'Left') ? 'PullLeft' : 'PullRight';
+        return (options && options.iconAlignment === 'Left') ? 'PullLeft MrgT5' : 'PullRight';
     }
 
     getDateAlignClass() {

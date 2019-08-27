@@ -33,7 +33,7 @@ class DatePicker extends React.PureComponent {
     }
 
     componentDidMount() {
-        document.body.addEventListener('click', this.closeCalendar);
+        document.addEventListener('click', this.closeCalendar);
         const dimensions = this.el.getBoundingClientRect();
         const style = {};
         style.left = dimensions.left;
@@ -61,7 +61,7 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        if (e.target && e.target.classList && !e.target.classList.contains("Calendar-Input") && !e.target.classList.contains("Day") && !e.target.classList.contains("CalDay") && !e.target.classList.contains("NextPrevDay") && !e.target.classList.contains("Icon") && e.target.classList.length !== 0 && this.state.shouldCalendarOpen === true) {
+        if (e.target && e.target.classList && !e.target.classList.contains("Calendar-Input") && !e.target.classList.contains("Day") && !e.target.classList.contains("CalDay") && !e.target.classList.contains("NextPrevDay") && !e.target.classList.contains("Icon") && this.state.shouldCalendarOpen === true) {
             this.setState({
                 shouldCalendarOpen: false
             });
