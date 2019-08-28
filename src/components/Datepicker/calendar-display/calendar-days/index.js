@@ -70,7 +70,8 @@ class CalendarDays extends React.PureComponent {
         let upperDateLimit = (options && options.upperDateLimit)? ((isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
         const isEnabled = (isToday || checkDateInBetween(_date, lowerDateLimit, upperDateLimit))
 
-        const dayClassName = (isCurrent) ? 'DaySelected' : ((isToday) ? 'DayCurrent' : 'NormalDay');
+        const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
+        const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
 
         return (  
             <Fragment>     
@@ -79,14 +80,14 @@ class CalendarDays extends React.PureComponent {
                         <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={`CalDay ${dayClassName}`}>{_date.getDate()}</span>
+                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()}</span>
                                     :
-                                    <span className='NextPrevDay'>{_date.getDate()}</span>
+                                    <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
                             }                
                         </div> 
                         :
                         <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)}>
-                            <span className='DisabledDay'>{_date.getDate()}</span>
+                            <span className='VS-DisabledDay'>{_date.getDate()}</span>
                         </div>
                 } 
             </Fragment>
@@ -99,18 +100,18 @@ class CalendarDays extends React.PureComponent {
         });
 
         return (
-            <div className="DateRow" key={getIsoDate(new Date()) + index + 1}>{rows}</div>
+            <div className="VS-DateRow" key={getIsoDate(new Date()) + index + 1}>{rows}</div>
         )
     }
 
     getClassName = (index) => {
-        return (index % 6 === 0) ? 'Day Medium-UPPER-Case DayStart' : 'Day Medium-UPPER-Case';
+        return (index % 6 === 0) ? 'VS-Day VS-Medium-UPPER-Case VS-DayStart' : 'VS-Day VS-Medium-UPPER-Case';
     }
 
     render() {
         // const { selectedDate } = this.props;
         return (
-            <div className="CalendarDay">
+            <div className="VS-CalendarDay">
                 <Fragment>
                     {this.getCalendarDates().map((row, index) => this.renderCalendarRow(row, index))}
                 </Fragment>

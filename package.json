@@ -1,7 +1,7 @@
 {
-  "name": "ui-lib-react",
-  "version": "0.1.0",
-  "private": true,
+  "name": "@rakeshjst/ui-lib-react",
+  "version": "0.1.9",
+  "main": "dist/datepicker.min.js",
   "dependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
@@ -12,12 +12,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "webpack --mode production",
+    "build": "rollup -c -o dist/datepicker.min.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakesh456/ui-lib-react.git"
   },
   "browserslist": {
     "production": [
@@ -45,7 +49,19 @@
     "css-loader": "^3.2.0",
     "less": "^3.10.3",
     "less-loader": "^5.0.0",
+    "react": "^16.9.0",
+    "rollup": "^1.20.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-css-porter": "^1.0.2",
+    "rollup-plugin-uglify": "^6.0.2",
     "style-loader": "^1.0.0",
     "webpack-cli": "^3.3.7"
-  }
+  },
+  "description": "UI Lib using React",
+  "bugs": {
+    "url": "https://github.com/rakesh456/ui-lib-react/issues"
+  },
+  "homepage": "https://github.com/rakesh456/ui-lib-react#readme",
+  "author": "jstigers",
+  "license": "ISC"
 }

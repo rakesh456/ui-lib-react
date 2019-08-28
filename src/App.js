@@ -1,14 +1,14 @@
 import React from 'react';
 import './App.css';
-import DatePicker from "./components/Datepicker";
+import DatePicker from "./components/Datepicker/index";
 
 function App() {
-  const options = { displayFormat: 'MM/DD/YYYY', iconAlignment: 'Left', dateStringAligngment: 'Right', lowerDateLimit: new Date("2019-07-10"), upperDateLimit: new Date("2019-09-10") };
+  const options = {};
 
   return (
-    <div className="App">
+    <div className="VS-App">
       <div id="modalroot"></div>
-      <header className="App-header">
+      <header className="VS-App-header">
         <DatePicker options={options} />
       </header>
     </div>

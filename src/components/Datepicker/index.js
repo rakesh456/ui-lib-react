@@ -23,7 +23,7 @@ class DatePicker extends React.PureComponent {
         this.setState({ shouldCalendarOpen: false });
     }
 
-    updateDimensions(){
+    updateDimensions() {
         let w = window,
             d = document,
             documentElement = d.documentElement,
@@ -33,6 +33,7 @@ class DatePicker extends React.PureComponent {
     }
 
     componentDidMount() {
+
         document.addEventListener('click', this.closeCalendar);
         const dimensions = this.el.getBoundingClientRect();
         const style = {};
@@ -50,7 +51,7 @@ class DatePicker extends React.PureComponent {
 
     handleDateChange = date => {
         const newDate = getIsoDate(date);
-        
+
         this.setState({ date: newDate, shouldCalendarOpen: false });
     }
 
@@ -61,7 +62,7 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        if (e.target && e.target.classList && !e.target.classList.contains("Calendar-Input") && !e.target.classList.contains("Day") && !e.target.classList.contains("CalDay") && !e.target.classList.contains("NextPrevDay") && !e.target.classList.contains("Icon") && this.state.shouldCalendarOpen === true) {
+        if (e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && this.state.shouldCalendarOpen === true) {
             this.setState({
                 shouldCalendarOpen: false
             });
@@ -81,21 +82,27 @@ class DatePicker extends React.PureComponent {
 
     render() {
         const { shouldCalendarOpen, date } = this.state;
+        console.log(' this.props.options ', this.props.options);
         return (
-            <div className="DatepickerContainer">
-                <div ref={(el) => this.el = el}>
-                    <DateInput options={this.props.options} onFocus={this.onFocus} onBlur={this.onBlur} value={date} />
-                </div>
-                {
-                    (shouldCalendarOpen) ?
-                        <CalendarPortal parent="#parent" position="right" arrow="center">
-                            <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={shouldCalendarOpen} changeSelectedDate={this.handleDateChange}>
-                            </CalendarDisplay>
-                        </CalendarPortal>
-                        : ''
-                }
-                {/* <CalendarDisplay className={(!shouldCalendarOpen)? 'Hidden' : 'Show'} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> */}
+            <div className="VS-App">
+                <div id="modalroot"></div>
+                <header className="VS-App-header">
+                    <div className="VS-DatepickerContainer">
+                        <div ref={(el) => this.el = el}>
+                            <DateInput options={this.props.options} onFocus={this.onFocus} onBlur={this.onBlur} value={date} />
+                        </div>
+                        {
+                            (shouldCalendarOpen) ?
+                                <CalendarPortal parent="#parent" position="right" arrow="center">
+                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={shouldCalendarOpen} changeSelectedDate={this.handleDateChange}>
+                                    </CalendarDisplay>
+                                </CalendarPortal>
+                                : ''
+                        }
+                        {/* <CalendarDisplay className={(!shouldCalendarOpen)? 'VS-Hidden' : 'VS-Show'} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> */}
 
+                    </div>
+                </header>
             </div>
         );
     }

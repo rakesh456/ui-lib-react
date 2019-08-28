@@ -10,9 +10,9 @@ class CalendarButtons extends React.PureComponent {
 
     render() {
         return (
-            <div className="CalendarButtons">
-                <Button className="ClearButton PullLeft">Clear</Button>
-                <Button className="SelectButton PullRight">Select</Button>
+            <div className="VS-CalendarButtons">
+                <Button className="VS-ClearButton VS-PullLeft">Clear</Button>
+                <Button className="VS-SelectButton VS-PullRight">Select</Button>
             </div>
         );
     }

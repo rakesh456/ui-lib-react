@@ -17,11 +17,11 @@ class CalendarWeek extends React.PureComponent {
 
     render() {
         const weekItems = WEEK_SHORT_NAMES.map((number, index) =>
-            <span className="Day Medium-UPPER-Case" key={index}>{number}</span>
+            <span className="VS-Day VS-Medium-UPPER-Case" key={index}>{number}</span>
         );
     
         return (
-            <div className="CalendarWeek">
+            <div className="VS-CalendarWeek">
                 {weekItems}
             </div>
         );

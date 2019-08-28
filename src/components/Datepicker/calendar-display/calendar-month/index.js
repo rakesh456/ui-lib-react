@@ -16,10 +16,10 @@ class CalendarMonth extends React.PureComponent {
     render() {
         const { month, year } = this.props;
         return (
-            <div className="CalendarMonth TextCenter">
-                <FaCaretLeft className="PullLeft Icon" onClick={this.props.goToPrevMonth} />
-                    <span className="Medium-UPPER-Case MonthName">{getMonthNameByIndex(month - 1)} {year}</span>
-                <FaCaretRight className="PullRight Icon" onClick={this.props.goToNextMonth} />
+            <div className="VS-CalendarMonth VS-TextCenter">
+                <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevMonth} />
+                    <span className="VS-Medium-UPPER-Case VS-MonthName">{getMonthNameByIndex(month - 1)} {year}</span>
+                <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.props.goToNextMonth} />
             </div>
         );
     }

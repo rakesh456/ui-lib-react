@@ -43,7 +43,7 @@
     --gui-error-red: #fd462a;
 }
 
-.Input-Border {
+.VS-Input-Border {
     width: 216px;
     height: 40px;
     border-radius: 2px;
@@ -52,12 +52,12 @@
     background-color: var(--text-white);
 }
 
-.Input-Border.Disabled{
+.VS-Input-Border.VS-Disabled{
     cursor: default;
     background-color: rgb(235, 235, 228);
 }
 
-.Regular-UPPER-Case {
+.VS-Regular-UPPER-Case {
     width: 149px;
     height: 24px;
     font-family: Roboto;
@@ -70,7 +70,7 @@
     color: var(--text-tertiary);
   }
 
-.Medium-UPPER-Case {
+.VS-Medium-UPPER-Case {
     width: 136px;
     height: 16px;
     /* font-family: Roboto; */
@@ -84,19 +84,19 @@
     color: var(--secondary-two-dark);
 }
 
-.shape-rounded-fill {
+.VS-shape-rounded-fill {
     width: 216px;
     height: 216px;
     border-radius: 1px;
 }
 
-.Grey {
+.VS-Grey {
     width: 24px;
     height: 24px;
     /* object-fit: contain; */
 }
 
-.Shape {
+.VS-Shape {
     width: 20px;
     height: 20px;
     /* object-fit: contain; */
@@ -104,16 +104,16 @@
     font-size: 10px;
 }
 
-.Day .DayCurrent,
-.NextPrevDay{
+.VS-Day .VS-DayCurrent,
+.VS-NextPrevDay{
     color: #bbb;
 }
 
-.DisabledDay{
+.VS-DisabledDay{
     color: #c00;
 }
 
-.Day span:hover {
+.VS-Day span:hover {
     width: 20px;
     height: 20px;
     border: solid 2px var(--primary-one-dark);
@@ -122,7 +122,12 @@
     
 }
 
-.DaySelected {
+.VS-Day .VS-PadExtra:hover,
+.VS-DaySelected.VS-PadExtra{
+    padding: 4px 8px;
+}
+
+.VS-DaySelected {
     width: 20px;
     height: 20px;
     border: solid 2px var(--primary-one-dark);
@@ -132,49 +137,49 @@
     color: #fff;
 }
 
-.Hidden{
+.VS-Hidden{
     display: none;
     visibility: hidden;
 }
 
-.Show{
+.VS-Show{
     display: block;
 }
 
-.MrgT5{
+.VS-MrgT5{
     margin-top: 5px;
 }
 
-.TextCenter{
+.VS-TextCenter{
     text-align: center;
 }
 
-.TextLeft{
+.VS-TextLeft{
     text-align: left;
 }
 
-.TextRight{
+.VS-TextRight{
     text-align: right;
 }
 
-.PullRight{
+.VS-PullRight{
     float: right;
 }
 
-.PullLeft{
+.VS-PullLeft{
     float: left;
 }
 
-.TextDark{
+.VS-TextDark{
     color: #333;
 }
 
-.Text-Primary {
+.VS-Text-Primary {
     width: 16px;
     height: 16px;
 }
 
-.CalenderIcon{
+.VS-CalenderIcon{
     /* width: 20px;
     height: 20px;
     object-fit: contain;
@@ -182,7 +187,7 @@
     font-size: 10px; */
 }
 
-.DatepickerInput{
+.VS-DatepickerInput{
     width: 216px;
     height: 40px;
     padding: 0px 2px;    
@@ -197,12 +202,12 @@ input, input:focus{
     margin: 7px 10px 0px;
 }
 
-.DatepickerContainer{
+.VS-DatepickerContainer{
     background-color: #fff;
     width: 216px;
 }
 
-.CalendarContainer {
+.VS-CalendarContainer {
     /* padding: 5px; */
     border: 1px solid #ddd;
     background-color: #fff;
@@ -212,20 +217,20 @@ input, input:focus{
     position: absolute;
 }
 
-.CalendarContainer .CalendarMonth{
+.VS-CalendarContainer .VS-CalendarMonth{
     display: inline-block;
     width: 216px;
 }
-.CalendarContainer .CalendarMonth .MonthName{
+.VS-CalendarContainer .VS-CalendarMonth .VS-MonthName{
     padding: 7px 0px;
     letter-spacing: 2px;
 }
-.CalendarContainer .CalendarMonth .Icon{
+.VS-CalendarContainer .VS-CalendarMonth .VS-Icon{
     margin-top: 4px;
     cursor: pointer;
 }
 
-.CalendarContainer .CalendarWeek .WeekName{
+.VS-CalendarContainer .VS-CalendarWeek .VS-WeekName{
     cursor: pointer;
     display: inline-block;
     width: 30px;
@@ -235,23 +240,23 @@ input, input:focus{
     text-align: center;
 }
 
-.CalendarContainer .CalendarDay .WeekDay{
+.VS-CalendarContainer .CalendarDay .VS-WeekDay{
     margin: 0px 9px;
 }
 
-.Day .Today{
+.VS-Day .VS-Today{
     color: #fff;
     background-color: #000080;
     border: 2px solid #000080;
     padding: 3px;
 }
 
-.Day .SelectedDay{
+.VS-Day .VS-SelectedDay{
     border: 2px solid var(--secondary-two-dark);;
     padding: 3px;
 }
 
-.Day{
+.VS-Day{
     cursor: pointer;
     transition: all .4s ease-out;
     display: inline-block;
@@ -261,29 +266,29 @@ input, input:focus{
     margin: 6px 0px;
 }
 
-.DateRow{
+.VS-DateRow{
     display: block;
 }
 
-.CalendarButtons{
+.VS-CalendarButtons{
     padding: 5px;
     height: 30px;
 }
 
-.CalendarButtons button{
+.VS-CalendarButtons button{
     padding: 8px 10px;
     text-transform: uppercase;
     border-radius: 3px;
 }
 
-.CalendarButtons .ClearButton{
+.VS-CalendarButtons .VS-ClearButton{
     float: left;
     color: #000080;
     background-color: #fff;
     border: 1px solid #000080;
 }
 
-.CalendarButtons .SelectButton{
+.VS-CalendarButtons .VS-SelectButton{
     float: right;
     color: #fff;
     background-color: #000080;
