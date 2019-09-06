@@ -101,7 +101,7 @@
     height: 20px;
     /* object-fit: contain; */
     margin: 5px 5px;
-    font-size: 10px;
+    font-size: 20px;
 }
 
 .VS-Day .VS-DayCurrent,
@@ -124,7 +124,7 @@
 
 .VS-Day .VS-PadExtra:hover,
 .VS-DaySelected.VS-PadExtra{
-    padding: 3px 6px;
+    padding: 4px 8px;
 }
 
 .VS-DaySelected {
@@ -133,7 +133,7 @@
     border: solid 2px var(--primary-one-dark);
     background-color: var(--primary-one-dark);
     border-radius: 15px;
-    padding: 3px 4px;
+    padding: 4px 6px;
     color: #fff;
 }
 
@@ -193,9 +193,6 @@
     padding: 0px 2px;    
 }
 
-.VS-Calendar-Input{
-    border: 0px !important;
-}
 input, input:focus{
     border: 0px;
     /* height: 35px; */
@@ -229,7 +226,7 @@ input, input:focus{
     letter-spacing: 2px;
 }
 .VS-CalendarContainer .VS-CalendarMonth .VS-Icon{
-    margin-top: 4px;
+    margin: 2px 5px 0px 5px;
     cursor: pointer;
 }
 

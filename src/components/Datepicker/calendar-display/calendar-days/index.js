@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import calendar, {
-    getIsoDate,
     isSameDay,
     isSameMonth,
     checkDateInBetween
@@ -9,7 +8,8 @@ import calendar, {
 import {
     splitArray,
     getDateDDMMYYYY,
-    convertYYYYMMDD
+    convertYYYYMMDD,
+    guid
 } from "../../../../utils/utils";
 import { isDate } from "util";
 
@@ -66,18 +66,18 @@ class CalendarDays extends React.PureComponent {
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current)));
 
         const options = this.props.options;
-        let lowerDateLimit = (options && options.lowerDateLimit)? ((isDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
-        let upperDateLimit = (options && options.upperDateLimit)? ((isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
-        const isEnabled = (isToday || checkDateInBetween(_date, lowerDateLimit, upperDateLimit))
+        const lowerDateLimit = (options && options.lowerDateLimit)? ((isDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
+        const upperDateLimit = (options && options.upperDateLimit)? ((isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
+        const isEnabled = true
 
         const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
         const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
 
         return (  
-            <Fragment>     
+            <Fragment key={guid()}>   
                 {
                     (isEnabled)?
-                        <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
+                        <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
                                     <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()}</span>
@@ -86,7 +86,7 @@ class CalendarDays extends React.PureComponent {
                             }                
                         </div> 
                         :
-                        <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)}>
+                        <div {...props} className={this.getClassName(props.index)}>
                             <span className='VS-DisabledDay'>{_date.getDate()}</span>
                         </div>
                 } 
@@ -100,7 +100,7 @@ class CalendarDays extends React.PureComponent {
         });
 
         return (
-            <div className="VS-DateRow" key={getIsoDate(new Date()) + index + 1}>{rows}</div>
+            <div className="VS-DateRow" key={guid()}>{rows}</div>
         )
     }
 

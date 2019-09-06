@@ -9,7 +9,7 @@ import {
 } from "../../../utils/utils";
 
 
-let modalRoot = null;
+let calendarModal = null;
 
 class CalendarDisplay extends React.PureComponent {
     constructor(props) {
@@ -20,16 +20,16 @@ class CalendarDisplay extends React.PureComponent {
     }
     
     componentDidMount() {
-        modalRoot = document.getElementById('modalroot');
-        modalRoot.appendChild(this.el);
+        calendarModal = document.getElementById('modalroot');
+        calendarModal.appendChild(this.el);
     }
 
     componentDidUpdate(prevProps) {
     }
 
     componentWillUnmount() {
-        modalRoot = document.getElementById('modalroot');
-        modalRoot.removeChild(this.el);
+        calendarModal = document.getElementById('modalroot');
+        calendarModal.removeChild(this.el);
     }
 
     changeSelectedDate = (_date) => {

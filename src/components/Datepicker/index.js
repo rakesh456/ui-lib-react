@@ -17,14 +17,20 @@ class DatePicker extends React.PureComponent {
         this.state = { date: new Date(), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
         this.style = {};
+        
     }
 
+    setDateValue(dt) {
+        console.log(' dt ', dt);
+        this.setState({ date: dt });
+    }
+    
     handleChildUnmount() {
         this.setState({ shouldCalendarOpen: false });
     }
 
     updateDimensions() {
-        let w = window,
+        var w = window,
             d = document,
             documentElement = d.documentElement,
             body = d.getElementsByTagName('body')[0],
@@ -46,13 +52,20 @@ class DatePicker extends React.PureComponent {
         window.addEventListener("resize", this.updateDimensions);
     }
 
-    componentDidUpdate(prevProps) {
+    componentWillReceiveProps(nextProps) {
+        console.log(' nextProps ', nextProps);
+        console.log(' this.props ', this.props);
+        // if(props){
+        //     console.log(' props.selectedDate ', new Date(props.selectedDate));
+        //     this.setState({ date: new Date(props.selectedDate) });
+        // }
     }
 
     handleDateChange = date => {
         const newDate = getIsoDate(date);
 
         this.setState({ date: newDate, shouldCalendarOpen: false });
+        this.props.changeSelectedDate(date);
     }
 
     onFocus = () => {
@@ -69,9 +82,6 @@ class DatePicker extends React.PureComponent {
         }
     }
 
-    onBlur = () => {
-    }
-
     handleChildUnmount = (_date) => {
         this.setState({
             date: _date,
@@ -82,7 +92,7 @@ class DatePicker extends React.PureComponent {
 
     render() {
         const { shouldCalendarOpen, date } = this.state;
-        console.log(' this.props.options ', this.props.options);
+        console.log(' date ', date);
         return (
             <div className="VS-App">
                 <div id="modalroot"></div>

@@ -34,13 +34,12 @@ class DateInput extends React.PureComponent {
 
     getIconAlignClass() {
         const options = this.props.options;
-        console.log(' options ', options);
-        return (options && options.iconAlignment === 'Left') ? 'VS-PullLeft VS-MrgT0' : 'VS-PullRight VS-MrgT0';
+        return (options && options.iconAlignment === 'Left') ? 'VS-PullLeft VS-MrgT5' : 'VS-PullRight VS-MrgT5';
     }
 
     getDateAlignClass() {
         const options = this.props.options;
-        return (options && options.dateStringAligngment === 'Right') ? 'VS-PullRight VS-TextRight' : 'VS-PullLeft VS-TextLeft';
+        return (options && options.dateStringAlignment === 'Right') ? 'VS-PullRight VS-TextRight' : 'VS-PullLeft VS-TextLeft';
     }
 
     gotoDate = date => evt => {

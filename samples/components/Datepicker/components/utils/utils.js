@@ -1,21 +1,18 @@
 
 // Calendar months names
+const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 
-export const Fragment = (props, children) => children;
-
-export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
-
-export function isUndefinedOrNull(obj){
+function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj == null || !obj)? true : false;
 }
 
-export function getMonthNameByIndex(index) {
+function getMonthNameByIndex(index) {
     var _index = (index)? index : 0;
     return MONTH_NAMES[_index].toUpperCase();
 }
 
-export function splitArray(array, chunk_size){
+function splitArray(array, chunk_size){
     var index = 0;
     var arrayLength = array.length;
     var tempArray = [];
@@ -28,19 +25,19 @@ export function splitArray(array, chunk_size){
     return tempArray;
 }
 
-export function getStaticDays(){
+function getStaticDays(){
     return [[2019,"07","28"],[2019,"07","29"],[2019,"07","30"],[2019,"07","31"],[2019,"08","01"],[2019,"08","02"],[2019,"08","03"],[2019,"08","04"],[2019,"08","05"],[2019,"08","06"],[2019,"08","07"],[2019,"08","08"],[2019,"08","09"],[2019,"08","10"],[2019,"08","11"],[2019,"08","12"],[2019,"08","13"],[2019,"08","14"],[2019,"08","15"],[2019,"08","16"],[2019,"08","17"],[2019,"08","18"],[2019,"08","19"],[2019,"08","20"],[2019,"08","21"],[2019,"08","22"],[2019,"08","23"],[2019,"08","24"],[2019,"08","25"],[2019,"08","26"],[2019,"08","27"],[2019,"08","28"],[2019,"08","29"],[2019,"08","30"],[2019,"08","31"],[2019,"09","01"],[2019,"09","02"],[2019,"09","03"],[2019,"09","04"],[2019,"09","05"],[2019,"09","06"],[2019,"09","07"]];
 }
 
-export function getFormatfromOptions(options){
+function getFormatfromOptions(options){
     return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : '';
 }
 
-export function getDateByFormatDDMMYYYY(date, format){
+function getDateByFormatDDMMYYYY(date, format){
     return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateDDMMYYYY(date);
 }
 
-export function getDateDDMMYYYY(date) {
+function getDateDDMMYYYY(date) {
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -52,7 +49,7 @@ export function getDateDDMMYYYY(date) {
     return [day, month, year].join('/');
 }
 
-export function getDateMMDDYYYY(date) {
+function getDateMMDDYYYY(date) {
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
@@ -64,7 +61,7 @@ export function getDateMMDDYYYY(date) {
     return [month, day, year].join('/');
 }
 
-export function convertYYYYMMDD(date, options) {
+function convertYYYYMMDD(date, options) {
     let format = getFormatfromOptions(options);
     let dayIndex = (format && format == 'MM/DD/YYYY')? 1 : 0;
     let monthIndex = (format && format == 'MM/DD/YYYY')? 0 : 1;
@@ -79,12 +76,12 @@ export function convertYYYYMMDD(date, options) {
     return [year, month, day].join('-');
 }
 
-export function guid() {
+function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
 
-export function s4() {
+function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
         .substring(1);

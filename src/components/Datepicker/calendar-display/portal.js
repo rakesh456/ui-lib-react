@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from 'react-dom';
 
-let modalRoot = null;
+let calendarModal = null;
 
 class CalendarPortal extends React.PureComponent {
     constructor(props) {
@@ -10,15 +10,15 @@ class CalendarPortal extends React.PureComponent {
     }
     
     componentDidMount() {
-        modalRoot = document.getElementById('modalroot');
-        modalRoot.appendChild(this.el);
+        calendarModal = document.getElementById('modalroot');
+        calendarModal.appendChild(this.el);
     }
 
     componentDidUpdate(prevProps) {
     }
 
     componentWillUnmount() {
-       // modalRoot.removeChild(this.el);
+       // calendarModal.removeChild(this.el);
     }
 
 
