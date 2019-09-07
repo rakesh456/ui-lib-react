@@ -21,7 +21,6 @@ class DatePicker extends React.PureComponent {
     }
 
     setDateValue(dt) {
-        console.log(' dt ', dt);
         this.setState({ date: dt });
     }
     
@@ -53,12 +52,6 @@ class DatePicker extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(' nextProps ', nextProps);
-        console.log(' this.props ', this.props);
-        // if(props){
-        //     console.log(' props.selectedDate ', new Date(props.selectedDate));
-        //     this.setState({ date: new Date(props.selectedDate) });
-        // }
     }
 
     handleDateChange = date => {

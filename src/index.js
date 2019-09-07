@@ -9,33 +9,38 @@ import {
 Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),
     (el) => {
-        const options = JSON.parse(el.getAttribute('data-options'));
+        datepickerRender(el);
+    })
 
-        function handleDateChange(date) {
-            el.setAttribute('selected-date', getDateByFormatDDMMYYYY(date, options.displayFormat));
-        }
-        
-        el.getValue = function () {
-            return el.getAttribute('selected-date');
-        }
-        
-        el.setValue = function (date) {
-            el.setAttribute('selected-date', date);
-            myComponentInstance.setDateValue(date);
-        }
+window.addReactDatepicker = datepickerRender;
 
-        var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} setSelectedValue={el.getValue()} />;
+function datepickerRender(el){
+    const options = JSON.parse(el.getAttribute('data-options'));
 
-        var myComponentInstance = ReactDOM.render(
-            myComponentElement,
-            el
-        )
+    el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
 
-        
+    function handleDateChange(date) {
+        el.setAttribute('selected-date', getDateByFormatDDMMYYYY(date, options.displayFormat));
     }
-  )
 
-// ReactDOM.render(<App />, document.getElementById('datepicker'));
+    el.getValue = function () {
+        return el.getAttribute('selected-date');
+    }
+
+    el.setValue = function (date) {
+        el.setAttribute('selected-date', date);
+        myComponentInstance.setDateValue(date);
+    }
+
+    var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} setSelectedValue={el.getValue()} />;
+
+    var myComponentInstance = ReactDOM.render(
+        myComponentElement,
+        el
+    )
+}
+
+// ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
