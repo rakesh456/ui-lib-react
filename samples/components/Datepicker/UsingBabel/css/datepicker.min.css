@@ -124,7 +124,7 @@
 
 .VS-Day .VS-PadExtra:hover,
 .VS-DaySelected.VS-PadExtra{
-    padding: 4px 8px;
+    padding: 3px 6px;
 }
 
 .VS-DaySelected {
@@ -133,7 +133,7 @@
     border: solid 2px var(--primary-one-dark);
     background-color: var(--primary-one-dark);
     border-radius: 15px;
-    padding: 4px 6px;
+    padding: 3px 4px;
     color: #fff;
 }
 

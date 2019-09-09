@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>Datepicker HTML</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="components/css/datepicker.min.css">
+    <link rel="stylesheet" href="css/datepicker.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.21.1/babel.min.js"></script>
 
     <!-- Load React core and DOM. -->
@@ -13,13 +13,13 @@
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>
 
     <!-- Load our React component. -->
-    <script src="components/utils/datepicker-utils.js"></script>
-    <script src="components/utils/utils.js"></script>
-    <script type="text/babel" src="components/Datepicker.js"></script>
+    <script src="utils/datepicker-utils.js"></script>
+    <script src="utils/utils.js"></script>
+    <script type="text/babel" src="Datepicker.js"></script>
 </head>
 
 <body>
-    <div id="datepicker" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"right", "dateStringAlignment": "Right", "lowerDateLimit": "2019-07-10", "upperDateLimit": "2019-09-10"}'></div>
+    <div className="datepicker" id="datepicker" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Right", "lowerDateLimit": "2019-08-10", "upperDateLimit": "2019-09-10"}'></div>
 </body>
 
 </html>

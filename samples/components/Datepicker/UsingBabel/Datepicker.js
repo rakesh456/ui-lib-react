@@ -59,7 +59,8 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        if (e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && this.state.shouldCalendarOpen === true) {
+        console.log('class', e.target.classList);
+        if (e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true) {
             this.setState({
                 shouldCalendarOpen: false
             });
@@ -97,7 +98,7 @@ class DatePicker extends React.PureComponent {
     render() {
         const { shouldCalendarOpen, date } = this.state;
         const disable = (this.props.options && this.props.options.disable === true) ? true : false;
-        
+
         return (
             <div className="VS-App">
                 <div id="modalroot"></div>
@@ -306,7 +307,9 @@ class CalendarWeek extends React.PureComponent {
 class CalendarDays extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { current: getDateByFormatDDMMYYYY(new Date(), getFormatfromOptions(this.props.options))};
+        const _date = convertYYYYMMDD(this.props.selectedDate, this.props.options);
+        
+        this.state = { current: getDateByFormatDDMMYYYY(new Date(_date), getFormatfromOptions(this.props.options)), lowerDateLimit: new Date()};
     }
     
     dismiss() {
@@ -314,17 +317,32 @@ class CalendarDays extends React.PureComponent {
     }
     
     componentDidMount() {
+        const options = this.props.options; 
+        if(isDate(this.props.selectedDate)){
+            this.setState({
+                current: getDateByFormatDDMMYYYY(this.props.selectedDate, getFormatfromOptions(this.props.options))
+            });
+        }
+
+        var _lowerdate = (!isUndefinedOrNull(options) && options.lowerDateLimit && isDate(options.lowerDateLimit))? options.lowerDateLimit : null;
+
+        if(_lowerdate){
+            _lowerdate = new Date(_lowerdate);
+            _lowerdate.setDate(_lowerdate.getDate() - 1);
+        }
+
         this.setState({
-            current: getDateByFormatDDMMYYYY(this.props.selectedDate, getFormatfromOptions(this.props.options))
+            lowerDateLimit: (!isUndefinedOrNull(_lowerdate))? _lowerdate : new Date()
         });
+
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selectedDate === this.state.current) {
-            this.setState({
-                current: this.props.selectedDate
-            });
-        }
+        // if (this.props.selectedDate === this.state.current) {
+        //     this.setState({
+        //         current: this.props.selectedDate
+        //     });
+        // }
     }
 
     getCalendarDates = () => {
@@ -340,7 +358,7 @@ class CalendarDays extends React.PureComponent {
     selectDate = (_date) => {
         this.props.changeSelectedDate(_date);
         this.setState({
-            current: new Date(_date)
+            current: getDateByFormatDDMMYYYY(_date, getFormatfromOptions(this.props.options))
         });
     }
 
@@ -356,11 +374,12 @@ class CalendarDays extends React.PureComponent {
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, this.props.options)));
 
         const options = this.props.options;
-        const lowerDateLimit = (!isUndefinedOrNull(options) && options.lowerDateLimit)? (!isUndefinedOrNull(options) && (isDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (!isUndefinedOrNull(options) && options.lowerDateLimit !== null)? new Date() : null;
 
         const upperDateLimit = (!isUndefinedOrNull(options) && options.upperDateLimit)? (!isUndefinedOrNull(options) && (isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
-        
-        const isEnabled = (isToday || checkDateInBetween(_date, lowerDateLimit, upperDateLimit));
+
+        console.log(' upperDateLimit ', upperDateLimit);
+
+        const isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
 
         const dayClassName = (isCurrent === true)? 'VS-DaySelected' : ((isToday)? 'VS-DayCurrent' : 'VS-NormalDay');
 
