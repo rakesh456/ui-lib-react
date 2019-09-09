@@ -1,3 +1,5 @@
+import { isUndefinedOrNull } from "./utils";
+
 export const CURRENT_YEAR = +(new Date().getFullYear());
 
 export const CURRENT_MONTH = +(new Date().getMonth()) + 1;
@@ -120,12 +122,18 @@ export const getIsoDate = (date = new Date()) => {
 
 export const checkDateInBetween = (date, from, to) => {
     if(isDate(date)){
-        if(isDate(from) && isDate(to) && (date.getTime() < from.getTime() || date.getTime() > to.getTime())){
+        var _to = (!isUndefinedOrNull(to))? new Date(to) : null;
+        if(isUndefinedOrNull(_to) && isDate(from) && date.getTime() >= from.getTime()){
+            return true;
+        } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
-        } else if(isDate(from) && date.getTime() >= from.getTime()){
-            return true;
-        } else if(isDate(to) && date.getTime() <= to.getTime()){
-            return true;
+        } else if(isDate(from) && isDate(_to)){
+            var _from = new Date(from);
+            if(date.getTime() > _from.getTime() && date.getTime() < _to.getTime()){
+                return true;
+            } else {
+                return false
+            }
         } else {
             return false
         }

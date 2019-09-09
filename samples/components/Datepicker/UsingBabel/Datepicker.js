@@ -59,7 +59,6 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        console.log('class', e.target.classList);
         if (e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true) {
             this.setState({
                 shouldCalendarOpen: false
@@ -143,7 +142,6 @@ document.querySelectorAll('#datepicker')
         if(options.lowerDateLimit){
             options['upperDateLimit'] = new Date(options.upperDateLimit);
         }
-        console.log(' options ', options);
 
         ReactDOM.render(
             e(DatePicker, {'options': options}),
@@ -377,7 +375,6 @@ class CalendarDays extends React.PureComponent {
 
         const upperDateLimit = (!isUndefinedOrNull(options) && options.upperDateLimit)? (!isUndefinedOrNull(options) && (isDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
 
-        console.log(' upperDateLimit ', upperDateLimit);
 
         const isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
 

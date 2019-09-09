@@ -27,10 +27,7 @@
         
         function addDatepicker(id){
             let element = document.getElementById(id);
-            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
-                                <div id="datevalue2"></div>
-                                <button onclick="displayValue('datepicker2', 'datevalue2');">Display</button>
-                                <button onclick="setValue('datepicker2');">Set Value to 09/01/2019</button>`;
+            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
             addReactDatepicker(element.children[0]);
         }
     </script>
@@ -40,7 +37,8 @@
 
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
-    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
+    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
+        "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
     <date-picker id="datepicker1" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
 
     <br>

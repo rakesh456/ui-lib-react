@@ -17,7 +17,6 @@ class DatePicker extends React.PureComponent {
         this.state = { date: new Date(), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
         this.style = {};
-        
     }
 
     setDateValue(dt) {
@@ -68,7 +67,7 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        if (e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && this.state.shouldCalendarOpen === true) {
+        if ((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true) && (e.target.classList.length !== 0)) {
             this.setState({
                 shouldCalendarOpen: false
             });
