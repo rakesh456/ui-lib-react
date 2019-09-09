@@ -24,12 +24,13 @@ function datepickerRender(el){
     }
 
     el.getValue = function () {
-        return el.getAttribute('selected-date');
+        return getDateByFormatDDMMYYYY(el.getAttribute('selected-date'), options.displayFormat);
     }
 
     el.setValue = function (date) {
-        el.setAttribute('selected-date', date);
-        myComponentInstance.setDateValue(date);
+        var _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
+        el.setAttribute('selected-date', _date);
+        myComponentInstance.setDateValue(_date);
     }
 
     var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} setSelectedValue={el.getValue()} />;
@@ -39,8 +40,6 @@ function datepickerRender(el){
         el
     )
 }
-
-// ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

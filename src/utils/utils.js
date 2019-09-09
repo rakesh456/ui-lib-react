@@ -1,8 +1,14 @@
 
-// Calendar months names
+import moment from 'moment';
+import {
+   isDate 
+} from "./calendar";
 
 export const Fragment = (props, children) => children;
 
+export const DATE_FORMATS = ["DD/MM/YYYY"];
+
+// Calendar months names
 export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 
@@ -40,9 +46,15 @@ export function getDateByFormatDDMMYYYY(date, format){
     return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateDDMMYYYY(date);
 }
 
+export const isValidDate = dateObject => { 
+    return new Date(dateObject).toString() !== 'Invalid Date'; 
+}
+
 export function getDateDDMMYYYY(date) {
-    let d = new Date(date),
-        month = '' + (d.getMonth() + 1),
+    let d = new Date(date);
+    //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+
+    let month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
 

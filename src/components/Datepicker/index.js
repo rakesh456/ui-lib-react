@@ -7,7 +7,7 @@ import {
     getIsoDate
 } from "../../utils/calendar";
 import {
-    getDateDDMMYYYY
+    getDateDDMMYYYY, getDateByFormatDDMMYYYY
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -55,10 +55,10 @@ class DatePicker extends React.PureComponent {
     }
 
     handleDateChange = date => {
-        const newDate = getIsoDate(date);
-
+        const options=this.props.options;
+        const newDate = getDateByFormatDDMMYYYY(date, options.displayFormat);
         this.setState({ date: newDate, shouldCalendarOpen: false });
-        this.props.changeSelectedDate(date);
+        this.props.changeSelectedDate(newDate);
     }
 
     onFocus = () => {
@@ -85,7 +85,6 @@ class DatePicker extends React.PureComponent {
 
     render() {
         const { shouldCalendarOpen, date } = this.state;
-        console.log(' date ', date);
         return (
             <div className="VS-App">
                 <div id="modalroot"></div>

@@ -5,24 +5,27 @@ import { Input } from 'reactstrap';
 import '../date-picker.css';
 import { FaCalendar } from 'react-icons/lib/fa';
 import {
-    getDateDDMMYYYY
+    getDateDDMMYYYY, getDateByFormatDDMMYYYY
 } from "../../../utils/utils";
 
 class DateInput extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { date: getDateDDMMYYYY(new Date()) };
+        const options=this.props.options;
+        this.state = { date: getDateByFormatDDMMYYYY(new Date(), options.displayFormat) };
     }
 
     componentDidMount() {
+        const options=this.props.options;
         this.setState({
-            date: getDateDDMMYYYY(this.props.value),
+            date: getDateByFormatDDMMYYYY(this.props.value, options.displayFormat),
         });
     }
 
     componentDidUpdate(prevProps) {
+        const options=this.props.options;
         this.setState({
-            date: getDateDDMMYYYY(this.props.value)
+            date: this.props.value
         });
     }
 
