@@ -10,7 +10,6 @@
     <script>
         function bodyOnload() {
             let element = document.getElementById('datepicker1');
-            // console.log(' element', element.getAttribute('selected-date'));
         }
 
         function displayValue(id, divId){
@@ -37,9 +36,9 @@
 
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
-    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
+    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
         "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
-    <date-picker id="datepicker1" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
+    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
 
     <br>
     <div id="datevalue1"></div>

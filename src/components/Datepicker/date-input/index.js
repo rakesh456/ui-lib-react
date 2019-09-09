@@ -65,7 +65,7 @@ class DateInput extends React.PureComponent {
                     disabled={disable}
                     value={this.state.date}
                     className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
-                    placeholder="DD/MM/YYYY"
+                    placeholder="MM/DD/YYYY"
                     onFocus={this.props.onFocus}
                     onBlur={this.props.onBlur}
                     onChange={this.handleChange.bind(this, this.state.date)}

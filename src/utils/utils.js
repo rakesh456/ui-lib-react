@@ -6,7 +6,7 @@ import {
 
 export const Fragment = (props, children) => children;
 
-export const DATE_FORMATS = ["DD/MM/YYYY"];
+export const DATE_FORMATS = ["MM/DD/YYYY"];
 
 // Calendar months names
 export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -39,11 +39,11 @@ export function getStaticDays(){
 }
 
 export function getFormatfromOptions(options){
-    return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : '';
+    return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : 'MM/DD/YYYY';
 }
 
 export function getDateByFormatDDMMYYYY(date, format){
-    return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateDDMMYYYY(date);
+    return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateMMDDYYYY(date);
 }
 
 export const isValidDate = dateObject => { 
@@ -51,17 +51,18 @@ export const isValidDate = dateObject => {
 }
 
 export function getDateDDMMYYYY(date) {
-    let d = new Date(date);
-    //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    return getDateMMDDYYYY(date);
+    // let d = new Date(date);
+    // //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
 
-    let month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+    // let month = '' + (d.getMonth() + 1),
+    //     day = '' + d.getDate(),
+    //     year = d.getFullYear();
 
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
+    // if (month.length < 2) month = '0' + month;
+    // if (day.length < 2) day = '0' + day;
 
-    return [day, month, year].join('/');
+    // return [day, month, year].join('/');
 }
 
 export function getDateMMDDYYYY(date) {
