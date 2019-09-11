@@ -17,10 +17,19 @@
 
         function bodyOnload() {
             let element = document.getElementById('datepicker1');
+            let elementInput = document.getElementById('input1');
+            let elementDiv = document.getElementById('datevalue2');
+            elementInput.addEventListener("change", function (event){
+                console.log(' change ', event);
+            });
+
+            element.addEventListener("ftxselected", function (event){
+                console.log(' Event from addEventListener ', e);
+            });
         }
 
-        function onSelected(e) {
-            console.log(' e ', e);
+        function onSelectedHandler(e) {
+            console.log(' Event from onSelectedHandler ', e);
         }
 
         function displayValue(id, divId) {
@@ -37,7 +46,7 @@
 
         function addDatepicker(id) {
             let element = document.getElementById(id);
-            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
+            // element.innerHTML = '<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>';
             addReactDatepicker(element.children[0]);
         }
 
@@ -56,16 +65,15 @@
 
 </head>
 
-<body>
+<body onload="bodyOnload()">
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
     <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
         "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
 
-    <date-picker id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'
-        onSelected="onSelected(e)"></date-picker>
+    <date-picker id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}' onFtxselected="onSelectedHandler(e)"></date-picker>
 
-    <input type="text" value="test" id="input1" onChange="onChangeHandler(event)" />
+    <input type="text" value="test" id="input1" />
 
     <button onclick="changeText('input1');">Change Input</button>
 
@@ -81,9 +89,9 @@
 
     <!-- <date-picker id="datepicker2" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
     <button onclick="displayValue('datepicker2', 'datevalue2');">Display</button>
-    <button onclick="setValue('datepicker2');">Set Value to 09/01/2019</button>
+    <button onclick="setValue('datepicker2');">Set Value to 09/01/2019</button> -->
     <br>
-    <div id="datevalue2"></div> -->
+    <div id="datevalue2"></div>
 </body>
 
 </html>

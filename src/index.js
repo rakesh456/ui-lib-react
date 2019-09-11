@@ -15,31 +15,21 @@ Array.prototype.forEach.call(
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
-    var func = new Function('e',
-      'with(document) {'
-    + 'with(this) {'
-    + elem.getAttribute(name)
-    + '}'
-    + '}');
-
+    var func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
 
 function datepickerRender(el){
     const options = JSON.parse(el.getAttribute('data-options'));
 
-    // var ev = new CustomEvent("onSelected");
-    // el.addEventListener("onSelected", function (ev) {
-    //     console.log(' ev ', ev);
-    // });
-
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
-
+    
     function handleDateChange(date) {
         const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
         el.setAttribute('selected-date', _date);
-        var ev = new CustomEvent("onSelected");
-        trigger(el, 'onSelected', ev);
+        var ev = new Event("ftxselected", {"bubbles":true, "cancelable":false});
+        trigger(el, 'onFtxselected', ev);
+        el.dispatchEvent(ev);
     }
 
     el.getValue = function () {
