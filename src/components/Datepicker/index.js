@@ -1,7 +1,9 @@
 import React from "react";
 import DateInput from "./date-input/index";
+import { Input } from 'reactstrap';
 import CalendarDisplay from "./calendar-display/index";
 import CalendarPortal from "./calendar-display/portal";
+import { FaCalendar } from 'react-icons/lib/fa';
 import './date-picker.css';
 import {
     getIsoDate
@@ -14,13 +16,15 @@ class DatePicker extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = { date: new Date(), shouldCalendarOpen: false };
+        this.datePickerOptions = this.props.options;
+        this.displayFormat = (this.datePickerOptions)? this.datePickerOptions.displayFormat : '';
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), this.displayFormat), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
         this.style = {};
     }
 
     setDateValue(dt) {
-        this.setState({ date: dt });
+        this.setState({ selectedDate: dt });
     }
     
     handleChildUnmount() {
@@ -56,7 +60,7 @@ class DatePicker extends React.PureComponent {
     handleDateChange = date => {
         const options=this.props.options;
         const newDate = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        this.setState({ date: newDate, shouldCalendarOpen: false });
+        this.setState({ selectedDate: newDate, shouldCalendarOpen: false });
         this.props.changeSelectedDate(newDate);
     }
 
@@ -76,26 +80,54 @@ class DatePicker extends React.PureComponent {
 
     handleChildUnmount = (_date) => {
         this.setState({
-            date: _date,
+            selectedDate: _date,
             shouldCalendarOpen: false
         });
     }
 
+    handleChange(name, e) {
+        var change = {};
+        change[name] = e.target.value;
+        this.setState(change);
+    }
+
+    getIconAlignClass() {
+        const options = this.props.options;
+        return (options && options.iconAlignment === 'Left') ? 'VS-PullLeft VS-MrgT5' : 'VS-PullRight VS-MrgT5';
+    }
+
+    getDateAlignClass() {
+        const options = this.props.options;
+        return (options && options.dateStringAlignment === 'Right') ? 'VS-PullRight VS-TextRight' : 'VS-PullLeft VS-TextLeft';
+    }
 
     render() {
-        const { shouldCalendarOpen, date } = this.state;
+        const { shouldCalendarOpen, selectedDate } = this.state;
+        const disable = (this.props.options && this.props.options.disable === true);
         return (
             <div className="VS-App">
                 <div id="modalroot"></div>
                 <header className="VS-App-header">
                     <div className="VS-DatepickerContainer">
                         <div ref={(el) => this.el = el}>
-                            <DateInput options={this.props.options} onFocus={this.onFocus} onBlur={this.onBlur} value={date} />
+
+                            <div className={`VS-Input-Border ${(disable) ? 'VS-Disabled' : ''}`}>
+                                <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark VS-CalenderIcon" /></span>
+                                <Input type="text"
+                                    disabled={disable}
+                                    value={selectedDate}
+                                    className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
+                                    placeholder="MM/DD/YYYY"
+                                    onFocus={this.onFocus}
+                                    onBlur={this.props.onBlur}
+                                    onChange={this.handleChange.bind(this, selectedDate)}
+                                />
+                            </div>
                         </div>
                         {
                             (shouldCalendarOpen) ?
                                 <CalendarPortal parent="#parent" position="right" arrow="center">
-                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={shouldCalendarOpen} changeSelectedDate={this.handleDateChange}>
+                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} changeSelectedDate={this.handleDateChange}>
                                     </CalendarDisplay>
                                 </CalendarPortal>
                                 : ''

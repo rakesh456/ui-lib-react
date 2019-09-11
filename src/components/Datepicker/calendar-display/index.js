@@ -14,7 +14,11 @@ let calendarModal = null;
 class CalendarDisplay extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate)) : new Date();
+
+        this.datePickerOptions = this.props.options;
+        
+        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) : new Date();
+
         this.state = { month: selectedDate.getMonth() + 1, year: selectedDate.getFullYear() };
         this.el = document.createElement('div');
     }

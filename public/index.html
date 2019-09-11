@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
+    <meta name="description" content="Web site created using create-react-app" />
     <link rel="apple-touch-icon" href="logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
@@ -16,11 +14,76 @@
     <title>React App</title>
 
     <script>
-      var datepickerOptions = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"right", "dateStringAlignment": "Right", "lowerDateLimit": "2019-07-10", "upperDateLimit": "2019-09-10"};
+
+        function bodyOnload() {
+            let element = document.getElementById('datepicker1');
+        }
+
+        function onSelected(e) {
+            console.log(' e ', e);
+        }
+
+        function displayValue(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getValue();
+            let element2 = document.getElementById(divId);
+            element2.innerHTML = dateValue;
+        }
+
+        function setValue(id) {
+            let element = document.getElementById(id);
+            element.setValue('2019-09-01');
+        }
+
+        function addDatepicker(id) {
+            let element = document.getElementById(id);
+            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
+            addReactDatepicker(element.children[0]);
+        }
+
+        function onChangeHandler(e) {
+            console.log(' e ', e);
+        }
+
+        function changeText(id) {
+            let element = document.getElementById(id);
+            element.value = "test1";
+            var event = new Event('change');
+            element.dispatchEvent(event);
+        }
+
     </script>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="datepicker"></div>
-  </body>
+
+</head>
+
+<body>
+    <h2>Datepicker Sample using React Component</h2>
+    <!-- Sample Usage: Options Set by JS-->
+    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
+        "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
+
+    <date-picker id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'
+        onSelected="onSelected(e)"></date-picker>
+
+    <input type="text" value="test" id="input1" onChange="onChangeHandler(event)" />
+
+    <button onclick="changeText('input1');">Change Input</button>
+
+    <br>
+    <div id="datevalue1"></div>
+
+    <button onclick="displayValue('datepicker1', 'datevalue1');">Display</button>
+    <button onclick="setValue('datepicker1');">Set Value to 09/01/2019</button>
+
+    <button onclick="addDatepicker('newdatepicker');">Add Datepicker</button>
+    <br>
+    <div id="newdatepicker"></div>
+
+    <!-- <date-picker id="datepicker2" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
+    <button onclick="displayValue('datepicker2', 'datevalue2');">Display</button>
+    <button onclick="setValue('datepicker2');">Set Value to 09/01/2019</button>
+    <br>
+    <div id="datevalue2"></div> -->
+</body>
+
 </html>

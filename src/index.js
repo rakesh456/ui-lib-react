@@ -14,17 +14,36 @@ Array.prototype.forEach.call(
 
 window.addReactDatepicker = datepickerRender;
 
+function trigger(elem, name, e) {
+    var func = new Function('e',
+      'with(document) {'
+    + 'with(this) {'
+    + elem.getAttribute(name)
+    + '}'
+    + '}');
+
+    func.call(elem, e);
+}
+
 function datepickerRender(el){
     const options = JSON.parse(el.getAttribute('data-options'));
+
+    // var ev = new CustomEvent("onSelected");
+    // el.addEventListener("onSelected", function (ev) {
+    //     console.log(' ev ', ev);
+    // });
 
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
 
     function handleDateChange(date) {
-        el.setAttribute('selected-date', getDateByFormatDDMMYYYY(date, options.displayFormat));
+        const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
+        el.setAttribute('selected-date', _date);
+        var ev = new CustomEvent("onSelected");
+        trigger(el, 'onSelected', ev);
     }
 
     el.getValue = function () {
-        return getDateByFormatDDMMYYYY(el.getAttribute('selected-date'), options.displayFormat);
+        return el.getAttribute('selected-date');
     }
 
     el.setValue = function (date) {
@@ -33,7 +52,7 @@ function datepickerRender(el){
         myComponentInstance.setDateValue(_date);
     }
 
-    var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} setSelectedValue={el.getValue()} />;
+    var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} />;
 
     var myComponentInstance = ReactDOM.render(
         myComponentElement,

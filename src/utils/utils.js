@@ -39,11 +39,11 @@ export function getStaticDays(){
 }
 
 export function getFormatfromOptions(options){
-    return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : 'MM/DD/YYYY';
+    return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : '';
 }
 
 export function getDateByFormatDDMMYYYY(date, format){
-    return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateMMDDYYYY(date);
+    return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateDDMMYYYY(date);
 }
 
 export const isValidDate = dateObject => { 
@@ -51,18 +51,18 @@ export const isValidDate = dateObject => {
 }
 
 export function getDateDDMMYYYY(date) {
-    return getDateMMDDYYYY(date);
+    // return getDateMMDDYYYY(date);
     // let d = new Date(date);
-    // //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    let d = (isValidDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    let month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-    // let month = '' + (d.getMonth() + 1),
-    //     day = '' + d.getDate(),
-    //     year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
 
-    // if (month.length < 2) month = '0' + month;
-    // if (day.length < 2) day = '0' + day;
-
-    // return [day, month, year].join('/');
+    return [day, month, year].join('/');
 }
 
 export function getDateMMDDYYYY(date) {

@@ -69,15 +69,15 @@ class CalendarDays extends React.PureComponent {
     renderCalendarDate = (date, index) => {
         const { month, year } = this.props;
         const { current, today } = this.state;
+        const options = this.props.options;
         const _date = new Date(date);
         const props = { index, title: _date.toDateString() };
 
         const inMonth = month && year && isSameMonth(_date, new Date([year, month, 1].join("-")));
         
         const isToday = isSameDay(_date, today);
-        const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current)));
+        const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, options)));
 
-        const options = this.props.options;
         // const lowerDateLimit = (options && options.lowerDateLimit)? ((isValidDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
 
         const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
