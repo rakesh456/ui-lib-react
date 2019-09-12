@@ -36,8 +36,8 @@ class CalendarDisplay extends React.PureComponent {
         calendarModal.removeChild(this.el);
     }
 
-    changeSelectedDate = (_date) => {
-        this.props.changeSelectedDate(_date);
+    onSelectHandler = (_date) => {
+        this.props.onSelect(_date);
     }
 
     goToPrevMonth = () => {
@@ -77,7 +77,7 @@ class CalendarDisplay extends React.PureComponent {
             <div className="VS-CalendarContainer VS-shape-rounded-fill VS-modal" style={this.props.style}>
                 <CalendarMonth month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <CalendarWeek />
-                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} changeSelectedDate={this.changeSelectedDate} />
+                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
             </div>
         );
     }

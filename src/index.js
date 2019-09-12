@@ -24,12 +24,16 @@ function datepickerRender(el){
 
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
     
-    function handleDateChange(date) {
+    function callOnSelectedEvent(_date, el){
+        var ev = new Event("selected");
+        trigger(el, 'onSelected', ev);
+        el.dispatchEvent(ev);
+    }
+
+    function onSelectHandler(date) {
         const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
         el.setAttribute('selected-date', _date);
-        var ev = new Event("ftxselected", {"bubbles":true, "cancelable":false});
-        trigger(el, 'onFtxselected', ev);
-        el.dispatchEvent(ev);
+        callOnSelectedEvent(_date, el);
     }
 
     el.getValue = function () {
@@ -42,7 +46,7 @@ function datepickerRender(el){
         myComponentInstance.setDateValue(_date);
     }
 
-    var myComponentElement = <DatePicker options={options} changeSelectedDate={handleDateChange} />;
+    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} />;
 
     var myComponentInstance = ReactDOM.render(
         myComponentElement,

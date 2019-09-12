@@ -2,41 +2,25 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
-    <link rel="apple-touch-icon" href="logo192.png" />
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
-
-    <title>React App</title>
+    <title>Datepicker React Component with Event</title>
 
     <script>
 
         function bodyOnload() {
             let element = document.getElementById('datepicker1');
-            let elementInput = document.getElementById('input1');
-            let elementDiv = document.getElementById('datevalue2');
-            elementInput.addEventListener("change", function (event){
-                console.log(' change ', event);
-            });
+            let elementDiv = document.getElementById('display2');
 
-            element.addEventListener("ftxselected", function (event){
-                console.log(' Event from addEventListener ', e);
+            element.addEventListener("selected", function (event){
+                let value = event.srcElement.getValue();
+                elementDiv.innerHTML = 'From addEventListener : ' + value;
             });
-        }
-
-        function onSelectedHandler(e) {
-            console.log(' Event from onSelectedHandler ', e);
         }
 
         function displayValue(id, divId) {
             let element = document.getElementById(id);
             let dateValue = element.getValue();
             let element2 = document.getElementById(divId);
-            element2.innerHTML = dateValue;
+            element2.innerHTML = 'From displayValue function : ' + dateValue;
         }
 
         function setValue(id) {
@@ -46,23 +30,11 @@
 
         function addDatepicker(id) {
             let element = document.getElementById(id);
-            // element.innerHTML = '<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>';
+            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
             addReactDatepicker(element.children[0]);
         }
 
-        function onChangeHandler(e) {
-            console.log(' e ', e);
-        }
-
-        function changeText(id) {
-            let element = document.getElementById(id);
-            element.value = "test1";
-            var event = new Event('change');
-            element.dispatchEvent(event);
-        }
-
     </script>
-
 </head>
 
 <body onload="bodyOnload()">
@@ -71,27 +43,20 @@
     <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
         "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
 
-    <date-picker id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}' onFtxselected="onSelectedHandler(e)"></date-picker>
-
-    <input type="text" value="test" id="input1" />
-
-    <button onclick="changeText('input1');">Change Input</button>
+    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-13", "upperDateLimit": "2019-09-15"}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
 
     <br>
-    <div id="datevalue1"></div>
+    <div id="display1"></div>
+    <div id="display2"></div>
+    <br>
 
-    <button onclick="displayValue('datepicker1', 'datevalue1');">Display</button>
+    <button onclick="displayValue('datepicker1', 'display1');">Display</button>
     <button onclick="setValue('datepicker1');">Set Value to 09/01/2019</button>
 
     <button onclick="addDatepicker('newdatepicker');">Add Datepicker</button>
     <br>
     <div id="newdatepicker"></div>
 
-    <!-- <date-picker id="datepicker2" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>
-    <button onclick="displayValue('datepicker2', 'datevalue2');">Display</button>
-    <button onclick="setValue('datepicker2');">Set Value to 09/01/2019</button> -->
-    <br>
-    <div id="datevalue2"></div>
 </body>
 
 </html>

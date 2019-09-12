@@ -14,7 +14,6 @@ import {
     isValidDate,
     isUndefinedOrNull
 } from "../../../../utils/utils";
-// import { isDate } from "util";
 
 class CalendarDays extends React.PureComponent {
     constructor(props) {
@@ -60,7 +59,7 @@ class CalendarDays extends React.PureComponent {
     };
 
     selectDate = (_date) => {
-        this.props.changeSelectedDate(_date);
+        this.props.onSelect(_date);
         this.setState({
             current: new Date(_date)
         });

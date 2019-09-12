@@ -57,11 +57,11 @@ class DatePicker extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
     }
 
-    handleDateChange = date => {
+    onSelectHandler = date => {
         const options=this.props.options;
         const newDate = getDateByFormatDDMMYYYY(date, options.displayFormat);
         this.setState({ selectedDate: newDate, shouldCalendarOpen: false });
-        this.props.changeSelectedDate(newDate);
+        this.props.onSelect(newDate);
     }
 
     onFocus = () => {
@@ -127,12 +127,11 @@ class DatePicker extends React.PureComponent {
                         {
                             (shouldCalendarOpen) ?
                                 <CalendarPortal parent="#parent" position="right" arrow="center">
-                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} changeSelectedDate={this.handleDateChange}>
+                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler}>
                                     </CalendarDisplay>
                                 </CalendarPortal>
                                 : ''
                         }
-                        {/* <CalendarDisplay className={(!shouldCalendarOpen)? 'VS-Hidden' : 'VS-Show'} options={this.props.options} selectedDate={getDateDDMMYYYY(date)} shouldCalendarOpen={ shouldCalendarOpen } changeSelectedDate={this.handleDateChange} /> */}
 
                     </div>
                 </header>

@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const BabelEnginePlugin = require('babel-engine-plugin');
 
 module.exports = {
     entry: './src/index.js',
@@ -24,10 +23,7 @@ module.exports = {
                         plugins: [
                             "@babel/plugin-proposal-object-rest-spread",
                             "@babel/plugin-proposal-class-properties",
-                            "transform-react-jsx",
-                            new BabelEnginePlugin({
-                                presets: ['env']
-                            })
+                            "transform-react-jsx"
                         ]
                     }
                 }
