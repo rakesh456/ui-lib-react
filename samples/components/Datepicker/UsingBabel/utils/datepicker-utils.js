@@ -74,7 +74,7 @@ function calendar(month = CURRENT_MONTH, year = CURRENT_YEAR){
 // (bool) Checks if a value is a date - this is just a simple check
 const isDate = date => {
     const isDate = Object.prototype.toString.call(date) === '[object Date]';
-    const isValidDate = date && !Number.isNaN(date.valueOf());
+    const isValidDate = date && !isNaN(date.valueOf());
 
     return isDate && isValidDate;
 }

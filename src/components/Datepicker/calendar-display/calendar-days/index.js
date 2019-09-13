@@ -18,7 +18,8 @@ import {
 class CalendarDays extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { current: getDateDDMMYYYY(new Date()), lowerDateLimit: new Date()};
+        const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, this.options)) : new Date();
+        this.state = { current: selectedDate, lowerDateLimit: new Date()};
         const options = this.props.options;
         var _lowerdate = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
     
@@ -49,12 +50,13 @@ class CalendarDays extends React.PureComponent {
     }
 
     getCalendarDates = () => {
-        const { month, year } = this.props;
         const { current } = this.state;
+        const { month, year } = this.props;
         const calendarMonth = month || +current.getMonth() + 1;
         const calendarYear = year || current.getFullYear();
+        const _array = calendar(calendarMonth, calendarYear);
         
-        return splitArray(calendar(calendarMonth, calendarYear), 7);
+        return splitArray(_array, 7);
         // return splitArray(getStaticDays(), 7);
     };
 
@@ -66,13 +68,13 @@ class CalendarDays extends React.PureComponent {
     }
 
     renderCalendarDate = (date, index) => {
-        const { month, year } = this.props;
-        const { current, today } = this.state;
-        const options = this.props.options;
-        const _date = new Date(date);
+        const { current } = this.state;
+        const today = this.props.selectedDate;
+        const { month, year, options } = this.props;
+        const _date = new Date(date.join('-'));
         const props = { index, title: _date.toDateString() };
 
-        const inMonth = month && year && isSameMonth(_date, new Date([year, month, 1].join("-")));
+        const inMonth = month && year && isSameMonth(_date, month, year);
         
         const isToday = isSameDay(_date, today);
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, options)));

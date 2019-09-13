@@ -1,12 +1,21 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-    entry: './src/index.js',
+    mode: 'production',
+    entry: {
+        bundle: ['./src/index.js'],
+        styles: [
+            './src/components/Datepicker/date-picker.css'
+        ]
+    },
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devServer: {
         contentBase: "./build",
@@ -31,17 +40,21 @@ module.exports = {
             {
                 test: /\.css$/,
                 use: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader',
-                ],
-            },
+                    {
+                      loader: MiniCssExtractPlugin.loader,
+                      options: {
+                        hmr: process.env.NODE_ENV === 'development',
+                      },
+                    },
+                    'css-loader'
+                ]
+            }
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            template: path.resolve('./public/index.html'),
-        }),
+        new MiniCssExtractPlugin({
+            filename: devMode ? '[name].css' : '[name].css'
+        })
     ]
 };
 

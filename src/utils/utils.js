@@ -77,7 +77,7 @@ export function convertYYYYMMDD(date, options) {
     let format = getFormatfromOptions(options);
     let dayIndex = (format && format == 'MM/DD/YYYY')? 1 : 0;
     let monthIndex = (format && format == 'MM/DD/YYYY')? 0 : 1;
-    let d = date.split("/"),
+    let d = date.toString().split("/"),
         month = '' + d[monthIndex],
         day = '' + d[dayIndex],
         year = d[2];

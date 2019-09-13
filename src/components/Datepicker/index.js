@@ -16,11 +16,10 @@ class DatePicker extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.datePickerOptions = this.props.options;
-        this.displayFormat = (this.datePickerOptions)? this.datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), this.displayFormat), shouldCalendarOpen: false };
+        const datePickerOptions = this.props.options;
+        const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
-        this.style = {};
     }
 
     setDateValue(dt) {
@@ -71,7 +70,7 @@ class DatePicker extends React.PureComponent {
     }
 
     closeCalendar = (e) => {
-        if ((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true) && (e.target.classList.length !== 0)) {
+        if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path')) {
             this.setState({
                 shouldCalendarOpen: false
             });

@@ -135,7 +135,7 @@
     width: 20px;
     height: 20px;
     border: solid 2px var(--primary-one-dark);
-    background: #006ba6;
+    background-color: #006ba6;
     border-radius: 15px;
     padding: 3px 4px;
     color: #fff;
@@ -301,3 +301,4 @@ input, input:focus{
     background-color: #000080;
     border: 1px solid #fff;
 }
+

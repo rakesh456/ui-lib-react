@@ -6,8 +6,14 @@ export const CURRENT_MONTH = +(new Date().getMonth()) + 1;
 
 export const WEEK_COUNT = 6;
 
-export const zeroPad = (value, length) => {
+export const zeroPad1 = (value, length) => {
     return `${value}`.padStart(length, '0');
+}
+
+export const zeroPad = (n, width, z)  =>{
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
 export const getMonthDays = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
@@ -18,7 +24,7 @@ export const getMonthDays = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
         ? leapYear
             ? 29
             : 28
-        : months30.includes(month)
+        : (months30.indexOf(month) != -1)
             ? 30
             : 31;
 }
@@ -42,52 +48,65 @@ export const getMonthFirstDay = (month = CURRENT_MONTH, year = CURRENT_YEAR) => 
     return +(new Date(`${year}-${zeroPad(month, 2)}-01`).getDay()) + 1;
 }
 
+export const createBlankArray = (number) => {
+    var _array = [];
+    for (let index = 0; index < number; index++) {
+        _array.push(null);
+    }
+    return _array;
+}
+
 export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     const monthDays = getMonthDays(month, year);
     const monthFirstDay = getMonthFirstDay(month, year);
 
     const daysFromPrevMonth = monthFirstDay - 1;
     const daysFromNextMonth = (WEEK_COUNT * 7) - (daysFromPrevMonth + monthDays);
-
+    
     const { month: prevMonth, year: prevMonthYear } = getPreviousMonth(month, year);
     const { month: nextMonth, year: nextMonthYear } = getNextMonth(month, year);
-
+    
     const prevMonthDays = getMonthDays(prevMonth, prevMonthYear);
-
-    const prevMonthDates = [...new Array(daysFromPrevMonth)].map((n, index) => {
+    
+    const _array0 = createBlankArray(daysFromPrevMonth);
+    const prevMonthDates = _array0.map((n, index) => {
         const day = index + 1 + (prevMonthDays - daysFromPrevMonth);
-        return [prevMonthYear, zeroPad(prevMonth, 2), zeroPad(day, 2)];
+        return [prevMonthYear.toString(), zeroPad(prevMonth, 2), zeroPad(day, 2)];
     });
-
-    const thisMonthDates = [...new Array(monthDays)].map((n, index) => {
+    
+    const _array1 = createBlankArray(monthDays);
+    const thisMonthDates = _array1.map((n, index) => {
         const day = index + 1;
-        return [year, zeroPad(month, 2), zeroPad(day, 2)];
+        return [year.toString(), zeroPad(month, 2), zeroPad(day, 2)];
     });
-
-    const nextMonthDates = [...new Array(daysFromNextMonth)].map((n, index) => {
+    
+    const _array2 = createBlankArray(daysFromNextMonth);
+    const nextMonthDates = _array2.map((n, index) => {
         const day = index + 1;
-        return [nextMonthYear, zeroPad(nextMonth, 2), zeroPad(day, 2)];
+        return [nextMonthYear.toString(), zeroPad(nextMonth, 2), zeroPad(day, 2)];
     });
 
-    return [...prevMonthDates, ...thisMonthDates, ...nextMonthDates];
 
+    const _merge1 = Array.prototype.push.apply(prevMonthDates, thisMonthDates);
+    const _merge2 = Array.prototype.push.apply(prevMonthDates, nextMonthDates);
+    //  (JSON.stringify(prevMonthDates).concat(JSON.stringify(thisMonthDates))).concat(JSON.stringify(nextMonthDates));
+    return prevMonthDates;
 }
 
 // (bool) Checks if a value is a date - this is just a simple check
 export const isDate = date => {
     const isDate = Object.prototype.toString.call(date) === '[object Date]';
-    const isValidDate = date && !Number.isNaN(date.valueOf());
+    const isValidDate = date && !isNaN(date.valueOf());
 
     return isDate && isValidDate;
 }
 
 // (bool) Checks if two date values are of the same month and year
-export const isSameMonth = (date, basedate = new Date()) => {
+export const isSameMonth = (date, basedateMonth, basedateYear) => {
+    if (!(isDate(date))) return false;
 
-    if (!(isDate(date) && isDate(basedate))) return false;
-
-    const basedateMonth = +(basedate.getMonth()) + 1;
-    const basedateYear = basedate.getFullYear();
+    // const basedateMonth = +(basedate.getMonth()) + 1;
+    // const basedateYear = basedate.getFullYear();
 
     const dateMonth = +(date.getMonth()) + 1;
     const dateYear = date.getFullYear();
