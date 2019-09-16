@@ -9,7 +9,7 @@ export const MONTH_NAMES = ["January", "February", "March", "April", "May", "Jun
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 
 export function isUndefinedOrNull(obj){
-    return (typeof obj === "undefined" || obj == null || !obj)? true : false;
+    return (typeof obj === "undefined" || obj === null || !obj)? true : false;
 }
 
 export function getMonthNameByIndex(index) {
@@ -39,7 +39,7 @@ export function getFormatfromOptions(options){
 }
 
 export function getDateByFormatDDMMYYYY(date, format){
-    return (format && format == 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateMMDDYYYY(date);
+    return (format && format === 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateMMDDYYYY(date);
 }
 
 export const isValidDate = dateObject => { 
@@ -75,8 +75,8 @@ export function getDateMMDDYYYY(date) {
 
 export function convertYYYYMMDD(date, options) {
     let format = getFormatfromOptions(options);
-    let dayIndex = (format && format == 'MM/DD/YYYY')? 1 : 0;
-    let monthIndex = (format && format == 'MM/DD/YYYY')? 0 : 1;
+    let dayIndex = (format && format === 'MM/DD/YYYY')? 1 : 0;
+    let monthIndex = (format && format === 'MM/DD/YYYY')? 0 : 1;
     let d = date.toString().split("/"),
         month = '' + d[monthIndex],
         day = '' + d[dayIndex],

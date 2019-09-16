@@ -3,8 +3,25 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import DatePicker from "./components/Datepicker/index";
 import {
-    getDateByFormatDDMMYYYY, getFormatfromOptions
+    getDateByFormatDDMMYYYY
 } from "../src/utils/utils";
+
+
+(function () {
+
+    if (typeof window.CustomEvent === "function") return false;
+
+    function CustomEvent(event, params) {
+        params = params || { bubbles: false, cancelable: false, detail: undefined };
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
+        return evt;
+    }
+
+    CustomEvent.prototype = window.Event.prototype;
+
+    window.CustomEvent = CustomEvent;
+})();
 
 Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),
@@ -19,13 +36,13 @@ function trigger(elem, name, e) {
     func.call(elem, e);
 }
 
-function datepickerRender(el){
+function datepickerRender(el) {
     const options = JSON.parse(el.getAttribute('data-options'));
 
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
-    
-    function callOnSelectedEvent(_date, el){
-        var ev = new Event("selected");
+
+    function callOnSelectedEvent(_date, el) {
+        var ev = new CustomEvent("selected");
         trigger(el, 'onSelected', ev);
         el.dispatchEvent(ev);
     }

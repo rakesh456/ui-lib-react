@@ -24,7 +24,7 @@ export const getMonthDays = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
         ? leapYear
             ? 29
             : 28
-        : (months30.indexOf(month) != -1)
+        : (months30.indexOf(month) !== -1)
             ? 30
             : 31;
 }
@@ -87,8 +87,8 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     });
 
 
-    const _merge1 = Array.prototype.push.apply(prevMonthDates, thisMonthDates);
-    const _merge2 = Array.prototype.push.apply(prevMonthDates, nextMonthDates);
+    Array.prototype.push.apply(prevMonthDates, thisMonthDates);
+    Array.prototype.push.apply(prevMonthDates, nextMonthDates);
     //  (JSON.stringify(prevMonthDates).concat(JSON.stringify(thisMonthDates))).concat(JSON.stringify(nextMonthDates));
     return prevMonthDates;
 }
