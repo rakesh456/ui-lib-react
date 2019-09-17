@@ -5,6 +5,7 @@
     --primary-two-light: #eeeeef;
     --primary-two-bright: #76797b;
     --primary-two-dark: #54585a;
+    --primary-three-dark: #000080;
     --secondary-one-light: #f3f8e6;
     --secondary-one-bright: #9dca33;
     --secondary-one-dark: #84bd00;
@@ -14,8 +15,8 @@
     --complementary-one: #f8f8f9;
     --complementary-two: #e6edf3;
     --complementary-three: #ccdbe7;
-    --text-black: #000000;
     --complementary-four: #80a5c3;
+    --text-black: #000000;
     --text-white: #ffffff;
     --text-tertiary: #bbbcbd;
     --cg-aqua-10: #ecf9f7;
@@ -62,7 +63,7 @@
 }
 
 .VS-Regular-UPPER-Case {
-    width: 149px;
+    width: 135px;
     height: 24px;
     font-family: Roboto;
     font-size: 14px;
@@ -88,11 +89,16 @@
     color: var(--secondary-two-dark);
 }
 
-.VS-shape-rounded-fill {
+.VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button {
     width: 216px;
-    height: 216px;
+    height: 220px;
     border-radius: 1px;
 }
+
+.VS-shape-rounded-fill-with-button {
+    height: 260px;
+}
+
 
 .VS-Grey {
     width: 24px;
@@ -114,7 +120,7 @@
 }
 
 .VS-DisabledDay{
-    color: #c00;
+    color: var(--cg-crimson-90);
 }
 
 .VS-Day span:hover {
@@ -191,6 +197,21 @@
     font-size: 10px; */
 }
 
+.VS-CloseIcon{
+    width: 15px;
+    height: 20px;
+}
+
+.VS-indicator{
+    position: absolute;
+    margin-left: 11.5px;
+    margin-top: 0px;
+    height: 7px;
+    width: 7px;
+    background-color: var(--primary-one-bright);
+    border-radius: 50%;
+}
+
 .VS-DatepickerInput{
     width: 216px;
     height: 40px;
@@ -218,7 +239,7 @@ input, input:focus{
     /* padding: 5px; */
     border: 1px solid #ddd;
     background-color: #fff;
-    color: #000080;
+    color: var(--primary-three-dark);
     font-size: 16px;
     font-weight: bold;
     position: absolute;
@@ -253,8 +274,8 @@ input, input:focus{
 
 .VS-Day .VS-Today{
     color: #fff;
-    background-color: #000080;
-    border: 2px solid #000080;
+    background-color: var(--primary-three-dark);
+    border: 2px solid var(--primary-three-dark);
     padding: 3px;
 }
 
@@ -290,14 +311,14 @@ input, input:focus{
 
 .VS-CalendarButtons .VS-ClearButton{
     float: left;
-    color: #000080;
+    color: var(--primary-three-dark);
     background-color: #fff;
-    border: 1px solid #000080;
+    border: 1px solid var(--primary-three-dark);
 }
 
 .VS-CalendarButtons .VS-SelectButton{
     float: right;
     color: #fff;
-    background-color: #000080;
+    background-color: var(--primary-three-dark);
     border: 1px solid #fff;
 }

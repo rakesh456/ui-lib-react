@@ -30,6 +30,7 @@
 
         function addDatepicker(id) {
             let element = document.getElementById(id);
+            element.innerHTML = '<date-picker id="datepicker2" data-options="{iconAlignment:Left}"></date-picker>';
             // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
             addReactDatepicker(element.children[0]);
         }
@@ -43,7 +44,7 @@
     <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
         "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
 
-    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-13", "upperDateLimit": "2019-09-15"}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
+    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-13", "upperDateLimit": "2019-09-15", "showButtons": true}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
 
     <br>
     <div id="display1"></div>

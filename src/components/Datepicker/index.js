@@ -1,15 +1,13 @@
 import React from "react";
-import DateInput from "./date-input/index";
 import { Input } from 'reactstrap';
 import CalendarDisplay from "./calendar-display/index";
 import CalendarPortal from "./calendar-display/portal";
-import { FaCalendar } from 'react-icons/lib/fa';
+import { FaCalendar, FaClose } from 'react-icons/lib/fa';
 import './date-picker.css';
 import {
-    getIsoDate
 } from "../../utils/calendar";
 import {
-    getDateDDMMYYYY, getDateByFormatDDMMYYYY
+    getDateByFormatDDMMYYYY
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -31,12 +29,12 @@ class DatePicker extends React.PureComponent {
     }
 
     updateDimensions() {
-        var w = window,
-            d = document,
-            documentElement = d.documentElement,
-            body = d.getElementsByTagName('body')[0],
-            width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
-            height = w.innerHeight || documentElement.clientHeight || body.clientHeight;
+        // var w = window,
+        //     d = document,
+        //     documentElement = d.documentElement,
+        //     body = d.getElementsByTagName('body')[0],
+        //     width = w.innerWidth || documentElement.clientWidth || body.clientWidth,
+        //     height = w.innerHeight || documentElement.clientHeight || body.clientHeight;
     }
 
     componentDidMount() {
@@ -57,10 +55,23 @@ class DatePicker extends React.PureComponent {
     }
 
     onSelectHandler = date => {
-        const options=this.props.options;
-        const newDate = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        this.setState({ selectedDate: newDate, shouldCalendarOpen: false });
-        this.props.onSelect(newDate);
+        const { displayFormat, showButtons } =this.props.options;
+        const newDate = getDateByFormatDDMMYYYY(date, displayFormat);
+        if(showButtons === true){
+            this.setState({ selectedDate: newDate, shouldCalendarOpen: true });
+        } else {
+            this.setState({ selectedDate: newDate, shouldCalendarOpen: false });
+            this.props.onSelect(newDate);
+        }
+    }
+    
+    onSelectButtonClickHandler = () => {
+        this.setState({ shouldCalendarOpen: false });
+        this.props.onSelect(this.state.selectedDate);
+    }
+    
+    onClearButtonClickHandler = () => {
+        this.setState({ selectedDate: "", shouldCalendarOpen: false });
     }
 
     onFocus = () => {
@@ -102,7 +113,9 @@ class DatePicker extends React.PureComponent {
 
     render() {
         const { shouldCalendarOpen, selectedDate } = this.state;
-        const disable = (this.props.options && this.props.options.disable === true);
+        const isDisabled = (this.props.options && this.props.options.isDisabled === true);
+        const showClearIcon = (this.props.options && this.props.options.showClearIcon === true);
+
         return (
             <div className="VS-App">
                 <div id="modalroot"></div>
@@ -110,10 +123,10 @@ class DatePicker extends React.PureComponent {
                     <div className="VS-DatepickerContainer">
                         <div ref={(el) => this.el = el}>
 
-                            <div className={`VS-Input-Border ${(disable) ? 'VS-Disabled' : ''}`}>
+                            <div className={`VS-Input-Border ${(isDisabled) ? 'VS-Disabled' : ''}`}>
                                 <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark VS-CalenderIcon" /></span>
                                 <Input type="text"
-                                    disabled={disable}
+                                    disabled={isDisabled}
                                     value={selectedDate}
                                     className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
                                     placeholder="MM/DD/YYYY"
@@ -121,12 +134,16 @@ class DatePicker extends React.PureComponent {
                                     onBlur={this.props.onBlur}
                                     onChange={this.handleChange.bind(this, selectedDate)}
                                 />
+                                {
+                                    (showClearIcon === true)?
+                                    <span className="VS-PullRight VS-MrgT5"><FaClose className="VS-Shape VS-TextDark VS-CalenderIcon VS-CloseIcon" onClick={() => this.onClearButtonClickHandler()} /></span> : ''
+                                }
                             </div>
                         </div>
                         {
                             (shouldCalendarOpen) ?
                                 <CalendarPortal parent="#parent" position="right" arrow="center">
-                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler}>
+                                    <CalendarDisplay style={this.state.style} options={this.props.options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler}>
                                     </CalendarDisplay>
                                 </CalendarPortal>
                                 : ''

@@ -2,6 +2,7 @@ import React from "react";
 import CalendarWeek from "./calendar-week/index";
 import CalendarMonth from "./calendar-month/index";
 import CalendarDays from "./calendar-days/index";
+import CalendarButtons from "./calendar-buttons/index";
 
 import '../date-picker.css';
 import {
@@ -39,6 +40,14 @@ class CalendarDisplay extends React.PureComponent {
     onSelectHandler = (_date) => {
         this.props.onSelect(_date);
     }
+   
+    onSelectButtonClickHandler = () => {
+        this.props.onSelectButtonClick();
+    }
+    
+    onClearButtonClickHandler = () => {
+        this.props.onClearButtonClick();
+    }
 
     goToPrevMonth = () => {
         if (this.state.month === 1) {
@@ -66,6 +75,11 @@ class CalendarDisplay extends React.PureComponent {
         }
     }
 
+    getCalendarContainerClass = () => {
+        const { showButtons } = this.props.options;
+        return "VS-CalendarContainer VS-modal " + ((showButtons && showButtons === true)? "VS-shape-rounded-fill-with-button" : "VS-shape-rounded-fill");
+    }
+
     render() {
         const { month, year } = this.state;
         const { selectedDate } = this.props;
@@ -73,11 +87,18 @@ class CalendarDisplay extends React.PureComponent {
             return null;
         }
 
+        const { showButtons } = this.props.options;
+      
+
         return (
-            <div className="VS-CalendarContainer VS-shape-rounded-fill VS-modal" style={this.props.style}>
+            <div className={this.getCalendarContainerClass()} style={this.props.style}>
                 <CalendarMonth month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <CalendarWeek />
                 <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
+                {
+                    (showButtons === true)? 
+                    <CalendarButtons onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} /> : ''
+                }
             </div>
         );
     }

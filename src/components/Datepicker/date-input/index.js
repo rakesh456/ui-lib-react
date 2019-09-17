@@ -5,7 +5,7 @@ import { Input } from 'reactstrap';
 import '../date-picker.css';
 import { FaCalendar } from 'react-icons/lib/fa';
 import {
-    getDateDDMMYYYY, getDateByFormatDDMMYYYY
+    getDateByFormatDDMMYYYY
 } from "../../../utils/utils";
 
 class DateInput extends React.PureComponent {

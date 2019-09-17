@@ -2,13 +2,11 @@ import React, { Fragment } from "react";
 import calendar, {
     isSameDay,
     isSameMonth,
-    isDate,
     checkDateInBetween
 } from "../../../../utils/calendar";
 
 import {
     splitArray,
-    getDateDDMMYYYY,
     convertYYYYMMDD,
     guid,
     isValidDate,
@@ -67,6 +65,20 @@ class CalendarDays extends React.PureComponent {
         });
     }
 
+    checkDisabledList = (isEnabled, _date) => {
+        const { disabledList } = this.props.options;
+        return (disabledList && disabledList.length > 0 && _date)? ((disabledList.indexOf(_date) !== -1)? false : isEnabled) : isEnabled;
+    }
+    
+    isShowIndicator = (_date) => {
+        const { indicatorList } = this.props.options;
+        return (indicatorList && indicatorList.length > 0 && _date)? ((indicatorList.indexOf(_date) !== -1)? true : false) : false;
+    }
+
+    getClassName = (index) => {
+        return (index % 6 === 0) ? 'VS-Day VS-Medium-UPPER-Case VS-DayStart' : 'VS-Day VS-Medium-UPPER-Case';
+    }
+
     renderCalendarDate = (date, index) => {
         const { current } = this.state;
         const today = this.props.selectedDate;
@@ -82,10 +94,12 @@ class CalendarDays extends React.PureComponent {
         // const lowerDateLimit = (options && options.lowerDateLimit)? ((isValidDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
 
         const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
-        const isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
+        let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
+        isEnabled = this.checkDisabledList(isEnabled, date.join('-'));
 
         const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
         const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
+        const showIndicator = this.isShowIndicator(date.join('-'));
 
         return (  
             <Fragment key={guid()}>   
@@ -94,10 +108,10 @@ class CalendarDays extends React.PureComponent {
                         <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()}</span>
+                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator)? <p className="VS-indicator"></p> : '' }</span>
                                     :
                                     <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
-                            }                
+                            }    
                         </div> 
                         :
                         <div {...props} className={this.getClassName(props.index)}>
@@ -116,10 +130,6 @@ class CalendarDays extends React.PureComponent {
         return (
             <div className="VS-DateRow" key={guid()}>{rows}</div>
         )
-    }
-
-    getClassName = (index) => {
-        return (index % 6 === 0) ? 'VS-Day VS-Medium-UPPER-Case VS-DayStart' : 'VS-Day VS-Medium-UPPER-Case';
     }
 
     render() {
