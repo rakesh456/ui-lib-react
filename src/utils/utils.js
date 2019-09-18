@@ -1,3 +1,4 @@
+import { isDate } from "./calendar";
 
 // import moment from 'moment';
 export const Fragment = (props, children) => children;
@@ -86,6 +87,11 @@ export function convertYYYYMMDD(date, options) {
     if (day.length < 2) day = '0' + day;
 
     return [year, month, day].join('-');
+}
+
+export function isValidFormattedDate(date, options) {
+    let _date = convertYYYYMMDD(date, options);
+    return (isDate(new Date(_date)));
 }
 
 export function guid() {

@@ -4,7 +4,7 @@ import CalendarMonth from "./calendar-month/index";
 import CalendarDays from "./calendar-days/index";
 import CalendarButtons from "./calendar-buttons/index";
 
-import '../date-picker.css';
+import '../date-picker.scss';
 import {
     convertYYYYMMDD
 } from "../../../utils/utils";

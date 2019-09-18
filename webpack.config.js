@@ -9,7 +9,7 @@ module.exports = {
     entry: {
         bundle: ['./src/index.js'],
         styles: [
-            './src/components/Datepicker/date-picker.css'
+            './src/components/Datepicker/date-picker.scss'
         ]
     },
     output: {
@@ -38,15 +38,22 @@ module.exports = {
                 }
             },
             {
-                test: /\.css$/,
+                test: /\.(sa|sc|c)ss$/,
                 use: [
                     {
-                      loader: MiniCssExtractPlugin.loader,
-                      options: {
-                        hmr: process.env.NODE_ENV === 'development',
-                      },
+                        loader: MiniCssExtractPlugin.loader
                     },
-                    'css-loader'
+                    {
+                        // This loader resolves url() and @imports inside CSS
+                        loader: "css-loader",
+                    },
+                    {
+                        // First we transform SASS to standard CSS
+                        loader: "sass-loader",
+                        options: {
+                            implementation: require("sass")
+                        }
+                    }
                 ]
             }
         ]

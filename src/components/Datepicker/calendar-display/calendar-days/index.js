@@ -70,9 +70,20 @@ class CalendarDays extends React.PureComponent {
         return (disabledList && disabledList.length > 0 && _date)? ((disabledList.indexOf(_date) !== -1)? false : isEnabled) : isEnabled;
     }
     
-    isShowIndicator = (_date) => {
+    getShowIndicatorColor = (_date) => {
         const { indicatorList } = this.props.options;
-        return (indicatorList && indicatorList.length > 0 && _date)? ((indicatorList.indexOf(_date) !== -1)? true : false) : false;
+        let color = "";
+        if(!indicatorList || indicatorList.length <=0 ){
+            return color;
+        } else {
+            indicatorList.forEach((ele) => {
+                if(ele && ele['dates'] && ele['dates'].indexOf(_date) !== -1){
+                    color = ele['color'];
+                }
+            });
+            
+            return color;
+        }
     }
 
     getClassName = (index) => {
@@ -99,7 +110,7 @@ class CalendarDays extends React.PureComponent {
 
         const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
         const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
-        const showIndicator = this.isShowIndicator(date.join('-'));
+        const showIndicator = this.getShowIndicatorColor(date.join('-'));
 
         return (  
             <Fragment key={guid()}>   
@@ -108,7 +119,7 @@ class CalendarDays extends React.PureComponent {
                         <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator)? <p className="VS-indicator"></p> : '' }</span>
+                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'background-color': showIndicator}} className="VS-indicator"></p> : '' }</span>
                                     :
                                     <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
                             }    

@@ -37,7 +37,11 @@ function trigger(elem, name, e) {
 }
 
 function datepickerRender(el) {
-    const options = JSON.parse(el.getAttribute('data-options'));
+    let options = JSON.parse(el.getAttribute('data-options'));
+
+    if(!options){
+        options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
+    }
 
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
 

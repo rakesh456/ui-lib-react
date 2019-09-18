@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Input } from 'reactstrap';
-import '../date-picker.css';
+import '../date-picker.scss';
 import { FaCalendar } from 'react-icons/lib/fa';
 import {
     getDateByFormatDDMMYYYY

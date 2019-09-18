@@ -6,11 +6,26 @@
 
     <script>
 
+        function setValue(id) {
+            let element = document.getElementById(id);
+            element.setValue('2019-09-01');
+        }
+
+        function addDatepickerNew(id) {
+            let element = document.getElementById(id);
+            element.innerHTML = '<date-picker id="datepicker2" data-options="{iconAlignment:Left}"></date-picker>';
+            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
+            addReactDatepicker(element.children[0]);
+        }
+
+        window.onload = bodyOnload;
+
         function bodyOnload() {
+            console.log('bodyOnload');
             let element = document.getElementById('datepicker1');
             let elementDiv = document.getElementById('display2');
 
-            element.addEventListener("selected", function (event){
+            element.addEventListener("selected", function (event) {
                 let value = event.srcElement.getValue();
                 elementDiv.innerHTML = 'From addEventListener : ' + value;
             });
@@ -22,39 +37,26 @@
             let element2 = document.getElementById(divId);
             element2.innerHTML = 'From displayValue function : ' + dateValue;
         }
-
-        function setValue(id) {
-            let element = document.getElementById(id);
-            element.setValue('2019-09-01');
-        }
-
-        function addDatepicker(id) {
-            let element = document.getElementById(id);
-            element.innerHTML = '<date-picker id="datepicker2" data-options="{iconAlignment:Left}"></date-picker>';
-            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
-            addReactDatepicker(element.children[0]);
-        }
-
     </script>
 </head>
 
-<body onload="bodyOnload()">
+<body>
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
-    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
-        "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
+    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "maxDate": "2019-10-15",
+        "isDisabled": false, "isClearable": false}</p>
 
-    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-13", "upperDateLimit": "2019-09-15", "showButtons": true}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
+    <date-picker id="datepicker1" data-options='{"iconAlignment":"Left", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "upperDateLimit": "2019-10-15", "isDisabled": false, "showButtons": true, "showClearIcon": true, "disabledList": ["2019-09-26", "2019-10-10"], "indicatorList": ["2019-09-05", "2019-09-25", "2019-09-20"]}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
 
     <br>
     <div id="display1"></div>
     <div id="display2"></div>
     <br>
 
-    <button onclick="displayValue('datepicker1', 'display1');">Display</button>
+    <button onclick="displayValue('datepicker1', 'display1')">Display</button>
     <button onclick="setValue('datepicker1');">Set Value to 09/01/2019</button>
-
-    <button onclick="addDatepicker('newdatepicker');">Add Datepicker</button>
+    <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button> -->
+    <br>
     <br>
     <div id="newdatepicker"></div>
 
