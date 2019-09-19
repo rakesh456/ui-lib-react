@@ -8,6 +8,7 @@ import {
 } from "../../utils/calendar";
 import {
     isValidFormattedDate,
+    getCurrentYear,
     getDateByFormatDDMMYYYY
 } from "../../utils/utils";
 
@@ -17,7 +18,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false };
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, selectedYear: "", isValidChar: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -79,6 +80,7 @@ class DatePicker extends React.PureComponent {
         this.setState({
             shouldCalendarOpen: true
         });
+        this.props.onFocus();
     }
     
     onBlur = () => {
@@ -87,7 +89,7 @@ class DatePicker extends React.PureComponent {
         // console.log(' selectedDate ', this.state.selectedDate);
         // console.log(' shouldCalendarOpen ', shouldCalendarOpen);
         // console.log(' manualEntry ', manualEntry);
-        // if(shouldCalendarOpen === false && manualEntry === true){
+        // if(manualEntry === true){
         //     if(isValidFormattedDate(selectedDate, this.props.options)){
         //         const { showButtons } = this.props.options;
         //         if(!showButtons){
@@ -99,6 +101,35 @@ class DatePicker extends React.PureComponent {
         //         this.setState({ isInvalidDate: true, shouldCalendarOpen: false });
         //     }
         // }
+        this.props.onBlur();
+    }
+    
+    onKeyPressHandler = (evt) => {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        
+        if ((charCode >= 48 && charCode <= 57)) {
+            this.setState({
+                isValidChar: true
+            });
+            return true;
+        }
+        this.setState({
+            isValidChar: false
+        });
+        return false;
+    }
+    
+    handleChange(name, e) {
+        // var change = {};
+        // change[name] = e.target.value;
+        // this.setState(change);
+        const manualEntry = (this.props.options && this.props.options.manualEntry === true);
+        if(manualEntry){
+            this.setState({
+                selectedDate: e.target.value
+            });
+        }
     }
 
     closeCalendar = (e) => {
@@ -113,15 +144,6 @@ class DatePicker extends React.PureComponent {
         this.setState({
             selectedDate: _date,
             shouldCalendarOpen: false
-        });
-    }
-
-    handleChange(name, e) {
-        // var change = {};
-        // change[name] = e.target.value;
-        // this.setState(change);
-        this.setState({
-            selectedDate: e.target.value
         });
     }
 
@@ -140,6 +162,16 @@ class DatePicker extends React.PureComponent {
         return (isInvalidDate === true) ? 'VS-Invalid-Input' : '';
     }
 
+    getPlaceholder(){
+        const options = this.props.options;
+        return (!options.displayUnit || options.displayUnit === '')? ((options.displayFormat)? options.displayFormat : "MM/DD/YYYY") : "YYYY";
+    }
+
+    getSelectedValue(){
+        const options = this.props.options;
+        return (!options.displayUnit || options.displayUnit === '')? this.state.selectedDate : this.state.selectedYear;
+    }
+
     render() {
         const { shouldCalendarOpen, selectedDate, isInvalidDate } = this.state;
         const isDisabled = (this.props.options && this.props.options.isDisabled === true);
@@ -155,12 +187,13 @@ class DatePicker extends React.PureComponent {
                             <div className={`VS-Input-Border ${this.getInvalidClass()} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
                                 <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark VS-CalenderIcon" /></span>
                                 <Input type="text"
-                                    value={selectedDate}
+                                    value={this.getSelectedValue()}
                                     className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
-                                    placeholder="MM/DD/YYYY"
+                                    placeholder={this.getPlaceholder()}
                                     onFocus={this.onFocus}
                                     onBlur={this.onBlur}
-                                    onChange={this.handleChange.bind(this, selectedDate)}
+                                    onKeyPress={this.onKeyPressHandler.bind(this)}
+                                    // onChange={this.handleChange.bind(this, selectedDate)}
                                 />
                                 {
                                     (showClearIcon === true)?
@@ -176,7 +209,6 @@ class DatePicker extends React.PureComponent {
                                 </CalendarPortal>
                                 : ''
                         }
-
                     </div>
                 </header>
             </div>

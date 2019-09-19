@@ -40,7 +40,7 @@ function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
 
     if(!options){
-        options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
+        options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "displayUnit": ""};
     }
 
     el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
@@ -56,6 +56,16 @@ function datepickerRender(el) {
         el.setAttribute('selected-date', _date);
         callOnSelectedEvent(_date, el);
     }
+    
+    function onFocusHandler() {
+        var ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+    
+    function onBlurHandler() {
+        var ev = new CustomEvent('blur');
+        el.dispatchEvent(ev);
+    }
 
     el.getValue = function () {
         return el.getAttribute('selected-date');
@@ -67,7 +77,7 @@ function datepickerRender(el) {
         myComponentInstance.setDateValue(_date);
     }
 
-    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} />;
+    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
 
     var myComponentInstance = ReactDOM.render(
         myComponentElement,

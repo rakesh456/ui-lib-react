@@ -89,6 +89,10 @@ export function convertYYYYMMDD(date, options) {
     return [year, month, day].join('-');
 }
 
+export function getCurrentYear() {
+    return new Date().getFullYear();
+}
+
 export function isValidFormattedDate(date, options) {
     let _date = convertYYYYMMDD(date, options);
     return (isDate(new Date(_date)));
