@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Datepicker React Component with Event</title>
+    <link rel="stylesheet" href="bundle.css">
+    <script type="text/javascript">
+        
+        function onInputHandler() {
+            // console.log('onInputHandler called ');
+        }
+        
+        function onFocusHandler() {
+            // console.log('onFocusHandler called ');
+        }
+        
+        function onBlurHandler() {
+            // console.log('onBlurHandler called ');
+        }
+        
+        function onKeyDownHandler() {
+            console.log('onKeyDownHandler called ');
+        }
+       
+        function onKeyUpHandler() {
+            console.log('onKeyUpHandler called ');
+        }
+        
+        function onDoubleClickHandler() {
+            console.log('onDoubleClickHandler called ');
+        }
+        
+        function onMouseDownHandler() {
+            console.log('onMouseDownHandler called ');
+        }
+        
+        function onMouseUpHandler() {
+            console.log('onMouseUpHandler called ');
+        }
+        
+        function onMouseEnterHandler() {
+            console.log('onMouseEnterHandler called ');
+        }
+        
+        function onMouseLeaveHandler() {
+            console.log('onMouseLeaveHandler called ');
+        }
+        
+        function onMouseMoveHandler() {
+            console.log('onMouseMoveHandler called ');
+        }
+        
+        function onMouseOverHandler() {
+            console.log('onMouseOverHandler called ');
+        }
+        
+        function onMouseOutHandler() {
+            console.log('onMouseOutHandler called ');
+        }
+        
+        function onWheelHandler() {
+            console.log('onWheelHandler called ');
+        }
+        
+        function setValue(id) {
+            let element = document.getElementById(id);
+            element.setValue('2019-09-01');
+        }
+
+        function addDatepickerNew(id) {
+            let element = document.getElementById(id);
+            element.innerHTML = '<date-picker id="datepicker2" data-options="{iconAlignment:Left}"></date-picker>';
+            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
+            addReactDatepicker(element.children[0]);
+        }
+
+        window.onload = bodyOnload;
+
+        function bodyOnload() {
+            console.log('bodyOnload');
+            let element = document.getElementById('datepicker1');
+            let elementDiv = document.getElementById('display2');
+
+            element.addEventListener("selected", function (event) {
+                let value = event.srcElement.getValue();
+                elementDiv.innerHTML = 'From addEventListener : ' + value;
+            });
+        }
+
+        function displayValue(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getValue();
+            let element2 = document.getElementById(divId);
+            element2.innerHTML = 'From displayValue function : ' + dateValue;
+        }
+
+        function submitForm(){
+            var form = document.forms["myform"];
+            console.log(' oForm.elements ', form.elements['dob']);
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Datepicker Sample using React Component</h2>
+    <!-- Sample Usage: Options Set by JS-->
+    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "maxDate": "2019-10-15",
+        "isDisabled": false, "isClearable": false}</p>
+
+    <form onsubmit="submitForm()" name="myform">
+        <!-- <date-picker name="dob" id="datepicker1" data-options='{"iconAlignment":"Left", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "upperDateLimit": "2019-10-15", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2019-09-26", "2019-10-10"], "indicatorList": [{ "dates": ["2019-10-01","2019-11-01"], "color": "#333" }, { "dates": ["2019-09-02","2019-08-01"], "color": "#ff0000" }]}' onSelected="displayValue('datepicker1', 'display1')" onFocus="onFocusHandler()" onBlur="onBlurHandler()" onKeyDown="onKeyDownHandler()" onKeyUp="onKeyUpHandler()" onDblClick="onDoubleClickHandler()" onMouseDown="onMouseDownHandler()" onMouseUp="onMouseUpHandler()" onMouseEnter="onMouseEnter()" onMouseLeave="onMouseLeaveHandler()" onMouseMove="onMouseMoveHandler()" onMouseOver="onMouseOverHandler()" onMouseOut="onMouseOutHandler()" onWheel="onWheelHandler()"></date-picker> -->
+
+        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "upperDateLimit": "2019-10-15", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2019-09-26", "2019-10-10"], "indicatorList": [{ "dates": ["2019-10-01","2019-11-01"], "color": "#333" }, { "dates": ["2019-09-02","2019-08-01"], "color": "#ff0000" }]}' onSelected="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
+       
+        <br>
+        <div id="display1"></div>
+        <br>
+        <!-- <br>
+        
+        <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerDateLimit": "2019-08-13", "upperDateLimit": "2019-10-15", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2019-09-26", "2019-10-10"], "indicatorList": [{ "dates": ["2019-10-01","2019-11-01"], "color": "#333" }, { "dates": ["2019-09-02","2019-08-01"], "color": "#ff0000" }]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
+
+        <br>
+        <div id="display2"></div>
+        <br> -->
+
+    </form>        
+
+
+    <button onclick="displayValue('datepicker1', 'display1')">Display</button>
+    <button onclick="setValue('datepicker1');">Set Value to 09/01/2019</button>
+    <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button> -->
+    <br>
+    <br>
+    <div id="newdatepicker"></div>
+    <script src="bundle.js"></script>
+</body>
+
+</html>

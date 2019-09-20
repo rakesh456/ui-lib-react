@@ -5,6 +5,11 @@ import DatePicker from "./components/Datepicker/index";
 import {
     getDateByFormatDDMMYYYY
 } from "../src/utils/utils";
+import {
+    isCalendarFormat,
+    isYearFormat,
+    resetOptions
+} from "../src/utils/calendar";
 
 
 (function () {
@@ -38,23 +43,16 @@ function trigger(elem, name, e) {
 
 function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
+    options = (options)? resetOptions(options) : resetOptions({});
 
-    if(!options){
-        options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "displayUnit": ""};
+    if(isCalendarFormat(options.displayFormat)){
+        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
     }
-
-    el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
 
     function callOnSelectedEvent(_date, el) {
         var ev = new CustomEvent("selected");
         trigger(el, 'onSelected', ev);
         el.dispatchEvent(ev);
-    }
-
-    function onSelectHandler(date) {
-        const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        el.setAttribute('selected-date', _date);
-        callOnSelectedEvent(_date, el);
     }
     
     function onFocusHandler() {
@@ -67,17 +65,32 @@ function datepickerRender(el) {
         el.dispatchEvent(ev);
     }
 
+    function onSelectHandler(date) {
+        const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
+        setSelectedAttr(el, _date);
+        callOnSelectedEvent(_date, el);
+    }
+    
+    function onYearSelectHandler(year) {
+        setSelectedAttr(el, year);
+        callOnSelectedEvent(year, el);
+    }
+
+    function setSelectedAttr(el, date){
+        el.setAttribute('selected-date', date);
+    }
+
     el.getValue = function () {
         return el.getAttribute('selected-date');
     }
 
     el.setValue = function (date) {
         var _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        el.setAttribute('selected-date', _date);
+        setSelectedAttr(el, _date);
         myComponentInstance.setDateValue(_date);
     }
 
-    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
+    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
 
     var myComponentInstance = ReactDOM.render(
         myComponentElement,

@@ -11,6 +11,7 @@ $secondary-one-dark: #84bd00;
 $secondary-two-bright: #335161;
 $secondary-two-light: #e6e9eb;
 $secondary-two-dark: #00263a;
+$grey-one: #ececec;
 $complementary-one: #f8f8f9;
 $complementary-two: #e6edf3;
 $complementary-three: #ccdbe7;
@@ -51,7 +52,7 @@ $gui-error-red: #fd462a;
     height: 40px;
     border-radius: 2px;
     box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
-    border: solid 1px #ececec;
+    border: solid 1px $grey-one;
     background-color: $text-white
 }
 
@@ -87,7 +88,7 @@ $gui-error-red: #fd462a;
     color: $secondary-two-dark
 }
 
-.VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button {
+.VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button, .VS-shape-rounded-fill-for-month {
     width: 216px;
     height: 220px;
     border-radius: 1px;
@@ -97,6 +98,13 @@ $gui-error-red: #fd462a;
     height: 260px;
 }
 
+.VS-shape-rounded-fill-for-month {
+    height: 140px;
+    .VS-DateRow{
+        margin: 12px auto;
+        padding: 5px 10px;
+    }
+}
 
 .VS-Grey {
     width: 24px;
@@ -119,6 +127,14 @@ $gui-error-red: #fd462a;
 
 .VS-DisabledDay{
     color: $cg-crimson-90;
+}
+
+.VS-MonthDay{
+    color: $secondary-two-dark;
+    border: solid 1px $grey-one;
+    padding: 5px;
+    margin: 0px 10px;
+    cursor: pointer;
 }
 
 .VS-Day span:hover {

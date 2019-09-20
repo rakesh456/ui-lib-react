@@ -1,9 +1,10 @@
 import { isUndefinedOrNull } from "./utils";
 
+export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
+export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
+export const YEAR_FORMATS = ["YYYY"];
 export const CURRENT_YEAR = +(new Date().getFullYear());
-
 export const CURRENT_MONTH = +(new Date().getMonth()) + 1;
-
 export const WEEK_COUNT = 6;
 
 export const zeroPad1 = (value, length) => {
@@ -93,6 +94,15 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     return prevMonthDates;
 }
 
+export const getYearsList = (year) => {
+    year = (year)? year : new Date().getFullYear();
+    var array = [];
+    for (let index = 0; index < 9; index++) {
+        array.push(year - index);
+    }
+    return array.reverse();
+}
+
 // (bool) Checks if a value is a date - this is just a simple check
 export const isDate = date => {
     const isDate = Object.prototype.toString.call(date) === '[object Date]';
@@ -159,4 +169,17 @@ export const checkDateInBetween = (date, from, to) => {
     } else {
         return false;
     }
+}
+
+export const resetOptions = (options) => {
+    return {...DEFAULT_OPTIONS, ...options};
+}
+
+
+export const isCalendarFormat = (displayFormat) => {
+    return (CLENDAR_FORMATS.indexOf(displayFormat) != -1)
+}
+
+export const isYearFormat = (displayFormat) => {
+    return (YEAR_FORMATS.indexOf(displayFormat) != -1)
 }

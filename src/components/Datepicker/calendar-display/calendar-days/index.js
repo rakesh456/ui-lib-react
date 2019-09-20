@@ -16,9 +16,9 @@ import {
 class CalendarDays extends React.PureComponent {
     constructor(props) {
         super(props);
-        const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, this.options)) : new Date();
-        this.state = { current: selectedDate, lowerDateLimit: new Date()};
         const options = this.props.options;
+        const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, options)) : new Date();
+        this.state = { current: selectedDate, lowerDateLimit: new Date()};
         var _lowerdate = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
     
         if(_lowerdate){

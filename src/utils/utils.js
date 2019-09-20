@@ -3,8 +3,6 @@ import { isDate } from "./calendar";
 // import moment from 'moment';
 export const Fragment = (props, children) => children;
 
-export const DATE_FORMATS = ["MM/DD/YYYY"];
-
 // Calendar months names
 export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
@@ -40,26 +38,27 @@ export function getFormatfromOptions(options){
 }
 
 export function getDateByFormatDDMMYYYY(date, format){
-    return (format && format === 'MM/DD/YYYY')? getDateMMDDYYYY(date) : getDateMMDDYYYY(date);
+    return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date);
 }
 
 export const isValidDate = dateObject => { 
     return new Date(dateObject).toString() !== 'Invalid Date'; 
 }
 
-export function getDateDDMMYYYY(date) {
-    return getDateMMDDYYYY(date);
+export function getDateDDMMYYYY(date, format) {
+    // return getDateMMDDYYYY(date);
     // let d = new Date(date);
-    //let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
-    // let d = (isValidDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
-    // let month = '' + (d.getMonth() + 1),
-    //     day = '' + d.getDate(),
-    //     year = d.getFullYear();
+    // let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    let d = (isValidDate(date))? new Date(date) : new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
+    
+    let month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
 
-    // if (month.length < 2) month = '0' + month;
-    // if (day.length < 2) day = '0' + day;
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
 
-    // return [day, month, year].join('/');
+    return [day, month, year].join('/');
 }
 
 export function getDateMMDDYYYY(date) {
@@ -76,6 +75,10 @@ export function getDateMMDDYYYY(date) {
 
 export function convertYYYYMMDD(date, options) {
     let format = getFormatfromOptions(options);
+    return convertYYYYMMDDByFormat(date, format);
+}
+
+export function convertYYYYMMDDByFormat(date, format){
     let dayIndex = (format && format === 'MM/DD/YYYY')? 1 : 0;
     let monthIndex = (format && format === 'MM/DD/YYYY')? 0 : 1;
     let d = date.toString().split("/"),
