@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Datepicker React Component with Event</title>
+    
+    <script>
+
+        function bodyOnload() {
+            let element = document.getElementById('datepicker1');
+            let elementDiv = document.getElementById('display2');
+
+            element.addEventListener("selected", function (event){
+                let value = event.srcElement.getValue();
+                elementDiv.innerHTML = 'From addEventListener : ' + value;
+            });
+        }
+
+        function displayValue(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getValue();
+            let element2 = document.getElementById(divId);
+            element2.innerHTML = 'From displayValue function : ' + dateValue;
+        }
+
+        function setValue(id) {
+            let element = document.getElementById(id);
+            element.setValue('2019-09-01');
+        }
+
+        function addDatepicker(id) {
+            let element = document.getElementById(id);
+            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-15", "upperDateLimit": "2019-09-15"}'></date-picker>`;
+            addReactDatepicker(element.children[0]);
+        }
+
+    </script>
+</head>
+
+<body onload="bodyOnload()">
+    <h2>Datepicker Sample using React Component</h2>
+    <!-- Sample Usage: Options Set by JS-->
+    <p>{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit":
+        "2019-07-15", "upperDateLimit": "2019-09-15"}</p>
+
+    <date-picker id="datepicker1" data-options='{"iconAlignment":"Right", "dateStringAlignment": "Left", "lowerDateLimit": "2019-07-13", "upperDateLimit": "2019-09-20"}' onSelected="displayValue('datepicker1', 'display1')"></date-picker>
+
+    <br>
+    <div id="display1"></div>
+    <div id="display2"></div>
+    <br>
+
+    <button onclick="displayValue('datepicker1', 'display1');">Display</button>
+    <button onclick="setValue('datepicker1');">Set Value to 09/01/2019</button>
+
+    <button onclick="addDatepicker('newdatepicker');">Add Datepicker</button>
+    <br>
+    <div id="newdatepicker"></div>
+	<script src="bundle.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</body>
+
+</html>

@@ -1,14 +1,11 @@
 import React from 'react';
 import './App.css';
-import DatePicker from "./components/Datepicker";
+import DatePicker from "./components/Datepicker/index";
 
-function App() {
+function App(props) {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <DatePicker />
-      </header>
-    </div>
+    <DatePicker options={props.options} />
   );
 }
 

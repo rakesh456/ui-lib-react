@@ -8,11 +8,19 @@ class CalendarButtons extends React.PureComponent {
 
     componentDidUpdate(prevProps) {}
 
+    selectButtonClick = () => {
+        this.props.onSelectButtonClick();
+    }
+    
+    clearButtonClick = () => {
+        this.props.onClearButtonClick();
+    }
+
     render() {
         return (
-            <div className="CalendarButtons">
-                <Button className="ClearButton PullLeft">Clear</Button>
-                <Button className="SelectButton PullRight">Select</Button>
+            <div className="VS-CalendarButtons">
+                <Button className="VS-ClearButton VS-PullLeft" onClick={() => this.clearButtonClick()}>Clear</Button>
+                <Button className="VS-SelectButton VS-PullRight" onClick={() => this.selectButtonClick()}>Select</Button>
             </div>
         );
     }

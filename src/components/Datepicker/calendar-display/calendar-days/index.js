@@ -1,73 +1,135 @@
 import React, { Fragment } from "react";
-import {
-    getIsoDate,
+import calendar, {
     isSameDay,
-    isSameMonth
+    isSameMonth,
+    checkDateInBetween
 } from "../../../../utils/calendar";
 
 import {
-    getStaticDays,
     splitArray,
-    getDateDDMMYYYY
+    convertYYYYMMDD,
+    guid,
+    isValidDate,
+    isUndefinedOrNull
 } from "../../../../utils/utils";
 
 class CalendarDays extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { current: getDateDDMMYYYY(new Date()) };
+        const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, this.options)) : new Date();
+        this.state = { current: selectedDate, lowerDateLimit: new Date()};
+        const options = this.props.options;
+        var _lowerdate = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
+    
+        if(_lowerdate){
+            _lowerdate = new Date(_lowerdate);
+            _lowerdate.setDate(_lowerdate.getDate() - 1);
+        }
+    
+        this.state.lowerDateLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : new Date();
     }
 
+    dismiss() {
+        this.props.onBlur();
+    }
+    
     componentDidMount() {
         this.setState({
-            current: getDateDDMMYYYY(this.props.selectedDate)
+            current: this.props.selectedDate
         });
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selectedDate !== prevProps.selectDate) {
+        if (this.props.selectedDate === this.state.current) {
             this.setState({
-                current: getDateDDMMYYYY(this.props.selectedDate)
+                current: this.props.selectedDate
             });
         }
     }
 
     getCalendarDates = () => {
-        // const { month, year } = this.props;
-        // const { current } = this.state;
-        // const calendarMonth = month || +current.getMonth() + 1;
-        // const calendarYear = year || current.getFullYear();
+        const { current } = this.state;
+        const { month, year } = this.props;
+        const calendarMonth = month || +current.getMonth() + 1;
+        const calendarYear = year || current.getFullYear();
+        const _array = calendar(calendarMonth, calendarYear);
         
-        // return splitArray(calendar(calendarMonth, calendarYear), 7);
-        return splitArray(getStaticDays(), 7);
+        return splitArray(_array, 7);
+        // return splitArray(getStaticDays(), 7);
     };
 
     selectDate = (_date) => {
+        this.props.onSelect(_date);
         this.setState({
             current: new Date(_date)
         });
-        this.props.changeSelectedDate(_date);
+    }
+
+    checkDisabledList = (isEnabled, _date) => {
+        const { disabledList } = this.props.options;
+        return (disabledList && disabledList.length > 0 && _date)? ((disabledList.indexOf(_date) !== -1)? false : isEnabled) : isEnabled;
+    }
+    
+    getShowIndicatorColor = (_date) => {
+        const { indicatorList } = this.props.options;
+        let color = "";
+        if(!indicatorList || indicatorList.length <=0 ){
+            return color;
+        } else {
+            indicatorList.forEach((ele) => {
+                if(ele && ele['dates'] && ele['dates'].indexOf(_date) !== -1){
+                    color = ele['color'];
+                }
+            });
+            
+            return color;
+        }
+    }
+
+    getClassName = (index) => {
+        return (index % 6 === 0) ? 'VS-Day VS-Medium-UPPER-Case VS-DayStart' : 'VS-Day VS-Medium-UPPER-Case';
     }
 
     renderCalendarDate = (date, index) => {
-        const { month, year } = this.props;
-        const { current, today } = this.state;
-        const _date = new Date(date.join("-"));
+        const { current } = this.state;
+        const today = this.props.selectedDate;
+        const { month, year, options } = this.props;
+        const _date = new Date(date.join('-'));
         const props = { index, title: _date.toDateString() };
 
-        const inMonth = month && year && isSameMonth(_date, new Date([year, month, 1].join("-")));
-
+        const inMonth = month && year && isSameMonth(_date, month, year);
+        
         const isToday = isSameDay(_date, today);
-        const isCurrent = current && isSameDay(_date, current);
+        const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, options)));
 
-        return (
-            <div key={getIsoDate(_date)} {...props} className={this.getClassName(props.index)} onClick={(inMonth) ? () => this.selectDate(_date) : () => { }}>
+        // const lowerDateLimit = (options && options.lowerDateLimit)? ((isValidDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
+
+        const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
+        let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
+        isEnabled = this.checkDisabledList(isEnabled, date.join('-'));
+
+        const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
+        const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
+        const showIndicator = this.getShowIndicatorColor(date.join('-'));
+
+        return (  
+            <Fragment key={guid()}>   
                 {
-                    (inMonth) ?
-                        <span className={(isCurrent) ? 'DaySelected' : ((isToday) ? 'DayCurrent' : 'NormalDay')}>{_date.getDate()}</span>
+                    (isEnabled)?
+                        <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
+                            {
+                                (inMonth) ?
+                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'background-color': showIndicator}} className="VS-indicator"></p> : '' }</span>
+                                    :
+                                    <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
+                            }    
+                        </div> 
                         :
-                        <span className='DisabledDay'>{_date.getDate()}</span>
-                }
-            </div>
+                        <div {...props} className={this.getClassName(props.index)}>
+                            <span className='VS-DisabledDay'>{_date.getDate()}</span>
+                        </div>
+                } 
+            </Fragment>
         );
     }
 
@@ -77,25 +139,21 @@ class CalendarDays extends React.PureComponent {
         });
 
         return (
-            <div className="DateRow" key={getIsoDate(new Date()) + index}>{rows}</div>
+            <div className="VS-DateRow" key={guid()}>{rows}</div>
         )
-    }
-
-    getClassName = (index) => {
-        return (index % 6 === 0) ? 'Day Medium-UPPER-Case DayStart' : 'Day Medium-UPPER-Case';
     }
 
     render() {
         // const { selectedDate } = this.props;
         return (
-            <div className="CalendarDay">
+            <div className="VS-CalendarDay">
                 <Fragment>
                     {this.getCalendarDates().map((row, index) => this.renderCalendarRow(row, index))}
                 </Fragment>
             </div>
         );
     }
-
+ 
 }
 
 export default CalendarDays;
