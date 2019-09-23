@@ -2,13 +2,24 @@ import { isUndefinedOrNull } from "./utils";
 
 export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
-export const YEAR_FORMATS = ["YYYY"];
+export const YEAR_FORMATS = ["YYYY", "MM/YYYY", "QQ/YYYY"];
 export const CURRENT_YEAR = +(new Date().getFullYear());
 export const CURRENT_MONTH = +(new Date().getMonth()) + 1;
 export const WEEK_COUNT = 6;
+// Calendar months names
+export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-export const zeroPad1 = (value, length) => {
-    return `${value}`.padStart(length, '0');
+export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
+
+export function getMonthNameByIndex(index) {
+    var _index = (index)? index : 0;
+    return MONTH_NAMES[_index].toUpperCase();
+}
+
+export function getMonthIndex(month) {
+    return zeroPad(MONTH_SHORT_NAMES.indexOf(month) + 1, 2);
 }
 
 export const zeroPad = (n, width, z)  =>{
@@ -182,4 +193,21 @@ export const isCalendarFormat = (displayFormat) => {
 
 export const isYearFormat = (displayFormat) => {
     return (YEAR_FORMATS.indexOf(displayFormat) != -1)
+}
+
+export const isValidMonthYearValue = (value) => {
+    return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
+}
+
+export const getSelectedYear = (value) => {
+    return (value)? value.split("/")[1] : ''
+}
+
+export const getSelectedMonth = (value) => {
+    return (value)? value.split("/")[0] : ''
+}
+
+
+export const isEqual = (val1, val2) => {
+    return (val1 && val2 && val1.toString() === val2.toString())
 }

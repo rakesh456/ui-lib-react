@@ -1,5 +1,5 @@
 import React from "react";
-import { getMonthNameByIndex } from '../../../../utils/utils';
+import { getMonthNameByIndex } from '../../../utils/calendar';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 
 class CalendarMonth extends React.PureComponent {

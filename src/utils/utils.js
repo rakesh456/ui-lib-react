@@ -3,17 +3,8 @@ import { isDate } from "./calendar";
 // import moment from 'moment';
 export const Fragment = (props, children) => children;
 
-// Calendar months names
-export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
-
 export function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj === null || !obj)? true : false;
-}
-
-export function getMonthNameByIndex(index) {
-    var _index = (index)? index : 0;
-    return MONTH_NAMES[_index].toUpperCase();
 }
 
 export function splitArray(array, chunk_size){

@@ -88,7 +88,7 @@ $gui-error-red: #fd462a;
     color: $secondary-two-dark
 }
 
-.VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button, .VS-shape-rounded-fill-for-month {
+.VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button, .VS-shape-rounded-fill-for-year, .VS-shape-rounded-fill-for-month {
     width: 216px;
     height: 220px;
     border-radius: 1px;
@@ -98,11 +98,31 @@ $gui-error-red: #fd462a;
     height: 260px;
 }
 
-.VS-shape-rounded-fill-for-month {
+.VS-shape-rounded-fill-for-year {
     height: 140px;
     .VS-DateRow{
         margin: 12px auto;
         padding: 5px 10px;
+    }
+    .VS-Active{
+        background-color: $secondary-two-dark;
+        color: $text-white;
+    }
+}
+
+.VS-shape-rounded-fill-for-month {
+    height: 180px;
+    .VS-DateRowFlex{
+        display: flex;
+        margin: 3px auto;
+        padding: 5px 10px;
+    }
+    .VS-MonthYear{
+        min-width: 30px;
+    }
+    .VS-Active{
+        background-color: $secondary-two-dark;
+        color: $text-white;
     }
 }
 
@@ -129,7 +149,7 @@ $gui-error-red: #fd462a;
     color: $cg-crimson-90;
 }
 
-.VS-MonthDay{
+.VS-MonthYear{
     color: $secondary-two-dark;
     border: solid 1px $grey-one;
     padding: 5px;

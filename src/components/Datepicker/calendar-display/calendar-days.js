@@ -3,7 +3,7 @@ import calendar, {
     isSameDay,
     isSameMonth,
     checkDateInBetween
-} from "../../../../utils/calendar";
+} from "../../../utils/calendar";
 
 import {
     splitArray,
@@ -11,7 +11,7 @@ import {
     guid,
     isValidDate,
     isUndefinedOrNull
-} from "../../../../utils/utils";
+} from "../../../utils/utils";
 
 class CalendarDays extends React.PureComponent {
     constructor(props) {

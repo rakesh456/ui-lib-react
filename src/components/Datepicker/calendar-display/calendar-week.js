@@ -1,7 +1,7 @@
 
 
 import React from "react";
-import { WEEK_SHORT_NAMES } from '../../../../utils/utils';
+import { WEEK_SHORT_NAMES } from '../../../utils/calendar';
 
 class CalendarWeek extends React.PureComponent {
     constructor(props) {

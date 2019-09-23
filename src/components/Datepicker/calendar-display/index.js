@@ -1,8 +1,8 @@
 import React from "react";
-import CalendarWeek from "./calendar-week/index";
-import CalendarMonth from "./calendar-month/index";
-import CalendarDays from "./calendar-days/index";
-import CalendarButtons from "./calendar-buttons/index";
+import CalendarWeek from "./calendar-week";
+import CalendarMonth from "./calendar-month";
+import CalendarDays from "./calendar-days";
+import CalendarButtons from "./calendar-buttons";
 
 import '../date-picker.scss';
 import {
@@ -83,11 +83,10 @@ class CalendarDisplay extends React.PureComponent {
     render() {
         const { month, year } = this.state;
         const { selectedDate } = this.props;
+        const { showButtons } = this.props.options;
         if (!this.props.shouldCalendarOpen) {
             return null;
         }
-
-        const { showButtons } = this.props.options;
       
 
         return (
