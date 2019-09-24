@@ -10,7 +10,8 @@ class CalendarPortal extends React.PureComponent {
     }
     
     componentDidMount() {
-        calendarModal = document.getElementById('modalroot');
+        const uuid = this.props.uuid;
+        calendarModal = document.getElementById(uuid);
         calendarModal.appendChild(this.el);
     }
 
@@ -18,7 +19,9 @@ class CalendarPortal extends React.PureComponent {
     }
 
     componentWillUnmount() {
-       // calendarModal.removeChild(this.el);
+        if(calendarModal){
+            // calendarModal.removeChild(this.el);
+        }
     }
 
 

@@ -10,8 +10,8 @@ export const WEEK_COUNT = 6;
 export const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
+export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
 
 export function getMonthNameByIndex(index) {
     var _index = (index)? index : 0;
@@ -108,7 +108,7 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 export const getYearsList = (year) => {
     year = (year)? year : new Date().getFullYear();
     var array = [];
-    for (let index = 0; index < 9; index++) {
+    for (let index = -4; index < 5; index++) {
         array.push(year - index);
     }
     return array.reverse();

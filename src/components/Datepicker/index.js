@@ -13,7 +13,8 @@ import {
 import {
     isValidFormattedDate,
     getCurrentYear,
-    getDateByFormatDDMMYYYY
+    getDateByFormatDDMMYYYY,
+    guid
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -44,14 +45,14 @@ class DatePicker extends React.PureComponent {
     }
 
     componentDidMount() {
-
         document.addEventListener('click', this.closeCalendar);
         const dimensions = this.el.getBoundingClientRect();
         const style = {};
-        style.left = dimensions.left;
+        style.left = '0px';
         style.right = dimensions.right;
-        style.top = (dimensions.top + 42);
-        style.bottom = dimensions.bottom;
+        style.top = '100%';
+        style.zIndex = '1';
+        // style.bottom = dimensions.bottom;
         this.setState({ style: style });
 
         window.addEventListener("resize", this.updateDimensions);
@@ -140,17 +141,22 @@ class DatePicker extends React.PureComponent {
     closeCalendar = (e) => {
         const { displayFormat } = this.props.options;
 
-        var shouldCalendarOpen = (displayFormat === 'MM/YYYY');
+        var shouldCalendarOpen = (displayFormat === 'MM/YYYY' || displayFormat === 'QQ/YYYY');
 
         if(isValidMonthYearValue(this.state.newSelectedYear)){
             shouldCalendarOpen = false;
         }
 
-        console.log(' shouldCalendarOpen ', shouldCalendarOpen);
         if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path')) {
-            this.setState({
-                shouldCalendarOpen: shouldCalendarOpen
-            });
+            if(e.target.classList.contains("VS-App-header")){
+                this.setState({
+                    shouldCalendarOpen: false
+                });
+            } else {
+                this.setState({
+                    shouldCalendarOpen: shouldCalendarOpen
+                });
+            }
         }
       
     }
@@ -194,10 +200,11 @@ class DatePicker extends React.PureComponent {
         const isDisabled = (options && options.isDisabled === true);
         const showClearIcon = (options && options.showClearIcon === true);
         const manualEntry = (options && options.manualEntry === true);
+        const _uuid = guid();
 
         return (
             <div className="VS-App">
-                <div id="modalroot"></div>
+                <div id={`${_uuid}`}></div>
                 <header className="VS-App-header">
                     <div className="VS-DatepickerContainer">
                         <div ref={(el) => this.el = el}>
@@ -220,7 +227,7 @@ class DatePicker extends React.PureComponent {
                         </div>
                         {
                             (shouldCalendarOpen) ?
-                                <CalendarPortal parent="#parent" position="right" arrow="center">
+                                <CalendarPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
                                     {
                                         (isCalendar)?
                                         <CalendarDisplay style={this.state.style} options={options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler}>

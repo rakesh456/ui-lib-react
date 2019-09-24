@@ -25,16 +25,16 @@ class CalendarDisplay extends React.PureComponent {
     }
     
     componentDidMount() {
-        calendarModal = document.getElementById('modalroot');
-        calendarModal.appendChild(this.el);
+        // calendarModal = document.getElementById('modalroot');
+        // calendarModal.appendChild(this.el);
     }
 
     componentDidUpdate(prevProps) {
     }
 
     componentWillUnmount() {
-        calendarModal = document.getElementById('modalroot');
-        calendarModal.removeChild(this.el);
+        // calendarModal = document.getElementById('modalroot');
+        // calendarModal.removeChild(this.el);
     }
 
     onSelectHandler = (_date) => {
