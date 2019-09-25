@@ -8,13 +8,18 @@ import './date-picker.scss';
 import {
     isCalendarFormat,
     isYearFormat,
-    isValidMonthYearValue
+    isValidMonthYearValue,
+    isValidOutsideRangeDate,
+    getInvalidDateMessage,
+    getNewUpdateDateByArrow
 } from "../../utils/calendar";
 import {
     isValidFormattedDate,
     getCurrentYear,
     getDateByFormatDDMMYYYY,
-    guid
+    guid,
+    ARROW_KEYS,
+    ARROWS
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -23,7 +28,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isYear: isYearFormat(datePickerOptions.displayFormat) };
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isYear: isYearFormat(datePickerOptions.displayFormat) };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -91,39 +96,119 @@ class DatePicker extends React.PureComponent {
     }
 
     onFocus = () => {
+        const _selectedDate = (isValidFormattedDate(this.state.selectedDate, this.props.options))? this.state.selectedDate : "";
+
         this.setState({
             shouldCalendarOpen: true,
-            newSelectedYear: ""
+            newSelectedYear: "",
+            selectedDate: _selectedDate
         });
+
         this.props.onFocus();
     }
     
     onBlur = () => {
-        // let { manualEntry } = this.props.options;
-        // let { selectedDate, shouldCalendarOpen } = this.state;
-        // console.log(' shouldCalendarOpen ', shouldCalendarOpen);
-        // if(manualEntry === true){
-        //     if(isValidFormattedDate(selectedDate, this.props.options)){
-        //         const { showButtons } = this.props.options;
-        //         if(!showButtons){
-        //             this.setState({ selectedDate: selectedDate});
-        //         }
-        //         this.onSelectButtonClickHandler();
-        //         this.setState({ isInvalidDate: false, shouldCalendarOpen: true });
-        //     } else {
-        //         this.setState({ isInvalidDate: true });
-        //     }
-        // }
+        let { manualEntry } = this.props.options;
+        if(manualEntry === true){
+            if(isValidFormattedDate(this.state.selectedDate, this.props.options)){
+                const { showButtons } = this.props.options;
+                var _valid = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
+                if(_valid){
+                    if(!showButtons){
+                        this.setState({ selectedDate: this.state.selectedDate});
+                    }
+                    // this.onSelectButtonClickHandler();
+                    this.props.onSelect(this.state.selectedDate);
+                    this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                } else {
+                    this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                }
+            } else {
+                this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+            }
+        }
         this.props.onBlur();
     }
     
     onKeyPressHandler = (evt) => {
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
-        
+       
         if ((charCode > 31 && (charCode < 45 || charCode > 57))) {
             evt.preventDefault();;
         } 
+    }
+    
+    onKeyDownHandler = (evt) => {
+        evt = (evt) ? evt : window.event;
+        const charCode = (evt.which) ? evt.which : evt.keyCode;
+
+        if (evt.ctrlKey) {
+            switch (evt.keyCode) {
+                case ARROWS.left:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.left, true, false);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.right:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.right, true, false);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.up:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.up, true, false);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.down:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.down, true, false);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+            }
+            
+        } else if (evt.shiftKey) {
+            switch (evt.keyCode) {
+                case ARROWS.left:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.left, true, true);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.right:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.right, true, true);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.up:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.up, true, true);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+                case ARROWS.down:{
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, ARROWS.down, true, true);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                    break;
+                }
+            }
+        } else {
+            if(charCode == 27){
+                this.setState({ shouldCalendarOpen: false });
+            }
+    
+            if(ARROW_KEYS.indexOf(charCode) !== -1){
+                const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, this.props.options, charCode, false, false);
+                this.setState({ selectedDate: updatedDate });
+                this.props.onSelect(updatedDate);
+            }
+        }
     }
     
     onChangeHandler(name, e) {
@@ -133,7 +218,8 @@ class DatePicker extends React.PureComponent {
         const manualEntry = (this.props.options && this.props.options.manualEntry === true);
         if(manualEntry == true){
             this.setState({
-                selectedDate: e.target.value
+                selectedDate: e.target.value,
+                shouldCalendarOpen: false
             });
         }
     }
@@ -175,7 +261,12 @@ class DatePicker extends React.PureComponent {
 
     getDateAlignClass() {
         const options = this.props.options;
-        return (options && options.dateStringAlignment === 'Right') ? 'VS-PullRight VS-TextRight' : 'VS-PullLeft VS-TextLeft';
+        return (options && options.dateStringAlignment === 'Right') ? 'VS-PullRight1 VS-TextRight' : 'VS-PullLeft1 VS-TextLeft';
+    }
+    
+    getInputClass() {
+        const options = this.props.options;
+        return 'VS-Regular-UPPER-Case VS-Calendar-Input' + ((options && options.showClearIcon === true) ? '-Icon' : '');
     }
     
     getInvalidClass() {
@@ -195,10 +286,11 @@ class DatePicker extends React.PureComponent {
 
 
     render() {
-        const { shouldCalendarOpen, selectedDate, isInvalidDate, isCalendar, isYear, selectedYear } = this.state;
-        const options = this.props.options;
+        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isYear, selectedYear } = this.state;
+        const { options } = this.props;
         const isDisabled = (options && options.isDisabled === true);
         const showClearIcon = (options && options.showClearIcon === true);
+        const iconAlignment = options.iconAlignment;
         const manualEntry = (options && options.manualEntry === true);
         const _uuid = guid();
 
@@ -208,7 +300,7 @@ class DatePicker extends React.PureComponent {
                 <header className="VS-App-header">
                     <div className="VS-DatepickerContainer">
                         <div ref={(el) => this.el = el}>
-                            <div className={`VS-Input-Border ${this.getInvalidClass()} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
+                            <div className={`VS-Input-Border  ${this.getInvalidClass()} ${(showClearIcon) ? 'VS-Input-Icon' : ''} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
                                 <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark VS-CalenderIcon" /></span>
                                 <Input type="text"
                                     value={this.getSelectedValue()}
@@ -217,11 +309,16 @@ class DatePicker extends React.PureComponent {
                                     onFocus={this.onFocus}
                                     onBlur={this.onBlur}
                                     onKeyPress={this.onKeyPressHandler.bind(this)}
+                                    onKeyDown={this.onKeyDownHandler.bind(this)}
                                     onChange={this.onChangeHandler.bind(this, selectedDate)}
                                 />
                                 {
                                     (showClearIcon === true)?
                                     <span className="VS-PullRight VS-MrgT5"><FaClose className="VS-Shape VS-TextDark VS-CalenderIcon VS-CloseIcon" onClick={() => this.onClearButtonClickHandler()} /></span> : ''
+                                }
+                                {
+                                    (isInvalidDate === true)?
+                                    <span className="VS-InvalidText">{getInvalidDateMessage(options.validationMessages, isInvalidRangeDate)}</span> : ''
                                 }
                             </div>
                         </div>

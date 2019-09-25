@@ -20,7 +20,7 @@ class CalendarPortal extends React.PureComponent {
 
     componentWillUnmount() {
         if(calendarModal){
-            // calendarModal.removeChild(this.el);
+            calendarModal.removeChild(this.el);
         }
     }
 

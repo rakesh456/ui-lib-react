@@ -40,11 +40,11 @@ class CalendarDays extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.selectedDate === this.state.current) {
+        //if (this.props.selectedDate === this.state.current) {
             this.setState({
                 current: this.props.selectedDate
             });
-        }
+        //}
     }
 
     getCalendarDates = () => {
@@ -126,7 +126,7 @@ class CalendarDays extends React.PureComponent {
                         </div> 
                         :
                         <div {...props} className={this.getClassName(props.index)}>
-                            <span className='VS-DisabledDay'>{_date.getDate()}</span>
+                            <span className='VS-DisabledDay'>{_date.getDate()} { (showIndicator !== '')?  <p style={{'background-color': showIndicator}} className="VS-indicator"></p> : '' }</span>
                         </div>
                 } 
             </Fragment>

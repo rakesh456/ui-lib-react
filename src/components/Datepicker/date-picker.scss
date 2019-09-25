@@ -43,7 +43,7 @@ $gui-white: #fffffe;
 $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 
-.VS-Calendar-Input::-ms-clear {
+.VS-Calendar-Input::-ms-clear, .VS-Calendar-Input-Icon::-ms-clear {
     display: none;
 }
 
@@ -59,6 +59,13 @@ $gui-error-red: #fd462a;
 .VS-Input-Border.VS-Disabled{
     cursor: default;
     background-color: rgb(235, 235, 228);
+}
+
+.VS-InvalidText{
+    position: absolute;
+    top: 100%;
+    left: 0px;
+    color: $cg-crimson-90;
 }
 
 .VS-Regular-UPPER-Case {
@@ -273,15 +280,22 @@ $gui-error-red: #fd462a;
     padding: 0px 2px;    
 }
 
-.VS-Calendar-Input{
+.VS-Calendar-Input, .VS-Input-Icon .VS-Calendar-Input{
     border: 0px !important;
+    width: 165px !important;
+    margin: 7px 0px 0px;
+}
+
+.VS-Input-Icon .VS-Calendar-Input{
+    width: 150px !important;
+    margin: 7px 0px 0px 10px;
 }
 
 .VS-Invalid-Input{
     border: 1px solid $cg-crimson-90 !important;
 }
 
-input, input:focus{
+.VS-Input-Border input{
     border: 0px;
     width: 150px;
     vertical-align: middle;

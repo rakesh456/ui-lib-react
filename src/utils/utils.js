@@ -1,10 +1,17 @@
 import { isDate } from "./calendar";
 
+export const ARROW_KEYS = [37, 38, 39, 40];
+export const ARROWS = {left: 37, up: 38, right: 39, down: 40 };
+
 // import moment from 'moment';
 export const Fragment = (props, children) => children;
 
 export function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj === null || !obj)? true : false;
+}
+
+export function isBlank(string){
+    return (typeof string === "undefined" || string === null || string === '')? true : false;
 }
 
 export function splitArray(array, chunk_size){

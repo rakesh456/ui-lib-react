@@ -6,8 +6,11 @@ import CalendarButtons from "./calendar-buttons";
 
 import '../date-picker.scss';
 import {
-    convertYYYYMMDD
+    convertYYYYMMDD,
 } from "../../../utils/utils";
+import {
+    isDate
+} from "../../../utils/calendar";
 
 
 let calendarModal = null;
@@ -30,11 +33,20 @@ class CalendarDisplay extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
+        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) : new Date();
+
+        if(isDate(selectedDate)){
+            // this.setState({
+            //     month: selectedDate.getMonth() + 1,
+            //     year: selectedDate.getFullYear()
+            // });
+        }
     }
 
     componentWillUnmount() {
-        // calendarModal = document.getElementById('modalroot');
-        // calendarModal.removeChild(this.el);
+        if(calendarModal){
+            // calendarModal.removeChild(this.el);
+        }
     }
 
     onSelectHandler = (_date) => {

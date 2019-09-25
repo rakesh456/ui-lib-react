@@ -10,7 +10,8 @@ class CalendarMonth extends React.PureComponent {
 
     componentDidMount() {}
 
-    componentDidUpdate(prevProps) {}
+    componentDidUpdate(prevProps) {
+    }
 
 
     render() {

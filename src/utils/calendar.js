@@ -1,4 +1,4 @@
-import { isUndefinedOrNull } from "./utils";
+import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormatDDMMYYYY, ARROWS } from "./utils";
 
 export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
@@ -169,7 +169,7 @@ export const checkDateInBetween = (date, from, to) => {
             return false;
         } else if(isDate(from) && isDate(_to)){
             var _from = new Date(from);
-            if(date.getTime() > _from.getTime() && date.getTime() < _to.getTime()){
+            if(date.getTime() > _from.getTime() && date.getTime() <= _to.getTime()){
                 return true;
             } else {
                 return false
@@ -180,6 +180,17 @@ export const checkDateInBetween = (date, from, to) => {
     } else {
         return false;
     }
+}
+
+export const isValidOutsideRangeDate = (date, options) => {
+    const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
+    const lowerDateLimit = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
+
+    const _date = convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options);
+    const _lowerDateLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerDateLimit, options.displayFormat), options);
+    const _upperDateLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(upperDateLimit, options.displayFormat), options);
+
+    return checkDateInBetween(new Date(_date), new Date(_lowerDateLimit), new Date(_upperDateLimit));
 }
 
 export const resetOptions = (options) => {
@@ -207,7 +218,44 @@ export const getSelectedMonth = (value) => {
     return (value)? value.split("/")[0] : ''
 }
 
-
 export const isEqual = (val1, val2) => {
     return (val1 && val2 && val1.toString() === val2.toString())
+}
+
+export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) => {
+    var _msg = (!isInvalidRangeDate)? 'Invalid Date' : 'Outside allowed range';
+
+    if(!validationMessages || validationMessages.length <= 0){
+       return _msg;
+    }
+
+    validationMessages.forEach((msg) => {
+        if(!isBlank(msg['inValidFormat']) && !isInvalidRangeDate){
+            _msg = msg['inValidFormat'];
+        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate){
+            _msg = msg['outsideRange'];
+        }
+    });
+    return _msg;
+}
+
+export const getNewUpdateDateByArrow = (selectedDate, options, charCode, isCtrl, isMonth) => {
+    const _date = convertYYYYMMDD(getDateByFormatDDMMYYYY(selectedDate, options.displayFormat), options);
+    var newdate = new Date(_date);
+    
+    var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
+    if(isCtrl){
+        day = (charCode === ARROWS.left || charCode === ARROWS.up)? -365 : 365;
+    }
+    
+    if(isMonth){
+        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+        var month = (newdate.getMonth());
+        newdate.setMonth(month + counter);
+        newdate.setFullYear(newdate.getFullYear());
+    } else {
+        newdate.setDate(newdate.getDate() + day);
+    }
+    newdate = getDateByFormatDDMMYYYY(newdate, options.displayFormat);
+    return newdate;
 }
