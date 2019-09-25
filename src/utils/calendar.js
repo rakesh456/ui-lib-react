@@ -1,4 +1,4 @@
-import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormatDDMMYYYY, ARROWS } from "./utils";
+import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormatDDMMYYYY, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD } from "./utils";
 
 export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
@@ -12,6 +12,47 @@ export const MONTH_NAMES = ["January", "February", "March", "April", "May", "Jun
 export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
+
+export const getConvertedDate = (date, displayFormat) => {
+    var _date = convertYYYYMMDDByFormat(date, displayFormat);
+    return (!isValidDate(_date))? null : getYYYYMMDD(_date);
+}
+
+export const formatOptions = (options) => {
+    var newOptions = {...options}
+    var displayFormat = options.displayFormat;
+
+    if(options.lowerLimit){
+        newOptions['lowerLimit'] = getConvertedDate(options.lowerLimit, displayFormat)
+    }
+
+    if(options.upperLimit){
+        newOptions['upperLimit'] = getConvertedDate(options.upperLimit, displayFormat) 
+    }
+    if(options.disabledList && options.disabledList.length > 0){
+        var _array = [];
+        options.disabledList.forEach((ele) => {
+            _array.push(getConvertedDate(ele, displayFormat));
+        });
+        newOptions['disabledList'] = [..._array] 
+    }
+    if(options.indicatorList && options.indicatorList.length > 0){
+        var _array = [];
+        options.indicatorList.forEach((ele) => {
+            var _dates = [];
+            if(ele && ele.dates && ele.dates.length > 0){
+                ele.dates.forEach((date) => {
+                    _dates.push(getConvertedDate(date, displayFormat));
+                });
+            }
+            _array.push({'dates': _dates, 'color': ele.color});
+        });
+        newOptions['indicatorList'] = [..._array] 
+    }
+
+    console.log(' newOptions ', newOptions);
+    return newOptions;
+}
 
 export function getMonthNameByIndex(index) {
     var _index = (index)? index : 0;
@@ -165,7 +206,7 @@ export const checkDateInBetween = (date, from, to) => {
         var _to = (!isUndefinedOrNull(to))? new Date(to) : null;
         if(isUndefinedOrNull(_to) && isDate(from) && date.getTime() >= from.getTime()){
             return true;
-        } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
+        } else if(isDate(from) && isDate(_to) && (date.getTime() <= from.getTime() || date.getTime() > _to.getTime())){
             return false;
         } else if(isDate(from) && isDate(_to)){
             var _from = new Date(from);
@@ -183,14 +224,14 @@ export const checkDateInBetween = (date, from, to) => {
 }
 
 export const isValidOutsideRangeDate = (date, options) => {
-    const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
-    const lowerDateLimit = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
+    const upperLimit = (options && options.upperLimit)? ((isValidDate(options.upperLimit))? options.upperLimit : null) : null;
+    const lowerLimit = (!isUndefinedOrNull(options) && options.lowerLimit && isValidDate(options.lowerLimit))? options.lowerLimit : new Date();
 
     const _date = convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options);
-    const _lowerDateLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerDateLimit, options.displayFormat), options);
-    const _upperDateLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(upperDateLimit, options.displayFormat), options);
+    const _lowerLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerLimit, options.displayFormat), options);
+    const _upperLimit = convertYYYYMMDD(getDateByFormatDDMMYYYY(upperLimit, options.displayFormat), options);
 
-    return checkDateInBetween(new Date(_date), new Date(_lowerDateLimit), new Date(_upperDateLimit));
+    return checkDateInBetween(new Date(_date), new Date(_lowerLimit), new Date(_upperLimit));
 }
 
 export const resetOptions = (options) => {
@@ -239,8 +280,8 @@ export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) =>
     return _msg;
 }
 
-export const getNewUpdateDateByArrow = (selectedDate, options, charCode, isCtrl, isMonth) => {
-    const _date = convertYYYYMMDD(getDateByFormatDDMMYYYY(selectedDate, options.displayFormat), options);
+export const getNewUpdateDateByArrow = (selectedDate, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
+    const _date = convertYYYYMMDD(getDateByFormatDDMMYYYY(selectedDate, displayFormat), options);
     var newdate = new Date(_date);
     
     var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
@@ -256,6 +297,31 @@ export const getNewUpdateDateByArrow = (selectedDate, options, charCode, isCtrl,
     } else {
         newdate.setDate(newdate.getDate() + day);
     }
-    newdate = getDateByFormatDDMMYYYY(newdate, options.displayFormat);
-    return newdate;
+
+    console.log(' newdate ', newdate);
+    var _lDate = new Date(lowerLimit);
+    _lDate.setDate(_lDate.getDate() - 1);
+    var _uDate = new Date(upperLimit);
+    _uDate.setDate(_uDate.getDate());
+
+    var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
+    if(dateIsInDisabledList(newdate, options)){
+        return getNewUpdateDateByArrow(newdate, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
+    } else {
+        newdate = getDateByFormatDDMMYYYY(newdate, displayFormat);
+        return (isValidDate)? newdate : getDateByFormatDDMMYYYY(selectedDate, displayFormat);
+    }
+}
+
+export const dateIsInDisabledList = (newdate, options) => {
+    var _flag = false;
+
+    if(options.disabledList && options.disabledList.length > 0){
+        options.disabledList.forEach((ele) => {
+            if((new Date(newdate).getTime() === new Date(ele).getTime())){
+                _flag = true;
+            };
+        });
+    } 
+    return _flag;
 }

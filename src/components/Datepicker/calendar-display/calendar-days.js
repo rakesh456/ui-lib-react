@@ -18,15 +18,15 @@ class CalendarDays extends React.PureComponent {
         super(props);
         const options = this.props.options;
         const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, options)) : new Date();
-        this.state = { current: selectedDate, lowerDateLimit: new Date()};
-        var _lowerdate = (!isUndefinedOrNull(options) && options.lowerDateLimit && isValidDate(options.lowerDateLimit))? options.lowerDateLimit : new Date();
+        this.state = { current: selectedDate, lowerLimit: new Date()};
+        var _lowerdate = (!isUndefinedOrNull(options) && options.lowerLimit && isValidDate(options.lowerLimit))? options.lowerLimit : new Date();
     
         if(_lowerdate){
             _lowerdate = new Date(_lowerdate);
             _lowerdate.setDate(_lowerdate.getDate() - 1);
         }
     
-        this.state.lowerDateLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : new Date();
+        this.state.lowerLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : new Date();
     }
 
     dismiss() {
@@ -102,10 +102,8 @@ class CalendarDays extends React.PureComponent {
         const isToday = isSameDay(_date, today);
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, options)));
 
-        // const lowerDateLimit = (options && options.lowerDateLimit)? ((isValidDate(options.lowerDateLimit))? options.lowerDateLimit : null) : (options.lowerDateLimit !== null)? new Date() : null;
-
-        const upperDateLimit = (options && options.upperDateLimit)? ((isValidDate(options.upperDateLimit))? options.upperDateLimit : null) : null;
-        let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerDateLimit, upperDateLimit));
+        const upperLimit = (options && options.upperLimit)? ((isValidDate(options.upperLimit))? options.upperLimit : null) : null;
+        let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerLimit, upperLimit));
         isEnabled = this.checkDisabledList(isEnabled, date.join('-'));
 
         const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');

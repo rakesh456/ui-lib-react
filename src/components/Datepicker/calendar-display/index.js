@@ -11,6 +11,7 @@ import {
 import {
     isDate
 } from "../../../utils/calendar";
+import { setTimeout } from "timers";
 
 
 let calendarModal = null;
@@ -36,10 +37,13 @@ class CalendarDisplay extends React.PureComponent {
         const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) : new Date();
 
         if(isDate(selectedDate)){
-            // this.setState({
-            //     month: selectedDate.getMonth() + 1,
-            //     year: selectedDate.getFullYear()
-            // });
+            console.log(' this.state.month ', this.state.month, selectedDate.getMonth());
+            //if(selectedDate.getMonth() === this.state.month){
+                this.setState({
+                    month: selectedDate.getMonth() + 1,
+                    year: selectedDate.getFullYear()
+                });
+            //}
         }
     }
 

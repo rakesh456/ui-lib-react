@@ -8,7 +8,8 @@ import {
 import {
     isCalendarFormat,
     isYearFormat,
-    resetOptions
+    resetOptions,
+    formatOptions
 } from "../src/utils/calendar";
 
 
@@ -45,13 +46,15 @@ function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (options)? resetOptions(options) : resetOptions({});
 
+    options = formatOptions(options);
+
     if(isCalendarFormat(options.displayFormat)){
         setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
     }
 
     function callOnSelectedEvent(_date, el) {
-        var ev = new CustomEvent("selected");
-        trigger(el, 'onSelected', ev);
+        var ev = new CustomEvent("change");
+        trigger(el, 'onChange', ev);
         el.dispatchEvent(ev);
     }
     

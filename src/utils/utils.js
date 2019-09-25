@@ -1,4 +1,4 @@
-import { isDate } from "./calendar";
+import { isDate, zeroPad } from "./calendar";
 
 export const ARROW_KEYS = [37, 38, 39, 40];
 export const ARROWS = {left: 37, up: 38, right: 39, down: 40 };
@@ -86,6 +86,15 @@ export function convertYYYYMMDDByFormat(date, format){
 
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+export function getYYYYMMDD(date){
+    let d = new Date(date);
+    let month = '' + zeroPad((d.getMonth() + 1), 2),
+        day = '' + zeroPad(d.getDate(), 2),
+        year = d.getFullYear();
 
     return [year, month, day].join('-');
 }
