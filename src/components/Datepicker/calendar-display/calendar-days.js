@@ -2,7 +2,9 @@ import React, { Fragment } from "react";
 import calendar, {
     isSameDay,
     isSameMonth,
-    checkDateInBetween
+    checkDateInBetween,
+    getUpperLimitFromOptions,
+    getLowerLimitFromOptions
 } from "../../../utils/calendar";
 
 import {
@@ -19,14 +21,14 @@ class CalendarDays extends React.PureComponent {
         const options = this.props.options;
         const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, options)) : new Date();
         this.state = { current: selectedDate, lowerLimit: new Date()};
-        var _lowerdate = (!isUndefinedOrNull(options) && options.lowerLimit && isValidDate(options.lowerLimit))? options.lowerLimit : new Date();
+        var _lowerdate = getLowerLimitFromOptions(options);
     
         if(_lowerdate){
             _lowerdate = new Date(_lowerdate);
             _lowerdate.setDate(_lowerdate.getDate() - 1);
         }
     
-        this.state.lowerLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : new Date();
+        this.state.lowerLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : null;
     }
 
     dismiss() {
@@ -102,7 +104,7 @@ class CalendarDays extends React.PureComponent {
         const isToday = isSameDay(_date, today);
         const isCurrent = current && isSameDay(_date, new Date(convertYYYYMMDD(current, options)));
 
-        const upperLimit = (options && options.upperLimit)? ((isValidDate(options.upperLimit))? options.upperLimit : null) : null;
+        const upperLimit = getUpperLimitFromOptions(options);
         let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerLimit, upperLimit));
         isEnabled = this.checkDisabledList(isEnabled, date.join('-'));
 

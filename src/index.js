@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import DatePicker from "./components/Datepicker/index";
 import {
-    getDateByFormatDDMMYYYY
+    getDateByFormatDDMMYYYY,
+    isUndefinedOrNull
 } from "../src/utils/utils";
 import {
     isCalendarFormat,
@@ -44,7 +45,7 @@ function trigger(elem, name, e) {
 
 function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-    options = (options)? resetOptions(options) : resetOptions({});
+    options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
 
     options = formatOptions(options);
 

@@ -9,10 +9,10 @@ import {
     convertYYYYMMDD,
 } from "../../../utils/utils";
 import {
+    currentFormatToYYYYMMDD,
+    currentFormatToYYYYMMDD1,
     isDate
 } from "../../../utils/calendar";
-import { setTimeout } from "timers";
-
 
 let calendarModal = null;
 
@@ -34,16 +34,22 @@ class CalendarDisplay extends React.PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) : new Date();
+        var { options } = this.props;
 
-        if(isDate(selectedDate)){
-            console.log(' this.state.month ', this.state.month, selectedDate.getMonth());
-            //if(selectedDate.getMonth() === this.state.month){
+        const selectedDate1 = currentFormatToYYYYMMDD(this.props.selectedDate, options);
+        const selectedDate2 = currentFormatToYYYYMMDD(prevProps.selectedDate, options);
+
+        if(isDate(new Date(selectedDate1))){
+            const _date1 = (new Date(selectedDate1));
+            const _date2 = (new Date(selectedDate2));
+            const _month1 = _date1.getMonth() + 1;
+            const _month2 = _date2.getMonth() + 1;
+            if(selectedDate1 !== selectedDate2 || _month1 !== _month2){
                 this.setState({
-                    month: selectedDate.getMonth() + 1,
-                    year: selectedDate.getFullYear()
+                    month: _month1,
+                    year: _date1.getFullYear()
                 });
-            //}
+            }
         }
     }
 
@@ -103,16 +109,16 @@ class CalendarDisplay extends React.PureComponent {
         if (!this.props.shouldCalendarOpen) {
             return null;
         }
-      
+        
 
         return (
             <div className={this.getCalendarContainerClass()} style={this.props.style}>
-                <CalendarMonth month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
+                <CalendarMonth options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <CalendarWeek />
                 <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
                 {
                     (showButtons === true)? 
-                    <CalendarButtons onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} /> : ''
+                    <CalendarButtons options={this.props.options} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} /> : ''
                 }
             </div>
         );

@@ -39,8 +39,28 @@ export function getDateByFormatDDMMYYYY(date, format){
     return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date);
 }
 
+export function getDateByFormatDDMMYYYYNew(date, format){
+    return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYYNew(date) : getDateMMDDYYYY(date);
+}
+
 export const isValidDate = dateObject => { 
     return new Date(dateObject).toString() !== 'Invalid Date'; 
+}
+
+export function getDateDDMMYYYYNew(date, format) {
+    // return getDateMMDDYYYY(date);
+    // let d = new Date(date);
+    // let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
+    let d = new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
+    
+    let month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [day, month, year].join('/');
 }
 
 export function getDateDDMMYYYY(date, format) {
