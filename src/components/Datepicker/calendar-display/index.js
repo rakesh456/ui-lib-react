@@ -112,7 +112,7 @@ class CalendarDisplay extends React.PureComponent {
         
 
         return (
-            <div className={this.getCalendarContainerClass()} style={this.props.style}>
+            <div className={this.getCalendarContainerClass()} style={this.props.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
                 <CalendarMonth options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <CalendarWeek />
                 <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />

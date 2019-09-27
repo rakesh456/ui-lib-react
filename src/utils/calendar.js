@@ -1,6 +1,6 @@
 import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormatDDMMYYYY, getDateByFormatDDMMYYYYNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD } from "./utils";
 
-export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false};
+export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "showErrorMessage": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
 export const YEAR_FORMATS = ["YYYY", "MM/YYYY", "QQ/YYYY"];
 export const CURRENT_YEAR = +(new Date().getFullYear());
@@ -249,11 +249,27 @@ export const checkDateInBetween = (date, from, to) => {
     }
 }
 
+export const isValidOutsideRangeDateMonthYear = (date, options) => {
+    const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
+    const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
+
+    let d = date.toString().split("/"),
+        month = parseInt(d[0]),
+        year = parseInt(d[1]);
+
+    const _date = new Date(year, (month - 1), 1);   
+    const _lowerLimit = new Date(lowerYearLimit, (lowerMonthLimit - 1), 1);   
+    const _upperLimit = new Date(upperYearLimit, upperMonthLimit, 1);  
+    
+    const _validate = checkDateInBetween(_date, isValidDate(_lowerLimit)? _lowerLimit : null, isValidDate(_upperLimit)? _upperLimit : null);     
+    return _validate;
+}
+
 export const isValidOutsideRangeDate = (date, options) => {
     const upperLimit = getUpperLimitFromOptions(options);
     const lowerLimit = getLowerLimitFromOptions(options);
 
-    const _date = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options));
+    const _date = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(getProperFormattedDate(date, options), options.displayFormat), options));
     const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerLimit, options.displayFormat), options));
     const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(upperLimit, options.displayFormat), options)) : upperLimit;
     
@@ -275,6 +291,28 @@ export const isYearFormat = (displayFormat) => {
 
 export const isValidMonthYearValue = (value) => {
     return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
+}
+export const getYYYYForLowerLimit = (options) => {
+    return (options && options.lowerLimit)? getYYYYFromOption(options.lowerLimit, true) : {};
+}
+
+export const getYYYYForUpperLimit = (options) => {
+    return (options && options.upperLimit)? getYYYYFromOption(options.upperLimit, false) : {};
+}
+
+export const getYYYYFromOption = (limit, flag) => {
+    if(limit){
+        const _date = new Date(limit);
+        if(isDate(_date)){
+            const year= _date.getFullYear();
+            const month = zeroPad(_date.getMonth() + 1, 2);
+            return (flag)? {lowerMonthLimit: month, lowerYearLimit: year} : {upperMonthLimit: month, upperYearLimit: year}
+        } else {
+            return {};
+        }
+    } else {
+        return {};
+    }
 }
 
 export const getSelectedYear = (value) => {
@@ -329,11 +367,11 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
     
     var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
+    
     if(dateIsInDisabledList(newdate, options)){
         return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
     } else {
-        newdate = getDateByFormatDDMMYYYYNew(newdate, displayFormat);
-        return (isValidDate)? newdate : getDateByFormatDDMMYYYYNew(selectedDate, displayFormat);
+        return (isValidDate)? getDateByFormatDDMMYYYY(newdate, displayFormat) : getDateByFormatDDMMYYYYNew(selectedDate, displayFormat);
     }
 }
 

@@ -60,6 +60,12 @@ date-picker{
     background-color: $text-white
 }
 
+.VS-shape-rounded-fill-for-year .VS-Disabled,
+.VS-shape-rounded-fill-for-month .VS-Disabled{
+    cursor: default;
+    color: #dddddd;
+}
+
 .VS-Input-Border.VS-Disabled{
     cursor: default;
     background-color: rgb(235, 235, 228);
@@ -199,13 +205,12 @@ date-picker{
     height: 20px;
     border: solid 2px $primary-one-dark;
     border-radius: 15px;
-    padding: 4px 6px;
-    
+    padding: 4.2px 5px;
 }
 
 .VS-Day .VS-PadExtra:hover,
 .VS-DaySelected.VS-PadExtra{
-    padding: 3px 6px;
+    padding: 4.0px 8.1px;
 }
 
 .VS-Day .VS-DisabledDay:hover{
@@ -318,6 +323,10 @@ date-picker{
     color: #000;
 }
 
+.VS-CalendarContainer {
+    outline:none !important;
+}
+
 .VS-App{
     position: relative;
 }
@@ -349,7 +358,8 @@ date-picker{
     margin-top: 4px;
     cursor: pointer;
 }
-.VS-CalendarContainer .VS-CalendarMonth .Vs-DisabledIcon{
+.VS-CalendarContainer .VS-CalendarMonth .Vs-DisabledIcon,
+.VS-CalendarContainer .VS-NextPrevArrow .Vs-DisabledIcon{
     color: $complementary-three;
 }
 

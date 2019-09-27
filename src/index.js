@@ -94,6 +94,12 @@ function datepickerRender(el) {
         myComponentInstance.setDateValue(_date);
     }
 
+    el.addEventListener('mousedown', (e) => { 
+        if(e.target.tagName !== 'INPUT'){
+            e.preventDefault(); 
+        }
+    }, false);
+
     var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
 
     var myComponentInstance = ReactDOM.render(

@@ -10,6 +10,7 @@ import {
     isYearFormat,
     isValidMonthYearValue,
     isValidOutsideRangeDate,
+    isValidOutsideRangeDateMonthYear,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
     isLeft,
@@ -31,7 +32,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isYear: isYearFormat(datePickerOptions.displayFormat) };
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat) };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -104,33 +105,58 @@ class DatePicker extends React.PureComponent {
         this.setState({
             shouldCalendarOpen: true,
             newSelectedYear: "",
-            selectedDate: (this.state.isInvalidRangeDate)? "" : _selectedDate
+            selectedDate: (this.state.isInvalidRangeDate)? "" : _selectedDate,
+            selectedYear: (this.state.isInvalidDate)? "" : this.state.selectedYear
         });
+
+        console.log(' this.state.isInvalidDate ', this.state.isInvalidDate);
 
         this.props.onFocus();
     }
     
     onBlur = () => {
-        //     let { manualEntry } = this.props.options;
-        //     if(manualEntry === true){
-        //         if(isValidFormattedDate(this.state.selectedDate, this.props.options)){
-        //             const { showButtons } = this.props.options;
-        //             var _valid = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
-        //             if(_valid){
-        //                 if(!showButtons){
-        //                     this.setState({ selectedDate: this.state.selectedDate});
-        //                 }
-        //                 // this.onSelectButtonClickHandler();
-        //                 this.props.onSelect(this.state.selectedDate);
-        //                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
-        //             } else {
-        //                 this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
-        //             }
-        //         } else {
-        //             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
-        //         }
-        //     }
-        //     this.props.onBlur();
+        let { manualEntry, showButtons } = this.props.options;
+
+
+        if(manualEntry === true){
+            if(this.state.isMonthYear){
+                // Validate MM/yyyy date
+
+                if(isValidMonthYearValue(this.state.selectedYear)){
+                    var _valid = isValidOutsideRangeDateMonthYear(this.state.selectedYear, this.props.options);             
+                    console.log(' _valid ', _valid);   
+                    if(_valid){
+                        if(!showButtons){
+                            this.setState({ selectedYear: this.state.selectedYear});
+                        }
+                        this.props.onSelect(this.state.selectedYear);
+                        this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                    } else {
+                        this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                    }
+                } else {
+                    this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                }
+            } else {
+                // Validate full formatted date
+                if(isValidFormattedDate(this.state.selectedDate, this.props.options)){
+                    var _valid = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
+                    if(_valid){
+                        if(!showButtons){
+                            this.setState({ selectedDate: this.state.selectedDate});
+                        }
+                        // this.onSelectButtonClickHandler();
+                        this.props.onSelect(this.state.selectedDate);
+                        this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                    } else {
+                        this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                    }
+                } else {
+                    this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                }
+            }
+        }
+        this.props.onBlur();
     }
     
     onKeyPressHandler = (evt) => {
@@ -143,78 +169,80 @@ class DatePicker extends React.PureComponent {
     }
     
     onKeyDownHandler = (evt) => {
-        evt = (evt) ? evt : window.event;
-        const charCode = (evt.which) ? evt.which : evt.keyCode;
-        const { options } = this.props;
-        var { displayFormat, lowerLimit, upperLimit } = options;
-
-        lowerLimit = (lowerLimit)? ((isValidDate(lowerLimit))? lowerLimit : null) : null;
-        upperLimit = (upperLimit)? ((isValidDate(upperLimit))? upperLimit : null) : null;
-
-        if (evt.ctrlKey) {
-            switch (evt.keyCode) {
-                case ARROWS.left:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.right:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.up:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.down:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-            }
-            
-        } else if (evt.shiftKey) {
-            switch (evt.keyCode) {
-                case ARROWS.left:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, true);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.right:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, true);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.up:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, true);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-                case ARROWS.down:{
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, true);
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
-                    break;
-                }
-            }
-        } else {
-            if(charCode == 27){
-                this.setState({ shouldCalendarOpen: false });
-            }
+        if(!this.state.isMonthYear){
+            evt = (evt) ? evt : window.event;
+            const charCode = (evt.which) ? evt.which : evt.keyCode;
+            const { options } = this.props;
+            var { displayFormat, lowerLimit, upperLimit } = options;
     
-            if(ARROW_KEYS.indexOf(charCode) !== -1){
-                const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
-                this.setState({ selectedDate: updatedDate });
-                this.props.onSelect(updatedDate);
+            lowerLimit = (lowerLimit)? ((isValidDate(lowerLimit))? lowerLimit : null) : null;
+            upperLimit = (upperLimit)? ((isValidDate(upperLimit))? upperLimit : null) : null;
+    
+            if (evt.ctrlKey) {
+                switch (evt.keyCode) {
+                    case ARROWS.left:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.right:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.up:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.down:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                }
+                
+            } else if (evt.shiftKey) {
+                switch (evt.keyCode) {
+                    case ARROWS.left:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, true);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.right:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, true);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.up:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, true);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                    case ARROWS.down:{
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, true);
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                        break;
+                    }
+                }
+            } else {
+                if(charCode == 27){
+                    this.setState({ shouldCalendarOpen: false });
+                }
+        
+                if(ARROW_KEYS.indexOf(charCode) !== -1){
+                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
+                    this.setState({ selectedDate: updatedDate });
+                    this.props.onSelect(updatedDate);
+                }
             }
         }
     }
@@ -227,6 +255,7 @@ class DatePicker extends React.PureComponent {
         if(manualEntry == true){
             this.setState({
                 selectedDate: e.target.value,
+                selectedYear: e.target.value,
                 shouldCalendarOpen: false
             });
         }
@@ -279,27 +308,27 @@ class DatePicker extends React.PureComponent {
 
     getPlaceholder(){
         const options = this.props.options;
-        return (this.state.isYear)? options.displayFormat : options.displayFormat;
+        return (this.state.isMonthYear)? options.displayFormat : options.displayFormat;
     }
 
     getSelectedValue(){
-        return (this.state.isYear)? this.state.selectedYear : this.state.selectedDate;
+        return (this.state.isMonthYear)? this.state.selectedYear : this.state.selectedDate;
     }
 
-
     render() {
-        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isYear, selectedYear } = this.state;
+        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear } = this.state;
         const { options } = this.props;
         const isDisabled = (options && options.isDisabled === true);
         const showClearIcon = (options && options.showClearIcon === true);
         const manualEntry = (options && options.manualEntry === true);
+        const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();
 
         return (
             <div className="VS-App">
                 <div id={`${_uuid}`}></div>
                 <header className="VS-App-header">
-                    <div className="VS-DatepickerContainer">
+                    <div className="VS-DatepickerContainer" >
                         <div ref={(el) => this.el = el}>
                             <div className={`VS-Input-Border ${this.getInvalidClass()} ${(showClearIcon) ? 'VS-Input-Icon' : ''} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
                                 <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark VS-CalenderIcon" /></span>
@@ -307,10 +336,10 @@ class DatePicker extends React.PureComponent {
                                     value={this.getSelectedValue()}
                                     className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
                                     placeholder={this.getPlaceholder()}
-                                    onFocus={this.onFocus}
+                                    onClick={this.onFocus}
                                     onBlur={this.onBlur}
-                                    onKeyPress={this.onKeyPressHandler.bind(this)}
-                                    onKeyDown={this.onKeyDownHandler.bind(this)}
+                                    onKeyDown={(e) => this.onKeyDownHandler(e)}
+                                    onKeyPress={this.onKeyPressHandler.bind(this)}                                    
                                     onChange={this.onChangeHandler.bind(this, selectedDate)}
                                 />
                                 {
@@ -318,7 +347,7 @@ class DatePicker extends React.PureComponent {
                                     <span className="VS-PullRight VS-MrgT5"><FaClose className="VS-Shape VS-TextDark VS-CalenderIcon VS-CloseIcon" onClick={() => this.onClearButtonClickHandler()} /></span> : ''
                                 }
                                 {
-                                    (isInvalidDate === true)?
+                                    (isInvalidDate === true && showErrorMessage === true)?
                                     <span className="VS-InvalidText">{getInvalidDateMessage(options.validationMessages, isInvalidRangeDate)}</span> : ''
                                 }
                             </div>
@@ -328,12 +357,12 @@ class DatePicker extends React.PureComponent {
                                 <CalendarPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
                                     {
                                         (isCalendar)?
-                                        <CalendarDisplay style={this.state.style} options={options} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler}>
+                                        <CalendarDisplay style={this.state.style} options={options} onKeyDown={this.onKeyDownHandler} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler}>
                                         </CalendarDisplay>  : ''
                                     }
 
                                     {
-                                        (isYear)? <CalendarYear style={this.state.style} options={options} onYearSelect={this.onYearSelectHandler} selectedValue={selectedYear}></CalendarYear> : ''
+                                        (isMonthYear)? <CalendarYear style={this.state.style} options={options} onYearSelect={this.onYearSelectHandler} selectedValue={selectedYear}></CalendarYear> : ''
                                     }
                                 </CalendarPortal>
                                 : ''
