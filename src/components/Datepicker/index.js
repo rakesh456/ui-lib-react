@@ -9,10 +9,13 @@ import {
     isCalendarFormat,
     isYearFormat,
     isValidMonthYearValue,
+    isValidQQYearValue,
     isValidOutsideRangeDate,
     isValidOutsideRangeDateMonthYear,
+    isValidOutsideRangeDateQQYear,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
+    isQQYYYYFormat,
     isLeft,
     isRight
 } from "../../utils/calendar";
@@ -109,33 +112,48 @@ class DatePicker extends React.PureComponent {
             selectedYear: (this.state.isInvalidDate)? "" : this.state.selectedYear
         });
 
-        console.log(' this.state.isInvalidDate ', this.state.isInvalidDate);
-
         this.props.onFocus();
     }
     
     onBlur = () => {
-        let { manualEntry, showButtons } = this.props.options;
-
+        let { manualEntry, showButtons, displayFormat } = this.props.options;
 
         if(manualEntry === true){
             if(this.state.isMonthYear){
                 // Validate MM/yyyy date
 
-                if(isValidMonthYearValue(this.state.selectedYear)){
-                    var _valid = isValidOutsideRangeDateMonthYear(this.state.selectedYear, this.props.options);             
-                    console.log(' _valid ', _valid);   
-                    if(_valid){
-                        if(!showButtons){
-                            this.setState({ selectedYear: this.state.selectedYear});
+                if(isQQYYYYFormat(displayFormat)){
+                    var _validFormat = isValidQQYearValue(this.state.selectedYear); 
+                    if(_validFormat){
+                        var _valid = isValidOutsideRangeDateQQYear(this.state.selectedYear, this.props.options); 
+                        if(_valid){
+                            if(!showButtons){
+                                this.setState({ selectedYear: this.state.selectedYear});
+                            }
+                            this.props.onSelect(this.state.selectedYear);
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                        } else {
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
                         }
-                        this.props.onSelect(this.state.selectedYear);
-                        this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                     } else {
-                        this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                        this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                     }
                 } else {
-                    this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                    if(isValidMonthYearValue(this.state.selectedYear)){
+                        var _valid = isValidOutsideRangeDateMonthYear(this.state.selectedYear, this.props.options);             
+                           
+                        if(_valid){
+                            if(!showButtons){
+                                this.setState({ selectedYear: this.state.selectedYear});
+                            }
+                            this.props.onSelect(this.state.selectedYear);
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                        } else {
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                        }
+                    } else {
+                        this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                    }
                 }
             } else {
                 // Validate full formatted date
@@ -160,10 +178,11 @@ class DatePicker extends React.PureComponent {
     }
     
     onKeyPressHandler = (evt) => {
+        const { displayFormat } = this.props.options;
         evt = (evt) ? evt : window.event;
         var charCode = (evt.which) ? evt.which : evt.keyCode;
        
-        if ((charCode > 31 && (charCode < 45 || charCode > 57))) {
+        if ((charCode > 31 && (charCode < 45 || charCode > 57)) && (!isQQYYYYFormat(displayFormat))) {
             evt.preventDefault();;
         } 
     }

@@ -13,6 +13,10 @@ export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
 
+export const isQQYYYYFormat =(format) => {
+    return (format === 'QQ/YYYY');
+}
+
 export const getConvertedDate = (date, displayFormat) => {
     var _date = convertYYYYMMDDByFormat(date, displayFormat);
     return (!isValidDate(_date))? null : getYYYYMMDD(_date);
@@ -44,12 +48,13 @@ export const formatOptions = (options) => {
     var displayFormat = options.displayFormat;
 
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = getConvertedDate(options.lowerLimit, displayFormat)
+        newOptions['lowerLimit'] = (!isQQYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : options.lowerLimit;
+    }
+    
+    if(options.upperLimit){
+        newOptions['upperLimit'] = (!isQQYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : options.upperLimit;
     }
 
-    if(options.upperLimit){
-        newOptions['upperLimit'] = getConvertedDate(options.upperLimit, displayFormat) 
-    }
     if(options.disabledList && options.disabledList.length > 0){
         var _array = [];
         options.disabledList.forEach((ele) => {
@@ -249,6 +254,39 @@ export const checkDateInBetween = (date, from, to) => {
     }
 }
 
+export const isValidOutsideRangeDateQQYear = (date, options) => {
+    const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
+    const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options); 
+    
+    let _validate = false;
+    if(isUndefinedOrNull(lowerMonthLimit) && isUndefinedOrNull(upperMonthLimit) && isUndefinedOrNull(lowerYearLimit) && isUndefinedOrNull(upperYearLimit)){
+        return true;
+    } else {
+        let d = date.toString().split("/"),
+                qq = d[0],
+                year = parseInt(d[1]);
+        
+        if(lowerYearLimit && upperYearLimit && (year >= lowerYearLimit && year <= upperYearLimit)){
+            _validate = true;
+        } else if(lowerYearLimit && !upperYearLimit && year >= lowerYearLimit){
+            _validate = true;
+        } else if(!lowerYearLimit && upperYearLimit && year <= upperYearLimit){
+            _validate = true;
+        } 
+    
+        if(_validate === true){
+            let _l = (lowerMonthLimit)? parseInt(lowerMonthLimit.charAt(1)) : 1;
+            let _u = (upperMonthLimit)? parseInt(upperMonthLimit.charAt(1)) : 4;
+            let _q = parseInt(qq.charAt(1));
+          
+            if((year === lowerYearLimit && _q < _l) || (year === upperYearLimit && _q > _u)){
+                _validate = false;
+            }
+        }
+        return _validate;
+    }
+}
+
 export const isValidOutsideRangeDateMonthYear = (date, options) => {
     const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
     const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
@@ -257,9 +295,13 @@ export const isValidOutsideRangeDateMonthYear = (date, options) => {
         month = parseInt(d[0]),
         year = parseInt(d[1]);
 
-    const _date = new Date(year, (month - 1), 1);   
-    const _lowerLimit = new Date(lowerYearLimit, (lowerMonthLimit - 1), 1);   
-    const _upperLimit = new Date(upperYearLimit, upperMonthLimit, 1);  
+    let _date = new Date(year, (month - 1), 1);  
+    let _lowerLimit = new Date(lowerYearLimit, (lowerMonthLimit - 1), 1);   
+    _lowerLimit.setDate(1);
+    _lowerLimit.setHours(-1);  
+    let _upperLimit = new Date(upperYearLimit, upperMonthLimit, 1); 
+    _upperLimit.setDate(1);
+    _upperLimit.setHours(-1);  
     
     const _validate = checkDateInBetween(_date, isValidDate(_lowerLimit)? _lowerLimit : null, isValidDate(_upperLimit)? _upperLimit : null);     
     return _validate;
@@ -292,23 +334,44 @@ export const isYearFormat = (displayFormat) => {
 export const isValidMonthYearValue = (value) => {
     return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
 }
+
+export const isValidQQYearValue = (value) => {
+    if(value && new RegExp(/Q[\d]{1}\/[\d]{4}/).test(value)){
+        let _number = parseInt(value.charAt(1));
+        let d = value.toString().split("/"),
+                year = d[1];
+        
+        return (_number <= 4 && _number >= 1 && year.length === 4 && parseInt(year) > 999);
+    } else {
+        return false;
+    }
+}
+
 export const getYYYYForLowerLimit = (options) => {
-    return (options && options.lowerLimit)? getYYYYFromOption(options.lowerLimit, true) : {};
+    return (options && options.lowerLimit)? getYYYYFromOption(options.lowerLimit, options, true) : {};
 }
 
 export const getYYYYForUpperLimit = (options) => {
-    return (options && options.upperLimit)? getYYYYFromOption(options.upperLimit, false) : {};
+    return (options && options.upperLimit)? getYYYYFromOption(options.upperLimit, options, false) : {};
 }
 
-export const getYYYYFromOption = (limit, flag) => {
+export const getYYYYFromOption = (limit, options, flag) => {
     if(limit){
-        const _date = new Date(limit);
-        if(isDate(_date)){
-            const year= _date.getFullYear();
-            const month = zeroPad(_date.getMonth() + 1, 2);
-            return (flag)? {lowerMonthLimit: month, lowerYearLimit: year} : {upperMonthLimit: month, upperYearLimit: year}
+        if(!isQQYYYYFormat(options.displayFormat)){
+            const _date = new Date(limit);
+            if(isDate(_date)){
+                const year= _date.getFullYear();
+                const month = zeroPad(_date.getMonth() + 1, 2);
+                return (flag)? {lowerMonthLimit: month, lowerYearLimit: year} : {upperMonthLimit: month, upperYearLimit: year}
+            } else {
+                return {};
+            }
         } else {
-            return {};
+            let d = limit.toString().split("/"),
+                    qq = d[0],
+                    year = parseInt(d[1]);
+
+            return (flag)? {lowerMonthLimit: qq, lowerYearLimit: year} : {upperMonthLimit: qq, upperYearLimit: year}
         }
     } else {
         return {};
