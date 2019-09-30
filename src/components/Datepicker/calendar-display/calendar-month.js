@@ -1,5 +1,5 @@
 import React from "react";
-import { getMonthNameByIndex, getUpperLimitFromOptions, getProperFormattedDate, getLowerLimitFromOptions } from '../../../utils/calendar';
+import { getMonthNameByIndex, getUpperLimitFromOptions, getProperFormattedDate, currentFormatToYYYYMMDD, getLowerLimitFromOptions } from '../../../utils/calendar';
 import { isUndefinedOrNull } from '../../../utils/utils';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 

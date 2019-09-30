@@ -31,15 +31,19 @@ export function getLowerLimitFromOptions(options){
     return (options && options.lowerLimit)? ((isValidDate(options.lowerLimit))? options.lowerLimit : null) : null;
 }
 
+export const getProperFormattedDateNew = (date, options) => {
+    return new Date(currentFormatToYYYYMMDDNew(date, options));
+}
+
+export const currentFormatToYYYYMMDDNew = (date, options) => {
+    return convertYYYYMMDD(getDateByFormatDDMMYYYYNew(date, options.displayFormat), options);
+}
+
 export const getProperFormattedDate = (date, options) => {
     return new Date(currentFormatToYYYYMMDD(date, options));
 }
 
 export const currentFormatToYYYYMMDD = (date, options) => {
-    return convertYYYYMMDD(getDateByFormatDDMMYYYYNew(date, options.displayFormat), options);
-}
-
-export const currentFormatToYYYYMMDD1 = (date, options) => {
     return convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options);
 }
 
@@ -311,7 +315,7 @@ export const isValidOutsideRangeDate = (date, options) => {
     const upperLimit = getUpperLimitFromOptions(options);
     const lowerLimit = getLowerLimitFromOptions(options);
 
-    const _date = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(getProperFormattedDate(date, options), options.displayFormat), options));
+    const _date = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(getProperFormattedDateNew(date, options), options.displayFormat), options));
     const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerLimit, options.displayFormat), options));
     const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(upperLimit, options.displayFormat), options)) : upperLimit;
     

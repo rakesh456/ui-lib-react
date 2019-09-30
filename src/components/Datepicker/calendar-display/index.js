@@ -10,7 +10,6 @@ import {
 } from "../../../utils/utils";
 import {
     currentFormatToYYYYMMDD,
-    currentFormatToYYYYMMDD1,
     isDate
 } from "../../../utils/calendar";
 

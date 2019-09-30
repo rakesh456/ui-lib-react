@@ -4,6 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import DatePicker from "./components/Datepicker/index";
 import {
     getDateByFormatDDMMYYYY,
+    getDateByFormatDDMMYYYYNew,
     isUndefinedOrNull
 } from "../src/utils/utils";
 import {
@@ -50,8 +51,10 @@ function datepickerRender(el) {
     options = formatOptions(options);
 
     if(isCalendarFormat(options.displayFormat)){
-        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
+        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date("2019-09-09"), options.displayFormat));
     }
+
+    console.log(' options ', options);
 
     function callOnSelectedEvent(_date, el) {
         var ev = new CustomEvent("change");
@@ -70,7 +73,7 @@ function datepickerRender(el) {
     }
 
     function onSelectHandler(date) {
-        const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
+        const _date = getDateByFormatDDMMYYYYNew(date, options.displayFormat);
         setSelectedAttr(el, _date);
         callOnSelectedEvent(_date, el);
     }

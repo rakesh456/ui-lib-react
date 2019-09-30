@@ -13,6 +13,7 @@ import {
     isValidOutsideRangeDate,
     isValidOutsideRangeDateMonthYear,
     isValidOutsideRangeDateQQYear,
+    getProperFormattedDate,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
     isQQYYYYFormat,
@@ -21,7 +22,6 @@ import {
 } from "../../utils/calendar";
 import {
     isValidFormattedDate,
-    getCurrentYear,
     getDateByFormatDDMMYYYY,
     guid,
     ARROW_KEYS,
@@ -35,7 +35,14 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(new Date(), displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat) };
+
+        const { lowerLimit, upperLimit } = datePickerOptions;
+        var _lowerDate = getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions);
+        var _upperLimit = getProperFormattedDate(datePickerOptions.upperLimit, datePickerOptions);
+        var _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+        _date = (_upperLimit <= new Date())? _lowerDate : _date;
+
+        this.state = { selectedDate: getDateByFormatDDMMYYYY(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat) };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -188,7 +195,7 @@ class DatePicker extends React.PureComponent {
     }
     
     onKeyDownHandler = (evt) => {
-        if(!this.state.isMonthYear){
+        if(!this.state.isMonthYear && this.shouldCalendarOpen){
             evt = (evt) ? evt : window.event;
             const charCode = (evt.which) ? evt.which : evt.keyCode;
             const { options } = this.props;

@@ -43,6 +43,7 @@ $gui-blue: #069abc;
 $gui-white: #fffffe;
 $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
+$font-family: 'Roboto', sans-serif;
 
 date-picker{
     z-index: 9989;
@@ -327,6 +328,7 @@ date-picker{
 
 .VS-App{
     position: relative;
+    font-family: $font-family;
 }
 
 .VS-DatepickerContainer{
