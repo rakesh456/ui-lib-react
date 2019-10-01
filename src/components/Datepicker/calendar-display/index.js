@@ -10,6 +10,7 @@ import {
 } from "../../../utils/utils";
 import {
     currentFormatToYYYYMMDD,
+    currentFormatToYYYYMMDDNew,
     isDate
 } from "../../../utils/calendar";
 
@@ -35,8 +36,8 @@ class CalendarDisplay extends React.PureComponent {
     componentDidUpdate(prevProps) {
         var { options } = this.props;
 
-        const selectedDate1 = currentFormatToYYYYMMDD(this.props.selectedDate, options);
-        const selectedDate2 = currentFormatToYYYYMMDD(prevProps.selectedDate, options);
+        const selectedDate1 = currentFormatToYYYYMMDDNew(this.props.selectedDate, options);
+        const selectedDate2 = currentFormatToYYYYMMDDNew(prevProps.selectedDate, options);
 
         if(isDate(new Date(selectedDate1))){
             const _date1 = (new Date(selectedDate1));

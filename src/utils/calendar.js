@@ -17,9 +17,24 @@ export const isQQYYYYFormat =(format) => {
     return (format === 'QQ/YYYY');
 }
 
+export const isMMYYYYFormat =(format) => {
+    return (format === 'MM/YYYY');
+}
+
 export const getConvertedDate = (date, displayFormat) => {
     var _date = convertYYYYMMDDByFormat(date, displayFormat);
     return (!isValidDate(_date))? null : getYYYYMMDD(_date);
+}
+
+export const getConvertedDateMMYYYY = (date) => {
+    let d = date.toString().split("/"),
+        month = '' + d[0],
+        day = '01',
+        year = d[1];
+
+    if (month.length < 2) month = '0' + month;
+
+    return [year, month, day].join('-');
 }
 
 export function getUpperLimitFromOptions(options){
@@ -52,14 +67,15 @@ export const formatOptions = (options) => {
     var displayFormat = options.displayFormat;
 
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (!isQQYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : options.lowerLimit;
+        newOptions['lowerLimit'] = (!isQQYYYYFormat(displayFormat))? ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateMMYYYY(options.lowerLimit)) : options.lowerLimit;
     }
     
     if(options.upperLimit){
-        newOptions['upperLimit'] = (!isQQYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : options.upperLimit;
+        newOptions['upperLimit'] = (!isQQYYYYFormat(displayFormat))? ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateMMYYYY(options.upperLimit)) : options.upperLimit;
     }
 
     if(options.disabledList && options.disabledList.length > 0){
+        
         var _array = [];
         options.disabledList.forEach((ele) => {
             _array.push(getConvertedDate(ele, displayFormat));
@@ -78,6 +94,10 @@ export const formatOptions = (options) => {
             _array.push({'dates': _dates, 'color': ele.color});
         });
         newOptions['indicatorList'] = [..._array] 
+    }
+
+    if(isQQYYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat)){
+        newOptions['disabledList'] = newOptions['indicatorList'] = [];
     }
 
     return newOptions;
@@ -319,7 +339,7 @@ export const isValidOutsideRangeDate = (date, options) => {
     const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerLimit, options.displayFormat), options));
     const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(upperLimit, options.displayFormat), options)) : upperLimit;
     
-    return checkDateInBetween(_date, _lowerLimit, _upperLimit);
+    return (checkDateInBetween(_date, _lowerLimit, _upperLimit) && !dateIsInDisabledList(_date, options));
 }
 
 export const resetOptions = (options) => {
@@ -360,6 +380,7 @@ export const getYYYYForUpperLimit = (options) => {
 }
 
 export const getYYYYFromOption = (limit, options, flag) => {
+    
     if(limit){
         if(!isQQYYYYFormat(options.displayFormat)){
             const _date = new Date(limit);
@@ -411,6 +432,37 @@ export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) =>
     return _msg;
 }
 
+export const getNewUpdateDateByArrowNew = (selectedDate, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
+    const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatDDMMYYYYNew(selectedDate, displayFormat), options);
+    var newdate = new Date(_date);
+    
+    var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
+    if(isCtrl){
+        day = (charCode === ARROWS.left || charCode === ARROWS.up)? -365 : 365;
+    }
+    
+    if(isMonth){
+        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+        var month = (newdate.getMonth());
+            newdate.setMonth(month + counter);
+            newdate.setFullYear(newdate.getFullYear());
+    } else {
+        newdate.setDate(newdate.getDate() + day);
+    }
+
+    var _lDate = new Date(lowerLimit);
+    _lDate.setDate(_lDate.getDate() - 1);
+    var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
+    
+    var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
+    
+    if(dateIsInDisabledList(newdate, options)){
+        return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
+    } else {
+        return (isValidDate)? getDateByFormatDDMMYYYY(newdate, displayFormat) : getDateByFormatDDMMYYYYNew(selectedDate, displayFormat);
+    }
+}
+
 export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
     const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatDDMMYYYYNew(selectedDate, displayFormat), options);
     var newdate = new Date(_date);
@@ -423,12 +475,32 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     if(isMonth){
         var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
         var month = (newdate.getMonth());
-        newdate.setMonth(month + counter);
-        newdate.setFullYear(newdate.getFullYear());
+        if(dateIsInDisabledList(newdate, options)){
+            newdate.setDate(newdate.getDate() + counter);
+            // newdate.setMonth((counter < 0)? month - 1 : month);
+            newdate.setFullYear(newdate.getFullYear());
+        } else {
+            newdate.setMonth(month + counter);
+            newdate.setFullYear(newdate.getFullYear());
+        }
+    } else if(isCtrl){
+        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+        var year = (newdate.getFullYear());
+        var month = (newdate.getMonth());
+
+        if(dateIsInDisabledList(newdate, options)){
+            newdate.setDate(newdate.getDate() + counter);
+            // newdate.setMonth(month);
+            newdate.setFullYear(year);
+            console.log(' 3newdate ', newdate, newdate.getMonth());
+        } else {
+            newdate.setMonth(month);
+            newdate.setFullYear(year + counter);
+        }
     } else {
         newdate.setDate(newdate.getDate() + day);
     }
-    
+
     var _lDate = new Date(lowerLimit);
     _lDate.setDate(_lDate.getDate() - 1);
     var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
