@@ -63,6 +63,7 @@ date-picker{
 }
 
 .VS-shape-rounded-fill-for-year .VS-Disabled,
+.VS-shape-rounded-fill-for-quarter .VS-Disabled,
 .VS-shape-rounded-fill-for-month .VS-Disabled{
     cursor: default;
     color: #dddddd;
@@ -114,7 +115,7 @@ date-picker{
 
 .VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button, .VS-shape-rounded-fill-for-year, .VS-shape-rounded-fill-for-month, .VS-shape-rounded-fill-for-quarter {
     width: 216px;
-    height: 220px;
+    height: 248px;
     border-radius: 1px;
 }
 
@@ -209,7 +210,7 @@ date-picker{
 
 .VS-Day .VS-PadExtra:hover,
 .VS-DaySelected.VS-PadExtra{
-    padding: 4.0px 8.1px;
+    padding: 3.0px 7.1px;
 }
 
 .VS-Day .VS-DisabledDay:hover{
@@ -284,10 +285,10 @@ date-picker{
 
 .VS-indicator{
     position: absolute;
-    margin-left: 11.5px;
-    margin-top: 0px;
-    height: 7px;
-    width: 7px;
+    margin-left: 12.5px;
+    margin-top: 5px;
+    height: 6px;
+    width: 6px;
     background-color: $primary-one-bright;
     border-radius: 50%;
 }
@@ -396,7 +397,7 @@ date-picker{
     width: 30px;
     height: 16px;
     text-align: center;
-    margin: 6px 0px;
+    margin: 8px 0px;
 }
 
 .VS-DateRow{

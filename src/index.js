@@ -51,11 +51,11 @@ function datepickerRender(el) {
     options = formatOptions(options);
 
     if(isCalendarFormat(options.displayFormat)){
-        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date("2019-09-09"), options.displayFormat));
+        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
     }
 
-    console.log(' options ', options);
 
+    
     function callOnSelectedEvent(_date, el) {
         var ev = new CustomEvent("change");
         trigger(el, 'onChange', ev);

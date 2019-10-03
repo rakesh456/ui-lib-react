@@ -9,14 +9,17 @@ import {
     isCalendarFormat,
     isYearFormat,
     isValidMonthYearValue,
+    isValidYearValue,
     isValidQQYearValue,
     isValidOutsideRangeDate,
     isValidOutsideRangeDateMonthYear,
+    isValidOutsideRangeDateYear,
     isValidOutsideRangeDateQQYear,
     getProperFormattedDate,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
     isQQYYYYFormat,
+    isMMYYYYFormat,
     isLeft,
     isRight
 } from "../../utils/calendar";
@@ -143,9 +146,24 @@ class DatePicker extends React.PureComponent {
                     } else {
                         this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                     }
-                } else {
+                } else if(isMMYYYYFormat(displayFormat)) {
                     if(isValidMonthYearValue(this.state.selectedYear)){
                         var _valid = isValidOutsideRangeDateMonthYear(this.state.selectedYear, this.props.options);  
+                        if(_valid){
+                            if(!showButtons){
+                                this.setState({ selectedYear: this.state.selectedYear});
+                            }
+                            this.props.onSelect(this.state.selectedYear);
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                        } else {
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                        }
+                    } else {
+                        this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                    }
+                } else {
+                    if(isValidYearValue(this.state.selectedYear)){
+                        var _valid = isValidOutsideRangeDateYear(this.state.selectedYear, this.props.options);  
                         if(_valid){
                             if(!showButtons){
                                 this.setState({ selectedYear: this.state.selectedYear});

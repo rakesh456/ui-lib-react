@@ -13,12 +13,44 @@ export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
 
+export const isCalendarFormat = (displayFormat) => {
+    return (CLENDAR_FORMATS.indexOf(displayFormat) != -1)
+}
+
+export const isYearFormat = (displayFormat) => {
+    return (YEAR_FORMATS.indexOf(displayFormat) != -1)
+}
+
+export const isValidQQYearValue = (value) => {
+    if(value && new RegExp(/Q[\d]{1}\/[\d]{4}/).test(value)){
+        let _number = parseInt(value.charAt(1));
+        let d = value.toString().split("/"),
+                year = d[1];
+        
+        return (_number <= 4 && _number >= 1 && year.length === 4 && parseInt(year) > 999);
+    } else {
+        return false;
+    }
+}
+
+export const isValidMonthYearValue = (value) => {
+    return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
+}
+
+export const isValidYearValue = (value) => {
+    return new RegExp(/^[\d]{4}$/).test(value);
+}
+
 export const isQQYYYYFormat =(format) => {
     return (format === 'QQ/YYYY');
 }
 
 export const isMMYYYYFormat =(format) => {
     return (format === 'MM/YYYY');
+}
+
+export const isYYYFormat =(format) => {
+    return (format === 'YYYY');
 }
 
 export const getConvertedDate = (date, displayFormat) => {
@@ -62,25 +94,52 @@ export const currentFormatToYYYYMMDD = (date, options) => {
     return convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options);
 }
 
+export const getValidYearsList = (options) => {
+    const { displayFormat, disabledList } = options;
+
+    if(disabledList && disabledList.length){
+        let _array = [];
+        disabledList.forEach((date) => {
+            if((isQQYYYYFormat(displayFormat) && isValidQQYearValue(date)) || (isMMYYYYFormat(displayFormat) && isValidMonthYearValue(date))){
+                let d = date.toString().split("/"),
+                    year = d[1];
+                _array.push(year);
+            } 
+        });
+        return _array;
+    } else {
+        return [];
+    }
+}
+
 export const formatOptions = (options) => {
     var newOptions = {...options}
     var displayFormat = options.displayFormat;
 
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (!isQQYYYYFormat(displayFormat))? ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateMMYYYY(options.lowerLimit)) : options.lowerLimit;
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateMMYYYY(options.lowerLimit));
     }
     
     if(options.upperLimit){
-        newOptions['upperLimit'] = (!isQQYYYYFormat(displayFormat))? ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateMMYYYY(options.upperLimit)) : options.upperLimit;
+        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateMMYYYY(options.upperLimit));
     }
 
     if(options.disabledList && options.disabledList.length > 0){
-        
-        var _array = [];
-        options.disabledList.forEach((ele) => {
-            _array.push(getConvertedDate(ele, displayFormat));
-        });
-        newOptions['disabledList'] = [..._array] 
+        if(isYYYFormat(displayFormat)){
+            newOptions['disabledList'] = [...options.disabledList] 
+        } else {
+            var _array = [];
+            options.disabledList.forEach((ele) => {
+                if(isQQYYYYFormat(displayFormat) && isValidQQYearValue(ele)){
+                    _array.push(ele)
+                } else if(isMMYYYYFormat(displayFormat) && isValidMonthYearValue(ele)){
+                    _array.push(ele)
+                } else if(isCalendarFormat(displayFormat)){
+                    _array.push(getConvertedDate(ele, displayFormat));
+                }
+            });
+            newOptions['disabledList'] = [..._array] 
+        }
     }
     if(options.indicatorList && options.indicatorList.length > 0){
         var _array = [];
@@ -94,10 +153,6 @@ export const formatOptions = (options) => {
             _array.push({'dates': _dates, 'color': ele.color});
         });
         newOptions['indicatorList'] = [..._array] 
-    }
-
-    if(isQQYYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat)){
-        newOptions['disabledList'] = newOptions['indicatorList'] = [];
     }
 
     return newOptions;
@@ -306,9 +361,34 @@ export const isValidOutsideRangeDateQQYear = (date, options) => {
             if((year === lowerYearLimit && _q < _l) || (year === upperYearLimit && _q > _u)){
                 _validate = false;
             }
+
+            const {disabledList} = options;
+            if(qq, year){
+                const _val = qq + '/' + year;
+                _validate = (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
+            } 
         }
         return _validate;
     }
+}
+
+export const isValidOutsideRangeDateYear = (year, options) => {
+    const { lowerYearLimit } = getYYYYForLowerLimit(options);
+    const { upperYearLimit } = getYYYYForUpperLimit(options);
+    const { disabledList } = options;
+
+    let _validate = true;
+    if(lowerYearLimit && upperYearLimit && (year < lowerYearLimit || year > upperYearLimit)){
+        _validate = false;
+    } else if(lowerYearLimit && !upperYearLimit && year < lowerYearLimit){
+        _validate = false;
+    } else if(!lowerYearLimit && upperYearLimit && year > upperYearLimit){
+        _validate = false;
+    } else if(disabledList && disabledList.length > 0 && year){
+        _validate = ((disabledList.indexOf(year.toString()) !== -1)? false : true);
+    }
+        
+    return _validate;
 }
 
 export const isValidOutsideRangeDateMonthYear = (date, options) => {
@@ -327,7 +407,18 @@ export const isValidOutsideRangeDateMonthYear = (date, options) => {
     _upperLimit.setDate(1);
     _upperLimit.setHours(-1);  
     
-    const _validate = checkDateInBetween(_date, isValidDate(_lowerLimit)? _lowerLimit : null, isValidDate(_upperLimit)? _upperLimit : null);     
+    const _validate = checkDateInBetween(_date, isValidDate(_lowerLimit)? _lowerLimit : null, isValidDate(_upperLimit)? _upperLimit : null);
+    if(_validate){
+        const {disabledList} = options;
+        if(month, year){
+            const _month = zeroPad(month, 2);
+            const _val = _month + '/' + year;
+            return (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : _validate) : _validate;
+        } else {
+            return _validate;
+        }
+    }
+
     return _validate;
 }
 
@@ -346,31 +437,6 @@ export const resetOptions = (options) => {
     return {...DEFAULT_OPTIONS, ...options};
 }
 
-
-export const isCalendarFormat = (displayFormat) => {
-    return (CLENDAR_FORMATS.indexOf(displayFormat) != -1)
-}
-
-export const isYearFormat = (displayFormat) => {
-    return (YEAR_FORMATS.indexOf(displayFormat) != -1)
-}
-
-export const isValidMonthYearValue = (value) => {
-    return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
-}
-
-export const isValidQQYearValue = (value) => {
-    if(value && new RegExp(/Q[\d]{1}\/[\d]{4}/).test(value)){
-        let _number = parseInt(value.charAt(1));
-        let d = value.toString().split("/"),
-                year = d[1];
-        
-        return (_number <= 4 && _number >= 1 && year.length === 4 && parseInt(year) > 999);
-    } else {
-        return false;
-    }
-}
-
 export const getYYYYForLowerLimit = (options) => {
     return (options && options.lowerLimit)? getYYYYFromOption(options.lowerLimit, options, true) : {};
 }
@@ -380,9 +446,14 @@ export const getYYYYForUpperLimit = (options) => {
 }
 
 export const getYYYYFromOption = (limit, options, flag) => {
-    
     if(limit){
-        if(!isQQYYYYFormat(options.displayFormat)){
+        if(isQQYYYYFormat(options.displayFormat)){
+            let d = limit.toString().split("/"),
+                    qq = d[0],
+                    year = parseInt(d[1]);
+
+            return (flag)? {lowerMonthLimit: qq, lowerYearLimit: year} : {upperMonthLimit: qq, upperYearLimit: year}
+        } else if(isMMYYYYFormat(options.displayFormat)){
             const _date = new Date(limit);
             if(isDate(_date)){
                 const year= _date.getFullYear();
@@ -391,12 +462,17 @@ export const getYYYYFromOption = (limit, options, flag) => {
             } else {
                 return {};
             }
+        } else if(isYYYFormat(options.displayFormat)){
+            const _date = new Date(limit);
+            if(isDate(_date)){
+                const year= _date.getFullYear();
+                return (flag)? {lowerYearLimit: (year && isValidYearValue(parseInt(year)))? year : ""} : {upperYearLimit: (year && isValidYearValue(parseInt(year)))? year : ""}
+            } else {
+                return {};
+            }
+            
         } else {
-            let d = limit.toString().split("/"),
-                    qq = d[0],
-                    year = parseInt(d[1]);
-
-            return (flag)? {lowerMonthLimit: qq, lowerYearLimit: year} : {upperMonthLimit: qq, upperYearLimit: year}
+            return {};
         }
     } else {
         return {};
