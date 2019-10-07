@@ -21,7 +21,7 @@ import {
     isValidDate
 } from "../../../utils/utils";
 
-class CalendarYear extends React.PureComponent {
+class Year extends React.PureComponent {
     constructor(props) {
         super(props);
         const { options } = this.props;
@@ -275,4 +275,4 @@ class CalendarYear extends React.PureComponent {
     }
 }
 
-export default CalendarYear;
+export default Year;

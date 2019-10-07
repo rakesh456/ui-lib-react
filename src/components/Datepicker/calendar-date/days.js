@@ -15,7 +15,7 @@ import {
     isUndefinedOrNull
 } from "../../../utils/utils";
 
-class CalendarDays extends React.PureComponent {
+class Days extends React.PureComponent {
     constructor(props) {
         super(props);
         const options = this.props.options;
@@ -155,4 +155,4 @@ class CalendarDays extends React.PureComponent {
  
 }
 
-export default CalendarDays;
+export default Days;

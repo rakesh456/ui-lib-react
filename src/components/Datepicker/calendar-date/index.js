@@ -1,8 +1,8 @@
 import React from "react";
-import CalendarWeek from "./calendar-week";
-import CalendarMonth from "./calendar-month";
-import CalendarDays from "./calendar-days";
-import CalendarButtons from "./calendar-buttons";
+import Week from "./week";
+import Month from "./month";
+import Days from "./days";
+import Buttons from "./buttons";
 
 import '../date-picker.scss';
 import {
@@ -16,7 +16,7 @@ import {
 
 let calendarModal = null;
 
-class CalendarDisplay extends React.PureComponent {
+class CalendarDate extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -50,11 +50,7 @@ class CalendarDisplay extends React.PureComponent {
         }
     }
 
-    componentWillUnmount() {
-        if(calendarModal){
-            // calendarModal.removeChild(this.el);
-        }
-    }
+    componentWillUnmount() {}
 
     onSelectHandler = (_date) => {
         this.props.onSelect(_date);
@@ -110,16 +106,16 @@ class CalendarDisplay extends React.PureComponent {
 
         return (
             <div className={this.getCalendarContainerClass()} style={this.props.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
-                <CalendarMonth options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
-                <CalendarWeek />
-                <CalendarDays options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
+                <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
+                <Week />
+                <Days options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
                 {
                     (showButtons === true)? 
-                    <CalendarButtons options={this.props.options} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} /> : ''
+                    <Buttons options={this.props.options} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} /> : ''
                 }
             </div>
         );
     }
 }
 
-export default CalendarDisplay;
+export default CalendarDate;

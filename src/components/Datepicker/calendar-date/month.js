@@ -3,7 +3,7 @@ import { getMonthNameByIndex, getUpperLimitFromOptions, getProperFormattedDate, 
 import { isUndefinedOrNull } from '../../../utils/utils';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 
-class CalendarMonth extends React.PureComponent {
+class Month extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {};
@@ -60,4 +60,4 @@ class CalendarMonth extends React.PureComponent {
     }
 }
 
-export default CalendarMonth;
+export default Month;

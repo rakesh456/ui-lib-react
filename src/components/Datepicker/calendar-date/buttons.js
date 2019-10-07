@@ -3,7 +3,7 @@
 import React from "react";
 import { Button } from 'reactstrap';
 
-class CalendarButtons extends React.PureComponent {
+class Buttons extends React.PureComponent {
     componentDidMount() {}
 
     componentDidUpdate(prevProps) {}
@@ -29,4 +29,4 @@ class CalendarButtons extends React.PureComponent {
     }
 }
 
-export default CalendarButtons;
+export default Buttons;

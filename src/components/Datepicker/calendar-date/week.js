@@ -3,7 +3,7 @@
 import React from "react";
 import { WEEK_SHORT_NAMES } from '../../../utils/calendar';
 
-class CalendarWeek extends React.PureComponent {
+class Week extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {month: new Date().getMonth(), year: new Date().getFullYear() };
@@ -28,4 +28,4 @@ class CalendarWeek extends React.PureComponent {
     }
 }
 
-export default CalendarWeek;
+export default Week;
