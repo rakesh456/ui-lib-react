@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import DatePicker from "./components/Datepicker/index";
 import {
-    getDateByFormatDDMMYYYY,
-    getDateByFormatDDMMYYYYNew,
+    getDateByFormat,
+    getDateByFormatNew,
     isUndefinedOrNull
 } from "../src/utils/utils";
 import {
@@ -51,7 +51,7 @@ function datepickerRender(el) {
     options = formatOptions(options);
 
     if(isCalendarFormat(options.displayFormat)){
-        setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
+        setSelectedAttr(el, getDateByFormat(new Date(), options.displayFormat));
     }
 
     function callOnSelectedEvent(_date, el) {
@@ -71,7 +71,7 @@ function datepickerRender(el) {
     }
 
     function onSelectHandler(date) {
-        const _date = getDateByFormatDDMMYYYYNew(date, options.displayFormat);
+        const _date = getDateByFormatNew(date, options.displayFormat);
         setSelectedAttr(el, _date);
         callOnSelectedEvent(_date, el);
     }
@@ -90,7 +90,7 @@ function datepickerRender(el) {
     }
 
     el.setValue = function (date) {
-        var _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
+        var _date = getDateByFormat(date, options.displayFormat);
         setSelectedAttr(el, _date);
         myComponentInstance.setDateValue(_date);
     }

@@ -10,7 +10,6 @@ import {
     isEqual,
     getYYYYForLowerLimit,
     getYYYYForUpperLimit,
-    getValidYearsList,
     getMonthIndex,
     isMMYYYYFormat
 } from "../../../utils/calendar";

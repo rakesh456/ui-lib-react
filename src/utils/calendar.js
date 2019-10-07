@@ -1,4 +1,4 @@
-import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormatDDMMYYYY, getDateByFormatDDMMYYYYNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD } from "./utils";
+import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormat, getDateByFormatNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD } from "./utils";
 
 export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "showErrorMessage": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
@@ -13,14 +13,17 @@ export const MONTH_SHORT_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul
 export const WEEK_SHORT_NAMES = ["S", "M", "T", "W", "T", "F", "S"];
 export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
 
+// Function to check format is calendar type or not
 export const isCalendarFormat = (displayFormat) => {
     return (CLENDAR_FORMATS.indexOf(displayFormat) != -1)
 }
 
+// Function to check format is year type or not
 export const isYearFormat = (displayFormat) => {
     return (YEAR_FORMATS.indexOf(displayFormat) != -1)
 }
 
+// Function to check value is QQ/YYYY format using regex
 export const isValidQQYearValue = (value) => {
     if(value && new RegExp(/Q[\d]{1}\/[\d]{4}/).test(value)){
         let _number = parseInt(value.charAt(1));
@@ -33,32 +36,39 @@ export const isValidQQYearValue = (value) => {
     }
 }
 
+// Function to check value is MM/YYYY format using regex
 export const isValidMonthYearValue = (value) => {
     return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
 }
 
+// Function to check value is YYYY format using regex
 export const isValidYearValue = (value) => {
     return new RegExp(/^[\d]{4}$/).test(value);
 }
 
-export const isQQYYYYFormat =(format) => {
+// Function to check format is QQ/YYYY
+export const isQQYYYYFormat = (format) => {
     return (format === 'QQ/YYYY');
 }
 
+// Function to check format is MM/YYYY
 export const isMMYYYYFormat =(format) => {
     return (format === 'MM/YYYY');
 }
 
+// Function to check format is YYYY
 export const isYYYFormat =(format) => {
     return (format === 'YYYY');
 }
 
+// Function to get date by display format
 export const getConvertedDate = (date, displayFormat) => {
     var _date = convertYYYYMMDDByFormat(date, displayFormat);
     return (!isValidDate(_date))? null : getYYYYMMDD(_date);
 }
 
-export const getConvertedDateMMYYYY = (date) => {
+// Function to convert date to YYYY-MM-DD valid date
+export const getConvertedDateYYYYMMDDD = (date) => {
     let d = date.toString().split("/"),
         month = '' + d[0],
         day = '01',
@@ -69,58 +79,47 @@ export const getConvertedDateMMYYYY = (date) => {
     return [year, month, day].join('-');
 }
 
+// Function to get upper limit date from option
 export function getUpperLimitFromOptions(options){
     return (options && options.upperLimit)? ((isValidDate(options.upperLimit))? options.upperLimit : null) : null;
 }
 
+// Function to get lower limit date from option
 export function getLowerLimitFromOptions(options){
     return (options && options.lowerLimit)? ((isValidDate(options.lowerLimit))? options.lowerLimit : null) : null;
 }
 
+// Function to get proper formatted date from options new
 export const getProperFormattedDateNew = (date, options) => {
     return new Date(currentFormatToYYYYMMDDNew(date, options));
 }
 
+// Function to get current formatted date
 export const currentFormatToYYYYMMDDNew = (date, options) => {
-    return convertYYYYMMDD(getDateByFormatDDMMYYYYNew(date, options.displayFormat), options);
+    return convertYYYYMMDD(getDateByFormatNew(date, options.displayFormat), options);
 }
 
+// Function to get proper formatted date from options
 export const getProperFormattedDate = (date, options) => {
     return new Date(currentFormatToYYYYMMDD(date, options));
 }
 
+// Function to convert date to YYYYMMDD format
 export const currentFormatToYYYYMMDD = (date, options) => {
-    return convertYYYYMMDD(getDateByFormatDDMMYYYY(date, options.displayFormat), options);
+    return convertYYYYMMDD(getDateByFormat(date, options.displayFormat), options);
 }
 
-export const getValidYearsList = (options) => {
-    const { displayFormat, disabledList } = options;
-
-    if(disabledList && disabledList.length){
-        let _array = [];
-        disabledList.forEach((date) => {
-            if((isQQYYYYFormat(displayFormat) && isValidQQYearValue(date)) || (isMMYYYYFormat(displayFormat) && isValidMonthYearValue(date))){
-                let d = date.toString().split("/"),
-                    year = d[1];
-                _array.push(year);
-            } 
-        });
-        return _array;
-    } else {
-        return [];
-    }
-}
-
+// Function to format options
 export const formatOptions = (options) => {
     var newOptions = {...options}
     var displayFormat = options.displayFormat;
 
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateMMYYYY(options.lowerLimit));
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
     }
     
     if(options.upperLimit){
-        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateMMYYYY(options.upperLimit));
+        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.upperLimit));
     }
 
     if(options.disabledList && options.disabledList.length > 0){
@@ -157,21 +156,25 @@ export const formatOptions = (options) => {
     return newOptions;
 }
 
+// Function to get full month name by index value
 export function getMonthNameByIndex(index) {
     var _index = (index)? index : 0;
     return MONTH_NAMES[_index].toUpperCase();
 }
 
+// Function to get short month name by index value
 export function getMonthIndex(month) {
     return zeroPad(MONTH_SHORT_NAMES.indexOf(month) + 1, 2);
 }
 
+// Function to return padding zero to string
 export const zeroPad = (n, width, z)  =>{
     z = z || '0';
     n = n + '';
     return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
 }
 
+// Function to return days by month and year
 export const getMonthDays = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     const months30 = [4, 6, 9, 11];
     const leapYear = year % 4 === 0;
@@ -185,7 +188,7 @@ export const getMonthDays = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
             : 31;
 }
 
-
+// Function to return previous month value by month and year
 export const getPreviousMonth = (month, year) => {
     const prevMonth = (month > 1) ? month - 1 : 12;
     const prevMonthYear = (month > 1) ? year : year - 1;
@@ -193,6 +196,7 @@ export const getPreviousMonth = (month, year) => {
     return { month: prevMonth, year: prevMonthYear };
 }
 
+// Function to return next month value by month and year
 export const getNextMonth = (month, year) => {
     const nextMonth = (month < 12) ? month + 1 : 1;
     const nextMonthYear = (month < 12) ? year : year + 1;
@@ -200,10 +204,12 @@ export const getNextMonth = (month, year) => {
     return { month: nextMonth, year: nextMonthYear };
 }
 
+// Function to get first day of the month by month, year
 export const getMonthFirstDay = (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     return +(new Date(`${year}-${zeroPad(month, 2)}-01`).getDay()) + 1;
 }
 
+// Funtion to create temporary array of null by number
 export const createBlankArray = (number) => {
     var _array = [];
     for (let index = 0; index < number; index++) {
@@ -212,6 +218,7 @@ export const createBlankArray = (number) => {
     return _array;
 }
 
+// Constructor to current, previous and next month days arrays.
 export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     const monthDays = getMonthDays(month, year);
     const monthFirstDay = getMonthFirstDay(month, year);
@@ -248,6 +255,7 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
     return prevMonthDates;
 }
 
+// Function to get year list based on current year
 export const getYearsList = (year) => {
     year = (year)? year : new Date().getFullYear();
     var array = [];
@@ -300,6 +308,7 @@ export const getIsoDate = (date = new Date()) => {
     ].join('-');
 }
 
+// (bool) Function to check date is between from and to date
 export const checkDateInBetween = (date, from, to) => {
     if(isDate(date)){
         var _to = (!isUndefinedOrNull(to))? new Date(to) : null; 
@@ -328,6 +337,7 @@ export const checkDateInBetween = (date, from, to) => {
     }
 }
 
+// Function to validate date is between lower and upper limit for QQ/YYYY format
 export const isValidOutsideRangeDateQQYear = (date, options) => {
     const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
     const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options); 
@@ -367,6 +377,7 @@ export const isValidOutsideRangeDateQQYear = (date, options) => {
     }
 }
 
+// Function to validate date is between lower and upper limit for YYYY format
 export const isValidOutsideRangeDateYear = (year, options) => {
     const { lowerYearLimit } = getYYYYForLowerLimit(options);
     const { upperYearLimit } = getYYYYForUpperLimit(options);
@@ -386,6 +397,7 @@ export const isValidOutsideRangeDateYear = (year, options) => {
     return _validate;
 }
 
+// Function to validate date is between lower and upper limit for MM/YYYY format
 export const isValidOutsideRangeDateMonthYear = (date, options) => {
     const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
     const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
@@ -417,29 +429,34 @@ export const isValidOutsideRangeDateMonthYear = (date, options) => {
     return _validate;
 }
 
+// Function to validate date is between lower and upper limit for MM/DD/YYYY or DD/MM/YYYY format
 export const isValidOutsideRangeDate = (date, options) => {
     const upperLimit = getUpperLimitFromOptions(options);
     const lowerLimit = getLowerLimitFromOptions(options);
 
-    const _date = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(getProperFormattedDateNew(date, options), options.displayFormat), options));
-    const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(lowerLimit, options.displayFormat), options));
-    const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormatDDMMYYYY(upperLimit, options.displayFormat), options)) : upperLimit;
+    const _date = new Date(convertYYYYMMDD(getDateByFormat(getProperFormattedDateNew(date, options), options.displayFormat), options));
+    const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormat(lowerLimit, options.displayFormat), options));
+    const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormat(upperLimit, options.displayFormat), options)) : upperLimit;
     
     return (checkDateInBetween(_date, _lowerLimit, _upperLimit) && !dateIsInDisabledList(_date, options));
 }
 
+// Function to reset options with default options
 export const resetOptions = (options) => {
     return {...DEFAULT_OPTIONS, ...options};
 }
 
+// Function to return YYYY format for lower limit
 export const getYYYYForLowerLimit = (options) => {
     return (options && options.lowerLimit)? getYYYYFromOption(options.lowerLimit, options, true) : {};
 }
 
+// Function to return YYYY format for upper limit
 export const getYYYYForUpperLimit = (options) => {
     return (options && options.upperLimit)? getYYYYFromOption(options.upperLimit, options, false) : {};
 }
 
+// Function to return lower/upper limit from option 
 export const getYYYYFromOption = (limit, options, flag) => {
     if(limit){
         if(isQQYYYYFormat(options.displayFormat)){
@@ -474,18 +491,22 @@ export const getYYYYFromOption = (limit, options, flag) => {
     }
 }
 
+// Function to get selected year
 export const getSelectedYear = (value) => {
     return (value)? value.split("/")[1] : ''
 }
 
+// Function to get selected month
 export const getSelectedMonth = (value) => {
     return (value)? value.split("/")[0] : ''
 }
 
+// Function to check two values are equal or not
 export const isEqual = (val1, val2) => {
     return (val1 && val2 && val1.toString() === val2.toString())
 }
 
+// Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) => {
     var _msg = (!isInvalidRangeDate)? 'Invalid Date' : 'Outside allowed range';
 
@@ -503,39 +524,9 @@ export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) =>
     return _msg;
 }
 
-export const getNewUpdateDateByArrowNew = (selectedDate, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
-    const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatDDMMYYYYNew(selectedDate, displayFormat), options);
-    var newdate = new Date(_date);
-    
-    var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
-    if(isCtrl){
-        day = (charCode === ARROWS.left || charCode === ARROWS.up)? -365 : 365;
-    }
-    
-    if(isMonth){
-        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
-        var month = (newdate.getMonth());
-            newdate.setMonth(month + counter);
-            newdate.setFullYear(newdate.getFullYear());
-    } else {
-        newdate.setDate(newdate.getDate() + day);
-    }
-
-    var _lDate = new Date(lowerLimit);
-    _lDate.setDate(_lDate.getDate() - 1);
-    var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
-    
-    var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
-    
-    if(dateIsInDisabledList(newdate, options)){
-        return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
-    } else {
-        return (isValidDate)? getDateByFormatDDMMYYYY(newdate, displayFormat) : getDateByFormatDDMMYYYYNew(selectedDate, displayFormat);
-    }
-}
-
+// Recursive funtion to get valid next date by charcode
 export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
-    const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatDDMMYYYYNew(selectedDate, displayFormat), options);
+    const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatNew(selectedDate, displayFormat), options);
     var newdate = new Date(_date);
     
     var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
@@ -578,10 +569,11 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     if(dateIsInDisabledList(newdate, options)){
         return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
     } else {
-        return (isValidDate)? getDateByFormatDDMMYYYY(newdate, displayFormat) : getDateByFormatDDMMYYYYNew(selectedDate, displayFormat);
+        return (isValidDate)? getDateByFormat(newdate, displayFormat) : getDateByFormatNew(selectedDate, displayFormat);
     }
 }
 
+// Function to check date is disabled list or not
 export const dateIsInDisabledList = (newdate, options) => {
     var _flag = false;
 
@@ -595,10 +587,12 @@ export const dateIsInDisabledList = (newdate, options) => {
     return _flag;
 }
 
+// Function to check value is left or not
 export const isLeft = (value) => {
     return (value.toLowerCase()) === 'left';
 }
 
+// Function to check value is right or not
 export const isRight = (value) => {
     return (value.toLowerCase()) === 'right';
 }

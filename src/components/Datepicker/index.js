@@ -26,7 +26,7 @@ import {
 } from "../../utils/calendar";
 import {
     isValidFormattedDate,
-    getDateByFormatDDMMYYYY,
+    getDateByFormat,
     guid,
     ARROW_KEYS,
     ARROWS,
@@ -42,7 +42,7 @@ class DatePicker extends React.PureComponent {
 
         const _date = this.getDefaultDate();
 
-        this.state = { selectedDate: getDateByFormatDDMMYYYY(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat) };
+        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat) };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -80,7 +80,7 @@ class DatePicker extends React.PureComponent {
 
     onSelectHandler = date => {
         const { displayFormat, showButtons } = this.props.options;
-        const newDate = getDateByFormatDDMMYYYY(date, displayFormat);
+        const newDate = getDateByFormat(date, displayFormat);
         if(showButtons === true){
             this.setState({ selectedDate: newDate, shouldCalendarOpen: true });
         } else {
@@ -116,7 +116,7 @@ class DatePicker extends React.PureComponent {
         this.setState({
             shouldCalendarOpen: true,
             newSelectedYear: "",
-            selectedDate: (this.state.isInvalidRangeDate || this.state.isInvalidDate)? getDateByFormatDDMMYYYY(_date, displayFormat) : _selectedDate,
+            selectedDate: (this.state.isInvalidRangeDate || this.state.isInvalidDate)? getDateByFormat(_date, displayFormat) : _selectedDate,
             selectedYear: (this.state.isInvalidDate)? "" : this.state.selectedYear
         });
 

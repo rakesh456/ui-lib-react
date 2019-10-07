@@ -1,18 +1,25 @@
 import { isDate, zeroPad } from "./calendar";
 
+// Char code of keyboard arrow keys array
 export const ARROW_KEYS = [37, 38, 39, 40];
+
+// Char code of keyboard arrow keys object
 export const ARROWS = {left: 37, up: 38, right: 39, down: 40 };
 
+// Created fragment for object.
 export const Fragment = (props, children) => children;
 
+// Function to check obj is undefined or null
 export function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj === null || !obj)? true : false;
 }
 
+// Funtion to check string is blank, undefined or null
 export function isBlank(string){
     return (typeof string === "undefined" || string === null || string === '')? true : false;
 }
 
+// Split array with chunk size
 export function splitArray(array, chunk_size){
     var index = 0;
     var arrayLength = array.length;
@@ -26,26 +33,27 @@ export function splitArray(array, chunk_size){
     return tempArray;
 }
 
-export function getStaticDays(){
-    return [[2019,"07","28"],[2019,"07","29"],[2019,"07","30"],[2019,"07","31"],[2019,"08","01"],[2019,"08","02"],[2019,"08","03"],[2019,"08","04"],[2019,"08","05"],[2019,"08","06"],[2019,"08","07"],[2019,"08","08"],[2019,"08","09"],[2019,"08","10"],[2019,"08","11"],[2019,"08","12"],[2019,"08","13"],[2019,"08","14"],[2019,"08","15"],[2019,"08","16"],[2019,"08","17"],[2019,"08","18"],[2019,"08","19"],[2019,"08","20"],[2019,"08","21"],[2019,"08","22"],[2019,"08","23"],[2019,"08","24"],[2019,"08","25"],[2019,"08","26"],[2019,"08","27"],[2019,"08","28"],[2019,"08","29"],[2019,"08","30"],[2019,"08","31"],[2019,"09","01"],[2019,"09","02"],[2019,"09","03"],[2019,"09","04"],[2019,"09","05"],[2019,"09","06"],[2019,"09","07"]];
-}
-
+// Funtion to return display format from options. Send MM/DD/YYYY if nout found
 export function getFormatfromOptions(options){
     return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : 'MM/DD/YYYY';
 }
 
-export function getDateByFormatDDMMYYYY(date, format){
+// Get date by display format
+export function getDateByFormat(date, format){
     return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date);
 }
 
-export function getDateByFormatDDMMYYYYNew(date, format){
+// Get date by display format new
+export function getDateByFormatNew(date, format){
     return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYYNew(date) : getDateMMDDYYYY(date);
 }
 
+// Check date is valid date or not
 export const isValidDate = dateObject => { 
     return new Date(dateObject).toString() !== 'Invalid Date'; 
 }
 
+// Function to get DD/MM/YYYY format date
 export function getDateDDMMYYYYNew(date, format) {
     let d = new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
     
@@ -59,6 +67,7 @@ export function getDateDDMMYYYYNew(date, format) {
     return [day, month, year].join('/');
 }
 
+// Function to get DD/MM/YYYY format date
 export function getDateDDMMYYYY(date, format) {
     // let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
     let d = (isValidDate(date))? new Date(date) : new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
@@ -73,6 +82,7 @@ export function getDateDDMMYYYY(date, format) {
     return [day, month, year].join('/');
 }
 
+// Function to get MM/DD/YYYY format date
 export function getDateMMDDYYYY(date) {
     let d = new Date(date),
         month = '' + (d.getMonth() + 1),
@@ -85,11 +95,13 @@ export function getDateMMDDYYYY(date) {
     return [month, day, year].join('/');
 }
 
+// Function to convert date to YYYY-MM-DD format
 export function convertYYYYMMDD(date, options) {
     let format = getFormatfromOptions(options);
     return convertYYYYMMDDByFormat(date, format);
 }
 
+// Function to convert date to YYYY-MM-DD format
 export function convertYYYYMMDDByFormat(date, format){
     if(isUndefinedOrNull(date)){
         return "";
@@ -107,6 +119,7 @@ export function convertYYYYMMDDByFormat(date, format){
     return [year, month, day].join('-');
 }
 
+// Function to convert date to YYYY-MM-DD format
 export function getYYYYMMDD(date){
     let d = new Date(date);
     let month = '' + zeroPad((d.getMonth() + 1), 2),
@@ -116,20 +129,24 @@ export function getYYYYMMDD(date){
     return [year, month, day].join('-');
 }
 
+// Function to get current date fullyear
 export function getCurrentYear() {
     return new Date().getFullYear();
 }
 
+// Function to validate formatted date
 export function isValidFormattedDate(date, options) {
     let _date = convertYYYYMMDD(date, options);
     return (isDate(new Date(_date)));
 }
 
+// Function to get unique Id
 export function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
 
+// Function to get s4 value
 export function s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
         .toString(16)
