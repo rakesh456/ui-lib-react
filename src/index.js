@@ -54,8 +54,6 @@ function datepickerRender(el) {
         setSelectedAttr(el, getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
     }
 
-
-    
     function callOnSelectedEvent(_date, el) {
         var ev = new CustomEvent("change");
         trigger(el, 'onChange', ev);

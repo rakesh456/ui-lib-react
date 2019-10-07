@@ -74,7 +74,6 @@ export function getUpperLimitFromOptions(options){
 }
 
 export function getLowerLimitFromOptions(options){
-    // return (!isUndefinedOrNull(options) && options.lowerLimit && isValidDate(options.lowerLimit))? options.lowerLimit : new Date();
     return (options && options.lowerLimit)? ((isValidDate(options.lowerLimit))? options.lowerLimit : null) : null;
 }
 
@@ -246,7 +245,6 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 
     Array.prototype.push.apply(prevMonthDates, thisMonthDates);
     Array.prototype.push.apply(prevMonthDates, nextMonthDates);
-    //  (JSON.stringify(prevMonthDates).concat(JSON.stringify(thisMonthDates))).concat(JSON.stringify(nextMonthDates));
     return prevMonthDates;
 }
 
@@ -270,9 +268,6 @@ export const isDate = date => {
 // (bool) Checks if two date values are of the same month and year
 export const isSameMonth = (date, basedateMonth, basedateYear) => {
     if (!(isDate(date))) return false;
-
-    // const basedateMonth = +(basedate.getMonth()) + 1;
-    // const basedateYear = basedate.getFullYear();
 
     const dateMonth = +(date.getMonth()) + 1;
     const dateYear = date.getFullYear();
@@ -316,11 +311,11 @@ export const checkDateInBetween = (date, from, to) => {
             return true;
         } else if(isUndefinedOrNull(_to) && isDate(from) && date.getTime() >= from.getTime()){
             return true;
-        } else if(isDate(from) && isDate(_to) && (date.getTime() <= from.getTime() || date.getTime() > _to.getTime())){
+        } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
         } else if(isDate(from) && isDate(_to)){
             var _fromDt = new Date(from);
-            if(date.getTime() > _fromDt.getTime() && date.getTime() <= _to.getTime()){
+            if(date.getTime() >= _fromDt.getTime() && date.getTime() <= _to.getTime()){
                 return true;
             } else {
                 return false
@@ -553,7 +548,6 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
         var month = (newdate.getMonth());
         if(dateIsInDisabledList(newdate, options)){
             newdate.setDate(newdate.getDate() + counter);
-            // newdate.setMonth((counter < 0)? month - 1 : month);
             newdate.setFullYear(newdate.getFullYear());
         } else {
             newdate.setMonth(month + counter);
@@ -566,9 +560,7 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
 
         if(dateIsInDisabledList(newdate, options)){
             newdate.setDate(newdate.getDate() + counter);
-            // newdate.setMonth(month);
             newdate.setFullYear(year);
-            console.log(' 3newdate ', newdate, newdate.getMonth());
         } else {
             newdate.setMonth(month);
             newdate.setFullYear(year + counter);
@@ -578,7 +570,7 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     }
 
     var _lDate = new Date(lowerLimit);
-    _lDate.setDate(_lDate.getDate() - 1);
+    _lDate.setDate(_lDate.getDate());
     var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
     
     var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);

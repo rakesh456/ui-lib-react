@@ -3,7 +3,6 @@ import { isDate, zeroPad } from "./calendar";
 export const ARROW_KEYS = [37, 38, 39, 40];
 export const ARROWS = {left: 37, up: 38, right: 39, down: 40 };
 
-// import moment from 'moment';
 export const Fragment = (props, children) => children;
 
 export function isUndefinedOrNull(obj){
@@ -48,9 +47,6 @@ export const isValidDate = dateObject => {
 }
 
 export function getDateDDMMYYYYNew(date, format) {
-    // return getDateMMDDYYYY(date);
-    // let d = new Date(date);
-    // let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
     let d = new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
     
     let month = '' + (d.getMonth() + 1),
@@ -64,8 +60,6 @@ export function getDateDDMMYYYYNew(date, format) {
 }
 
 export function getDateDDMMYYYY(date, format) {
-    // return getDateMMDDYYYY(date);
-    // let d = new Date(date);
     // let d = (isDate(date))? new Date(date) : new Date(convertYYYYMMDD(date, {}));
     let d = (isValidDate(date))? new Date(date) : new Date(convertYYYYMMDDByFormat(date, 'DD/MM/YYYY'));
     
@@ -97,6 +91,9 @@ export function convertYYYYMMDD(date, options) {
 }
 
 export function convertYYYYMMDDByFormat(date, format){
+    if(isUndefinedOrNull(date)){
+        return "";
+    }
     let dayIndex = (format && format === 'MM/DD/YYYY')? 1 : 0;
     let monthIndex = (format && format === 'MM/DD/YYYY')? 0 : 1;
     let d = date.toString().split("/"),

@@ -25,10 +25,11 @@ class CalendarDays extends React.PureComponent {
     
         if(_lowerdate){
             _lowerdate = new Date(_lowerdate);
-            _lowerdate.setDate(_lowerdate.getDate() - 1);
+            _lowerdate.setDate(_lowerdate.getDate());
         }
     
         this.state.lowerLimit = (!isUndefinedOrNull(_lowerdate))? _lowerdate : null;
+        
     }
 
     dismiss() {
@@ -57,7 +58,6 @@ class CalendarDays extends React.PureComponent {
         const _array = calendar(calendarMonth, calendarYear);
         
         return splitArray(_array, 7);
-        // return splitArray(getStaticDays(), 7);
     };
 
     selectDate = (_date) => {
@@ -144,7 +144,6 @@ class CalendarDays extends React.PureComponent {
     }
 
     render() {
-        // const { selectedDate } = this.props;
         return (
             <div className="VS-CalendarDay">
                 <Fragment>

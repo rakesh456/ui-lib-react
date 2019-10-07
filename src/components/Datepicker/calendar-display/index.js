@@ -28,10 +28,7 @@ class CalendarDisplay extends React.PureComponent {
         this.el = document.createElement('div');
     }
     
-    componentDidMount() {
-        // calendarModal = document.getElementById('modalroot');
-        // calendarModal.appendChild(this.el);
-    }
+    componentDidMount() {}
 
     componentDidUpdate(prevProps) {
         var { options } = this.props;
