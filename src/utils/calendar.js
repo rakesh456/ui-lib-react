@@ -370,7 +370,7 @@ export const isValidOutsideRangeDateQQYear = (date, options) => {
             const {disabledList} = options;
             if(qq && year){
                 const _val = qq + '/' + year;
-                _validate = (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
+                _validate = (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : _validate) : _validate;
             } 
         }
         return _validate;
