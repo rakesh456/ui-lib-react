@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import { WEEK_SHORT_NAMES } from '../../../utils/calendar';
 
