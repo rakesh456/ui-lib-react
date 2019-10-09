@@ -5,7 +5,7 @@ import Year from "./calendar-other/year";
 import CalendarPortal from "./portal";
 import { FaCalendar, FaClose } from 'react-icons/lib/fa';
 import './date-picker.scss';
-import * as CONSTANTS from '../../utils/constant'
+import * as CONSTANTS from '../../utils/constants'
 import {
     isCalendarFormat,
     isYearFormat,
@@ -275,7 +275,7 @@ class DatePicker extends React.PureComponent {
                     }
                 }
             } else {
-                if(charCode == CONSTANTS.ESCAPE_KEY){
+                if(charCode == CONSTANTS.KEY_CODES.ESCAPE_KEY){
                     this.setState({ shouldCalendarOpen: false });
                 }
         
