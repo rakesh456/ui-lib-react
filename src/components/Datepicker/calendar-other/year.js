@@ -16,8 +16,7 @@ import {
 
 import {
     splitArray,
-    guid,
-    isValidDate
+    guid
 } from "../../../utils/utils";
 
 class Year extends React.PureComponent {
@@ -141,7 +140,7 @@ class Year extends React.PureComponent {
     
     checkQQMMIsEnabled = (qqmm, year) => {
         const {disabledList, displayFormat} = this.props.options;
-        if(qqmm, year){
+        if(qqmm && year){
             qqmm = (isMMYYYYFormat(displayFormat))? getMonthIndex(qqmm.toString()) : qqmm;
             const _val = qqmm + '/' + year;
             return (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
@@ -233,7 +232,7 @@ class Year extends React.PureComponent {
 
     render() {
         const { year, isYearSelected, isDisabledPrev, isDisabledNext } = this.state;
-        const { selectedDate, options } = this.props;
+        const { options } = this.props;
         const isQuarter = (options.displayFormat === 'QQ/YYYY');
 
         return (

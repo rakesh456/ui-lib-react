@@ -131,10 +131,10 @@ class DatePicker extends React.PureComponent {
                 const { selectedYear } = this.state;
                 if(isQQYYYYFormat(displayFormat)){
                     var _upperYear = selectedYear.toUpperCase();
-                    var _validFormat = isValidQQYearValue(_upperYear); 
-                    if(_validFormat){
-                        var _valid = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
-                        if(_valid){
+                    var _validFormatQQYear = isValidQQYearValue(_upperYear); 
+                    if(_validFormatQQYear){
+                        var _validQQYear = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
+                        if(_validQQYear){
                             if(!showButtons){
                                 this.setState({ selectedYear: _upperYear});
                             }
@@ -148,8 +148,8 @@ class DatePicker extends React.PureComponent {
                     }
                 } else if(isMMYYYYFormat(displayFormat)) {
                     if(isValidMonthYearValue(selectedYear)){
-                        var _valid = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
-                        if(_valid){
+                        var _validMonthYear = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
+                        if(_validMonthYear){
                             if(!showButtons){
                                 this.setState({ selectedYear: selectedYear});
                             }
@@ -163,8 +163,8 @@ class DatePicker extends React.PureComponent {
                     }
                 } else {
                     if(isValidYearValue(selectedYear)){
-                        var _valid = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
-                        if(_valid){
+                        var _validDateYear = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
+                        if(_validDateYear){
                             if(!showButtons){
                                 this.setState({ selectedYear: selectedYear});
                             }
@@ -180,8 +180,8 @@ class DatePicker extends React.PureComponent {
             } else {
                 var _validFormat = isValidFormattedDate(this.state.selectedDate, this.props.options); 
                 if(_validFormat){
-                    var _valid = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
-                    if(_valid){
+                    var _validOutRange = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
+                    if(_validOutRange){
                         if(!showButtons){
                             this.setState({ selectedDate: this.state.selectedDate});
                         }
@@ -245,6 +245,9 @@ class DatePicker extends React.PureComponent {
                         this.props.onSelect(updatedDate);
                         break;
                     }
+                    default: {
+                        break;
+                    }
                 }
                 
             } else if (evt.shiftKey) {
@@ -273,9 +276,12 @@ class DatePicker extends React.PureComponent {
                         this.props.onSelect(updatedDate);
                         break;
                     }
+                    default: {
+                        break;
+                    }
                 }
             } else {
-                if(charCode == CONSTANTS.KEY_CODES.ESCAPE_KEY){
+                if(charCode === CONSTANTS.KEY_CODES.ESCAPE_KEY){
                     this.setState({ shouldCalendarOpen: false });
                 }
         
@@ -291,7 +297,7 @@ class DatePicker extends React.PureComponent {
     
     onChangeHandler(name, e) {
         const manualEntry = (this.props.options && this.props.options.manualEntry === true);
-        if(manualEntry == true){
+        if(manualEntry === true){
             this.setState({
                 selectedDate: e.target.value,
                 selectedYear: e.target.value,

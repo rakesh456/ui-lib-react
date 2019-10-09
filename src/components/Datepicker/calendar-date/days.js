@@ -11,7 +11,6 @@ import {
     splitArray,
     convertYYYYMMDD,
     guid,
-    isValidDate,
     isUndefinedOrNull
 } from "../../../utils/utils";
 

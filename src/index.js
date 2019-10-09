@@ -9,7 +9,6 @@ import {
 } from "../src/utils/utils";
 import {
     isCalendarFormat,
-    isYearFormat,
     resetOptions,
     formatOptions
 } from "../src/utils/calendar";
@@ -40,7 +39,7 @@ Array.prototype.forEach.call(
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
-    var func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
+    let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
 

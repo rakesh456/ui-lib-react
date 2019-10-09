@@ -9,12 +9,9 @@ import {
     convertYYYYMMDD,
 } from "../../../utils/utils";
 import {
-    currentFormatToYYYYMMDD,
     currentFormatToYYYYMMDDNew,
     isDate
 } from "../../../utils/calendar";
-
-let calendarModal = null;
 
 class CalendarDate extends React.PureComponent {
     constructor(props) {

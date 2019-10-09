@@ -15,12 +15,12 @@ export const QUARTERS_NAMES = ["Q1", "Q2", "Q3", "Q4"];
 
 // Function to check format is calendar type or not
 export const isCalendarFormat = (displayFormat) => {
-    return (CLENDAR_FORMATS.indexOf(displayFormat) != -1)
+    return (CLENDAR_FORMATS.indexOf(displayFormat) !== -1)
 }
 
 // Function to check format is year type or not
 export const isYearFormat = (displayFormat) => {
-    return (YEAR_FORMATS.indexOf(displayFormat) != -1)
+    return (YEAR_FORMATS.indexOf(displayFormat) !== -1)
 }
 
 // Function to check value is QQ/YYYY format using regex
@@ -126,7 +126,7 @@ export const formatOptions = (options) => {
         if(isYYYFormat(displayFormat)){
             newOptions['disabledList'] = [...options.disabledList] 
         } else {
-            var _array = [];
+            let _array = [];
             options.disabledList.forEach((ele) => {
                 if(isQQYYYYFormat(displayFormat) && isValidQQYearValue(ele)){
                     _array.push(ele)
@@ -140,7 +140,7 @@ export const formatOptions = (options) => {
         }
     }
     if(options.indicatorList && options.indicatorList.length > 0){
-        var _array = [];
+        let _array = [];
         options.indicatorList.forEach((ele) => {
             var _dates = [];
             if(ele && ele.dates && ele.dates.length > 0){
@@ -368,7 +368,7 @@ export const isValidOutsideRangeDateQQYear = (date, options) => {
             }
 
             const {disabledList} = options;
-            if(qq, year){
+            if(qq && year){
                 const _val = qq + '/' + year;
                 _validate = (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
             } 
@@ -417,7 +417,7 @@ export const isValidOutsideRangeDateMonthYear = (date, options) => {
     const _validate = checkDateInBetween(_date, isValidDate(_lowerLimit)? _lowerLimit : null, isValidDate(_upperLimit)? _upperLimit : null);
     if(_validate){
         const {disabledList} = options;
-        if(month, year){
+        if(month && year){
             const _month = zeroPad(month, 2);
             const _val = _month + '/' + year;
             return (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : _validate) : _validate;
@@ -545,9 +545,9 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
             newdate.setFullYear(newdate.getFullYear());
         }
     } else if(isCtrl){
-        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
-        var year = (newdate.getFullYear());
-        var month = (newdate.getMonth());
+        let counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+        let year = (newdate.getFullYear());
+        let month = (newdate.getMonth());
 
         if(dateIsInDisabledList(newdate, options)){
             newdate.setDate(newdate.getDate() + counter);

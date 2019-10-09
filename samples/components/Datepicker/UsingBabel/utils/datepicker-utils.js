@@ -124,7 +124,7 @@ const checkDateInBetween = (date, from, to) => {
         if(isDate(from) && isDate(to) && (date.getTime() < from.getTime() || date.getTime() > to.getTime())){
             return false;
         } else if(isDate(from)){
-            var _from = new Date(from);
+            let _from = new Date(from);
             if(date.getTime() >= _from.getTime()){
                 return true;
             } else {
