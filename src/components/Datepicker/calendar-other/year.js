@@ -28,7 +28,7 @@ class Year extends React.PureComponent {
         var year = new Date().getFullYear();
         year = parseInt(year);
 
-        this.state = { year: year, isYearSelected: false, selectedMonth: "", selectedYear: "", isDisabledPrev: ((year) <= lowerYearLimit) ? true : false, isDisabledNext: ((year + 4) > upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
+        this.state = { year: year, isYearSelected: false, selectedMonth: "", selectedYear: "", isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, isDisabledNext: ((year + 4) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
 
         this.updateNextPrev();
     }
@@ -63,7 +63,7 @@ class Year extends React.PureComponent {
         var { year } = this.state;
         year = parseInt(year);
 
-        this.setState({ isDisabledNext: ((year + 4) > upperYearLimit) ? true : false, isDisabledPrev: ((year) <= lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
+        this.setState({ isDisabledNext: ((year + 4) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
     }
 
     onSelectYearHandler = (year) => {
@@ -96,13 +96,13 @@ class Year extends React.PureComponent {
 
     goToNextMonth = () => {
         this.setState({
-            year: parseInt(this.state.year) + 3
+            year: parseInt(this.state.year) + 9
         });
     }
 
     goToPrevMonth = () => {
         this.setState({
-            year: parseInt(this.state.year) - 3
+            year: parseInt(this.state.year) - 9
         });
     }
 
@@ -212,7 +212,7 @@ class Year extends React.PureComponent {
         return (
             <Fragment key={guid()}>
                 {
-                    ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && _q <= _l) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && _q >= _u) || (!isEnabled)) ?
+                    ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && _q < _l) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && _q > _u) || (!isEnabled)) ?
                         <span className={`VS-MonthQuater VS-Disabled`}>{quater}</span>:
                         <span className={`${activeClass} VS-MonthQuater`} onClick={() => this.onSelectQuarterHandler(quater)}>{quater}</span>
                 }

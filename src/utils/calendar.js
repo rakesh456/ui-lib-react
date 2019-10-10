@@ -1,4 +1,4 @@
-import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormat, getDateByFormatNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD } from "./utils";
+import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormat, getDateByFormatNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD, dateToYear, dateToMMYYYY, dateToQQYYYY } from "./utils";
 
 export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "showErrorMessage": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
@@ -24,7 +24,7 @@ export const isYearFormat = (displayFormat) => {
 }
 
 // Function to check value is QQ/YYYY format using regex
-export const isValidQQYearValue = (value) => {
+export const isValidQQYYYYValue = (value) => {
     if(value && new RegExp(/Q[\d]{1}\/[\d]{4}/).test(value)){
         let _number = parseInt(value.charAt(1));
         let d = value.toString().split("/"),
@@ -36,13 +36,18 @@ export const isValidQQYearValue = (value) => {
     }
 }
 
+// Function to check value is DD/MM/YYYY format using regex
+export const isValidDDMMYYYYValue = (value) => {
+    return new RegExp(/[\d]{2}\/[\d]{2}\/[\d]{4}/).test(value);
+}
+
 // Function to check value is MM/YYYY format using regex
-export const isValidMonthYearValue = (value) => {
+export const isValidMMYYYYValue = (value) => {
     return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
 }
 
 // Function to check value is YYYY format using regex
-export const isValidYearValue = (value) => {
+export const isValidYYYYValue = (value) => {
     return new RegExp(/^[\d]{4}$/).test(value);
 }
 
@@ -59,6 +64,60 @@ export const isMMYYYYFormat =(format) => {
 // Function to check format is YYYY
 export const isYYYFormat =(format) => {
     return (format === 'YYYY');
+}
+
+// Get QQ/YYYY, MM/YYYY, YYYY format by display format
+export function getDefaultQQMMYYYYDateByFormat(options){
+    let _lowerDate = options.lowerLimit;
+    let _format = options.displayFormat;
+
+    let _val = "";
+    if(isYYYFormat(_format)){
+        _val = isValidYYYYValue(_lowerDate)? _lowerDate : dateToYear();
+    } else if(isMMYYYYFormat(_format)){
+        _lowerDate = dateToMMYYYY(_lowerDate);
+        _val = isValidMMYYYYValue(_lowerDate)? _lowerDate : dateToMMYYYY();
+    } else if(isQQYYYYFormat(_format)){
+        _val = isValidQQYYYYValue(_lowerDate)? _lowerDate : dateToQQYYYY();
+    }
+    return _val;
+}
+
+// Get date by options
+export function checkValueByDisplayFormat(date, options, callback){
+    if(options.displayFormat && isYearFormat(options.displayFormat)){
+        if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
+            callback(date, false, false);
+        } else {
+            if(isQQYYYYFormat(options.displayFormat)){
+                let _date = dateToQQYYYY(date);
+                let _validFormat = isValidQQYYYYValue(_date, options); 
+                let _validOutRange = isValidOutsideRangeDateQQYear(_date, options);
+                callback(_date, !_validFormat, !_validOutRange);
+            } else if(isMMYYYYFormat(options.displayFormat)){
+                let _date = dateToMMYYYY(date);
+                let _validFormat = isValidMMYYYYValue(_date, options); 
+                let _validOutRange = isValidOutsideRangeDateMonthYear(_date, options);
+                callback(_date, !_validFormat, !_validOutRange);
+            } else if(isYYYFormat(options.displayFormat)){
+                let _date = dateToYear(date);
+                let _validFormat = isValidYYYYValue(_date, options); 
+                let _validOutRange = isValidOutsideRangeDateYear(_date, options);
+                callback(_date, !_validFormat, !_validOutRange);
+            } else {
+                callback("", true, false);
+            }
+        }
+    } else {
+        if(isValidDate(date)){
+            let _date = getDateByFormatNew(date, options.displayFormat);
+            var _validFormat = isValidFormattedDate(_date, options);
+            var _validOutRange = isValidOutsideRangeDate(_date, options);
+            callback(_date, !_validFormat, !_validOutRange);
+        } else {
+            callback("", true, false);
+        }
+    }
 }
 
 // Function to get date by display format
@@ -128,9 +187,9 @@ export const formatOptions = (options) => {
         } else {
             let _array = [];
             options.disabledList.forEach((ele) => {
-                if(isQQYYYYFormat(displayFormat) && isValidQQYearValue(ele)){
+                if(isQQYYYYFormat(displayFormat) && isValidQQYYYYValue(ele)){
                     _array.push(ele)
-                } else if(isMMYYYYFormat(displayFormat) && isValidMonthYearValue(ele)){
+                } else if(isMMYYYYFormat(displayFormat) && isValidMMYYYYValue(ele)){
                     _array.push(ele)
                 } else if(isCalendarFormat(displayFormat)){
                     _array.push(getConvertedDate(ele, displayFormat));
@@ -337,6 +396,12 @@ export const checkDateInBetween = (date, from, to) => {
     }
 }
 
+// Function to validate formatted date
+export function isValidFormattedDate(date, options) {
+    let _date = convertYYYYMMDD(date, options);
+    return (isDate(new Date(_date)));
+}
+
 // Function to validate date is between lower and upper limit for QQ/YYYY format
 export const isValidOutsideRangeDateQQYear = (date, options) => {
     const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
@@ -437,7 +502,7 @@ export const isValidOutsideRangeDate = (date, options) => {
     const _date = new Date(convertYYYYMMDD(getDateByFormat(getProperFormattedDateNew(date, options), options.displayFormat), options));
     const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormat(lowerLimit, options.displayFormat), options));
     const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormat(upperLimit, options.displayFormat), options)) : upperLimit;
-    
+
     return (checkDateInBetween(_date, _lowerLimit, _upperLimit) && !dateIsInDisabledList(_date, options));
 }
 
@@ -478,7 +543,7 @@ export const getYYYYFromOption = (limit, options, flag) => {
             const _date = new Date(limit);
             if(isDate(_date)){
                 const year= _date.getFullYear();
-                return (flag)? {lowerYearLimit: (year && isValidYearValue(parseInt(year)))? year : ""} : {upperYearLimit: (year && isValidYearValue(parseInt(year)))? year : ""}
+                return (flag)? {lowerYearLimit: (year && isValidYYYYValue(parseInt(year)))? year : ""} : {upperYearLimit: (year && isValidYYYYValue(parseInt(year)))? year : ""}
             } else {
                 return {};
             }
@@ -595,4 +660,10 @@ export const isLeft = (value) => {
 // Function to check value is right or not
 export const isRight = (value) => {
     return (value.toLowerCase()) === 'right';
+}
+
+// Function to return number of character allowed by display format
+export const checkAllowedChars = (displayFormat, value) => {
+    let _maxChar = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat))? 7 : (isYYYFormat(displayFormat))? 4 : 10;
+    return (value.length <= _maxChar);
 }
