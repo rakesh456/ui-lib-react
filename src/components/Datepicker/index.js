@@ -215,7 +215,7 @@ class DatePicker extends React.PureComponent {
             lowerLimit = (lowerLimit)? ((isValidDate(lowerLimit))? lowerLimit : null) : null;
             upperLimit = (upperLimit)? ((isValidDate(upperLimit))? upperLimit : null) : null;
     
-            if (evt.ctrlKey) {
+            if (evt.ctrlKey || evt.metaKey) {
                 switch (evt.keyCode) {
                     case ARROWS.left:{
                         const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);

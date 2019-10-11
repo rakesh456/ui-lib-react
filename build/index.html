@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="bundle.css">
     <script type="text/javascript">
-        
+
         function onInputHandler() {
             console.log('onInputHandler called ');
         }
@@ -70,7 +70,8 @@
 
         function addDatepickerNew(id) {
             let element = document.getElementById(id);
-            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerLimit": "01/06/2019", "upperLimit": "25/12/2025"}'></date-picker>`;
+            let options = {"displayFormat": "MM/DD/YYYY"};
+            element.innerHTML = '<date-picker id="datepicker2" data-options="'+options+'"></date-picker>';
             addReactDatepicker(element.children[0]);
         }
 
@@ -92,21 +93,16 @@
             let element2 = document.getElementById(divId);
             element2.innerHTML = 'From displayValue function : ' + dateValue;
         }
-
-        function submitForm(){
-            var form = document.forms["myform"];
-            console.log(' oForm.elements ', form.elements['dob']);
-        }
     </script>
 </head>
 
 <body>
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
-    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
 
     <div>
-        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
+        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
     </div>
     
     <br>
