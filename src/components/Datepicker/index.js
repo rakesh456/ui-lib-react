@@ -4,7 +4,6 @@ import CalendarDate from "./calendar-date/index";
 import Year from "./calendar-other/year";
 import CalendarPortal from "./portal";
 import { FaCalendar, FaClose } from 'react-icons/lib/fa';
-import './date-picker.scss';
 import * as CONSTANTS from '../../utils/constants'
 import {
     isCalendarFormat,
@@ -44,7 +43,7 @@ class DatePicker extends React.PureComponent {
 
         const _date = this.getDefaultDate();
 
-        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: getDefaultQQMMYYYYDateByFormat(datePickerOptions), newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(datePickerOptions.displayFormat), isMonthYear: isYearFormat(datePickerOptions.displayFormat), allowedNextChar: true };
+        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: getDefaultQQMMYYYYDateByFormat(datePickerOptions), newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -60,7 +59,7 @@ class DatePicker extends React.PureComponent {
     handleChildUnmount() {}
 
     getDefaultDate(){
-        const options = this.props.options;
+        const options = (this.props.options)? this.props.options : {};
         var _lowerDate = getProperFormattedDate(options.lowerLimit, options);
         var _upperLimit = getProperFormattedDate(options.upperLimit, options);
         var _date = (_lowerDate >= new Date())? _lowerDate : new Date();
@@ -360,7 +359,7 @@ class DatePicker extends React.PureComponent {
 
     getPlaceholder(){
         const options = this.props.options;
-        return (this.state.isMonthYear)? options.displayFormat : options.displayFormat;
+        return (this.state.isMonthYear && options)? options.displayFormat : 'MM/DD/YYYY';
     }
 
     getSelectedValue(){

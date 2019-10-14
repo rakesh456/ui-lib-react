@@ -68,8 +68,8 @@ export const isYYYFormat =(format) => {
 
 // Get QQ/YYYY, MM/YYYY, YYYY format by display format
 export function getDefaultQQMMYYYYDateByFormat(options){
-    let _lowerDate = options.lowerLimit;
-    let _format = options.displayFormat;
+    let _lowerDate = (options)? options.lowerLimit : '';
+    let _format = (options)? options.displayFormat : '';
 
     let _val = "";
     if(isYYYFormat(_format)){

@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
-import '../date-picker.scss';
 import {
     getYearsList,
     MONTH_SHORT_NAMES,
