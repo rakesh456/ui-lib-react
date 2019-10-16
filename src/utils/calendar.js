@@ -72,13 +72,17 @@ export function getDefaultQQMMYYYYDateByFormat(options){
     let _format = (options)? options.displayFormat : '';
 
     let _val = "";
+    
     if(isYYYFormat(_format)){
-        _val = isValidYYYYValue(_lowerDate)? _lowerDate : dateToYear();
+        var _validDateYear = isValidOutsideRangeDateYear(dateToYear(), options);  
+        _val = (_validDateYear || !isValidYYYYValue(_lowerDate))? dateToYear() : _lowerDate;
     } else if(isMMYYYYFormat(_format)){
         _lowerDate = dateToMMYYYY(_lowerDate);
-        _val = isValidMMYYYYValue(_lowerDate)? _lowerDate : dateToMMYYYY();
+        let _validMonthYear = isValidOutsideRangeDateMonthYear(dateToMMYYYY(), options);
+        _val = (_validMonthYear || !isValidMMYYYYValue(_lowerDate))? dateToMMYYYY() : _lowerDate;
     } else if(isQQYYYYFormat(_format)){
-        _val = isValidQQYYYYValue(_lowerDate)? _lowerDate : dateToQQYYYY();
+        var _validQQYear = isValidOutsideRangeDateQQYear(dateToQQYYYY(), options);
+        _val = (_validQQYear || !isValidQQYYYYValue(_lowerDate))? dateToQQYYYY() : _lowerDate;
     }
     return _val;
 }

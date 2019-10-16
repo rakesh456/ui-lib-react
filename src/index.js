@@ -13,6 +13,7 @@ import {
     resetOptions,
     formatOptions
 } from "../src/utils/calendar";
+import './components/Datepicker/date-picker.scss';
 
 
 (function () {

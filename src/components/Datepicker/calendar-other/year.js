@@ -31,7 +31,7 @@ class Year extends React.PureComponent {
 
         this.updateNextPrev();
     }
-
+    
     componentDidMount() {
         const { selectedValue, options } = this.props;
         if (selectedValue) {
