@@ -1,4 +1,4 @@
-import { isDate, zeroPad } from "./calendar";
+import { zeroPad } from "./calendar";
 
 // Char code of keyboard arrow keys array
 export const ARROW_KEYS = [37, 38, 39, 40];
@@ -130,14 +130,29 @@ export function getYYYYMMDD(date){
 }
 
 // Function to get current date fullyear
-export function getCurrentYear() {
-    return new Date().getFullYear();
+export function dateToYear(date) {
+    let _date = (date && isValidDate(date))? new Date(date) : new Date();
+    return _date.getFullYear();
 }
 
-// Function to validate formatted date
-export function isValidFormattedDate(date, options) {
-    let _date = convertYYYYMMDD(date, options);
-    return (isDate(new Date(_date)));
+// Function to get current date MM/YYYY value
+export function dateToMMYYYY(date) {
+    let _date = (date && isValidDate(date))? new Date(date) : new Date();
+    return zeroPad(_date.getMonth() + 1, 2) + '/' + _date.getFullYear();
+}
+
+// Function to get current date QQ/YYYY value
+export function dateToQQYYYY(date) {
+    let _date = (date && isValidDate(date))? new Date(date) : new Date();
+    let _month = _date.getMonth() + 1;
+    let _qq = getQQFromMonth(_month);
+    return _qq + '/' + _date.getFullYear();
+}
+
+// Function to get current date QQ/YYYY value
+export function getQQFromMonth(_month) {
+    let _val = (_month <= 12 && _month >= 10)? 4 : (_month <= 9 && _month >= 7)? 3 : (_month <= 6 && _month >= 4)? 2 : 1; 
+    return 'Q' + _val;
 }
 
 // Function to get unique Id

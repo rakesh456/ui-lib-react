@@ -8,10 +8,12 @@ import {
     isUndefinedOrNull
 } from "../src/utils/utils";
 import {
+    checkValueByDisplayFormat,
     isCalendarFormat,
     resetOptions,
     formatOptions
 } from "../src/utils/calendar";
+import './components/Datepicker/date-picker.scss';
 
 
 (function () {
@@ -89,9 +91,14 @@ function datepickerRender(el) {
     }
 
     el.setValue = function (date) {
-        var _date = getDateByFormat(date, options.displayFormat);
-        setSelectedAttr(el, _date);
-        myComponentInstance.setDateValue(_date);
+        checkValueByDisplayFormat(date, options, (_date, isInvalidDate, isInvalidRangeDate) => {
+            if(isInvalidDate || isInvalidRangeDate){
+                myComponentInstance.setDateValue("", isInvalidDate, isInvalidRangeDate);
+            } else {
+                setSelectedAttr(el, _date);  
+                myComponentInstance.setDateValue(_date, isInvalidDate, isInvalidRangeDate);
+            }
+        });
     }
 
     el.addEventListener('mousedown', (e) => { 
