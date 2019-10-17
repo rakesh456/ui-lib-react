@@ -378,7 +378,7 @@ class DatePicker extends React.PureComponent {
             <div className="VS-App">
                 <div id={`${_uuid}`}></div>
                 <header className="VS-App-header">
-                    <div className="VS-DatepickerContainer" >
+                    <div className="VS-DatepickerContainer">
                         <div ref={(el) => this.el = el}>
                             <div className={`VS-Input-Border ${this.getInvalidClass()} ${(showClearIcon) ? 'VS-Input-Icon' : ''} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
                                 <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark" /></span>
@@ -387,7 +387,6 @@ class DatePicker extends React.PureComponent {
                                     className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
                                     placeholder={this.getPlaceholder()}
                                     onClick={this.onFocus}
-                                    onBlur={this.onBlur}
                                     onKeyDown={(e) => this.onKeyDownHandler(e)}
                                     onKeyPress={this.onKeyPressHandler.bind(this)}                                    
                                     onChange={this.onChangeHandler.bind(this, selectedDate)}

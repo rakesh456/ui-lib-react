@@ -9,7 +9,8 @@ module.exports = {
     entry: {
         bundle: ['./src/index.js'],
         styles: [
-            './src/components/Datepicker/date-picker.scss'
+            './src/components/Datepicker/date-picker.scss',
+            './src/components/TagSelector/tag-selector.scss'
         ]
     },
     output: {

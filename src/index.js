@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import DatePicker from "./components/Datepicker/index";
+import TagSelector from "./components/TagSelector/tag-selector";
 import {
     getDateByFormat,
     getDateByFormatNew,
@@ -13,8 +14,11 @@ import {
     resetOptions,
     formatOptions
 } from "../src/utils/calendar";
+import {
+    resetTagSelectorOptions
+} from "../src/utils/tagselectorutils";
 import './components/Datepicker/date-picker.scss';
-
+import './components/TagSelector/tag-selector.scss';
 
 (function () {
 
@@ -111,6 +115,56 @@ function datepickerRender(el) {
 
     var myComponentInstance = ReactDOM.render(
         myComponentElement,
+        el
+    )
+}
+
+Array.prototype.forEach.call(
+    document.getElementsByTagName('tag-selector'),
+    (el) => {
+        tagSelectorRender(el);
+    })
+
+function tagSelectorRender(el) {
+    let options = JSON.parse(el.getAttribute('data-options'));
+    options = (isUndefinedOrNull(options))? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
+    console.log(' options ', options);
+
+    function onFocusHandler() {
+        var ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+
+    function onBlurHandler() {
+        var ev = new CustomEvent('blur');
+        el.dispatchEvent(ev);
+    }
+    
+    el.addEventListener('mousedown', (e) => { 
+        if(e.target.tagName !== 'INPUT'){
+            e.preventDefault(); 
+        }
+    }, false);
+
+    function setSelectedAttr(el, date){
+        el.setAttribute('selected-date', date);
+    }
+
+    el.setValue = function (date) {
+        checkValueByDisplayFormat(date, options, (_date, isInvalidDate, isInvalidRangeDate) => {
+            if(isInvalidDate || isInvalidRangeDate){
+                tagComponentInstance.setDateValue("", isInvalidDate, isInvalidRangeDate);
+            } else {
+                setSelectedAttr(el, _date);  
+                tagComponentInstance.setDateValue(_date, isInvalidDate, isInvalidRangeDate);
+            }
+        });
+    }
+
+    var tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
+
+    var tagComponentInstance = ReactDOM.render(
+        tagComponentElement,
         el
     )
 }
