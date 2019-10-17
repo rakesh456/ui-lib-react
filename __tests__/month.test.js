@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import React from 'react';
 
-test('Todo component renders the todo correctly', () => {
+test('Month component renders the month correctly', () => {
   const options = DEFAULT_OPTIONS;
   const rendered = renderer.create(
     <Month options={options} />
