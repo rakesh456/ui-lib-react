@@ -4,7 +4,6 @@ import Month from "./month";
 import Days from "./days";
 import Buttons from "./buttons";
 
-import '../date-picker.scss';
 import {
     convertYYYYMMDD,
 } from "../../../utils/utils";

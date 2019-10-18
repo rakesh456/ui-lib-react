@@ -118,14 +118,14 @@ class Days extends React.PureComponent {
                         <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'background-color': showIndicator}} className="VS-indicator"></p> : '' }</span>
+                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className="VS-indicator"></p> : '' }</span>
                                     :
                                     <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
                             }    
                         </div> 
                         :
                         <div {...props} className={this.getClassName(props.index)}>
-                            <span className='VS-DisabledDay'>{_date.getDate()} { (showIndicator !== '')?  <p style={{'background-color': showIndicator}} className="VS-indicator"></p> : '' }</span>
+                            <span className='VS-DisabledDay'>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className="VS-indicator"></p> : '' }</span>
                         </div>
                 } 
             </Fragment>
