@@ -72,7 +72,7 @@ class Days extends React.PureComponent {
     }
     
     getShowIndicatorColor = (_date) => {
-        const { indicatorList } = this.props.options;
+        const indicatorList = (this.props.options)? this.props.options.indicatorList : [];
         let color = "";
         if(!indicatorList || indicatorList.length <=0 ){
             return color;

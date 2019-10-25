@@ -167,3 +167,20 @@ export function s4() {
         .toString(16)
         .substring(1);
 }
+
+// Function to check object contains in list
+export const arrayIncludesInObj = (arr, key, valueToCheck) => {
+    let found = false;
+  
+    arr.forEach((element) => {
+        if (element[key] === valueToCheck) {
+          found = true;
+        }
+    });
+    return found;
+}
+
+// Function to check string exists in another string
+export const isStringExists = (string, substring) => {
+    return (string, substring)? string.toLowerCase().indexOf(substring.toLowerCase()) !== -1 : false;
+}

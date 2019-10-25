@@ -98,20 +98,72 @@
             var form = document.forms["myform"];
             console.log(' oForm.elements ', form.elements['dob']);
         }
+
+        function getSelectedValuesById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedValues');
+            let selectedValues = tagElement1.getSelectedValues();
+            divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
+            console.log(' selectedValues ', selectedValues);
+        }
+        
+        function getSelectedCounterById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedCounter');
+            let selectedCounter = tagElement1.getSelectedCounter();
+            divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
+            console.log(' selectedCounter ', selectedCounter);
+        }
+        
+        function appendNewElementById(id){
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.appendNewElement({"key": "1Test", "value": "1A"}, );
+            console.log(' selectedCounter ', selectedCounter);
+        }
+        
+        function getNewlyAddedById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('NewlyAddedElements');
+            let newlyAddedElements = tagElement1.getNewlyAdded();
+            divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
+            console.log(' selectedValues ', selectedValues);
+        }
+
+        function onSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
+       
+        function onDeSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
+        
+        function onNotFoundHandler(e) {
+            console.log('onNotFound called ');
+        }
+
     </script>
 </head>
 <body>
     <br>
-    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country"}'></tag-selector>
+    <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button>
+    <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button>
+    <button onclick="appendNewElementById('tagselector1');">Append new elemet</button>
+    <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button>
+    <div id="SelectedValues"></div>
+    <div id="SelectedCounter"></div>
+    <div id="NewlyAddedElements"></div>
+    <br>
+    <br>
+    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "readOnly": false, "allowNewValue": true, "allowHierarchy": true}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
 
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
     
-    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2019", "upperLimit": "30/12/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
 
     <div>
-        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
+        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2019", "upperLimit": "30/12/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
     </div>
     
     <br>
