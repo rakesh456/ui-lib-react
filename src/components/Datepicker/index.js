@@ -71,7 +71,7 @@ class DatePicker extends React.PureComponent {
 
     componentDidMount() {
         document.addEventListener('click', this.closeCalendar);
-        const dimensions = this.el.getBoundingClientRect();
+        const dimensions = (this.el)? this.el.getBoundingClientRect() : {};
         const style = {};
         style.left = '0px';
         style.right = dimensions.right;

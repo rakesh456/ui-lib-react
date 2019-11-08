@@ -1,12 +1,10 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import { Input } from 'reactstrap';
 import TagSelectorPortal from "./portal";
 import {
-    resolveFieldData
-} from "../../utils/tagselectorutils";
-import {
     guid,
+    arrayIncludesInObj,
+    isStringExists
 } from "../../utils/utils";
 import { CountryService } from '../../services/CountryService';
 
@@ -14,8 +12,8 @@ class TagSelector extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const {listItems} = this.props.options;
-        this.state = { shouldListOpen: false, listItems: (listItems)? listItems : [], filteredlistItems: [], noDataFound: false, selectedItems: [] };
+        const {listItems, maxItemCounter} = this.props.options;
+        this.state = { shouldListOpen: false, listItems: (listItems)? listItems : [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: []};
         this.countryservice = new CountryService();
     }
 
@@ -32,9 +30,39 @@ class TagSelector extends React.PureComponent {
         this.setState({ style: style });
 
         const countriesData = this.countryservice.getCountries(this);
+        const citiesData = this.countryservice.getCities(this);
+        const {listItems, allowHierarchy} = this.props.options;
+
         this.setState({
-            listItems: countriesData
+            listItems: (allowHierarchy === true)? citiesData : countriesData
         });
+    }
+
+    appendNewElement(obj) {
+        const {listItems, newlyAddedElements} = this.state;
+        let _items = [...listItems];
+        let _newItems = [...newlyAddedElements];
+        _items.push(obj);
+        _newItems.push(obj);
+        this.setState({
+            listItems: _items,
+            newlyAddedElements: _newItems
+        });
+        let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
+        this.updateFilterItems(_val);
+    }
+    
+    getNewlyAdded() {
+        return this.state.newlyAddedElements;
+    }
+    
+    getSelectedValues() {
+        return this.state.selectedItems;
+    }
+    
+    getSelectedCounter() {
+        const {selectedItems} = this.state;
+        return (selectedItems)? selectedItems.length : 0;
     }
 
     onFocus = () => {
@@ -71,24 +99,48 @@ class TagSelector extends React.PureComponent {
         setTimeout(() => {
             let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
             this.updateFilterItems(_val);
+            if(_val && this.state.filteredlistItems.length <= 0){
+                this.props.onNotFound();
+            }
         }, 250);
     }
 
     updateFilterItems = (_val) => {
-        console.log(' _val ', _val);
-        let results = (_val)? this.state.listItems.filter((country, index) => (country.name.startsWith(_val))) : [...this.state.listItems];
-        console.log(' length ', results.length);
-        results = results.filter((item,idx) => idx <= 5)
-        console.log(' results ', results);
+        const {searchWithHelper} = this.props.options;
+        let results = [];
+        if(searchWithHelper){
+            results = (_val)? this.state.listItems.filter((item, index) => (isStringExists(item.value, _val) || isStringExists(item.key, _val))) : [...this.state.listItems];
+        } else {
+            results = (_val)? this.state.listItems.filter((item, index) => (isStringExists(item.value, _val))) : [...this.state.listItems];
+        }
         
         this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
     }
 
 
     selectItem(event, item) {
-        console.log(' item ', item);
+        if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
+            let selectedItems = [...this.state.selectedItems];
+            selectedItems.push(item);
+            this.setState({ selectedItems: selectedItems });
+        }
+
         this.inputEl.value = '';
         this.inputEl.focus();
+        this.updateFilterItems('');
+        this.props.onSelect(item);
+    }
+    
+    removeItem(item, index) {
+        if(index >= 0){
+            let selectedItems = [...this.state.selectedItems];
+            selectedItems.splice(index, 1);
+            this.setState({ selectedItems: selectedItems });
+            this.props.onDeSelect(item);
+        } else {
+            this.props.onDeSelect(this.state.selectedItems);
+            this.setState({ selectedItems: [] });
+        }
     }
     
     getPlaceholder(){
@@ -97,39 +149,140 @@ class TagSelector extends React.PureComponent {
     }
 
     getContainerClass = () => {
-        const { showButtons } = this.props.options;
         return "VS-TagSelectorContainer VS-modal";
     }
     
     getUlListClass = () => {
         const { noDataFound, filteredlistItems } = this.state;
-        return "VS-AutocompleteItems " + ((noDataFound && (!filteredlistItems || filteredlistItems.length <= 0))? 'VS-NoData' : '');
+        const { allowNewValue } = this.props.options;
+
+        return "VS-AutocompleteItems " + ((noDataFound && (!filteredlistItems || filteredlistItems.length <= 0))? ((allowNewValue === true)? 'VS-AddNewItem' : 'VS-NoData') : '');
+    }
+    
+    getLiListClass = (item) => {
+        var foundValue = this.state.selectedItems.filter((obj) =>obj.key === item.key);
+        return (foundValue && foundValue.length > 0) ? "VS-ItemDisabled" : "";
     }
 
     itemTemplate(item) {
         return (
             <div className="p-clearfix">
-                <div style={{ fontSize: '16px', float: 'right', margin: '10px 10px 0 0' }}>{item.name}</div>
+                <div style={{ fontSize: '16px', float: 'right', margin: '10px 10px 0 0' }}>{item.key}</div>
             </div>
         );
     }
 
-    renderItems() {
-        const { noDataFound, filteredlistItems } = this.state;
+    renderHeirarchyItem(item, index) {
+        const { selectedItems } = this.state;
+        console.log(' item ' + item['Gujarat']);
+
+        // var tifOptions = Object.keys(item).map((key, index) => {
+        //     return <li value={key} key={index + '_li'}>{item[key]}</li>
+        // });
+        // console.log(' tifOptions ', tifOptions);
+
+
+        return (
+            <div key={guid()}>
+                {Object.keys(item).map( (ele, index) =>
+                    <li key={index + '_li'}>
+                        {
+                            item[ele].forEach(element => {
+                                return <span>test</span>
+                            })
+                        }
+                    </li>
+                )}
+            </div>
+        )
+    }
+    
+    renderLIItem(item, index) {
+        const { selectedItems } = this.state;
+
+        if(!selectedItems || selectedItems.length <= 0){
+            return <li className={this.getLiListClass(item)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> <span className='VS-HelperText VS-PullRight'>{item.key}</span></li>
+        } else {
+            let itemFound = selectedItems.filter((obj) =>obj.key === item.key);
+            return (
+                (itemFound.length)?
+                null : <li className={this.getLiListClass(item)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> <span className='VS-HelperText VS-PullRight'>{item.key}</span></li>
+            );
+        }
+    }
+    
+    renderHeirarchyItems() {
+        const { filteredlistItems, listItems } = this.state;
+        const { allowNewValue, allowHierarchy } = this.props.options;
+
+        console.log(' filteredlistItems ', filteredlistItems);
         return (
             <ul className={this.getUlListClass()}>
                 {
-                    (filteredlistItems && filteredlistItems.length > 0)? 
-                        filteredlistItems.map((item, index) => <li key={index + '_item'} className="p-autocomplete-list-item" onClick={(e) => this.selectItem(e, item)}>{item.name}</li>)
-                    : 'No Data Found'
+                    (listItems && listItems.length > 0)?
+                        (filteredlistItems && filteredlistItems.length > 0)? 
+                            filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
+                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
+                        'No List Items'
+                }
+            </ul>
+        );
+    }
+    
+    renderULItems() {
+        const { filteredlistItems, listItems } = this.state;
+        const { allowNewValue, allowHierarchy } = this.props.options;
+
+        return (
+            <ul className={this.getUlListClass()}>
+                {
+                    (listItems && listItems.length > 0)?
+                        (filteredlistItems && filteredlistItems.length > 0)? 
+                            filteredlistItems.map((item, index) => this.renderLIItem(item, index))
+                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
+                        'No List Items'
                 }
             </ul>
         );
     }
 
+    renderRemoveIcon(item, index){
+        const { readOnly } = this.props.options;
+        return (
+            (readOnly === false)? <span className="VS-AutoCompleteItem-Icon pi pi-fw pi-times" onClick={(e) => this.removeItem(item, index)}>X</span> : <span className="VS-AutoCompleteItem-Icon VS-Disabled pi pi-fw pi-times">X</span>
+        )
+    }
+
+    renderSelectedItems() {
+        const { selectedItems, maxItemCounter } = this.state;
+        return (
+            <ul>
+                {
+                    (selectedItems && selectedItems.length > 0)?
+                        (maxItemCounter === 0 || maxItemCounter >= selectedItems.length)?
+                            selectedItems.map((item, index) =>  {
+                                return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" >{item.key} {this.renderRemoveIcon(item, index)}</span></li>
+                            }) : <li><span className="VS-AutoCompleteItem" >{selectedItems.length} SELECTED {this.renderRemoveIcon(null, -1)}</span></li>
+                    :  ''
+                }
+                <li>
+                    <input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
+                        className={`VS-Regular-UPPER-Case VS-Calendar-Input`}
+                        placeholder={this.getPlaceholder()}
+                        onClick={this.onFocus}
+                        onBlur={this.onBlur}
+                        onChange={this.filterItemsList}
+                    />
+                </li>
+            </ul>
+        );
+    }
+
     render() {
-        const { shouldListOpen, noDataFound } = this.state;
+        const { shouldListOpen } = this.state;
+        const { allowHierarchy } = this.props.options;
         const _uuid = guid();
+        let _selectedInput = this.renderSelectedItems();
 
         return (
             <div className="VS-App">
@@ -138,20 +291,18 @@ class TagSelector extends React.PureComponent {
                     <div>
                         <div ref={(el) => this.el = el}>
                             <div className={`VS-Tag-Input-Border`}>
-                                <input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
-                                    className={`VS-Regular-UPPER-Case VS-Calendar-Input`}
-                                    placeholder={this.getPlaceholder()}
-                                    onClick={this.onFocus}
-                                    onBlur={this.onBlur}
-                                    onChange={this.filterItemsList}
-                                />
+                                {_selectedInput}
                             </div>
                         </div>
                         {
                             (shouldListOpen) ?
                                 <TagSelectorPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
-                                    <div className={this.getContainerClass()} style={this.state.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
-                                        {this.renderItems()}
+                                    <div id="VS-Scrollbar" className="VS-Scrollbar" className={this.getContainerClass()} style={this.state.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
+                                        {
+                                            (allowHierarchy === true)?
+                                            this.renderHeirarchyItems() 
+                                            : this.renderULItems() 
+                                        }
                                     </div> 
                                 </TagSelectorPortal>
                                 : ''

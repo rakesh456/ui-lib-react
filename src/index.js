@@ -130,6 +130,24 @@ function tagSelectorRender(el) {
     options = (isUndefinedOrNull(options))? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
     console.log(' options ', options);
 
+    function callOnSelectedEvent(selectedItem, el) {
+        var ev = new CustomEvent("change",  {'detail':  { 'item': selectedItem }});
+        trigger(el, 'onSelect', ev);
+        el.dispatchEvent(ev);
+    }
+    
+    function callOnDeSelectedEvent(selectedItem, el) {
+        var ev = new CustomEvent("change",  {'detail':  { 'item': selectedItem }});
+        trigger(el, 'onDeSelect', ev);
+        el.dispatchEvent(ev);
+    }
+    
+    function callOnNotFoundEvent(el) {
+        var ev = new CustomEvent("change");
+        trigger(el, 'onNotFound', ev);
+        el.dispatchEvent(ev);
+    }
+
     function onFocusHandler() {
         var ev = new CustomEvent('focus');
         el.dispatchEvent(ev);
@@ -140,28 +158,40 @@ function tagSelectorRender(el) {
         el.dispatchEvent(ev);
     }
     
-    el.addEventListener('mousedown', (e) => { 
-        if(e.target.tagName !== 'INPUT'){
-            e.preventDefault(); 
-        }
-    }, false);
-
-    function setSelectedAttr(el, date){
-        el.setAttribute('selected-date', date);
+    function onKeyDownHandler() {
+        var ev = new CustomEvent('keydown');
+        el.dispatchEvent(ev);
     }
 
-    el.setValue = function (date) {
-        checkValueByDisplayFormat(date, options, (_date, isInvalidDate, isInvalidRangeDate) => {
-            if(isInvalidDate || isInvalidRangeDate){
-                tagComponentInstance.setDateValue("", isInvalidDate, isInvalidRangeDate);
-            } else {
-                setSelectedAttr(el, _date);  
-                tagComponentInstance.setDateValue(_date, isInvalidDate, isInvalidRangeDate);
-            }
-        });
+    function onSelectHandler(selectedItem) {
+        callOnSelectedEvent(selectedItem, el);
+    }
+    
+    function onDeSelectHandler(selectedItem) {
+        callOnDeSelectedEvent(selectedItem, el);
+    }
+    
+    function onNotFoundHandler(selectedItem) {
+        callOnNotFoundEvent(el);
     }
 
-    var tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
+    el.getNewlyAdded = function () {
+        return tagComponentInstance.getNewlyAdded();
+    }
+    
+    el.getSelectedValues = function () {
+        return tagComponentInstance.getSelectedValues();
+    }
+    
+    el.getSelectedCounter = function () {
+        return tagComponentInstance.getSelectedCounter();
+    }
+
+    el.appendNewElement = function (obj) {
+        tagComponentInstance.appendNewElement(obj);
+    }
+
+    var tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
 
     var tagComponentInstance = ReactDOM.render(
         tagComponentElement,
