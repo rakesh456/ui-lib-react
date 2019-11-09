@@ -120,6 +120,17 @@ tag-selector{
     padding-bottom: 8px;
 }
 
+.VS-HeirarchyItems{
+    ul{
+        padding-left: 20px; 
+    }
+    .VS-HeirarchyTitle{
+        background-color: $complementary-one;
+        padding-left: 10px; 
+    }
+}
+
+
 .VS-Tag-Input-Border ul{
     height: auto;
     max-height: 224px;
@@ -165,7 +176,7 @@ tag-selector{
     height: auto;
     max-height: 224px;
     list-style: none;
-    padding: 8px 10px;
+    padding: 0px 0px 20px;
     margin: 0px;
 }
 
@@ -188,9 +199,10 @@ tag-selector{
 }
 
 .VS-AutocompleteItems li{
-    padding: 8px 0px 8px;
+    padding: 8px 0px 8px 10px;
     color: $secondary-two-dark;
     cursor: pointer;
+    list-style: none;
 }
 
 .VS-AutoCompleteItem {
@@ -219,7 +231,7 @@ tag-selector{
     width: 30px;
     text-align: center;
     background: $secondary-four-bright;
-    padding: 10px 14px;
+    padding: 12px 14px;
     margin-left: 16px;
     font-size: 10px;
 }
