@@ -75,8 +75,8 @@ class TagSelector extends React.PureComponent {
     }
 
     onBlur = () => {
-        // this.setState({ shouldListOpen: false});
-        // this.props.onBlur();
+        this.setState({ shouldListOpen: false});
+        this.props.onBlur();
     }
 
     closeCalendar = (e) => {

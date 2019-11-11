@@ -388,7 +388,7 @@ class DatePicker extends React.PureComponent {
                                     placeholder={this.getPlaceholder()}
                                     onClick={this.onFocus}
                                     onKeyDown={(e) => this.onKeyDownHandler(e)}
-                                    onKeyPress={this.onKeyPressHandler.bind(this)}                                    
+                                    onKeyPress={this.onKeyPressHandler.bind(this)}                             onBlur={this.onBlur}       
                                     onChange={this.onChangeHandler.bind(this, selectedDate)}
                                 />
                                 {
