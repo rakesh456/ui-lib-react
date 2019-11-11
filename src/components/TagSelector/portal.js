@@ -20,7 +20,7 @@ class TagSelectorPortal extends React.PureComponent {
 
     componentWillUnmount() {
         if(tagSelectorModal){
-            tagSelectorModal.removeChild(this.el);
+            // tagSelectorModal.removeChild(this.el);
         }
     }
 

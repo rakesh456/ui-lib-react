@@ -186,20 +186,32 @@ tag-selector{
     text-align: center;
 }
 
+.VS-AddButton{
+    border: 1px solid $gui-blue;
+    background-color: $text-white;
+    padding: 5px 10px;
+    margin-top: 10px;
+    color: $gui-blue;
+    cursor: pointer;
+}
+
 .VS-AddNewItem{
     padding: 20px;
     color: $secondary-two-dark;
     text-align: center;
 }
 
-.VS-AutocompleteItems .VS-ItemDisabled,
-.VS-AutocompleteItems .VS-ItemDisabled span{
-    color: $primary-two-bright;
+.VS-AutocompleteItems .VS-ItemSelected{
+    background-color: $secondary-four-bright;
     cursor: default;
+}
+.VS-AutocompleteItems .VS-ItemSelected span{
+    color: $text-white;
 }
 
 .VS-AutocompleteItems li{
     padding: 8px 0px 8px 10px;
+    margin-bottom: 1px;
     color: $secondary-two-dark;
     cursor: pointer;
     list-style: none;
