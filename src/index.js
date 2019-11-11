@@ -190,6 +190,10 @@ function tagSelectorRender(el) {
     el.appendNewElement = function (obj) {
         tagComponentInstance.appendNewElement(obj);
     }
+    
+    el.setJsonData = function (json) {
+        tagComponentInstance.setJsonData(json);
+    }
 
     var tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
 

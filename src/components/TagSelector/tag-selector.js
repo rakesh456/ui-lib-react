@@ -1,5 +1,7 @@
 import React from "react";
+import { Input } from 'reactstrap';
 import ReactDOM from 'react-dom';
+import ItemsList from "./tag-items-list";
 import TagSelectorPortal from "./portal";
 import {
     guid,
@@ -20,7 +22,7 @@ class TagSelector extends React.PureComponent {
     updateDimensions() {}
 
     componentDidMount() {
-        document.addEventListener('click', this.closeCalendar);
+        document.addEventListener('click', this.closeTagSelector);
         const dimensions = this.el.getBoundingClientRect();
         const style = {};
         style.left = '0px';
@@ -29,16 +31,22 @@ class TagSelector extends React.PureComponent {
         style.zIndex = '1';
         this.setState({ style: style });
 
-        const countriesData = this.countryservice.getCountries(this);
-        const citiesData = this.countryservice.getCities(this);
-        const {listItems, allowHierarchy} = this.props.options;
+        // const countriesData = this.countryservice.getCountries(this);
+        // const citiesData = this.countryservice.getCities(this);
+        // const {listItems, allowHierarchy} = this.props.options;
 
+        // this.setState({
+        //     listItems: (allowHierarchy === true)? citiesData : countriesData
+        // });
+    }
+
+    setJsonData(listItems){
         this.setState({
-            listItems: (allowHierarchy === true)? citiesData : countriesData
+            listItems: listItems
         });
     }
 
-    appendNewElement(obj) {
+    addItemAndUpdateList = (obj) => {
         const {listItems, newlyAddedElements} = this.state;
         let _items = [...listItems];
         let _newItems = [...newlyAddedElements];
@@ -48,8 +56,24 @@ class TagSelector extends React.PureComponent {
             listItems: _items,
             newlyAddedElements: _newItems
         });
-        let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
-        this.updateFilterItems(_val);
+        this.updateFilterItems('');
+    }
+
+    appendNewElement(obj) {
+        const {allowHierarchy} = this.props.options;
+        if(allowHierarchy === false){
+            this.addItemAndUpdateList(obj);
+            let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
+            this.updateFilterItems(_val);
+        }
+    }
+
+    onAddNewItemHandler = (value) => {
+        if(value){
+            let obj = {'key': value, 'value': value};
+            this.addItemAndUpdateList(obj);
+            this.onSelectHandler(obj);
+        }
     }
     
     getNewlyAdded() {
@@ -75,24 +99,8 @@ class TagSelector extends React.PureComponent {
     }
 
     onBlur = () => {
-        this.setState({ shouldListOpen: false});
+        // this.setState({ shouldListOpen: false});
         this.props.onBlur();
-    }
-
-    closeCalendar = (e) => {
-        var shouldListOpen = true;
-
-        if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && this.state.shouldListOpen === true)) && (e.target.nodeName !== 'path')) {
-            if(e.target.classList.contains("VS-App-header")){
-                this.setState({
-                    shouldListOpen: false
-                });
-            } else {
-                this.setState({
-                    shouldListOpen: shouldListOpen
-                });
-            }
-        }
     }
 
     filterItemsList = (e) => {
@@ -116,14 +124,31 @@ class TagSelector extends React.PureComponent {
         
         this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
     }
+    
+    closeTagSelector = (e) => {
+        var shouldListOpen = true;
+        
+        if (((e.target && e.target.classList && !e.target.classList.contains("VS-TagSelector-Input") && this.state.shouldListOpen === true)) && (e.target.nodeName !== 'path')) {
+            if(e.target.classList.contains("VS-App-header") || e.target.classList.length === 0){
+                this.setState({
+                    shouldListOpen: false
+                });
+            } else {
+                this.setState({
+                    shouldListOpen: shouldListOpen
+                });
+            }
+        }
+    }
 
-    selectItem(event, item) {
+    onSelectHandler = (item) => {
+        this.setState({ shouldListOpen: true });
         if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
             let selectedItems = [...this.state.selectedItems];
             selectedItems.push(item);
             this.setState({ selectedItems: selectedItems });
         }
-
+        
         this.inputEl.value = '';
         this.inputEl.focus();
         this.updateFilterItems('');
@@ -151,103 +176,6 @@ class TagSelector extends React.PureComponent {
         return "VS-TagSelectorContainer VS-modal";
     }
     
-    getUlListClass = () => {
-        const { noDataFound, filteredlistItems } = this.state;
-        const { allowNewValue } = this.props.options;
-
-        return "VS-AutocompleteItems " + ((noDataFound && (!filteredlistItems || filteredlistItems.length <= 0))? ((allowNewValue === true)? 'VS-AddNewItem' : 'VS-NoData') : '');
-    }
-    
-    getLiListClass = (item) => {
-        var foundValue = this.state.selectedItems.filter((obj) =>obj.key === item.key);
-        return (foundValue && foundValue.length > 0) ? "VS-ItemDisabled" : "";
-    }
-
-    itemTemplate(item) {
-        return (
-            <div className="p-clearfix">
-                <div style={{ fontSize: '16px', float: 'right', margin: '10px 10px 0 0' }}>{item.key}</div>
-            </div>
-        );
-    }
-
-    renderSubitem(item, index) {
-        const _uuid = guid();
-        const items = Object.keys(item).map((ele, index) => {
-            return <li onClick={(e) => this.selectItem(e, item[ele])} key={index + '_span'}> {item[ele].value} </li>;
-        });
-
-        return (
-            <div key={_uuid}>
-                {items}
-            </div>
-        )
-    }
-    
-    renderHeirarchyItem(item, index) {
-        // console.log(' 1item ', item);
-
-        const items = Object.keys(item).map((ele, index1) => {
-            return (
-                <div key={guid()} className='VS-HeirarchyItems'>
-                    <li className='VS-HeirarchyTitle' key={index1 + '_key'}> {ele} </li>
-                    <ul key={index1 + '_val'}> {this.renderSubitem(item[ele], index1)} </ul>
-                </div>
-            );
-        });
-
-        return ( items )
-    }
-    
-    
-    renderHeirarchyItems() {
-        const { filteredlistItems, listItems } = this.state;
-        const { allowNewValue } = this.props.options;
-
-        return (
-            <ul className={this.getUlListClass()}>
-                {
-                    (listItems && listItems.length > 0)?
-                        (filteredlistItems && filteredlistItems.length > 0)? 
-                            filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
-                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
-                        'No List Items'
-                }
-            </ul>
-        );
-    }
-
-    renderLIItem(item, index) {
-        const { selectedItems } = this.state;
-
-        if(!selectedItems || selectedItems.length <= 0){
-            return <li className={this.getLiListClass(item)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> <span className='VS-HelperText VS-PullRight'>{item.key}</span></li>
-        } else {
-            let itemFound = selectedItems.filter((obj) =>obj.key === item.key);
-            return (
-                (itemFound.length)?
-                null : <li className={this.getLiListClass(item)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> <span className='VS-HelperText VS-PullRight'>{item.key}</span></li>
-            );
-        }
-    }
-    
-    renderULItems() {
-        const { filteredlistItems, listItems } = this.state;
-        const { allowNewValue, allowHierarchy } = this.props.options;
-
-        return (
-            <ul className={this.getUlListClass()}>
-                {
-                    (listItems && listItems.length > 0)?
-                        (filteredlistItems && filteredlistItems.length > 0)? 
-                            filteredlistItems.map((item, index) => this.renderLIItem(item, index))
-                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
-                        'No List Items'
-                }
-            </ul>
-        );
-    }
-
     renderRemoveIcon(item, index){
         const { readOnly } = this.props.options;
         return (
@@ -263,13 +191,13 @@ class TagSelector extends React.PureComponent {
                     (selectedItems && selectedItems.length > 0)?
                         (maxItemCounter === 0 || maxItemCounter >= selectedItems.length)?
                             selectedItems.map((item, index) =>  {
-                                return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" >{item.key} {this.renderRemoveIcon(item, index)}</span></li>
+                                return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" >{item.value} {this.renderRemoveIcon(item, index)}</span></li>
                             }) : <li><span className="VS-AutoCompleteItem" >{selectedItems.length} SELECTED {this.renderRemoveIcon(null, -1)}</span></li>
                     :  ''
                 }
                 <li>
-                    <input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
-                        className={`VS-Regular-UPPER-Case VS-Calendar-Input`}
+                    <Input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
+                        className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
                         placeholder={this.getPlaceholder()}
                         onClick={this.onFocus}
                         onBlur={this.onBlur}
@@ -281,8 +209,8 @@ class TagSelector extends React.PureComponent {
     }
 
     render() {
-        const { shouldListOpen } = this.state;
-        const { allowHierarchy } = this.props.options;
+        const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems } = this.state;
+        const { options } = this.props;
         const _uuid = guid();
         let _selectedInput = this.renderSelectedItems();
 
@@ -299,13 +227,7 @@ class TagSelector extends React.PureComponent {
                         {
                             (shouldListOpen) ?
                                 <TagSelectorPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
-                                    <div id="VS-Scrollbar" className="VS-Scrollbar" className={this.getContainerClass()} style={this.state.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
-                                        {
-                                            (allowHierarchy === true)?
-                                            this.renderHeirarchyItems() 
-                                            : this.renderULItems() 
-                                        }
-                                    </div> 
+                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onKeyDown={this.onKeyDownHandler} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler}> </ItemsList>
                                 </TagSelectorPortal>
                                 : ''
                         }
