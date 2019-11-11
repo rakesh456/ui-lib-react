@@ -52,7 +52,7 @@ class Days extends React.PureComponent {
     getCalendarDates = () => {
         const { current } = this.state;
         const { month, year } = this.props;
-        const calendarMonth = month || (current)? +current.getMonth() + 1 : 1;
+        const calendarMonth = month || +current.getMonth() + 1;
         const calendarYear = year || current.getFullYear();
         const _array = calendar(calendarMonth, calendarYear);
         

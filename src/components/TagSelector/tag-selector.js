@@ -75,8 +75,8 @@ class TagSelector extends React.PureComponent {
     }
 
     onBlur = () => {
-        // this.setState({ shouldListOpen: false});
-        // this.props.onBlur();
+        this.setState({ shouldListOpen: false});
+        this.props.onBlur();
     }
 
     closeCalendar = (e) => {
@@ -116,7 +116,6 @@ class TagSelector extends React.PureComponent {
         
         this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
     }
-
 
     selectItem(event, item) {
         if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
@@ -172,31 +171,52 @@ class TagSelector extends React.PureComponent {
         );
     }
 
-    renderHeirarchyItem(item, index) {
-        const { selectedItems } = this.state;
-        console.log(' item ' + item['Gujarat']);
-
-        // var tifOptions = Object.keys(item).map((key, index) => {
-        //     return <li value={key} key={index + '_li'}>{item[key]}</li>
-        // });
-        // console.log(' tifOptions ', tifOptions);
-
+    renderSubitem(item, index) {
+        const _uuid = guid();
+        const items = Object.keys(item).map((ele, index) => {
+            return <li onClick={(e) => this.selectItem(e, item[ele])} key={index + '_span'}> {item[ele].value} </li>;
+        });
 
         return (
-            <div key={guid()}>
-                {Object.keys(item).map( (ele, index) =>
-                    <li key={index + '_li'}>
-                        {
-                            item[ele].forEach(element => {
-                                return <span>test</span>
-                            })
-                        }
-                    </li>
-                )}
+            <div key={_uuid}>
+                {items}
             </div>
         )
     }
     
+    renderHeirarchyItem(item, index) {
+        // console.log(' 1item ', item);
+
+        const items = Object.keys(item).map((ele, index1) => {
+            return (
+                <div key={guid()} className='VS-HeirarchyItems'>
+                    <li className='VS-HeirarchyTitle' key={index1 + '_key'}> {ele} </li>
+                    <ul key={index1 + '_val'}> {this.renderSubitem(item[ele], index1)} </ul>
+                </div>
+            );
+        });
+
+        return ( items )
+    }
+    
+    
+    renderHeirarchyItems() {
+        const { filteredlistItems, listItems } = this.state;
+        const { allowNewValue } = this.props.options;
+
+        return (
+            <ul className={this.getUlListClass()}>
+                {
+                    (listItems && listItems.length > 0)?
+                        (filteredlistItems && filteredlistItems.length > 0)? 
+                            filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
+                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
+                        'No List Items'
+                }
+            </ul>
+        );
+    }
+
     renderLIItem(item, index) {
         const { selectedItems } = this.state;
 
@@ -209,24 +229,6 @@ class TagSelector extends React.PureComponent {
                 null : <li className={this.getLiListClass(item)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> <span className='VS-HelperText VS-PullRight'>{item.key}</span></li>
             );
         }
-    }
-    
-    renderHeirarchyItems() {
-        const { filteredlistItems, listItems } = this.state;
-        const { allowNewValue, allowHierarchy } = this.props.options;
-
-        console.log(' filteredlistItems ', filteredlistItems);
-        return (
-            <ul className={this.getUlListClass()}>
-                {
-                    (listItems && listItems.length > 0)?
-                        (filteredlistItems && filteredlistItems.length > 0)? 
-                            filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
-                        : (allowNewValue === true)? 'Do you want to add "' + this.inputEl.value + '" to list' : 'No Data Found' :
-                        'No List Items'
-                }
-            </ul>
-        );
     }
     
     renderULItems() {
