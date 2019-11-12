@@ -8,14 +8,18 @@ import {
     arrayIncludesInObj,
     isStringExists
 } from "../../utils/utils";
+import {
+    sortListingByType,
+    isValidJsonFormat
+} from "../../utils/tagselectorutils";
 import { CountryService } from '../../services/CountryService';
 
 class TagSelector extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const {listItems, maxItemCounter} = this.props.options;
-        this.state = { shouldListOpen: false, listItems: (listItems)? listItems : [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: []};
+        const {maxItemCounter} = this.props.options;
+        this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: []};
         this.countryservice = new CountryService();
     }
 
@@ -41,9 +45,12 @@ class TagSelector extends React.PureComponent {
     }
 
     setJsonData(listItems){
-        this.setState({
-            listItems: listItems
-        });
+        const {allowHierarchy} = this.props.options;
+        if(isValidJsonFormat(allowHierarchy, listItems)){
+            this.setState({
+                listItems: sortListingByType(allowHierarchy, listItems)
+            });
+        }
     }
 
     addItemAndUpdateList = (obj) => {
@@ -114,15 +121,45 @@ class TagSelector extends React.PureComponent {
     }
 
     updateFilterItems = (_val) => {
-        const {searchWithHelper} = this.props.options;
+        const {listItems} = this.state;
+        const {allowHierarchy} = this.props.options;
+        let key;
         let results = [];
-        if(searchWithHelper){
-            results = (_val)? this.state.listItems.filter((item, index) => (isStringExists(item.value, _val) || isStringExists(item.key, _val))) : [...this.state.listItems];
+        if(allowHierarchy === true){
+            let results1 = [];
+            listItems.forEach((element, index) => {
+                for (key in element) {
+                    const _item = element[key];
+                    const _key = key;
+                    let obj = _item.filter(o => isStringExists(o.value, _val));
+                    if(obj && obj.length > 0){
+                        if(!results1[_key]){
+                            results1.push({[_key]: []});
+                        }
+                        if(results1[index]){
+                            results1[index][_key] = [...obj];
+                        }
+                    } else {
+                        results1[index] = {};
+                        results1[index][_key] = [];
+                    }
+                }
+            });
+            results = (_val && results1.length > 0)? [...results1] : [...listItems];
         } else {
-            results = (_val)? this.state.listItems.filter((item, index) => (isStringExists(item.value, _val))) : [...this.state.listItems];
+            results = (_val)? this.state.listItems.filter((item, index) => (this.checkStringSearchInListByType(item, _val))) : [...this.state.listItems];
         }
         
         this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
+    }
+
+    checkStringSearchInListByType = (item, _val) => {
+        const {searchWithHelper} = this.props.options;
+        if(searchWithHelper){
+            return (isStringExists(item.value, _val) || isStringExists(item.key, _val))
+        } else {
+            return (isStringExists(item.value, _val))
+        }
     }
     
     closeTagSelector = (e) => {

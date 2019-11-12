@@ -63,7 +63,9 @@ class ItemsList extends React.PureComponent {
         const items = Object.keys(item).map((ele, index1) => {
             return (
                 <div key={guid()} className='VS-HeirarchyItems'>
-                    <li className='VS-HeirarchyTitle' key={index1 + '_key'}> {ele} </li>
+                    {
+                        (item[ele] && item[ele].length > 0)? <li className='VS-HeirarchyTitle' key={index1 + '_key'}> {ele} </li> : ''
+                    }
                     <ul key={index1 + '_val'}> {this.renderSubitem(item[ele], index1)} </ul>
                 </div>
             );
