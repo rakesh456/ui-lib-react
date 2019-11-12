@@ -338,7 +338,6 @@
                     {"key": "Anantapur", "value": "Anantapur"}, 
                     {"key": "Bapatla", "value": "Bapatla"}
                 ]},
-                
                 {"Gujarat": [
                     {"key": "Adalaj", "value": "Adalaj"},
                     {"key": "Amreli", "value": "Amreli"},
@@ -379,7 +378,7 @@
         
         function appendNewElementById(id){
             let tagElement1 = document.getElementById(id);
-            let selectedCounter = tagElement1.appendNewElement({"key": "1Test", "value": "1A"}, );
+            let selectedCounter = tagElement1.appendNewElement({"key": "1Test", "value": "1A"});
             console.log(' selectedCounter ', selectedCounter);
         }
         
@@ -406,7 +405,7 @@
     </script>
 </head>
 <body>
-    <br>
+    <h2>Tag selector Sample using React Component</h2>
     <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button>
     <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button>
     <button onclick="appendNewElementById('tagselector1');">Append new elemet</button>
@@ -415,11 +414,10 @@
     <div id="SelectedCounter"></div>
     <div id="NewlyAddedElements"></div>
     <br>
-    <br>
     <p>{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": false, "readOnly": false, "allowNewValue": true, "allowHierarchy": false}</p>
     <label>Select Country : </label>
-    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": false, "readOnly": false, "allowNewValue": true, "allowHierarchy": false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
-    <br><br>
+    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "readOnly": false, "allowNewValue": true, "allowHierarchy": false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
+    <br>
     <p>{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "readOnly": false, "allowNewValue": true, "allowHierarchy": true}</p>
     <label>Select State : </label>
     <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "readOnly": false, "allowNewValue": true, "allowHierarchy": true}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
