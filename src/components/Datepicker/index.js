@@ -200,7 +200,7 @@ class DatePicker extends React.PureComponent {
                 }
             }
         }
-        this.setState({ shouldCalendarOpen: false});
+        // this.setState({ shouldCalendarOpen: false});
         this.props.onBlur();
     }
     
@@ -315,7 +315,7 @@ class DatePicker extends React.PureComponent {
 
     closeCalendar = (e) => {
         const { displayFormat } = this.props.options;
-
+        
         var shouldCalendarOpen = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat));
 
         if(isValidMMYYYYValue(this.state.newSelectedYear) || (e.target.classList.length <= 0)){
