@@ -98,10 +98,9 @@ class CalendarDate extends React.PureComponent {
         if (!this.props.shouldCalendarOpen) {
             return null;
         }
-        
 
         return (
-            <div className={this.getCalendarContainerClass()} style={this.props.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
+            <div className={this.getCalendarContainerClass()} style={this.props.style} onKeyDown={(e) => this.props.onKeyDown(e)}>
                 <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
                 <Week />
                 <Days options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />

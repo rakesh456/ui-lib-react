@@ -66,11 +66,34 @@
             let element = document.getElementById(id);
             element.setValue(value);
         }
+        
+        function refresh(id) {
+            let element = document.getElementById(id);
+            element.refresh();
+        }
+
+        function getStartDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getStartDate();
+            let element2 = document.getElementById(divId);
+            if(element2){
+                element2.innerHTML = 'Get Start Date : ' + dateValue;
+            }
+        }
+        
+        function getEndDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getEndDate();
+            let element2 = document.getElementById(divId);
+            if(element2){
+                element2.innerHTML = 'Get End Date : ' + dateValue;
+            }
+        }
 
         function addDatepickerNew(id) {
             let element = document.getElementById(id);
-            element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerLimit": "01/06/2019", "upperLimit": "25/12/2025"}'></date-picker>`;
-            addReactDatepicker(element.children[0]);
+            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerLimit": "01/06/2019", "upperLimit": "25/12/2025"}'></date-picker>`;
+            // addReactDatepicker(element.children[0]);
         }
 
         window.onload = bodyOnload;
@@ -426,57 +449,82 @@
     <h2>Datepicker Sample using React Component</h2>
     <!-- Sample Usage: Options Set by JS-->
     
-    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2019", "upperLimit": "30/12/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2017", "upperLimit": "30/12/2018", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
 
     <div>
-        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2019", "upperLimit": "30/12/2019", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
+        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2017", "upperLimit": "30/12/2018", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
     </div>
     
     <br>
     <div id="display1"></div>
+    <div id="displayLower1"></div>
+    <div id="displayUpper1"></div>
     <button onclick="displayValue('datepicker1', 'display1')">Display</button>
     <button onclick="setValue('datepicker1', '01/09/2019');">Set Value to 01/09/2019</button>
     <button onclick="setValue('datepicker1', '01/12/2019');">Set Value to 01/12/2019</button>
+    <button onclick="refresh('datepicker1');">Refresh</button>
+    <button onclick="getStartDate('datepicker1', 'displayLower1');">Get Start Date</button>
+    <button onclick="getEndDate('datepicker1', 'displayUpper1');">Get End Date</button>
     <br>
     <br>
-    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/08/2019", "upperLimit": "12/29/2024", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/28/2019", "10/15/2020", "11/01/2020", "11/20/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
+    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/28/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/28/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
 
-    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/08/2019", "upperLimit": "12/29/2024", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": true, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/28/2019", "10/15/2020", "11/01/2020", "11/20/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
+    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/28/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/28/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="displayNew"></div>
+    <div id="displayLowerNew"></div>
+    <div id="displayUpperNew"></div>
     <button onclick="setValue('datepickerNew', '11/25/2019');">Set Value to 11/25/2019</button>
     <button onclick="setValue('datepickerNew', '10/15/2020');">Set Value to 10/15/2020</button>
+    <button onclick="refresh('datepickerNew');">Refresh</button>
+    <button onclick="getStartDate('datepickerNew', 'displayLowerNew');">Get Start Date</button>
+    <button onclick="getEndDate('datepickerNew', 'displayUpperNew');">Get End Date</button>
     <br>
     
     <p>Display format : MM/YYYY</p>
-    <p>{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/2018", "upperLimit": "03/2025", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/2019", "10/2024"]}</p>
-    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/2018", "upperLimit": "03/2025", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/2019", "10/2024"]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2011", "upperLimit": "12/2021", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2011", "12/2011", "11/2019", "10/2024"]}</p>
+    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2011", "upperLimit": "12/2021", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2011", "12/2011", "11/2019", "10/2024"]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display2"></div>
+    <div id="displayLower2"></div>
+    <div id="displayUpper2"></div>
     <button onclick="setValue('datepicker2', '2019-11-25');">Set Value to 11/2019</button>
     <button onclick="setValue('datepicker2', '2017-11-25');">Set Value to 11/2017</button>
+    <button onclick="refresh('datepicker2');">Refresh</button>
+    <button onclick="getStartDate('datepicker2', 'displayLower2');">Get Start Date</button>
+    <button onclick="getEndDate('datepicker2', 'displayUpper2');">Get End Date</button>
     <br> 
 
     <p>Display format : QQ/YYYY</p>
-    <p>{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2018", "upperLimit": "Q3/2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2020", "Q3/2025"]}</p>
-    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2018", "upperLimit": "Q3/2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2020", "Q3/2025"]}' onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p>
+    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}' onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display3"></div>
+    <div id="displayLower3"></div>
+    <div id="displayUpper3"></div>
     <button onclick="setValue('datepicker3', '2019-08-25');">Set Value to Q3/2019</button>
     <button onclick="setValue('datepicker3', '2017-08-25');">Set Value to Q2/2017</button>
+    <button onclick="refresh('datepicker3');">Refresh</button>
+    <button onclick="getStartDate('datepicker3', 'displayLower3');">Get Start Date</button>
+    <button onclick="getEndDate('datepicker3', 'displayUpper3');">Get End Date</button>
     <br>
 
     <p>Display format : YYYY</p>
-    <p>{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2017", "upperLimit": "2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2020", "2025"]}</p>
-    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2017", "upperLimit": "2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2020", "2025"]}' onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p>
+    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}' onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display4"></div>
+    <div id="displayLower4"></div>
+    <div id="displayUpper4"></div>
     <button onclick="setValue('datepicker4', '2018-08-25');">Set Value to 2018</button>
     <button onclick="setValue('datepicker4', '2016-08-25');">Set Value to 2016</button>
+    <button onclick="refresh('datepicker4');">Refresh</button>
+    <button onclick="getStartDate('datepicker4', 'displayLower4');">Get Start Date</button>
+    <button onclick="getEndDate('datepicker4', 'displayUpper4');">Get End Date</button>
     <br>
 
     <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button> -->

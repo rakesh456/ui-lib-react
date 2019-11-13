@@ -18,20 +18,25 @@ import {
     getProperFormattedDate,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
+    checkDateInBetween,
+    getNewUpdateValueByArrow,
     getDefaultQQMMYYYYDateByFormat,
     isValidFormattedDate,
     isQQYYYYFormat,
     isMMYYYYFormat,
     checkAllowedChars,
     isLeft,
-    isRight
+    isRight,
+    getYYYYForLowerLimit,
+    getYYYYForUpperLimit
 } from "../../utils/calendar";
 import {
     getDateByFormat,
     guid,
     ARROW_KEYS,
     ARROWS,
-    isValidDate
+    isValidDate,
+    isUndefinedOrNull
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -42,8 +47,9 @@ class DatePicker extends React.PureComponent {
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
 
         const _date = this.getDefaultDate();
+        const _selectedYear = this.getDefaultYear();
 
-        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: getDefaultQQMMYYYYDateByFormat(datePickerOptions), newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true };
+        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -56,15 +62,81 @@ class DatePicker extends React.PureComponent {
         }
     }
     
+    refresh() {
+        const {displayFormat} = this.props.options;
+        if(isCalendarFormat(displayFormat)){
+            this.setState({ selectedDate: getDateByFormat(this.getDefaultDate(), displayFormat), isInvalidDate: false, isInvalidRangeDate: false });
+        } else if(isYearFormat(displayFormat)){
+            this.setState({ selectedYear: this.getDefaultYear(), isInvalidDate: false, isInvalidRangeDate: false });
+        }
+    }
+    
+    getStartDate() {
+        const {lowerLimit, displayFormat} = this.props.options;
+        if(isUndefinedOrNull(lowerLimit)){
+            return "";
+        } else {
+            if(isCalendarFormat(displayFormat)){
+                return getDateByFormat(lowerLimit, displayFormat);
+            } else {
+                const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(this.props.options);
+                return (displayFormat === "YYYY")? lowerYearLimit : (lowerMonthLimit + '/' + lowerYearLimit);
+            }
+        }
+    }
+    
+    getEndDate() {
+        const {upperLimit, displayFormat} = this.props.options;
+        if(isUndefinedOrNull(upperLimit)){
+            return "";
+        } else {
+            if(isCalendarFormat(displayFormat)){
+                return getDateByFormat(upperLimit, displayFormat);
+            } else {
+                const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(this.props.options);
+                return (displayFormat === "YYYY")? upperYearLimit : (upperMonthLimit + '/' + upperYearLimit);
+            }
+        }
+    }
+    
     handleChildUnmount() {}
 
     getDefaultDate(){
         const options = (this.props.options)? this.props.options : {};
         var _lowerDate = getProperFormattedDate(options.lowerLimit, options);
         var _upperLimit = getProperFormattedDate(options.upperLimit, options);
+        var { displayFormat } = options;
         var _date = (_lowerDate >= new Date())? _lowerDate : new Date();
         _date = (_upperLimit <= new Date())? _lowerDate : _date;
-        return _date;
+        
+        if(!isValidDate(_lowerDate) && isValidDate(_upperLimit)){
+            _date = (_upperLimit <= new Date())? _upperLimit : _date;
+        } else if(!isValidDate(_upperLimit) && isValidDate(_lowerDate)){
+            _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+        }
+        
+        var _dateIn = checkDateInBetween(new Date(), isValidDate(_lowerDate)? _lowerDate : null, isValidDate(_upperLimit)? _upperLimit : null);
+        
+        let updatedDate = '';
+        if(_dateIn){
+            updatedDate = (isValidOutsideRangeDate(_date, options))? _date : getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+        } else {
+            var _dt = getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+            updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
+        }
+        
+        // var _valid = isValidOutsideRangeDate(updatedDate, options);
+        return updatedDate;
+    }
+    
+    getDefaultYear(){
+        const options = (this.props.options)? this.props.options : {};
+        var { displayFormat, lowerLimit, upperLimit } = options;
+        let _val = getDefaultQQMMYYYYDateByFormat(options);
+        const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
+        
+        var _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
+        return (_valid)? updatedValue : '';
     }
 
     updateDimensions() {}
@@ -402,7 +474,7 @@ class DatePicker extends React.PureComponent {
                             </div>
                         </div>
                         {
-                            (shouldCalendarOpen) ?
+                            (shouldCalendarOpen && isDisabled === false) ?
                                 <CalendarPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
                                     {
                                         (isCalendar)?

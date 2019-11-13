@@ -40,7 +40,7 @@ export function getFormatfromOptions(options){
 
 // Get date by display format
 export function getDateByFormat(date, format){
-    return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date);
+    return (date)? (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date) : "";
 }
 
 // Get date by display format new
