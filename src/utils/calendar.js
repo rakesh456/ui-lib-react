@@ -175,7 +175,8 @@ export const currentFormatToYYYYMMDD = (date, options) => {
 // Function to format options
 export const formatOptions = (options) => {
     var newOptions = {...options}
-    var displayFormat = options.displayFormat;
+    newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
+    var displayFormat = newOptions['displayFormat'];
 
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
@@ -374,14 +375,14 @@ export const getIsoDate = (date = new Date()) => {
 // (bool) Function to check date is between from and to date
 export const checkDateInBetween = (date, from, to) => {
     if(isDate(date)){
-        var _to = (!isUndefinedOrNull(to))? new Date(to) : null; 
         var _from = (!isUndefinedOrNull(from))? new Date(from) : null; 
+        var _to = (!isUndefinedOrNull(to))? new Date(to) : null; 
         
         if(isUndefinedOrNull(_from) && isUndefinedOrNull(_to)){
             return true;
-        } else if(isUndefinedOrNull(_from) && isDate(_to) && date.getTime() <= _to.getTime()){
+        } else if(!isDate(_from) && isDate(_to) && date.getTime() <= _to.getTime()){
             return true;
-        } else if(isUndefinedOrNull(_to) && isDate(from) && date.getTime() >= from.getTime()){
+        } else if(!isDate(_to) && isDate(from) && date.getTime() >= from.getTime()){
             return true;
         } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
@@ -628,7 +629,7 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     } else {
         newdate.setDate(newdate.getDate() + day);
     }
-
+    
     var _lDate = new Date(lowerLimit);
     _lDate.setDate(_lDate.getDate());
     var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
@@ -654,6 +655,48 @@ export const dateIsInDisabledList = (newdate, options) => {
         });
     } 
     return _flag;
+}
+
+// Function to check value is disabled list or not
+export const valueIsInDisabledList = (value, options) => {
+    var _flag = false;
+
+    if(options.disabledList && options.disabledList.length > 0){
+        _flag = options.disabledList.indexOf(value) > -1;
+    } 
+    return _flag;
+}
+
+
+// Recursive funtion to get valid next date by charcode
+export const getNewUpdateValueByArrow = (value, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
+    if(valueIsInDisabledList(value, options)){
+        let _newVal = '';
+        
+        if(displayFormat === 'MM/YYYY'){
+            let d = value.toString().split("/"),
+                month = parseInt(d[0]),
+                year = parseInt(d[1]);
+    
+                month = (month <= 11)? month + 1 : 1;
+            const _month = zeroPad(month, 2);
+            _newVal = _month + '/' + ((month === 1)? year + 1 : year);
+        } else if (displayFormat === 'YYYY'){
+            _newVal = (parseInt(value) + 1).toString();
+        } else if (displayFormat === 'QQ/YYYY'){
+            let d = value.toString().split("/"),
+                qq = d[0],
+                _q = parseInt(qq.charAt(1)),
+                year = parseInt(d[1]);
+
+                _q = (_q <= 3)? _q + 1 : 1;
+            const _qq = 'Q' + _q;
+            _newVal = _qq + '/' + ((_q === 1)? year + 1 : year);
+        }
+        return getNewUpdateValueByArrow(_newVal, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
+    } else {
+        return value;
+    }
 }
 
 // Function to check value is left or not

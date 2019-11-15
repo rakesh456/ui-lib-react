@@ -125,7 +125,7 @@ class ItemsList extends React.PureComponent {
     addItemButton = () => {
         return (
             <span>{
-                    <span>Do you want to add {this.props.inputEl.value} to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.inputEl.value)}>ADD</Button></span>
+                    <span>Do you want to add "{this.props.inputEl.value}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.inputEl.value)}>ADD</Button></span>
                 }
             </span>
         )
@@ -142,7 +142,7 @@ class ItemsList extends React.PureComponent {
     render() {
         const { allowHierarchy } = this.props.options;
         return (
-            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
+            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style} tabIndex="0">
                 {
                     (allowHierarchy === true)?
                     this.renderHeirarchyItems() 

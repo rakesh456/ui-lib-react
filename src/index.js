@@ -104,6 +104,18 @@ function datepickerRender(el) {
             }
         });
     }
+    
+    el.refresh = function () {
+        myComponentInstance.refresh();
+    }
+
+    el.getStartDate = function () {
+        return myComponentInstance.getStartDate();
+    }
+    
+    el.getEndDate = function () {
+        return myComponentInstance.getEndDate();
+    }
 
     el.addEventListener('mousedown', (e) => { 
         if(e.target.tagName !== 'INPUT'){
@@ -128,7 +140,6 @@ Array.prototype.forEach.call(
 function tagSelectorRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options))? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
-    console.log(' options ', options);
 
     function callOnSelectedEvent(selectedItem, el) {
         var ev = new CustomEvent("change",  {'detail':  { 'item': selectedItem }});

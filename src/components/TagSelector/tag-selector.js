@@ -27,13 +27,15 @@ class TagSelector extends React.PureComponent {
 
     componentDidMount() {
         document.addEventListener('click', this.closeTagSelector);
-        const dimensions = this.el.getBoundingClientRect();
-        const style = {};
-        style.left = '0px';
-        style.right = dimensions.right;
-        style.top = '100%';
-        style.zIndex = '1';
-        this.setState({ style: style });
+        if(this.el){
+            const dimensions = this.el.getBoundingClientRect();
+            const style = {};
+            style.left = '0px';
+            style.right = dimensions.right;
+            style.top = '100%';
+            style.zIndex = '1';
+            this.setState({ style: style });
+        }
 
         // const countriesData = this.countryservice.getCountries(this);
         // const citiesData = this.countryservice.getCities(this);
@@ -60,10 +62,9 @@ class TagSelector extends React.PureComponent {
         _items.push(obj);
         _newItems.push(obj);
         this.setState({
-            listItems: _items,
-            newlyAddedElements: _newItems
+            listItems: [..._items],
+            newlyAddedElements: [..._newItems]
         });
-        this.updateFilterItems('');
     }
 
     appendNewElement(obj) {
@@ -80,6 +81,9 @@ class TagSelector extends React.PureComponent {
             let obj = {'key': value, 'value': value};
             this.addItemAndUpdateList(obj);
             this.onSelectHandler(obj);
+            this.setState({
+                shouldListOpen: false
+            });
         }
     }
     
@@ -264,7 +268,7 @@ class TagSelector extends React.PureComponent {
                         {
                             (shouldListOpen) ?
                                 <TagSelectorPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
-                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onKeyDown={this.onKeyDownHandler} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler}> </ItemsList>
+                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler}> </ItemsList>
                                 </TagSelectorPortal>
                                 : ''
                         }
