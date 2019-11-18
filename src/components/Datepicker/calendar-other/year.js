@@ -2,7 +2,6 @@ import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
     getYearsList,
-    MONTH_SHORT_NAMES,
     QUARTERS_NAMES,
     getSelectedMonth,
     getSelectedYear,
@@ -12,11 +11,12 @@ import {
     getMonthIndex,
     isMMYYYYFormat
 } from "../../../utils/calendar";
-
 import {
     splitArray,
     guid
 } from "../../../utils/utils";
+import MonthsView from "./months-view";
+import YearsView from "./years-view";
 
 class Year extends React.PureComponent {
     constructor(props) {
@@ -48,7 +48,6 @@ class Year extends React.PureComponent {
                 })
             }
         }
-
     }
 
     componentDidUpdate(prevProps) {
@@ -93,38 +92,8 @@ class Year extends React.PureComponent {
         this.props.onYearSelect(quarter + '/' + this.state.year);
     }
 
-    goToNextMonth = () => {
-        this.setState({
-            year: parseInt(this.state.year) + 9
-        });
-    }
-
-    goToPrevMonth = () => {
-        this.setState({
-            year: parseInt(this.state.year) - 9
-        });
-    }
-
-    getYears = () => {
-        const { year } = this.state;
-        const _array = getYearsList(year);
-        return splitArray(_array, 3);
-    }
-
-    getMonths = () => {
-        return splitArray(MONTH_SHORT_NAMES, 3);
-    }
-
     getQuarters = () => {
         return splitArray(QUARTERS_NAMES, 2);
-    }
-
-    getCalendarYearClass = () => {
-        return "VS-CalendarContainer VS-modal VS-shape-rounded-fill-for-year";
-    }
-
-    getCalendarMonthClass = () => {
-        return "VS-CalendarContainer VS-modal VS-shape-rounded-fill-for-month";
     }
 
     getCalendarQuartersClass = () => {
@@ -146,58 +115,6 @@ class Year extends React.PureComponent {
         } else {
             return true;
         }
-    }
-
-    renderYearValue = (year, index) => {
-        const activeClass = (isEqual(this.state.selectedYear, year)) ? 'VS-Active' : '';
-        const { lowerYearLimit, upperYearLimit } = this.state;
-        const isEnabled = this.checkYearIsEnabled(year);
-
-        return (
-            <Fragment key={guid()}>
-                {
-                    ((lowerYearLimit && lowerYearLimit > year) || (upperYearLimit && upperYearLimit < year) || (!isEnabled)) ?
-                        <span className={`${activeClass} VS-Year VS-Disabled`} >{year}</span> :
-                        <span className={`${activeClass} VS-Year`} onClick={() => this.onSelectYearHandler(year)}>{year}</span>
-                }
-            </Fragment>
-        );
-    }
-
-    renderYearRow = (years, index) => {
-        const rows = years.map((date, index1) => {
-            return this.renderYearValue(date, index1)
-        });
-
-        return (
-            <div className="VS-DateRow" key={guid()}>{rows}</div>
-        )
-    }
-
-    renderMonthValue = (month, index) => {
-        const activeClass = (isEqual(this.state.selectedMonth, month)) ? 'VS-Active' : '';
-        const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
-        const isEnabled = this.checkQQMMIsEnabled(month, year);
-
-        return (
-            <Fragment key={guid()}>
-                {
-                    ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
-                        <span className={`${activeClass} VS-MonthQuater VS-Disabled`}>{month}</span>:
-                        <span className={`${activeClass} VS-MonthQuater`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
-                }
-            </Fragment>
-        );
-    }
-
-    renderMonthRow = (months, index) => {
-        const rows = months.map((date, index1) => {
-            return this.renderMonthValue(date, index1)
-        });
-
-        return (
-            <div className="VS-DateRowFlex" key={guid()}>{rows}</div>
-        )
     }
 
     renderQuarterValue = (quater, index) => {
@@ -230,42 +147,23 @@ class Year extends React.PureComponent {
     }
 
     render() {
-        const { year, isYearSelected, isDisabledPrev, isDisabledNext } = this.state;
-        const { options } = this.props;
+        const { year, isYearSelected, selectedMonth } = this.state;
+        const { selectedValue, options } = this.props;
         const isQuarter = (options.displayFormat === 'QQ/YYYY');
 
         return (
             <div>
                 {
                     (year && !isYearSelected) ?
-                        <div className={this.getCalendarYearClass()} style={this.props.style}>
-                            <Fragment>
-                                <div className="VS-NextPrevArrow">
-                                    {
-                                        (isDisabledPrev) ?
-                                            <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" /> :
-                                            <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.goToPrevMonth} />
-                                    }
-                                    {
-                                        (isDisabledNext) ?
-                                            <FaCaretRight className="VS-PullRight VS-Icon Vs-DisabledIcon" /> :
-                                            <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.goToNextMonth} />
-                                    }
-                                </div>
-                                {this.getYears().map((row, index) => this.renderYearRow(row, index))}
-                            </Fragment>
-                        </div> :
+                        <YearsView options={options} style={this.props.style} onSelectYear={this.onSelectYearHandler} selectedValue={selectedValue}></YearsView>
+                        :
                         (isQuarter) ?
                             <div className={this.getCalendarQuartersClass()} style={this.props.style}>
                                 <Fragment>
                                     {this.getQuarters().map((row, index) => this.renderQuarterRow(row, index))}
                                 </Fragment>
                             </div> :
-                            <div className={this.getCalendarMonthClass()} style={this.props.style}>
-                                <Fragment>
-                                    {this.getMonths().map((row, index) => this.renderMonthRow(row, index))}
-                                </Fragment>
-                            </div>
+                            <MonthsView options={options} selectedMonth={selectedMonth} style={this.props.style} onSelectMonth={this.onSelectMonthHandler}></MonthsView>
                 }
             </div>
         );

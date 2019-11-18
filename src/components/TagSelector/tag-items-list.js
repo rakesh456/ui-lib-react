@@ -31,25 +31,27 @@ class ItemsList extends React.PureComponent {
     }
     
     getLiListClass = (item) => {
-        var foundValue = false;
+        var foundValue = [];
         if(this.props.selectedItems){
             foundValue = this.props.selectedItems.filter((obj) =>obj.key === item.key);
         }
         return (foundValue && foundValue.length > 0) ? "VS-ItemSelected VS-LiItems" : "VS-LiItems";
     }
     
-    getHeirarchyLiListClass = (item) => {
+    getHeirarchyLiListClass = (element) => {
         var foundValue = false;
-        // if(this.props.selectedItems){
-        //     foundValue = this.props.selectedItems.filter((obj) =>obj.key === item.key);
-        // }
-        return (foundValue && foundValue.length > 0) ? "VS-ItemSelected VS-LiItems" : "VS-LiItems";
+        if(this.props.selectedItems && element){
+            if(this.props.selectedItems.some(o => o.value === element.value)){
+                foundValue = true;
+            }
+        }
+        return (foundValue) ? "VS-ItemSelected VS-LiItems" : "VS-LiItems";
     }
 
     renderSubitem(item, index) {
         const _uuid = guid();
         const items = Object.keys(item).map((ele, index) => {
-            return <li className={this.getHeirarchyLiListClass(item)} onClick={(e) => this.selectItem(e, item[ele])} key={index + '_span'}> {item[ele].value} </li>;
+            return <li className={this.getHeirarchyLiListClass(item[ele])} onClick={(e) => this.selectItem(e, item[ele])} key={index + '_span'}> <span className='VS-CodeText'>{item[ele].value}</span> </li>;
         });
 
         return (
@@ -142,7 +144,7 @@ class ItemsList extends React.PureComponent {
     render() {
         const { allowHierarchy } = this.props.options;
         return (
-            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style} tabIndex="0">
+            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style}>
                 {
                     (allowHierarchy === true)?
                     this.renderHeirarchyItems() 

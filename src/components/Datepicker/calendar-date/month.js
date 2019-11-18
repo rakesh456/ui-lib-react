@@ -6,10 +6,11 @@ import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 class Month extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {month: '', year: ''};
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+    }
 
     componentDidUpdate(prevProps) {
     }
@@ -49,7 +50,7 @@ class Month extends React.PureComponent {
                     <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" />:
                     <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevMonth} />
                 }
-                    <span className="VS-Medium-UPPER-Case VS-MonthName">{getMonthNameByIndex(month - 1)} {year}</span>
+                    <span className="VS-Medium-UPPER-Case VS-MonthName" onClick={this.props.goToSelectMonthYear}>{getMonthNameByIndex(month - 1)} {year}</span>
                 {
                     (this.isDisableNextMonth())?
                     <FaCaretRight className="VS-PullRight VS-Icon Vs-DisabledIcon" />:

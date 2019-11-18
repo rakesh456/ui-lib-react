@@ -60,6 +60,10 @@ class CalendarDate extends React.PureComponent {
         this.props.onClearButtonClick();
     }
 
+    goToSelectMonthYear = () => {
+        this.props.goToSelectMonthYear();
+    }
+    
     goToPrevMonth = () => {
         if (this.state.month === 1) {
             this.setState({
@@ -101,7 +105,7 @@ class CalendarDate extends React.PureComponent {
 
         return (
             <div className={this.getCalendarContainerClass()} style={this.props.style} onKeyDown={(e) => this.props.onKeyDown(e)}>
-                <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
+                <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} goToSelectMonthYear={this.goToSelectMonthYear} />
                 <Week />
                 <Days options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
                 {

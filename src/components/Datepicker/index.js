@@ -35,6 +35,8 @@ import {
     guid,
     ARROW_KEYS,
     ARROWS,
+    dateToMMYYYY,
+    dateToYear,
     isValidDate,
     isUndefinedOrNull
 } from "../../utils/utils";
@@ -49,7 +51,7 @@ class DatePicker extends React.PureComponent {
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
 
-        this.state = { selectedDate: getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true };
+        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthYearSelection: false };
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -125,8 +127,8 @@ class DatePicker extends React.PureComponent {
             updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
         }
         
-        // var _valid = isValidOutsideRangeDate(updatedDate, options);
-        return updatedDate;
+        var _valid = isValidOutsideRangeDate(updatedDate, options);
+        return (_valid)? updatedDate : '';
     }
     
     getDefaultYear(){
@@ -136,7 +138,11 @@ class DatePicker extends React.PureComponent {
         const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
         
         var _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
-        return (_valid)? updatedValue : '';
+
+        let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
+
+        console.log(updatedValue, ' _updatedUpperLimit ', _updatedUpperLimit);
+        return (_valid)? updatedValue : _updatedUpperLimit;
     }
 
     updateDimensions() {}
@@ -182,6 +188,10 @@ class DatePicker extends React.PureComponent {
     
     onClearButtonClickHandler = () => {
         this.setState({ selectedDate: "", shouldCalendarOpen: false });
+    }
+    
+    goToSelectMonthYear = () => {
+        // this.setState({ showMonthYearSelection: true });
     }
 
     onFocus = () => {
@@ -394,7 +404,7 @@ class DatePicker extends React.PureComponent {
             shouldCalendarOpen = false;
         }
 
-        if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path')) {
+        if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path') && !e.target.classList.contains("VS-MonthName")) {
             if(e.target.classList.contains("VS-App-header")){
                 this.setState({
                     shouldCalendarOpen: false
@@ -431,7 +441,7 @@ class DatePicker extends React.PureComponent {
 
     getPlaceholder(){
         const options = this.props.options;
-        return (this.state.isMonthYear && options)? options.displayFormat : 'MM/DD/YYYY';
+        return (options && options.displayFormat)? options.displayFormat : '';
     }
 
     getSelectedValue(){
@@ -439,7 +449,7 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
-        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear } = this.state;
+        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthYearSelection } = this.state;
         const { options } = this.props;
         const isDisabled = (options && options.isDisabled === true);
         const showClearIcon = (options && options.showClearIcon === true);
@@ -474,11 +484,11 @@ class DatePicker extends React.PureComponent {
                             </div>
                         </div>
                         {
-                            (shouldCalendarOpen && isDisabled === false) ?
+                            (shouldCalendarOpen && isDisabled === false && showMonthYearSelection === false) ?
                                 <CalendarPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
                                     {
                                         (isCalendar)?
-                                        <CalendarDate style={this.state.style} options={options} onKeyDown={this.onKeyDownHandler} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler}>
+                                        <CalendarDate style={this.state.style} options={options} onKeyDown={this.onKeyDownHandler} selectedDate={selectedDate} shouldCalendarOpen={shouldCalendarOpen} onSelect={this.onSelectHandler} onSelectButtonClick={this.onSelectButtonClickHandler} onClearButtonClick={this.onClearButtonClickHandler} goToSelectMonthYear={this.goToSelectMonthYear}>
                                         </CalendarDate>  : ''
                                     }
 
@@ -487,6 +497,9 @@ class DatePicker extends React.PureComponent {
                                     }
                                 </CalendarPortal>
                                 : ''
+                        }
+                        {
+                            (shouldCalendarOpen && isDisabled === false && showMonthYearSelection === true) ? '' : ''
                         }
                     </div>
                 </header>
