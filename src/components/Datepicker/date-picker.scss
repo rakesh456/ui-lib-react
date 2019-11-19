@@ -124,7 +124,7 @@ date-picker{
 }
 
 .VS-shape-rounded-fill-for-year {
-    height: 150px;
+    height: 210px;
     .VS-DateRow{
         margin: 12px auto;
         padding: 5px 10px;
@@ -140,7 +140,7 @@ date-picker{
 }
 
 .VS-shape-rounded-fill-for-month {
-    height: 180px;
+    height: 210px;
     .VS-DateRowFlex{
         display: flex;
         margin: 3px auto;
@@ -196,8 +196,13 @@ date-picker{
     color: $secondary-two-dark;
     border: solid 1px $grey-one;
     padding: 5px;
-    margin: 0px 10px;
+    margin: 0px 8px;
     cursor: pointer;
+}
+
+.VS-MonthQuater{
+    margin: 0px 10px;
+    padding: 5px 6px;
 }
 
 .VS-Day span:hover {
@@ -317,6 +322,7 @@ date-picker{
 
 .VS-CalendarContainer {
     outline:none !important;
+    z-index: 1;
 }
 
 .VS-App{
@@ -341,6 +347,7 @@ date-picker{
 .VS-CalendarContainer .VS-CalendarMonth{
     display: inline-block;
     width: 216px;
+    height: 30px;
 }
 .VS-CalendarContainer .VS-CalendarMonth .VS-MonthName{
     padding: 7px 0px;

@@ -1,7 +1,9 @@
 import React, { Fragment } from "react";
+import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
     isEqual,
     MONTH_SHORT_NAMES,
+    CURRENT_YEAR,
     getMonthIndex,
     isMMYYYYFormat
 } from "../../../utils/calendar";
@@ -14,13 +16,12 @@ import {
 class MonthsView extends React.PureComponent {
     constructor(props) {
         super(props);
-        const { options } = this.props;
+        const { showHeaderSelection } = this.props;
         
-        this.state = {  };
+        this.state = { showHeaderSelection: (showHeaderSelection === true)};
     }
     
     componentDidMount() {
-        const { options } = this.props;
     }
     
     getMonths = () => {
@@ -47,7 +48,7 @@ class MonthsView extends React.PureComponent {
     }
 
     renderMonthValue = (month, index) => {
-        const activeClass = (isEqual(this.props.selectedMonth, month)) ? 'VS-Active' : '';
+        const activeClass = (isEqual(this.props.currentDateMonth, month)) ? 'VS-Active' : '';
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const isEnabled = this.checkQQMMIsEnabled(month, year);
 
@@ -73,8 +74,18 @@ class MonthsView extends React.PureComponent {
     }
 
     render() {
+        const { showHeaderSelection } = this.state;
+        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         return (
             <div className={this.getCalendarMonthClass()} style={this.props.style}>
+                {
+                    (showHeaderSelection)? 
+                        <div className="VS-CalendarMonth VS-TextCenter">
+                            <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevYear} />
+                            <span className="VS-Medium-UPPER-Case VS-MonthName" onClick={this.props.goToSelectYear}>{currentDateYear}</span>
+                            <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.props.goToNextYear} />
+                        </div> : ''
+                }
                 <Fragment>
                     {this.getMonths().map((row, index) => this.renderMonthRow(row, index))}
                 </Fragment>

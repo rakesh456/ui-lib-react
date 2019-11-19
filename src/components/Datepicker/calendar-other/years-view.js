@@ -1,6 +1,7 @@
 import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
+    CURRENT_YEAR,
     isEqual,
     getYearsList,
     getSelectedYear,
@@ -16,26 +17,26 @@ import {
 class YearsView extends React.PureComponent {
     constructor(props) {
         super(props);
-        const { options } = this.props;
+        const { options, showHeaderSelection } = this.props;
+        
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
         var year = new Date().getFullYear();
         year = parseInt(year);
         
-        this.state = { year: year, isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, isDisabledNext: ((year + 4) >= upperYearLimit)? true : false, };
+        this.state = { year: year, isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 5) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true)};
     }
     
     componentDidMount() {
         const { selectedValue, options } = this.props;
-        const _selectedYear = getSelectedYear(selectedValue);
-        console.log(_selectedYear, ' 1selectedValue ', selectedValue);
         if (selectedValue) {
-            if (options.displayFormat === 'YYYY') {
+            if (options.displayFormat === 'YYYY' || options.displayFormat === 'DD/MM/YYYY' || options.displayFormat === 'MM/DD/YYYY') {
                 this.setState({
                     selectedYear: selectedValue,
                     year: selectedValue
                 });
             } else {
+                const _selectedYear = getSelectedYear(selectedValue);
                 this.setState({
                     selectedYear: _selectedYear,
                     year: _selectedYear
@@ -55,13 +56,12 @@ class YearsView extends React.PureComponent {
         var { year } = this.state;
         year = parseInt(year);
 
-        this.setState({ isDisabledNext: ((year + 4) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit });
+        this.setState({ isDisabledNext: ((year + 5) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit });
     }
     
     getYears = () => {
         const { year } = this.state;
         const _array = getYearsList(year);
-        console.log( year , ' year ', _array);
         return splitArray(_array, 3);
     }
     
@@ -71,14 +71,13 @@ class YearsView extends React.PureComponent {
     
     goToNextYear = () => {
         this.setState({
-            year: parseInt(this.state.year) + 9
+            year: parseInt(this.state.year) + 12
         });
     }
 
     goToPrevYear = () => {
-        console.log(' this.state.year ', this.state.year);
         this.setState({
-            year: parseInt(this.state.year) - 9
+            year: parseInt(this.state.year) - 12
         });
     }
 
@@ -119,16 +118,20 @@ class YearsView extends React.PureComponent {
     }
 
     render() {
-        const { isDisabledPrev, isDisabledNext } = this.state;
-
+        const { isDisabledPrev, isDisabledNext, showHeaderSelection } = this.state;
+        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         return (
             <div className={this.getCalendarYearClass()} style={this.props.style}>
                 <Fragment>
-                    <div className="VS-NextPrevArrow">
+                    <div className="VS-CalendarMonth VS-TextCenter">
                         {
                             (isDisabledPrev) ?
                                 <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" /> :
                                 <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.goToPrevYear} />
+                        }
+                        {
+                            (showHeaderSelection)? 
+                            <span className="VS-Medium-UPPER-Case VS-MonthName">{currentDateYear}</span> : ''
                         }
                         {
                             (isDisabledNext) ?

@@ -1,7 +1,5 @@
 import React, { Fragment } from "react";
-import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
-    getYearsList,
     QUARTERS_NAMES,
     getSelectedMonth,
     getSelectedYear,
@@ -27,7 +25,7 @@ class Year extends React.PureComponent {
         var year = new Date().getFullYear();
         year = parseInt(year);
 
-        this.state = { year: year, isYearSelected: false, selectedMonth: "", selectedYear: "", isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, isDisabledNext: ((year + 4) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
+        this.state = { year: year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 5) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
 
         this.updateNextPrev();
     }
@@ -42,7 +40,7 @@ class Year extends React.PureComponent {
                 });
             } else {
                 this.setState({
-                    selectedMonth: getSelectedMonth(selectedValue),
+                    currentDateMonth: getSelectedMonth(selectedValue),
                     selectedYear: getSelectedYear(selectedValue),
                     year: getSelectedYear(selectedValue)
                 })
@@ -61,7 +59,7 @@ class Year extends React.PureComponent {
         var { year } = this.state;
         year = parseInt(year);
 
-        this.setState({ isDisabledNext: ((year + 4) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 4) <= lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
+        this.setState({ isDisabledNext: ((year + 5) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
     }
 
     onSelectYearHandler = (year) => {
@@ -118,7 +116,7 @@ class Year extends React.PureComponent {
     }
 
     renderQuarterValue = (quater, index) => {
-        const activeClass = (isEqual(this.state.selectedMonth, quater)) ? 'VS-Active' : '';
+        const activeClass = (isEqual(this.state.currentDateMonth, quater)) ? 'VS-Active' : '';
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const _l = (lowerMonthLimit)? parseInt(lowerMonthLimit.charAt(1)) : 1;
         const _u = (upperMonthLimit)? parseInt(upperMonthLimit.charAt(1)) : 4;
@@ -147,7 +145,7 @@ class Year extends React.PureComponent {
     }
 
     render() {
-        const { year, isYearSelected, selectedMonth } = this.state;
+        const { year, isYearSelected, currentDateMonth } = this.state;
         const { selectedValue, options } = this.props;
         const isQuarter = (options.displayFormat === 'QQ/YYYY');
 
@@ -163,7 +161,7 @@ class Year extends React.PureComponent {
                                     {this.getQuarters().map((row, index) => this.renderQuarterRow(row, index))}
                                 </Fragment>
                             </div> :
-                            <MonthsView options={options} selectedMonth={selectedMonth} style={this.props.style} onSelectMonth={this.onSelectMonthHandler}></MonthsView>
+                            <MonthsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectMonth={this.onSelectMonthHandler}></MonthsView>
                 }
             </div>
         );
