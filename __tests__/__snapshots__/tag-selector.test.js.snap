@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TageSelector component renders the month correctly 1`] = `
+<div
+  className="VS-App"
+>
+  <div
+    id="c1da36e2-4eb1-cd25-46ed-414a79f6b2e2"
+  />
+  <header
+    className="VS-App-header"
+  >
+    <div>
+      <div>
+        <div
+          className="VS-Tag-Input-Border"
+        >
+          <ul>
+            
+            <li>
+              <input
+                className="VS-Regular-UPPER-Case VS-TagSelector-Input form-control"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                placeholder="Search"
+                type="text"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+  </header>
+</div>
+`;
