@@ -8,7 +8,7 @@ import { placeholder } from '@babel/types';
 
 //Checking whereas all the default options are rendering properly or not.
 
-test('TageSelector component renders the month correctly', () => {
+test('Tag-Selector component renders the default options correctly', () => {
     const options = DEFAULT_OPTIONS;
     const rendered = renderer.create(
       <TagSelector options={options} />

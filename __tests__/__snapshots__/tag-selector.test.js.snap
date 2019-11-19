@@ -1,11 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`TageSelector component renders the month correctly 1`] = `
+exports[`Tag-Selector component renders the default options correctly 1`] = `
 <div
   className="VS-App"
 >
   <div
-    id="c1da36e2-4eb1-cd25-46ed-414a79f6b2e2"
+    id="3895629d-580a-6af8-8d46-52b753aa8f36"
   />
   <header
     className="VS-App-header"
