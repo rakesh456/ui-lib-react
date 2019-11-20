@@ -25,7 +25,7 @@ class Year extends React.PureComponent {
         var year = new Date().getFullYear();
         year = parseInt(year);
 
-        this.state = { year: year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 5) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
+        this.state = { year: year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
 
         this.updateNextPrev();
     }
@@ -59,7 +59,7 @@ class Year extends React.PureComponent {
         var { year } = this.state;
         year = parseInt(year);
 
-        this.setState({ isDisabledNext: ((year + 5) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 7) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
+        this.setState({ isDisabledNext: ((year + 1) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
     }
 
     onSelectYearHandler = (year) => {

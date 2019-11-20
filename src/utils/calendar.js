@@ -348,7 +348,7 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 export const getYearsList = (year) => {
     year = (year)? year : new Date().getFullYear();
     var array = [];
-    for (let index = -5; index < 7; index++) {
+    for (let index = -1; index < 11; index++) {
         array.push(year - index);
     }
     return array.reverse();

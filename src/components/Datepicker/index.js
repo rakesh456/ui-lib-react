@@ -57,7 +57,9 @@ class DatePicker extends React.PureComponent {
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
 
-        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false };
+        const isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === '') || (isYearFormat(displayFormat) && _selectedYear === ''));
+
+        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled};
         this.handleChildUnmount = this.handleChildUnmount.bind(this);
     }
 
@@ -139,7 +141,7 @@ class DatePicker extends React.PureComponent {
     
     getDefaultYear(){
         const options = (this.props.options)? this.props.options : {};
-        var { displayFormat, lowerLimit, upperLimit } = options;
+        var { displayFormat, lowerLimit, upperLimit, disabledList } = options;
         let _val = getDefaultQQMMYYYYDateByFormat(options);
         const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
         
@@ -147,7 +149,10 @@ class DatePicker extends React.PureComponent {
 
         let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
 
-        return (_valid)? updatedValue : _updatedUpperLimit;
+        let _returnValue = ((_valid)? updatedValue : _updatedUpperLimit).toString();
+        let isInDisabledList = (disabledList && disabledList.indexOf(_returnValue) > -1);
+
+        return (isInDisabledList)? '' : _returnValue;
     }
 
     updateDimensions() {}
@@ -216,74 +221,77 @@ class DatePicker extends React.PureComponent {
     
     onBlur = () => {
         let { manualEntry, showButtons, displayFormat } = this.props.options;
+        let { isDisabled } = this.state;
 
-        if(manualEntry === true){
-            if(this.state.isMonthYear){
-                const { selectedYear } = this.state;
-                if(isQQYYYYFormat(displayFormat)){
-                    var _upperYear = selectedYear.toUpperCase();
-                    var _validFormatQQYear = isValidQQYYYYValue(_upperYear); 
-                    if(_validFormatQQYear){
-                        var _validQQYear = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
-                        if(_validQQYear){
-                            if(!showButtons){
-                                this.setState({ selectedYear: _upperYear});
+        if(isDisabled === false){
+            if(manualEntry === true){
+                if(this.state.isMonthYear){
+                    const { selectedYear } = this.state;
+                    if(isQQYYYYFormat(displayFormat)){
+                        var _upperYear = selectedYear.toUpperCase();
+                        var _validFormatQQYear = isValidQQYYYYValue(_upperYear); 
+                        if(_validFormatQQYear){
+                            var _validQQYear = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
+                            if(_validQQYear){
+                                if(!showButtons){
+                                    this.setState({ selectedYear: _upperYear});
+                                }
+                                this.props.onSelect(_upperYear);
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                            } else {
+                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
                             }
-                            this.props.onSelect(_upperYear);
-                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                         } else {
-                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                        }
+                    } else if(isMMYYYYFormat(displayFormat)) {
+                        if(isValidMMYYYYValue(selectedYear)){
+                            var _validMonthYear = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
+                            if(_validMonthYear){
+                                if(!showButtons){
+                                    this.setState({ selectedYear: selectedYear});
+                                }
+                                this.props.onSelect(selectedYear);
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                            } else {
+                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                            }
+                        } else {
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                         }
                     } else {
-                        this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
-                    }
-                } else if(isMMYYYYFormat(displayFormat)) {
-                    if(isValidMMYYYYValue(selectedYear)){
-                        var _validMonthYear = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
-                        if(_validMonthYear){
-                            if(!showButtons){
-                                this.setState({ selectedYear: selectedYear});
+                        if(isValidYYYYValue(selectedYear)){
+                            var _validDateYear = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
+                            if(_validDateYear){
+                                if(!showButtons){
+                                    this.setState({ selectedYear: selectedYear});
+                                }
+                                this.props.onSelect(selectedYear);
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                            } else {
+                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
                             }
-                            this.props.onSelect(selectedYear);
-                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                         } else {
-                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                            this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                         }
-                    } else {
-                        this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                     }
                 } else {
-                    if(isValidYYYYValue(selectedYear)){
-                        var _validDateYear = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
-                        if(_validDateYear){
+                    var _validFormat = isValidFormattedDate(this.state.selectedDate, this.props.options); 
+                    if(_validFormat){
+                        var _validOutRange = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
+                        if(_validOutRange){
                             if(!showButtons){
-                                this.setState({ selectedYear: selectedYear});
+                                this.setState({ selectedDate: this.state.selectedDate});
                             }
-                            this.props.onSelect(selectedYear);
                             this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
+                            this.props.onSelect(this.state.selectedDate);
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
                         }
                     } else {
                         this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
+                        this.setState({ selectedDate: ""});
                     }
-                }
-            } else {
-                var _validFormat = isValidFormattedDate(this.state.selectedDate, this.props.options); 
-                if(_validFormat){
-                    var _validOutRange = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
-                    if(_validOutRange){
-                        if(!showButtons){
-                            this.setState({ selectedDate: this.state.selectedDate});
-                        }
-                        this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
-                        this.props.onSelect(this.state.selectedDate);
-                    } else {
-                        this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
-                    }
-                } else {
-                    this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
-                    this.setState({ selectedDate: ""});
                 }
             }
         }
@@ -522,9 +530,9 @@ class DatePicker extends React.PureComponent {
     }
 
     render() {
-        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection } = this.state;
+        const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection, isDisabled } = this.state;
         const { options } = this.props;
-        const isDisabled = (options && options.isDisabled === true);
+        // const isDisabled = (options && options.isDisabled === true);
         const showClearIcon = (options && options.showClearIcon === true);
         const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();
