@@ -90,6 +90,12 @@ class Year extends React.PureComponent {
         this.props.onYearSelect(quarter + '/' + this.state.year);
     }
 
+    onGoToSelectYearHandler = () => {
+        this.setState({
+            isYearSelected: false
+        });
+    }
+
     getQuarters = () => {
         return splitArray(QUARTERS_NAMES, 2);
     }
@@ -144,6 +150,24 @@ class Year extends React.PureComponent {
         )
     }
 
+    goToNextYearHandler = () => {
+        const { year } = this.state;
+        const currentDateYear = year + 1;
+        
+        this.setState({
+            year: parseInt(currentDateYear)
+        });
+    }
+    
+    goToPrevYearHandler = () => {
+        const { year } = this.state;
+        const currentDateYear = year - 1;
+        
+        this.setState({
+            year: parseInt(currentDateYear)
+        });
+    }
+
     render() {
         const { year, isYearSelected, currentDateMonth } = this.state;
         const { selectedValue, options } = this.props;
@@ -161,7 +185,7 @@ class Year extends React.PureComponent {
                                     {this.getQuarters().map((row, index) => this.renderQuarterRow(row, index))}
                                 </Fragment>
                             </div> :
-                            <MonthsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectMonth={this.onSelectMonthHandler}></MonthsView>
+                            <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={year} style={this.props.style} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} onSelectMonth={this.onSelectMonthHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView>
                 }
             </div>
         );

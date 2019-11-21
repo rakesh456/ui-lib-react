@@ -38,12 +38,12 @@ export const isValidQQYYYYValue = (value) => {
 
 // Function to check value is DD/MM/YYYY format using regex
 export const isValidDDMMYYYYValue = (value) => {
-    return new RegExp(/[\d]{2}\/[\d]{2}\/[\d]{4}/).test(value);
+    return new RegExp(/^[\d]{2}\/^[\d]{2}\/^[\d]{4}/).test(value);
 }
 
 // Function to check value is MM/YYYY format using regex
 export const isValidMMYYYYValue = (value) => {
-    return new RegExp(/[\d]{2}\/[\d]{4}/).test(value);
+    return new RegExp(/^[\d]{2}\/[\d]{4}$/i).test(value);
 }
 
 // Function to check value is YYYY format using regex
@@ -243,6 +243,12 @@ export const formatOptions = (options) => {
     }
 
     return newOptions;
+}
+
+// Function to get full month name by index value
+export function getMonthShortNameByIndex(index) {
+    var _index = (index)? index : 0;
+    return MONTH_SHORT_NAMES[_index].toUpperCase();
 }
 
 // Function to get full month name by index value
@@ -581,7 +587,7 @@ export const getYYYYFromOption = (limit, options, flag) => {
             }
         }  else if(isDDMMYYYYFormat(options.displayFormat) || isMMDDYYYYFormat(options.displayFormat)){
             const _date = new Date(currentFormatToYYYYMMDD(limit, options));
-            return (flag)? {lowerYearLimit: (isValidDate(_date))? _date.getFullYear() : ""} : {upperYearLimit:  (isValidDate(_date))? _date.getFullYear() : ""}
+            return (flag)? {lowerMonthLimit: (isValidDate(_date))? (_date.getMonth() + 1) : "", lowerYearLimit: (isValidDate(_date))? _date.getFullYear() : ""} : {upperMonthLimit: (isValidDate(_date))? (_date.getMonth() + 1) : "",upperYearLimit:  (isValidDate(_date))? _date.getFullYear() : ""}
         } else {
             return {};
         }
@@ -607,7 +613,6 @@ export const isEqual = (val1, val2) => {
 
 // Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
-    console.log(isInvalidDate, ' isInvalidDate, isInvalidRangeDate ', isInvalidRangeDate);
     var _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){

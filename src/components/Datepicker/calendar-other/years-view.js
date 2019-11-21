@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
-    CURRENT_YEAR,
     isEqual,
     getYearsList,
     getSelectedYear,
@@ -24,7 +23,7 @@ class YearsView extends React.PureComponent {
         var year = new Date().getFullYear();
         year = parseInt(year);
         
-        this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true)};
+        this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true), displayYearName: ""};
     }
     
     componentDidMount() {
@@ -55,8 +54,11 @@ class YearsView extends React.PureComponent {
         const { upperYearLimit } = getYYYYForUpperLimit(options);
         var { year } = this.state;
         year = parseInt(year);
+        
+        const _array = getYearsList(year);
+        let displayYearName = _array[0] + ' ' + _array[11];
 
-        this.setState({ isDisabledNext: ((year + 1) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit });
+        this.setState({ isDisabledNext: ((year + 1) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, displayYearName: displayYearName });
     }
     
     getYears = () => {
@@ -95,7 +97,6 @@ class YearsView extends React.PureComponent {
         const activeClass = (isEqual(this.state.selectedYear, year)) ? 'VS-Active' : '';
         const { lowerYearLimit, upperYearLimit } = this.state;
         const isEnabled = this.checkYearIsEnabled(year);
-
         return (
             <Fragment key={guid()}>
                 {
@@ -118,8 +119,7 @@ class YearsView extends React.PureComponent {
     }
 
     render() {
-        const { isDisabledPrev, isDisabledNext, showHeaderSelection } = this.state;
-        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
+        const { isDisabledPrev, isDisabledNext, showHeaderSelection, displayYearName } = this.state;
         return (
             <div className={this.getCalendarYearClass()} style={this.props.style}>
                 <Fragment>
@@ -131,7 +131,7 @@ class YearsView extends React.PureComponent {
                         }
                         {
                             (showHeaderSelection)? 
-                            <span className="VS-Medium-UPPER-Case VS-MonthName">{currentDateYear}</span> : ''
+                            <span className="VS-Medium-UPPER-Case VS-MonthName">{displayYearName}</span> : ''
                         }
                         {
                             (isDisabledNext) ?

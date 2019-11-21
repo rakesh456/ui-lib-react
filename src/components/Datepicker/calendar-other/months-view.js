@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
     isEqual,
+    isCalendarFormat,
     MONTH_SHORT_NAMES,
     CURRENT_YEAR,
     getMonthIndex,
@@ -25,7 +26,7 @@ class MonthsView extends React.PureComponent {
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         const year = parseInt(currentDateYear);
         
-        this.state = { sDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false, showHeaderSelection: (showHeaderSelection === true)};
+        this.state = { sDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false, showHeaderSelection: (showHeaderSelection === true), year: year};
     }
     
     componentDidMount() {
@@ -57,10 +58,19 @@ class MonthsView extends React.PureComponent {
     }
     
     checkQQMMIsEnabled = (qqmm, year) => {
-        const {disabledList, displayFormat} = this.props.options;
+        const {options} = this.props;
+        let {disabledList, displayFormat} = options;
+        const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
+        const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
+        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
+        
         if(qqmm && year){
             qqmm = (isMMYYYYFormat(displayFormat))? getMonthIndex(qqmm.toString()) : qqmm;
             const _val = qqmm + '/' + year;
+            const _monthIndex = (isCalendarFormat(displayFormat))? parseInt(getMonthIndex(qqmm)) : parseInt(qqmm);
+            if(((currentDateYear === lowerYearLimit && _monthIndex < parseInt(lowerMonthLimit)) || (currentDateYear === upperYearLimit && _monthIndex > parseInt(upperMonthLimit)))){
+                return false;
+            }
             return (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
         } else {
             return true;
@@ -71,7 +81,6 @@ class MonthsView extends React.PureComponent {
         const activeClass = (isEqual(this.props.currentDateMonth, month)) ? 'VS-Active' : '';
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const isEnabled = this.checkQQMMIsEnabled(month, year);
-
         return (
             <Fragment key={guid()}>
                 {
