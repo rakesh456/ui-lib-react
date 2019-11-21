@@ -118,8 +118,11 @@ class DatePicker extends React.PureComponent {
         if(defaultDate === ""){
             return "";
         } else if(typeof(defaultDate) !== "undefined"){
+            let _isValid = false;
+
             let _date = currentFormatToYYYYMMDDNew(defaultDate, options);
-            let _isValid = isValidDate(_date);
+            let _valid = (isValidDate(_date));
+                _isValid = (_valid)? isValidOutsideRangeDate(_date, options) : _valid; 
             return (_isValid)? defaultDate : '';
         } else {
             let _lowerDate = getProperFormattedDate(options.lowerLimit, options);
