@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Tag-Selector component renders the default options correctly 1`] = `
+<div
+  className="VS-App"
+>
+  <div
+    id="3895629d-580a-6af8-8d46-52b753aa8f36"
+  />
+  <header
+    className="VS-App-header"
+  >
+    <div>
+      <div>
+        <div
+          className="VS-Tag-Input-Border"
+        >
+          <ul>
+            
+            <li>
+              <input
+                className="VS-Regular-UPPER-Case VS-TagSelector-Input form-control"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onClick={[Function]}
+                placeholder="Search"
+                type="text"
+              />
+            </li>
+          </ul>
+        </div>
+      </div>
+      
+    </div>
+  </header>
+</div>
+`;
