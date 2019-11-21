@@ -205,6 +205,14 @@ function tagSelectorRender(el) {
     el.setJsonData = function (json) {
         tagComponentInstance.setJsonData(json);
     }
+    
+    el.setSelectedItems = function (json) {
+        tagComponentInstance.setSelectedItems(json);
+    }
+    
+    el.refresh = function () {
+        tagComponentInstance.refresh();
+    }
 
     var tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
 

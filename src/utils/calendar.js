@@ -51,6 +51,16 @@ export const isValidYYYYValue = (value) => {
     return new RegExp(/^[\d]{4}$/).test(value);
 }
 
+// Function to check format is DD/MM/YYYY
+export const isDDMMYYYYFormat = (format) => {
+    return (format === 'DD/MM/YYYY');
+}
+
+// Function to check format is MM/DD/YYYY
+export const isMMDDYYYYFormat = (format) => {
+    return (format === 'MM/DD/YYYY');
+}
+
 // Function to check format is QQ/YYYY
 export const isQQYYYYFormat = (format) => {
     return (format === 'QQ/YYYY');
@@ -113,10 +123,13 @@ export function checkValueByDisplayFormat(date, options, callback){
             }
         }
     } else {
-        if(isValidDate(date)){
+        if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);
-            var _validFormat = isValidFormattedDate(_date, options);
-            var _validOutRange = isValidOutsideRangeDate(_date, options);
+            let _dateNew = convertYYYYMMDDByFormat(_date, options.displayFormat);
+            var _validFormat = (isValidDate(_dateNew));
+            var _validOutRange = isValidOutsideRangeDate(_dateNew, options);
+            console.log(_dateNew, ' isValidDate(date) ', _validFormat, _validOutRange);
+            
             callback(_date, !_validFormat, !_validOutRange);
         } else {
             callback("", true, false);
@@ -165,6 +178,18 @@ export const currentFormatToYYYYMMDDNew = (date, options) => {
 // Function to get proper formatted date from options
 export const getProperFormattedDate = (date, options) => {
     return new Date(currentFormatToYYYYMMDD(date, options));
+}
+
+// Function to get month from date
+export const getSelectedMonthFromDate = (date, options) => {
+    const _date = new Date(currentFormatToYYYYMMDD(date, options));
+    return _date.getMonth();
+}
+
+// Function to get year from date
+export const getSelectedYearFromDate = (date, options) => {
+    const _date = new Date(currentFormatToYYYYMMDD(date, options));
+    return _date.getFullYear();
 }
 
 // Function to convert date to YYYYMMDD format
@@ -323,7 +348,7 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 export const getYearsList = (year) => {
     year = (year)? year : new Date().getFullYear();
     var array = [];
-    for (let index = -4; index < 5; index++) {
+    for (let index = -1; index < 11; index++) {
         array.push(year - index);
     }
     return array.reverse();
@@ -501,14 +526,16 @@ export const isValidOutsideRangeDateMonthYear = (date, options) => {
 
 // Function to validate date is between lower and upper limit for MM/DD/YYYY or DD/MM/YYYY format
 export const isValidOutsideRangeDate = (date, options) => {
-    const upperLimit = getUpperLimitFromOptions(options);
     const lowerLimit = getLowerLimitFromOptions(options);
-
+    const upperLimit = getUpperLimitFromOptions(options);
+    
     const _date = new Date(convertYYYYMMDD(getDateByFormat(getProperFormattedDateNew(date, options), options.displayFormat), options));
     const _lowerLimit = new Date(convertYYYYMMDD(getDateByFormat(lowerLimit, options.displayFormat), options));
     const _upperLimit = (upperLimit)? new Date(convertYYYYMMDD(getDateByFormat(upperLimit, options.displayFormat), options)) : upperLimit;
 
-    return (checkDateInBetween(_date, _lowerLimit, _upperLimit) && !dateIsInDisabledList(_date, options));
+    const isValid = (checkIsInValidLowerUpper(options) || checkDateInBetween(_date, _lowerLimit, _upperLimit));
+    
+    return (isValid && !dateIsInDisabledList(_date, options));
 }
 
 // Function to reset options with default options
@@ -552,7 +579,9 @@ export const getYYYYFromOption = (limit, options, flag) => {
             } else {
                 return {};
             }
-            
+        }  else if(isDDMMYYYYFormat(options.displayFormat) || isMMDDYYYYFormat(options.displayFormat)){
+            const _date = new Date(currentFormatToYYYYMMDD(limit, options));
+            return (flag)? {lowerYearLimit: (isValidDate(_date))? _date.getFullYear() : ""} : {upperYearLimit:  (isValidDate(_date))? _date.getFullYear() : ""}
         } else {
             return {};
         }
@@ -577,17 +606,17 @@ export const isEqual = (val1, val2) => {
 }
 
 // Function to get invalid date message. Return default message if not defined.
-export const getInvalidDateMessage = (validationMessages, isInvalidRangeDate) => {
-    var _msg = (!isInvalidRangeDate)? 'Invalid Date' : 'Outside allowed range';
+export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
+    var _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){
        return _msg;
     }
 
     validationMessages.forEach((msg) => {
-        if(!isBlank(msg['inValidFormat']) && !isInvalidRangeDate){
+        if(!isBlank(msg['inValidFormat']) && isInvalidDate){
             _msg = msg['inValidFormat'];
-        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate){
+        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate && _msg === ''){
             _msg = msg['outsideRange'];
         }
     });
@@ -641,6 +670,15 @@ export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, disp
     } else {
         return (isValidDate)? getDateByFormat(newdate, displayFormat) : getDateByFormatNew(selectedDate, displayFormat);
     }
+}
+
+// Function to check date is disabled list or not
+export const checkIsInValidLowerUpper = (options) => {
+    const lowerLimit = getLowerLimitFromOptions(options);
+    const upperLimit = getUpperLimitFromOptions(options);
+
+    const isInValidLowerUpper = ((isUndefinedOrNull(lowerLimit) || !isValidDate(lowerLimit)) && (isUndefinedOrNull(upperLimit) || !isValidDate(upperLimit)));
+    return isInValidLowerUpper;
 }
 
 // Function to check date is disabled list or not

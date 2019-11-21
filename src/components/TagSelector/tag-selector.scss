@@ -205,7 +205,8 @@ tag-selector{
     background-color: $secondary-four-bright;
     cursor: default;
 }
-.VS-AutocompleteItems .VS-ItemSelected span{
+.VS-AutocompleteItems .VS-ItemSelected span,
+.VS-AutocompleteItems .VS-HeirarchyItems .VS-ItemSelected span{
     color: $text-white;
 }
 

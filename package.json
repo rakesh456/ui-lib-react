@@ -14,7 +14,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build1": "react-scripts build",
+    "build": "npm run test && npm run webpack",
+    "webpack": "webpack -p",
+    "testcase": "npm test -- -u",
     "test": "jest",
     "eject": "react-scripts eject"
   },

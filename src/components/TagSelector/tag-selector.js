@@ -13,9 +13,9 @@ import {
     isValidJsonFormat
 } from "../../utils/tagselectorutils";
 import { CountryService } from '../../services/CountryService';
+import { exists } from "fs";
 
 class TagSelector extends React.PureComponent {
-
     constructor(props) {
         super(props);
         const {maxItemCounter} = this.props.options;
@@ -117,6 +117,7 @@ class TagSelector extends React.PureComponent {
     filterItemsList = (e) => {
         setTimeout(() => {
             let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
+            console.log('_val ', _val)
             this.updateFilterItems(_val);
             if(_val && this.state.filteredlistItems.length <= 0){
                 this.props.onNotFound();
@@ -154,6 +155,7 @@ class TagSelector extends React.PureComponent {
             results = (_val)? this.state.listItems.filter((item, index) => (this.checkStringSearchInListByType(item, _val))) : [...this.state.listItems];
         }
         
+        console.log(' results.length ', results.length)
         this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
     }
 
