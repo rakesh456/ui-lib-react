@@ -194,7 +194,7 @@ export const getSelectedYearFromDate = (date, options) => {
 
 // Function to convert date to YYYYMMDD format
 export const currentFormatToYYYYMMDD = (date, options) => {
-    return convertYYYYMMDD(getDateByFormat(date, options.displayFormat), options);
+    return convertYYYYMMDD(getDateByFormat(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
 // Function to format options
@@ -607,6 +607,7 @@ export const isEqual = (val1, val2) => {
 
 // Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
+    console.log(isInvalidDate, ' isInvalidDate, isInvalidRangeDate ', isInvalidRangeDate);
     var _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){

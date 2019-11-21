@@ -239,7 +239,7 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(_upperYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
@@ -254,7 +254,7 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(selectedYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
@@ -269,7 +269,7 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(selectedYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
@@ -286,7 +286,7 @@ class DatePicker extends React.PureComponent {
                             this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             this.props.onSelect(this.state.selectedDate);
                         } else {
-                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                         }
                     } else {
                         this.setState({ isInvalidDate: true, isInvalidRangeDate: false });

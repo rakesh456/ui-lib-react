@@ -5,7 +5,9 @@ import {
     MONTH_SHORT_NAMES,
     CURRENT_YEAR,
     getMonthIndex,
-    isMMYYYYFormat
+    isMMYYYYFormat,
+    getYYYYForLowerLimit,
+    getYYYYForUpperLimit
 } from "../../../utils/calendar";
 
 import {
@@ -16,12 +18,30 @@ import {
 class MonthsView extends React.PureComponent {
     constructor(props) {
         super(props);
-        const { showHeaderSelection } = this.props;
+        const { options, showHeaderSelection } = this.props;
         
-        this.state = { showHeaderSelection: (showHeaderSelection === true)};
+        const { lowerYearLimit } = getYYYYForLowerLimit(options);
+        const { upperYearLimit } = getYYYYForUpperLimit(options);
+        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
+        const year = parseInt(currentDateYear);
+        
+        this.state = { sDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false, showHeaderSelection: (showHeaderSelection === true)};
     }
     
     componentDidMount() {
+    }
+
+    componentDidUpdate(prevProps) {
+        this.updateNextPrev();
+    }
+
+    updateNextPrev() {
+        const { options } = this.props;
+        const { lowerYearLimit } = getYYYYForLowerLimit(options);
+        const { upperYearLimit } = getYYYYForUpperLimit(options);
+        const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
+        const year = parseInt(currentDateYear);
+        this.setState({ isDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false });
     }
     
     getMonths = () => {
@@ -74,16 +94,24 @@ class MonthsView extends React.PureComponent {
     }
 
     render() {
-        const { showHeaderSelection } = this.state;
+        const { showHeaderSelection, isDisabledPrev, isDisabledNext } = this.state;
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         return (
             <div className={this.getCalendarMonthClass()} style={this.props.style}>
                 {
                     (showHeaderSelection)? 
                         <div className="VS-CalendarMonth VS-TextCenter">
-                            <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevYear} />
+                            {
+                                (isDisabledPrev) ?
+                                    <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" /> :
+                                    <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevYear} />
+                            }
                             <span className="VS-Medium-UPPER-Case VS-MonthName" onClick={this.props.goToSelectYear}>{currentDateYear}</span>
-                            <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.props.goToNextYear} />
+                            {
+                                (isDisabledNext) ?
+                                    <FaCaretRight className="VS-PullRight VS-Icon Vs-DisabledIcon" /> :
+                                    <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.props.goToNextYear} />
+                            }
                         </div> : ''
                 }
                 <Fragment>
