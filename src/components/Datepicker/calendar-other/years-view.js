@@ -42,6 +42,7 @@ class YearsView extends React.PureComponent {
                 })
             }
         }
+        this.updateNextPrev();
     }
 
     componentDidUpdate(prevProps) {
@@ -56,7 +57,7 @@ class YearsView extends React.PureComponent {
         year = parseInt(year);
         
         const _array = getYearsList(year);
-        let displayYearName = _array[0] + ' ' + _array[11];
+        let displayYearName = _array[0] + '-' + _array[11];
 
         this.setState({ isDisabledNext: ((year + 1) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, displayYearName: displayYearName });
     }
