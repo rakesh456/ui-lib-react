@@ -36,14 +36,6 @@ class TagSelector extends React.PureComponent {
             style.zIndex = '1';
             this.setState({ style: style });
         }
-
-        // const countriesData = this.countryservice.getCountries(this);
-        // const citiesData = this.countryservice.getCities(this);
-        // const {listItems, allowHierarchy} = this.props.options;
-
-        // this.setState({
-        //     listItems: (allowHierarchy === true)? citiesData : countriesData
-        // });
     }
 
     setJsonData(listItems){

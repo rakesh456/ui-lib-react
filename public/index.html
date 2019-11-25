@@ -437,10 +437,36 @@
         function onNotFoundHandler(e) {
             console.log('onNotFound called ');
         }
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+       }
+       window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                   var dropdowns = document.getElementsByClassName("dropdown-content");
+                  var i;
+                  for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                           openDropdown.classList.remove('show');
+                        }
+                }
+            }
+       }
 
     </script>
+    
 </head>
 <body>
+
+
+
+    <h2>Date Hierarchy Component using React Component</h2>
+    <date-hierarchy ></date-hierarchy>
+
+
+
+
+
     <h2>Tag selector Sample using React Component</h2>
     <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button>
     <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button>
@@ -461,10 +487,10 @@
     <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": false, "allowHierarchy": true}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
 
-    <h2>Datepicker Sample using React Component</h2>
-    <!-- Sample Usage: Options Set by JS-->
+    <h2>Datepicker Sample using React Component</h2> -->
+       <!--Sample Usage: Options Set by JS -->
     
-    <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2007", "upperLimit": "18/11/2039", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+     <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2007", "upperLimit": "18/11/2039", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
 
     <div>
         <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2007", "upperLimit": "18/11/2039", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
@@ -542,10 +568,10 @@
     <button onclick="getEndDate('datepicker4', 'displayUpper4');">Get End Date</button>
     <br>
 
-    <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button> -->
+    <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
-    <br>
-    <div id="newdatepicker"></div>
+    <br> 
+    <div id="newdatepicker"></div> 
 
 </body>
 

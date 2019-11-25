@@ -19,9 +19,10 @@ import {
 } from "../src/utils/tagselectorutils";
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+
 
 (function () {
-
     if (typeof window.CustomEvent === "function") return false;
 
     function CustomEvent(event, params) {
@@ -41,7 +42,6 @@ Array.prototype.forEach.call(
     (el) => {
         datepickerRender(el);
     })
-
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
@@ -220,8 +220,24 @@ function tagSelectorRender(el) {
         tagComponentElement,
         el
     )
+
+    
 }
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+
+Array.prototype.forEach.call(
+    document.getElementsByTagName('date-hierarchy'),
+    (el) => {
+        dateHierarchyRender(el);
+    })
+
+function dateHierarchyRender(el) { 
+
+
+    var HierarchyComponentElement = <DateHierarchy  />;
+
+    var HierarchyComponentInstance = ReactDOM.render(
+        HierarchyComponentElement,
+        el
+    )
+}
 serviceWorker.unregister();
