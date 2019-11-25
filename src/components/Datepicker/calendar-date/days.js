@@ -4,7 +4,8 @@ import calendar, {
     isSameMonth,
     checkDateInBetween,
     getUpperLimitFromOptions,
-    getLowerLimitFromOptions
+    getLowerLimitFromOptions,
+    checkFullMonthOrYearDisabled
 } from "../../../utils/calendar";
 
 import {
@@ -68,6 +69,12 @@ class Days extends React.PureComponent {
 
     checkDisabledList = (isEnabled, _date) => {
         const disabledList = (this.props.options)? this.props.options.disabledList : [];
+
+        // Check full year or month is disabled
+        if(!checkFullMonthOrYearDisabled(_date, disabledList)){
+            return false;
+        }
+
         return (disabledList && disabledList.length > 0 && _date)? ((disabledList.indexOf(_date) !== -1)? false : isEnabled) : isEnabled;
     }
     

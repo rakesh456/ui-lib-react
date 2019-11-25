@@ -67,10 +67,24 @@ class MonthsView extends React.PureComponent {
         if(qqmm && year){
             qqmm = (isMMYYYYFormat(displayFormat))? getMonthIndex(qqmm.toString()) : qqmm;
             const _val = qqmm + '/' + year;
-            const _monthIndex = (isCalendarFormat(displayFormat))? parseInt(getMonthIndex(qqmm)) : parseInt(qqmm);
-            if(((currentDateYear === lowerYearLimit && _monthIndex < parseInt(lowerMonthLimit)) || (currentDateYear === upperYearLimit && _monthIndex > parseInt(upperMonthLimit)))){
+            const _monthNumber = (isCalendarFormat(displayFormat))? parseInt(getMonthIndex(qqmm)) : parseInt(qqmm);
+
+            // Disabled lower limit and upper limit month
+            if(((currentDateYear === lowerYearLimit && _monthNumber < parseInt(lowerMonthLimit)) || (currentDateYear === upperYearLimit && _monthNumber > parseInt(upperMonthLimit)))){
                 return false;
             }
+
+            // Disabled month if current year in disabled list
+            if(disabledList.indexOf(currentDateYear.toString()) !== -1){
+                return false;
+            }
+            
+            // const _monthNumber = parseInt(getMonthIndex(qqmm));
+            const _qmy = _monthNumber + '/' + currentDateYear;
+            if(disabledList.indexOf(_qmy.toString()) !== -1 || disabledList.indexOf('0' + _qmy.toString()) !== -1){
+                return false;
+            }
+
             return (disabledList && disabledList.length > 0 && _val)? ((disabledList.indexOf(_val.toString()) !== -1)? false : true) : true;
         } else {
             return true;

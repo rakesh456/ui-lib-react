@@ -217,12 +217,13 @@ export const formatOptions = (options) => {
         } else {
             let _array = [];
             options.disabledList.forEach((ele) => {
-                if(isQQYYYYFormat(displayFormat) && isValidQQYYYYValue(ele)){
+                if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
-                } else if(isMMYYYYFormat(displayFormat) && isValidMMYYYYValue(ele)){
+                } else if(isMMYYYYFormat(displayFormat) && (isValidMMYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
                 } else if(isCalendarFormat(displayFormat)){
-                    _array.push(getConvertedDate(ele, displayFormat));
+                    // _array.push(getConvertedDate(ele, displayFormat));
+                    _array.push(ele);
                 }
             });
             newOptions['disabledList'] = [..._array] 
@@ -632,49 +633,63 @@ export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInval
 // Recursive funtion to get valid next date by charcode
 export const getNewUpdateDateByArrow = (selectedDate, isRecursive, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) => {
     const _date = (isRecursive === true)? selectedDate : convertYYYYMMDD(getDateByFormatNew(selectedDate, displayFormat), options);
-    var newdate = new Date(_date);
-    
-    var day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
-    if(isCtrl){
-        day = (charCode === ARROWS.left || charCode === ARROWS.up)? -365 : 365;
-    }
-    
-    if(isMonth){
-        var counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
-        var month = (newdate.getMonth());
-        if(dateIsInDisabledList(newdate, options)){
-            newdate.setDate(newdate.getDate() + counter);
-            newdate.setFullYear(newdate.getFullYear());
-        } else {
-            newdate.setMonth(month + counter);
-            newdate.setFullYear(newdate.getFullYear());
-        }
-    } else if(isCtrl){
-        let counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
-        let year = (newdate.getFullYear());
-        let month = (newdate.getMonth());
+    let newdate = new Date(_date);
 
-        if(dateIsInDisabledList(newdate, options)){
-            newdate.setDate(newdate.getDate() + counter);
-            newdate.setFullYear(year);
-        } else {
-            newdate.setMonth(month);
-            newdate.setFullYear(year + counter);
+    // Check full year or month is disabled
+    if(!checkFullMonthOrYearDisabled(newdate, options.disabledList) && isRecursive === true){
+        let counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+        newdate.setMonth(newdate.getMonth() + counter);
+
+        let _lDate = new Date(lowerLimit);
+        _lDate.setDate(_lDate.getDate());
+        let _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
+
+        let isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
+        let disabled = checkFullMonthOrYearDisabled(newdate, options.disabledList);
+        return (dateIsInDisabledList(newdate, options) || !disabled)? getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth) : ((isValidDate)? getDateByFormat(newdate, displayFormat) : getDateByFormatNew(selectedDate, displayFormat));
+    } else {
+        let day = (charCode === ARROWS.left)? -1 : (charCode === ARROWS.right)? 1 : (charCode === ARROWS.down)? 7 : -7; 
+        if(isCtrl){
+            day = (charCode === ARROWS.left || charCode === ARROWS.up)? -365 : 365;
         }
-    } else {
-        newdate.setDate(newdate.getDate() + day);
-    }
+        
+        if(isMonth){
+            let counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+            let month = (newdate.getMonth());
+            if(dateIsInDisabledList(newdate, options)){
+                newdate.setDate(newdate.getDate() + counter);
+                newdate.setFullYear(newdate.getFullYear());
+            } else {
+                newdate.setMonth(month + counter);
+                newdate.setFullYear(newdate.getFullYear());
+            }
+        } else if(isCtrl){
+            let counter = (charCode === ARROWS.left || charCode === ARROWS.up)? -1 : 1;
+            let year = (newdate.getFullYear());
+            let month = (newdate.getMonth());
     
-    var _lDate = new Date(lowerLimit);
-    _lDate.setDate(_lDate.getDate());
-    var _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
-    
-    var isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
-    
-    if(dateIsInDisabledList(newdate, options)){
-        return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
-    } else {
-        return (isValidDate)? getDateByFormat(newdate, displayFormat) : getDateByFormatNew(selectedDate, displayFormat);
+            if(dateIsInDisabledList(newdate, options)){
+                newdate.setDate(newdate.getDate() + counter);
+                newdate.setFullYear(year);
+            } else {
+                newdate.setMonth(month);
+                newdate.setFullYear(year + counter);
+            }
+        } else {
+            newdate.setDate(newdate.getDate() + day);
+        }
+        
+        let _lDate = new Date(lowerLimit);
+        _lDate.setDate(_lDate.getDate());
+        let _uDate = (upperLimit)? new Date(upperLimit) : upperLimit;
+        
+        let isValidDate = checkDateInBetween(newdate, _lDate, _uDate);
+       
+        if(dateIsInDisabledList(newdate, options)){
+            return getNewUpdateDateByArrow(newdate, true, options, displayFormat, lowerLimit, upperLimit, charCode, isCtrl, isMonth);
+        } else {
+            return (isValidDate)? getDateByFormat(newdate, displayFormat) : getDateByFormatNew(selectedDate, displayFormat);
+        }
     }
 }
 
@@ -689,14 +704,26 @@ export const checkIsInValidLowerUpper = (options) => {
 
 // Function to check date is disabled list or not
 export const dateIsInDisabledList = (newdate, options) => {
-    var _flag = false;
+    let _flag = false;
 
+    
     if(options.disabledList && options.disabledList.length > 0){
-        options.disabledList.forEach((ele) => {
-            if((new Date(newdate).getTime() === new Date(ele).getTime())){
+        const _newDate = new Date(newdate);
+        if(_newDate && isValidDate(_newDate)){
+            const _mmyyyy = (_newDate.getMonth() + 1 + '/' + _newDate.getFullYear()).toString();
+            const _yyyy = (_newDate.getFullYear()).toString();
+            if(options.disabledList.indexOf(_yyyy) !== -1 || options.disabledList.indexOf(_mmyyyy) !== -1 || options.disabledList.indexOf('0'+_mmyyyy) !== -1){
                 _flag = true;
-            };
-        });
+            }
+        }
+
+        if(_flag === false){
+            options.disabledList.forEach((ele) => {
+                if((new Date(newdate).getTime() === new Date(ele).getTime())){
+                    _flag = true;
+                };
+            });
+        }
     } 
     return _flag;
 }
@@ -758,3 +785,18 @@ export const checkAllowedChars = (displayFormat, value) => {
     let _maxChar = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat))? 7 : (isYYYFormat(displayFormat))? 4 : 10;
     return (value.length <= _maxChar);
 }
+
+// Function to return number of character allowed by display format
+export const checkFullMonthOrYearDisabled = (_date, disabledList) => {
+    let _flag = true;
+    const _newDate = new Date(_date);
+    if(_newDate && isValidDate(_newDate) && disabledList){
+        const _mmyyyy = (_newDate.getMonth() + 1 + '/' + _newDate.getFullYear()).toString();
+        const _yyyy = (_newDate.getFullYear()).toString();
+        if(disabledList.indexOf(_yyyy) !== -1 || disabledList.indexOf(_mmyyyy) !== -1 || disabledList.indexOf('0'+_mmyyyy) !== -1){
+            _flag = false;
+        }
+    }
+    return _flag;
+}
+
