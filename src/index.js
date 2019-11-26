@@ -108,6 +108,10 @@ function datepickerRender(el) {
     el.refresh = function () {
         myComponentInstance.refresh();
     }
+    
+    el.reload = function () {
+        console.log(' after update ' + JSON.stringify(options));
+    }
 
     el.getStartDate = function () {
         return myComponentInstance.getStartDate();

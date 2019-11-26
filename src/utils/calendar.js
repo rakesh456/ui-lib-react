@@ -38,7 +38,7 @@ export const isValidQQYYYYValue = (value) => {
 
 // Function to check value is DD/MM/YYYY format using regex
 export const isValidDDMMYYYYValue = (value) => {
-    return new RegExp(/^[\d]{2}\/^[\d]{2}\/^[\d]{4}/).test(value);
+    return new RegExp(/^[\d]{2}\/[\d]{2}\/[\d]{4}/).test(value);
 }
 
 // Function to check value is MM/YYYY format using regex
@@ -222,8 +222,9 @@ export const formatOptions = (options) => {
                 } else if(isMMYYYYFormat(displayFormat) && (isValidMMYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
                 } else if(isCalendarFormat(displayFormat)){
-                    // _array.push(getConvertedDate(ele, displayFormat));
-                    _array.push(ele);
+                    let formattedDate = (isValidDDMMYYYYValue(ele))?  getConvertedDate(ele, displayFormat) : ele;
+                    _array.push(formattedDate);
+                    // _array.push(ele);
                 }
             });
             newOptions['disabledList'] = [..._array] 
