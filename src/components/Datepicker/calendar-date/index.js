@@ -3,6 +3,7 @@ import Week from "./week";
 import Month from "./month";
 import Days from "./days";
 import Buttons from "./buttons";
+import * as CONSTANTS from '../../../utils/constants'
 
 import {
     convertYYYYMMDD,
@@ -27,7 +28,7 @@ class CalendarDate extends React.PureComponent {
     componentDidMount() {}
 
     componentDidUpdate(prevProps) {
-        var { options } = this.props;
+        let { options } = this.props;
 
         const selectedDate1 = currentFormatToYYYYMMDDNew(this.props.selectedDate, options);
         const selectedDate2 = currentFormatToYYYYMMDDNew(prevProps.selectedDate, options);
@@ -92,7 +93,7 @@ class CalendarDate extends React.PureComponent {
 
     getCalendarContainerClass = () => {
         const { showButtons } = this.props.options;
-        return "VS-CalendarContainer VS-modal " + ((showButtons && showButtons === true)? "VS-shape-rounded-fill-with-button" : "VS-shape-rounded-fill");
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ` + ((showButtons && showButtons === true)? `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_BUTTON}` : `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL}`);
     }
 
     render() {

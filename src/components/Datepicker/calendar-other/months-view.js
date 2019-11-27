@@ -15,6 +15,7 @@ import {
     guid,
     splitArray
 } from "../../../utils/utils";
+import * as CONSTANTS from '../../../utils/constants'
 
 class MonthsView extends React.PureComponent {
     constructor(props) {
@@ -54,7 +55,7 @@ class MonthsView extends React.PureComponent {
     }
 
     getCalendarMonthClass = () => {
-        return "VS-CalendarContainer VS-modal VS-shape-rounded-fill-for-month";
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_FOR_MONTH}`;
     }
     
     checkQQMMIsEnabled = (qqmm, year) => {
@@ -99,8 +100,8 @@ class MonthsView extends React.PureComponent {
             <Fragment key={guid()}>
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
-                        <span className={`${activeClass} VS-MonthQuater VS-Disabled`}>{month}</span>:
-                        <span className={`${activeClass} VS-MonthQuater`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER}`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
                 }
             </Fragment>
         );
@@ -112,7 +113,7 @@ class MonthsView extends React.PureComponent {
         });
 
         return (
-            <div className="VS-DateRowFlex" key={guid()}>{rows}</div>
+            <div className={`${CONSTANTS.CLASSES.VS_DATE_ROW_FLEX}`} key={guid()}>{rows}</div>
         )
     }
 
@@ -123,17 +124,17 @@ class MonthsView extends React.PureComponent {
             <div className={this.getCalendarMonthClass()} style={this.props.style}>
                 {
                     (showHeaderSelection)? 
-                        <div className="VS-CalendarMonth VS-TextCenter">
+                        <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH} ${CONSTANTS.CLASSES.VS_TEXT_CENTER}`}>
                             {
                                 (isDisabledPrev) ?
-                                    <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" /> :
-                                    <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.props.goToPrevYear} />
+                                    <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} /> :
+                                    <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON}`} onClick={this.props.goToPrevYear} />
                             }
-                            <span className="VS-Medium-UPPER-Case VS-MonthName" onClick={this.props.goToSelectYear}>{currentDateYear}</span>
+                            <span className={`${CONSTANTS.CLASSES.VS_MED_UPPER_CASE} ${CONSTANTS.CLASSES.VS_MONTH_NAME}`} onClick={this.props.goToSelectYear}>{currentDateYear}</span>
                             {
                                 (isDisabledNext) ?
-                                    <FaCaretRight className="VS-PullRight VS-Icon Vs-DisabledIcon" /> :
-                                    <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.props.goToNextYear} />
+                                    <FaCaretRight className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} /> :
+                                    <FaCaretRight className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_ICON}`} onClick={this.props.goToNextYear} />
                             }
                         </div> : ''
                 }

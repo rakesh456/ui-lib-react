@@ -12,6 +12,7 @@ import {
     guid,
     splitArray
 } from "../../../utils/utils";
+import * as CONSTANTS from '../../../utils/constants'
 
 class YearsView extends React.PureComponent {
     constructor(props) {
@@ -20,7 +21,7 @@ class YearsView extends React.PureComponent {
         
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
-        var year = new Date().getFullYear();
+        let year = new Date().getFullYear();
         year = parseInt(year);
         
         this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true), displayYearName: ""};
@@ -53,7 +54,7 @@ class YearsView extends React.PureComponent {
         const { options } = this.props;
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
-        var { year } = this.state;
+        let { year } = this.state;
         year = parseInt(year);
         
         const _array = getYearsList(year);
@@ -85,7 +86,7 @@ class YearsView extends React.PureComponent {
     }
 
     getCalendarYearClass = () => {
-        return "VS-CalendarContainer VS-modal VS-shape-rounded-fill-for-year";
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_FOR_YEAR}`;
     }
     
     checkYearIsEnabled = (year) => {
@@ -95,15 +96,15 @@ class YearsView extends React.PureComponent {
     }
 
     renderYearValue = (year, index) => {
-        const activeClass = (isEqual(this.state.selectedYear, year)) ? 'VS-Active' : '';
+        const activeClass = (isEqual(this.state.selectedYear, year)) ? `${CONSTANTS.CLASSES.VS_ACTIVE}` : '';
         const { lowerYearLimit, upperYearLimit } = this.state;
         const isEnabled = this.checkYearIsEnabled(year);
         return (
             <Fragment key={guid()}>
                 {
                     ((lowerYearLimit && lowerYearLimit > year) || (upperYearLimit && upperYearLimit < year) || (!isEnabled)) ?
-                        <span className={`${activeClass} VS-Year VS-Disabled`} >{year}</span> :
-                        <span className={`${activeClass} VS-Year`} onClick={() => this.onSelectYearHandler(year)}>{year}</span>
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_YEAR} ${CONSTANTS.CLASSES.VS_DISABLED}`} >{year}</span> :
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_YEAR}`} onClick={() => this.onSelectYearHandler(year)}>{year}</span>
                 }
             </Fragment>
         );
@@ -115,7 +116,7 @@ class YearsView extends React.PureComponent {
         });
 
         return (
-            <div className="VS-DateRow" key={guid()}>{rows}</div>
+            <div className={`${CONSTANTS.CLASSES.VS_DATE_ROW}`} key={guid()}>{rows}</div>
         )
     }
 
@@ -124,20 +125,20 @@ class YearsView extends React.PureComponent {
         return (
             <div className={this.getCalendarYearClass()} style={this.props.style}>
                 <Fragment>
-                    <div className="VS-CalendarMonth VS-TextCenter">
+                    <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH} ${CONSTANTS.CLASSES.VS_TEXT_CENTER}`}>
                         {
                             (isDisabledPrev) ?
-                                <FaCaretLeft className="VS-PullLeft VS-Icon Vs-DisabledIcon" /> :
-                                <FaCaretLeft className="VS-PullLeft VS-Icon" onClick={this.goToPrevYear} />
+                                <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} /> :
+                                <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON}`}  onClick={this.goToPrevYear} />
                         }
                         {
                             (showHeaderSelection)? 
-                            <span className="VS-Medium-UPPER-Case VS-MonthName">{displayYearName}</span> : ''
+                            <span className={`${CONSTANTS.CLASSES.VS_MED_UPPER_CASE} ${CONSTANTS.CLASSES.VS_MONTH_NAME}`} >{displayYearName}</span> : ''
                         }
                         {
                             (isDisabledNext) ?
-                                <FaCaretRight className="VS-PullRight VS-Icon Vs-DisabledIcon" /> :
-                                <FaCaretRight className="VS-PullRight VS-Icon" onClick={this.goToNextYear} />
+                                <FaCaretRight className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} /> :
+                                <FaCaretRight className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_ICON}`} onClick={this.goToNextYear} />
                         }
                     </div>
                     {this.getYears().map((row, index) => this.renderYearRow(row, index))}

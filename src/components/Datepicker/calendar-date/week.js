@@ -1,5 +1,6 @@
 import React from "react";
 import { WEEK_SHORT_NAMES } from '../../../utils/calendar';
+import * as CONSTANTS from '../../../utils/constants'
 
 class Week extends React.PureComponent {
     constructor(props) {
@@ -15,11 +16,11 @@ class Week extends React.PureComponent {
 
     render() {
         const weekItems = WEEK_SHORT_NAMES.map((number, index) =>
-            <span className="VS-Day VS-Medium-UPPER-Case" key={index}>{number}</span>
+            <span className={`${CONSTANTS.CLASSES.VS_DAY} ${CONSTANTS.CLASSES.VS_MED_UPPER_CASE}`} key={index}>{number}</span>
         );
     
         return (
-            <div className="VS-CalendarWeek">
+            <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_WEEK}`}>
                 {weekItems}
             </div>
         );

@@ -21,9 +21,9 @@ export function isBlank(string){
 
 // Split array with chunk size
 export function splitArray(array, chunk_size){
-    var index = 0;
-    var arrayLength = array.length;
-    var tempArray = [];
+    let index = 0;
+    let arrayLength = array.length;
+    let tempArray = [];
     
     for (index = 0; index < arrayLength; index += chunk_size) {
         const myChunk = array.slice(index, index+chunk_size);

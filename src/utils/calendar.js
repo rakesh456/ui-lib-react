@@ -84,14 +84,14 @@ export function getDefaultQQMMYYYYDateByFormat(options){
     let _val = "";
     
     if(isYYYFormat(_format)){
-        var _validDateYear = isValidOutsideRangeDateYear(dateToYear(), options);  
+        let  _validDateYear = isValidOutsideRangeDateYear(dateToYear(), options);  
         _val = (_validDateYear || !isValidYYYYValue(_lowerDate))? dateToYear() : _lowerDate;
     } else if(isMMYYYYFormat(_format)){
         _lowerDate = dateToMMYYYY(_lowerDate);
         let _validMonthYear = isValidOutsideRangeDateMonthYear(dateToMMYYYY(), options);
         _val = (_validMonthYear || !isValidMMYYYYValue(_lowerDate))? dateToMMYYYY() : _lowerDate;
     } else if(isQQYYYYFormat(_format)){
-        var _validQQYear = isValidOutsideRangeDateQQYear(dateToQQYYYY(), options);
+        let  _validQQYear = isValidOutsideRangeDateQQYear(dateToQQYYYY(), options);
         _val = (_validQQYear || !isValidQQYYYYValue(_lowerDate))? dateToQQYYYY() : _lowerDate;
     }
     return _val;
@@ -126,8 +126,8 @@ export function checkValueByDisplayFormat(date, options, callback){
         if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);
             let _dateNew = convertYYYYMMDDByFormat(_date, options.displayFormat);
-            var _validFormat = (isValidDate(_dateNew));
-            var _validOutRange = isValidOutsideRangeDate(_dateNew, options);
+            let  _validFormat = (isValidDate(_dateNew));
+            let  _validOutRange = isValidOutsideRangeDate(_dateNew, options);
             console.log(_dateNew, ' isValidDate(date) ', _validFormat, _validOutRange);
             
             callback(_date, !_validFormat, !_validOutRange);
@@ -139,7 +139,7 @@ export function checkValueByDisplayFormat(date, options, callback){
 
 // Function to get date by display format
 export const getConvertedDate = (date, displayFormat) => {
-    var _date = convertYYYYMMDDByFormat(date, displayFormat);
+    let  _date = convertYYYYMMDDByFormat(date, displayFormat);
     return (!isValidDate(_date))? null : getYYYYMMDD(_date);
 }
 
@@ -199,9 +199,9 @@ export const currentFormatToYYYYMMDD = (date, options) => {
 
 // Function to format options
 export const formatOptions = (options) => {
-    var newOptions = {...options}
+    let  newOptions = {...options}
     newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
-    var displayFormat = newOptions['displayFormat'];
+    let  displayFormat = newOptions['displayFormat'];
 
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
@@ -233,7 +233,7 @@ export const formatOptions = (options) => {
     if(options.indicatorList && options.indicatorList.length > 0){
         let _array = [];
         options.indicatorList.forEach((ele) => {
-            var _dates = [];
+            let  _dates = [];
             if(ele && ele.dates && ele.dates.length > 0){
                 ele.dates.forEach((date) => {
                     _dates.push(getConvertedDate(date, displayFormat));
@@ -249,13 +249,13 @@ export const formatOptions = (options) => {
 
 // Function to get full month name by index value
 export function getMonthShortNameByIndex(index) {
-    var _index = (index)? index : 0;
+    let  _index = (index)? index : 0;
     return MONTH_SHORT_NAMES[_index].toUpperCase();
 }
 
 // Function to get full month name by index value
 export function getMonthNameByIndex(index) {
-    var _index = (index)? index : 0;
+    let  _index = (index)? index : 0;
     return MONTH_NAMES[_index].toUpperCase();
 }
 
@@ -308,7 +308,7 @@ export const getMonthFirstDay = (month = CURRENT_MONTH, year = CURRENT_YEAR) => 
 
 // Funtion to create temporary array of null by number
 export const createBlankArray = (number) => {
-    var _array = [];
+    let  _array = [];
     for (let index = 0; index < number; index++) {
         _array.push(null);
     }
@@ -355,7 +355,7 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 // Function to get year list based on current year
 export const getYearsList = (year) => {
     year = (year)? year : new Date().getFullYear();
-    var array = [];
+    let  array = [];
     for (let index = -1; index < 11; index++) {
         array.push(year - index);
     }
@@ -408,8 +408,8 @@ export const getIsoDate = (date = new Date()) => {
 // (bool) Function to check date is between from and to date
 export const checkDateInBetween = (date, from, to) => {
     if(isDate(date)){
-        var _from = (!isUndefinedOrNull(from))? new Date(from) : null; 
-        var _to = (!isUndefinedOrNull(to))? new Date(to) : null; 
+        let  _from = (!isUndefinedOrNull(from))? new Date(from) : null; 
+        let  _to = (!isUndefinedOrNull(to))? new Date(to) : null; 
         
         if(isUndefinedOrNull(_from) && isUndefinedOrNull(_to)){
             return true;
@@ -420,7 +420,7 @@ export const checkDateInBetween = (date, from, to) => {
         } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
         } else if(isDate(from) && isDate(_to)){
-            var _fromDt = new Date(from);
+            let  _fromDt = new Date(from);
             if(date.getTime() >= _fromDt.getTime() && date.getTime() <= _to.getTime()){
                 return true;
             } else {
@@ -615,7 +615,7 @@ export const isEqual = (val1, val2) => {
 
 // Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
-    var _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
+    let  _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){
        return _msg;
@@ -731,7 +731,7 @@ export const dateIsInDisabledList = (newdate, options) => {
 
 // Function to check value is disabled list or not
 export const valueIsInDisabledList = (value, options) => {
-    var _flag = false;
+    let  _flag = false;
 
     if(options.disabledList && options.disabledList.length > 0){
         _flag = options.disabledList.indexOf(value) > -1;
