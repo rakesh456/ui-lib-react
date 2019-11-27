@@ -108,6 +108,12 @@ tag-selector{
     width: 50%;
 }
 
+.VS-Tag-Input-Border.VS-ReadOnly,
+.VS-Tag-Input-Border.VS-ReadOnly .VS-TagSelector-Input {
+    cursor: default;
+    background-color: #ebebe4;
+}
+
 .VS-Tag-Input-Border {
     width: 320px;
     height: auto;
@@ -145,7 +151,7 @@ tag-selector{
 
 .VS-Tag-Input-Border input{
     border: 0px;
-    width: 150px;
+    width: 300px;
     vertical-align: middle;
     outline: transparent;
     margin: 5px 0px 0px 7px;
@@ -201,10 +207,16 @@ tag-selector{
     text-align: center;
 }
 
+.VS-AutocompleteItems .VS-ItemIndexed{
+    border: 1px solid $secondary-four-bright;
+    cursor: default;
+}
+
 .VS-AutocompleteItems .VS-ItemSelected{
     background-color: $secondary-four-bright;
     cursor: default;
 }
+
 .VS-AutocompleteItems .VS-ItemSelected span,
 .VS-AutocompleteItems .VS-HeirarchyItems .VS-ItemSelected span{
     color: $text-white;
@@ -254,16 +266,16 @@ tag-selector{
     cursor: default !important;
 }
 
-.VS-Scrollbar
-{
-	margin-left: 30px;
-	float: left;
-	height: 300px;
-	width: 65px;
-	background: #F5F5F5;
-	overflow-y: scroll;
-	margin-bottom: 25px;
-}
+// .VS-Scrollbar
+// {
+// 	margin-left: 30px;
+// 	float: left;
+// 	height: 300px;
+// 	width: 65px;
+// 	background: #F5F5F5;
+// 	overflow-y: scroll;
+// 	margin-bottom: 25px;
+// }
 
 
 #VS-Scrollbar::-webkit-scrollbar-track
