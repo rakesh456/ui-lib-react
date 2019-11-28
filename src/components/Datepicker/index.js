@@ -34,7 +34,8 @@ import {
     isRight,
     getYYYYForLowerLimit,
     getYYYYForUpperLimit,
-    currentFormatToYYYYMMDDNew
+    currentFormatToYYYYMMDDNew,
+    dateIsInDisabledList
 } from "../../utils/calendar";
 import {
     getDateByFormat,
@@ -57,9 +58,13 @@ class DatePicker extends React.PureComponent {
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
 
-        const isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
+        let isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
 
-        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled};
+        let _lowerDate = getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions);
+        const isDisabledFull = (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions));
+        isDisabled = (isDisabledFull === true)? true : isDisabled;
+
+        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled, isDisabledFull: isDisabledFull};
     }
 
     // Component lifecycle methods started
@@ -240,10 +245,10 @@ class DatePicker extends React.PureComponent {
     
     onSelectMonthHandler = (month) => {
         const { options } = this.props;
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
         _date.setMonth(parseInt(getMonthIndex(month)) - 1);
         const newDate = getDateByFormat(_date, options.displayFormat);
-        
+
         this.setState({
             isMonthSelected: true,
             isYearSelected: false,
@@ -256,7 +261,8 @@ class DatePicker extends React.PureComponent {
     
     onSelectYearHandler = (year) => {
         const { options } = this.props;
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
         _date.setFullYear(parseInt(year));
         const newDate = getDateByFormat(_date, options.displayFormat);
 
@@ -280,9 +286,11 @@ class DatePicker extends React.PureComponent {
     goToNextYearHandler = () => {
         const { selectedDate } = this.state;
         const { options } = this.props;
-        const currentDateYear = getSelectedYearFromDate(selectedDate, options);
-        
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+
+        let currentDateYear = getSelectedYearFromDate(selectedDate, options);
+        currentDateYear = (Number.isNaN(currentDateYear))? _date.getFullYear() : currentDateYear;
         _date.setFullYear(parseInt(currentDateYear) + 1);
         const newDate = getDateByFormat(_date, options.displayFormat);
         this.setState({
@@ -293,9 +301,10 @@ class DatePicker extends React.PureComponent {
     goToPrevYearHandler = () => {
         const { selectedDate } = this.state;
         const { options } = this.props;
-        const currentDateYear = getSelectedYearFromDate(selectedDate, options);
-        
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        let currentDateYear = getSelectedYearFromDate(selectedDate, options);
+        currentDateYear = (Number.isNaN(currentDateYear))? _date.getFullYear() : currentDateYear;
         _date.setFullYear(parseInt(currentDateYear) - 1);
         const newDate = getDateByFormat(_date, options.displayFormat);
         this.setState({

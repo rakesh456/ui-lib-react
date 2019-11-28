@@ -12,7 +12,8 @@ import {
     splitArray,
     convertYYYYMMDD,
     guid,
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    isValidDate
 } from "../../../utils/utils";
 import * as CONSTANTS from '../../../utils/constants'
 
@@ -54,8 +55,8 @@ class Days extends React.PureComponent {
     getCalendarDates = () => {
         const { current } = this.state;
         const { month, year } = this.props;
-        const calendarMonth = month || +current.getMonth() + 1;
-        const calendarYear = year || current.getFullYear();
+        const calendarMonth = month || (!isValidDate(current))? month : +current.getMonth() + 1;
+        const calendarYear = year || (!isValidDate(current))? year : current.getFullYear();
         const _array = calendar(calendarMonth, calendarYear);
         
         return splitArray(_array, 7);
