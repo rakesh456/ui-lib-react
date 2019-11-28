@@ -58,9 +58,9 @@ class ItemsList extends React.PureComponent {
 
     renderSubitem(item, index) {
         const { currentHierarchyItemIndex } = this.props;
-        if(currentHierarchyItemIndex === item.length){
-            this.props.updateHierarchyIndex();
-        }
+        // if(currentHierarchyItemIndex === item.length){
+        //     this.props.updateHierarchyIndex();
+        // }
         const _uuid = guid();
         const items = Object.keys(item).map((ele, ind) => {
             return <li className={this.getHeirarchyLiListClass(item[ele], ind, index)} onClick={(e) => this.selectItem(e, item[ele])} key={ind + '_span'}> <span className='VS-CodeText'>{item[ele].value}</span> </li>;

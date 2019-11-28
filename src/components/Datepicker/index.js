@@ -60,8 +60,8 @@ class DatePicker extends React.PureComponent {
 
         let isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
 
-        let _lowerDate = getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions);
-        const isDisabledFull = (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions));
+        let _lowerDate = (datePickerOptions)? getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions) : "";
+        const isDisabledFull = (datePickerOptions)? (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions)) : false;
         isDisabled = (isDisabledFull === true)? true : isDisabled;
 
         this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled, isDisabledFull: isDisabledFull};

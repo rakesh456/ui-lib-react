@@ -58,7 +58,8 @@ export const sortListingByType = (allowHierarchy, json) => {
             let _keys = [];
             
             json.forEach((item) => {
-                for(let prop in item) {
+                let prop;
+                for(prop in item) {
                     _keys.push(prop);
                 }
             });

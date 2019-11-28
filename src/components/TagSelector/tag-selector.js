@@ -6,7 +6,8 @@ import TagSelectorPortal from "./portal";
 import {
     guid,
     arrayIncludesInObj,
-    isStringExists
+    isStringExists,
+    isUndefinedOrNull
 } from "../../utils/utils";
 import {
     sortListingByType,
@@ -18,7 +19,7 @@ class TagSelector extends React.PureComponent {
     constructor(props) {
         super(props);
         const {maxItemCounter} = this.props.options;
-        this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [], currentItemIndex: -1, currentHierarchyItemIndex: 0, hierarchyParentKey: '', hierarchyParentLength: 0};
+        this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [], currentItemIndex: 0, currentHierarchyItemIndex: 0, hierarchyParentKey: '', hierarchySelectedItem: null, hierarchyParentLength: 0};
         this.countryservice = new CountryService();
     }
 
@@ -64,7 +65,6 @@ class TagSelector extends React.PureComponent {
                             return obj.value === item.value
                         });
                         
-                        console.log('results ', results);
                         if(!results || results.length <= 0){
                             currentSelectedItems.push(item);
                         }
@@ -161,7 +161,7 @@ class TagSelector extends React.PureComponent {
         });
 
         this.props.onFocus();
-        this.updateFilterItems('');
+        this.updateFilterItems(this.inputEl.value);
     }
 
     onBlur = () => {
@@ -184,43 +184,84 @@ class TagSelector extends React.PureComponent {
             let _hierarchyParentKey = this.state.hierarchyParentKey;
             let _hierarchyParentLength = this.state.hierarchyParentLength;
             let _list = this.state.filteredlistItems[_hierarchyIndex];
+            
+            let _hierarchySelectedItem = this.state.hierarchySelectedItem;
+            
+            // if(allowHierarchy === true && _counter !== 0){
+            //     let key;
+            //     let key2;
+            //     console.log('First_hierarchySelectedItem', _hierarchySelectedItem);
+            //     if(_hierarchySelectedItem === null) {
+            //         let _list = this.state.filteredlistItems[0];
+            //         for (key in _list) {
+            //             _hierarchySelectedItem = _list[key][0];
+            //         }
+            //     } else if(_hierarchySelectedItem) {
+            //         let _list = this.state.filteredlistItems[_hierarchyIndex];
+            //         // console.log(_hierarchyIndex, '_list', _list);
+            //         for (key in _list) {
+            //             let index = _list[key].findIndex((x) => x.value === _hierarchySelectedItem.value);
+            //             let _nextItem = _list[key][index+1];
+            //             console.log(_nextItem, 'len', _list[key].length);
+            //             _hierarchySelectedItem = _list[key][index + _counter];
 
-            console.log(_hierarchyIndex, ' this.state.filteredlistItems.length ', this.state.filteredlistItems.length);
-            if(_list && allowHierarchy === true){
-                let _key = '';
+            //             if(isUndefinedOrNull(_nextItem)){
+            //                 _hierarchyIndex = _hierarchyIndex + (_counter);
+            //                 console.log(_hierarchyIndex, 'isUndefinedOrNull');
+            //                 let _list = this.state.filteredlistItems[_hierarchyIndex];
+            //                 for (key2 in _list) {
+            //                     _hierarchySelectedItem = _list[key2][0];
+            //                 }
+            //             } 
+            //         }
+            //     }
+
+            //     console.log(_hierarchyIndex, 'NEW_hierarchySelectedItem', _hierarchySelectedItem);
+            //     this.setState({
+            //         hierarchySelectedItem :_hierarchySelectedItem,
+            //         currentHierarchyItemIndex: _hierarchyIndex
+            //     });
+            // }
+
+            if(_list && allowHierarchy === true && _counter !== 0){
                 let _len = 0;
-                for (const key in _list) {
+                let key;
+                for (key in _list) {
                     _len = _list[key].length;
-                            
+                        
                     if((_itemIndex + 1) >= _len && _counter === 1){
-                        _itemIndex = 0;
+                        _itemIndex = ((_hierarchyIndex + 1) === this.state.filteredlistItems.length)? _itemIndex : 0;
                         _indexChanged = true;
                         _hierarchyParentLength = _len;
-
+                        
                         let _list2 = this.state.filteredlistItems[_hierarchyIndex + 1];
-                        for (const key in _list2) {
-                            _hierarchyParentKey = key;
+                        let key2;
+                        for (key2 in _list2) {
+                            _hierarchyParentKey = key2;
                             _hierarchyIndex = this.state.currentHierarchyItemIndex + 1;
                         }
                     } else if((_itemIndex) <= 0 && _counter === -1){
                         _indexChanged = true;
                         
                         let _list2 = this.state.filteredlistItems[_hierarchyIndex - 1];
-                        for (const key in _list2) {
-                            _hierarchyParentKey = key;
-                            _itemIndex = _list2[key].length - 1;
+                        let key2;
+                        for (key2 in _list2) {
+                            _hierarchyParentKey = key2;
+                            _itemIndex = _list2[key2].length - 1;
                             _hierarchyIndex = this.state.currentHierarchyItemIndex - 1;
                         }
                     }
                 }
             }
 
-            this.setState({
-                currentItemIndex: (_indexChanged)? _itemIndex : (((_hierarchyIndex + 1) === this.state.filteredlistItems.length)? this.state.currentItemIndex : (this.state.currentItemIndex + (_counter))),
-                currentHierarchyItemIndex: _hierarchyIndex,
-                hierarchyParentKey: _hierarchyParentKey,
-                hierarchyParentLength: _hierarchyParentLength
-            });
+            if(_counter !== 0){
+                this.setState({
+                    currentItemIndex: (_indexChanged)? _itemIndex : (this.state.currentItemIndex + (_counter)),
+                    currentHierarchyItemIndex: _hierarchyIndex,
+                    hierarchyParentKey: _hierarchyParentKey,
+                    hierarchyParentLength: _hierarchyParentLength
+                });
+            }
 
             if(charCode === 13){
                 this.addItemOnEnter();
@@ -235,9 +276,21 @@ class TagSelector extends React.PureComponent {
     }
 
     addItemOnEnter = () => {
-        if(this.state.currentItemIndex >= 0){
-            let listItems = [...this.state.listItems];
-            let item = listItems[this.state.currentItemIndex];
+        const {currentHierarchyItemIndex, currentItemIndex} = this.state;
+        const {allowHierarchy} = this.props.options;
+        if(currentItemIndex >= 0){
+
+            let filteredlistItems = [...this.state.filteredlistItems];
+            let item = filteredlistItems[currentItemIndex];
+            
+            if(allowHierarchy === true){
+                let _list = filteredlistItems[currentHierarchyItemIndex];  
+                let key;
+                for (key in _list) {
+                    item = _list[key][currentItemIndex];
+                }
+            }
+
             if(item){
                 if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
                     let selectedItems = [...this.state.selectedItems];
@@ -298,13 +351,14 @@ class TagSelector extends React.PureComponent {
         const sortedList = sortListingByType(allowHierarchy, results);
 
         let _key = '';
+        let key2;
         let _len = 0;
-        for (const key in sortedList[0]) {
-            _len = sortedList[0][key].length;
-            _key = key;
+        for (key2 in sortedList[0]) {
+            _len = sortedList[0][key2].length;
+            _key = key2;
         }
 
-        this.setState({ filteredlistItems: sortedList, noDataFound: (results.length <= 0), currentHierarchyItemIndex: 0, hierarchyParentKey: _key, hierarchyParentLength: _len });
+        this.setState({ filteredlistItems: [...sortedList], noDataFound: (results.length <= 0), currentItemIndex: -1, currentHierarchyItemIndex: 0, hierarchyParentKey: _key, hierarchyParentLength: _len });
     }
 
     checkStringSearchInListByType = (item, _val) => {
@@ -397,7 +451,7 @@ class TagSelector extends React.PureComponent {
                     <Input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
                         className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
                         placeholder={this.getPlaceholder()}
-                        onKeyDown={(e) => this.onKeyDownHandler(e)}
+                        onKeyDown={this.onKeyDownHandler}
                         onClick={this.onFocus}
                         onBlur={this.onBlur}
                         onChange={this.filterItemsList}
@@ -409,7 +463,7 @@ class TagSelector extends React.PureComponent {
     }
 
     render() {
-        const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems, currentItemIndex, currentHierarchyItemIndex } = this.state;
+        const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems, currentItemIndex, currentHierarchyItemIndex, hierarchySelectedItem } = this.state;
         const { options } = this.props;
         const { readOnly } = this.props.options;
         const _uuid = guid();
@@ -428,7 +482,7 @@ class TagSelector extends React.PureComponent {
                         {
                             (shouldListOpen && readOnly !== true) ?
                                 <TagSelectorPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
-                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler} currentItemIndex={currentItemIndex} currentHierarchyItemIndex={currentHierarchyItemIndex} updateHierarchyIndex={this.updateHierarchyIndexHandler}> </ItemsList>
+                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler} currentItemIndex={currentItemIndex} currentHierarchyItemIndex={currentHierarchyItemIndex} updateHierarchyIndex={this.updateHierarchyIndexHandler} hierarchySelectedItem={hierarchySelectedItem}> </ItemsList>
                                 </TagSelectorPortal>
                                 : ''
                         }
