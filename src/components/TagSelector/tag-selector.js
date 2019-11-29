@@ -6,8 +6,7 @@ import TagSelectorPortal from "./portal";
 import {
     guid,
     arrayIncludesInObj,
-    isStringExists,
-    isUndefinedOrNull
+    isStringExists
 } from "../../utils/utils";
 import {
     sortListingByType,
@@ -184,44 +183,6 @@ class TagSelector extends React.PureComponent {
             let _hierarchyParentKey = this.state.hierarchyParentKey;
             let _hierarchyParentLength = this.state.hierarchyParentLength;
             let _list = this.state.filteredlistItems[_hierarchyIndex];
-            
-            let _hierarchySelectedItem = this.state.hierarchySelectedItem;
-            
-            // if(allowHierarchy === true && _counter !== 0){
-            //     let key;
-            //     let key2;
-            //     console.log('First_hierarchySelectedItem', _hierarchySelectedItem);
-            //     if(_hierarchySelectedItem === null) {
-            //         let _list = this.state.filteredlistItems[0];
-            //         for (key in _list) {
-            //             _hierarchySelectedItem = _list[key][0];
-            //         }
-            //     } else if(_hierarchySelectedItem) {
-            //         let _list = this.state.filteredlistItems[_hierarchyIndex];
-            //         // console.log(_hierarchyIndex, '_list', _list);
-            //         for (key in _list) {
-            //             let index = _list[key].findIndex((x) => x.value === _hierarchySelectedItem.value);
-            //             let _nextItem = _list[key][index+1];
-            //             console.log(_nextItem, 'len', _list[key].length);
-            //             _hierarchySelectedItem = _list[key][index + _counter];
-
-            //             if(isUndefinedOrNull(_nextItem)){
-            //                 _hierarchyIndex = _hierarchyIndex + (_counter);
-            //                 console.log(_hierarchyIndex, 'isUndefinedOrNull');
-            //                 let _list = this.state.filteredlistItems[_hierarchyIndex];
-            //                 for (key2 in _list) {
-            //                     _hierarchySelectedItem = _list[key2][0];
-            //                 }
-            //             } 
-            //         }
-            //     }
-
-            //     console.log(_hierarchyIndex, 'NEW_hierarchySelectedItem', _hierarchySelectedItem);
-            //     this.setState({
-            //         hierarchySelectedItem :_hierarchySelectedItem,
-            //         currentHierarchyItemIndex: _hierarchyIndex
-            //     });
-            // }
 
             if(_list && allowHierarchy === true && _counter !== 0){
                 let _len = 0;
