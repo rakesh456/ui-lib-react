@@ -110,13 +110,14 @@ class TagSelector extends React.PureComponent {
     }
 
     addItemAndUpdateList = (obj) => {
+        const {allowHierarchy} = this.props.options;
         const {listItems, newlyAddedElements} = this.state;
         let _items = [...listItems];
         let _newItems = [...newlyAddedElements];
         _items.push(obj);
         _newItems.push(obj);
         this.setState({
-            listItems: [..._items],
+            listItems: sortListingByType(allowHierarchy, [..._items]),
             newlyAddedElements: [..._newItems]
         });
     }
