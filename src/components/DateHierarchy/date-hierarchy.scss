@@ -54,17 +54,123 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS-Show{
+    position: absolute;
     display: block;
 }
 
-.VS-Plus-Minus{
-    padding: 5px;
-    font-size: 20px;
+.VS-Checkbox-Container{
+    display: inline-block;
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 4px;
     cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
-.VS-Checkbox{
-    padding: 5px;
-    font-size: 20px;
+
+.VS-Checkbox-Container input {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
+    height: 0;
+    width: 0;
 }
+  
+.VS-Check-Checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border: 1px solid #eee;
+}
+  
+.VS-Checkbox-Container:hover input ~ .VS-Check-Checkmark {
+    background-color: #fff;
+}
+
+.VS-Checkbox-Container input:checked ~ .VS-Check-Checkmark {
+    background-color: white;
+}
+
+.VS-Check-Checkmark:after {
+content: "";
+    position: absolute;
+    display: none;
+}
+
+.VS-Checkbox-Container input:checked ~ .VS-Check-Checkmark:after {
+    display: block;
+}
+
+.VS-Checkbox-Container .VS-Check-Checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 3px;
+    height: 7px;
+    border: solid #2196F3;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.VS-Plus-Minus,
+.VS-Month-Plus-Minus,
+.VS-Quarter-Plus-Minus{
+    position: relative;
+    font-size: 25px;
+    padding: 5px;
+    font-weight: bold;
+    color: #80a5c3;
+    cursor: pointer;
+    top: 2px;
+}
+
+.VS-MonthRow{
+    list-style: none;
+    margin: 5px 16px;
+    right: 30;
+}
+
+.VS-QuarterRow{
+    list-style: none;
+    margin: 8px 18px;
+}
+
+.VS-YearRow{
+    list-style: none ;
+    margin: 5px 20px;
+}
+
+.hierarcy{
+    position: relative;
+    margin: 5px 20px;
+    padding: 20px;
+}
+
+
+.VS-Checkbox{
+    display: inline-block;
+    top: 2px;
+    position: relative;
+}
+
+.VS-Quarter-Details:hover{
+    border: 1px solid #ddd;
+}
+
+.VS-Quarter-Details{
+    display: inline-block;
+    padding: 2px;
+}
+
+.VS-Quarter-Details .VS-Quarter-Name{
+    display: inline-block;
+}
+

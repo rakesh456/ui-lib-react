@@ -19,6 +19,7 @@ import {
 } from "../src/utils/tagselectorutils";
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
+import './components/DateHierarchy/date-hierarchy.scss';
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 
 

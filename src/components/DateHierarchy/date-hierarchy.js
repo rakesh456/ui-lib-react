@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
         super(props);
+        // let yearList = getYearListByOptions(options);
         let years = [
             {
                 "year": "2015",
@@ -23,6 +24,7 @@ class DateHierarchy extends React.PureComponent {
                                 "month": "Feb",
                                 "isShowChild": false,
                                 "children": []
+                                
                             },
                             {
                                 "month": "March",
@@ -116,18 +118,15 @@ class DateHierarchy extends React.PureComponent {
     }
 
     expandYear(row, index) {
-        console.log(index ,' index' , row);
         let years = [...this.state.years]
         years[index]['isShowChild'] = true;
-        console.log(this.state,"state");
         this.setState({
             years: [...years]
             })
-            console.log(this.state,"state");
     }
 
     collapseYear(row, index) {
-        console.log(index ,' index' , row);
+        console.log(row, "row");
         let years = [...this.state.years]
         years[index]['isShowChild'] = false;
         this.setState({
@@ -135,76 +134,115 @@ class DateHierarchy extends React.PureComponent {
         })
     }
 
-    expandQuarter(qt, index) {
-        console.log(index ,' index' );
-      console.log('qt' , qt);
-        let quarter = [...qt.children]
-        console.log(quarter,"quarter2");
-        quarter[index]['isShowChild'] = true;
+    
+    expandQuarter(qt, yindex,qindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['isShowChild']=true;
+        console.log(yindex,' yindex',this.state.years );
+        console.log(years,"years");
         this.setState({
-            quarter: [...quarter]
+            years: [...years]
         })
     }
 
-    collapseQuarter(qt, index) {
-        console.log(index ,' index' , qt);
-        let quarter= [...this.state.years[index].children]
-        quarter[index]['isShowChild'] = false;
+    collapseQuarter(qt, yindex, qindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['isShowChild']=false;
+        console.log(yindex,' yindex',this.state.years );
+        console.log(years,"years");
         this.setState({
-            quarter: [...quarter]
+            years: [...years]
         })
     }
-    renderMonths = (mnth, index) =>{
+    
+    expandMonth(mnth, yindex,qindex, mindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['children'][mindex]['isShowChild']=true;
+        // console.log(yindex,' yindex',this.state.years );
+        // console.log(years,"years");
+        this.setState({
+            years: [...years]
+        })
+    }
+
+    collapseMonth(mnth, yindex, qindex, mindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['children'][mindex]['isShowChild']=false;
+        console.log(yindex,' yindex',this.state.years );
+        console.log(years,"years");
+        this.setState({
+            years: [...years]
+        })
+    }
+    renderMonths = (qt, row, yindex, qindex, mindex) =>{
         return (
-            <div className="VS-MonthRow" key={'month' + index}>
-            <input className="VS-Checkbox" id="checkbox" type="checkbox" />{mnth.month}
+            <div className="VS-MonthRow" key={'month' + mindex}>
+                {
+                    (qt.isShowChild) ?
+                        <a className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(qt, yindex, qindex, mindex)}>-</a> :
+                        <a className="VS-Month-Plus-Minus" >+</a>
+                }
+            {/* <input className="VS-Checkbox" id="checkbox" type="checkbox" />{qt.month}-{row.year} */}
+            <label class="VS-Checkbox-Container">{qt.month}-{row.year}
+                <input className="VS-Checkbox" type="checkbox"></input>
+                <span class="VS-Check-Checkmark"></span>
+            </label>
             </div>
         )
     }
 
-    renderQuarter = (qt, index) => {
+    renderQuarter = (qt,row, yindex, qindex) => {
         return (
-            <div className="VS-QuarterRow"key={'quarter' + index}>
+            <div className="VS-QuarterRow"key={'quarter' + qindex}>
                  {
                     (qt.isShowChild) ?
-                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, index)}>-</a> :
-                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt, index)}>+</a>
+                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, yindex, qindex)}>-</a> :
+                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt,yindex, qindex)}>+</a>
                 }
-                <input className="VS-Checkbox" id="checkbox" type="checkbox" />{qt.quarter}
-                
+                <label class="VS-Checkbox-Container">{qt.quarter}-{row.year}
+                    <input className="VS-Checkbox" type="checkbox"></input>
+                    <span class="VS-Check-Checkmark"></span>
+                </label>
+                {/* <div className="VS-Quarter-Details"><input className="VS-Checkbox" id="checkbox" type="checkbox" /><span className="VS-Quarter-Name">{qt.quarter}-{row.year}</span></div> */}
                 {
                     (qt.isShowChild && qt.children) ?
-                        qt.children.map((qt, index) => this.renderMonths(qt, index)) : ''
+                        qt.children.map((qt, qindex, mindex) => this.renderMonths(qt,row, yindex, qindex, mindex)) : ''
                 }
+               
             </div>
+            
         )
     }
 
     renderYearRow = (row, index) => {
         return (
-            <div className="VS-YearRow" key={'year' + index} >
+            
+            <div className="VS-YearRow"  key={'year' + index} >
                 {
                     (row.isShowChild) ?
                         <a className="VS-Plus-Minus" onClick={() => this.collapseYear(row, index)}>-</a> :
                         <a className="VS-Plus-Minus" onClick={() => this.expandYear(row, index)}>+</a>
                 }
-                <input className="VS-Checkbox"id="checkbox" type="checkbox" />{row.year}
+                <label class="VS-Checkbox-Container">{row.year}
+                    <input className="VS-Checkbox" type="checkbox"></input>
+                    <span class="VS-Check-Checkmark"></span>
+                </label>
                 {
                     (row.isShowChild && row.children) ?
-                        row.children.map((row, index) => this.renderQuarter(row, index)) : ''
+                        row.children.map((qrow, qindex) => this.renderQuarter(qrow, row, index, qindex)) : ''
                 }
             </div>
+           
         )
     }
     
     render() {
 
         return (
-            <div className="hierarcy">
+            <div className= "hierarcy">
                 {this.state.years.map((row, index) => this.renderYearRow(row, index))}
             </div>
         )
     }
 }
-
 export default DateHierarchy;
