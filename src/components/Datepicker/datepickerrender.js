@@ -10,7 +10,8 @@ import {
     checkValueByDisplayFormat,
     isCalendarFormat,
     resetOptions,
-    formatOptions
+    formatOptions,
+    currentFormatToYYYYMMDDNew
 } from "../../utils/calendar";
 
 
@@ -79,8 +80,35 @@ function datepickerRender(el) {
         myComponentInstance.refresh();
     }
     
+    el.setDataOption = function (updatedOptions) {
+        let newOptions = {...options};
+        let key;
+        let isChanged = false;
+        if(!isUndefinedOrNull(updatedOptions)){
+            for (key in updatedOptions) {
+                if (updatedOptions.hasOwnProperty(key)) {
+                    const value = updatedOptions[key];
+                    const option = key;
+                    
+                    if(!isUndefinedOrNull(option) && (option in options)){
+                        if(option === 'lowerLimit' || option === 'upperLimit'){
+                            let _date = currentFormatToYYYYMMDDNew(value, newOptions);
+                            newOptions[option] = _date;
+                            isChanged = true;
+                        } else {
+                            newOptions[option] = value;
+                            isChanged = true;
+                        }
+                    }
+                }
+            }
+            if(isChanged === true){
+                myComponentInstance.setState({ options: {...newOptions}});
+            }
+        }
+    }
+
     el.reload = function () {
-        console.log(' after update ' + JSON.stringify(options));
     }
 
     el.getStartDate = function () {
