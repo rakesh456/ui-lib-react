@@ -232,9 +232,9 @@ Array.prototype.forEach.call(
     })
 
 function dateHierarchyRender(el) { 
+    let options = JSON.parse(el.getAttribute('data-options'));
 
-
-    var HierarchyComponentElement = <DateHierarchy  />;
+    var HierarchyComponentElement = <DateHierarchy options={options} />;
 
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
