@@ -4,14 +4,20 @@ import DatePicker from "./index";
 import {
     getDateByFormat,
     getDateByFormatNew,
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    isObject
 } from "../../utils/utils";
 import {
     checkValueByDisplayFormat,
     isCalendarFormat,
     resetOptions,
     formatOptions,
-    currentFormatToYYYYMMDDNew
+    currentFormatToYYYYMMDDNew,
+    isValidDDMMYYYYValue,
+    isValidMMYYYYValue,
+    isValidQQYYYYValue,
+    isValidYYYYValue,
+    getConvertedDate
 } from "../../utils/calendar";
 
 
@@ -95,6 +101,34 @@ function datepickerRender(el) {
                             let _date = currentFormatToYYYYMMDDNew(value, newOptions);
                             newOptions[option] = _date;
                             isChanged = true;
+                        } else if(option === 'disabledList' && Array.isArray(value)){
+                            let _disabledList = [];
+                            value.forEach((val) => {
+                                if(isValidDDMMYYYYValue(val) || 
+                                isValidMMYYYYValue(val) || 
+                                isValidQQYYYYValue(val) ||
+                                isValidYYYYValue(val)){
+                                    let formattedDate = (isValidDDMMYYYYValue(val))?  getConvertedDate(val, updatedOptions.displayFormat) : val;
+                                    _disabledList.push(formattedDate);
+                                }
+                            });
+                            isChanged = true;
+                            newOptions[option] = [..._disabledList];
+                        } else if(option === 'indicatorList' && Array.isArray(value)){
+                            let _indicatorList = [];
+                            value.forEach((val) => {
+                                if(isObject(val)){
+                                    let  _dates = [];
+                                    if(val && val.dates && val.dates.length > 0){
+                                        val.dates.forEach((date) => {
+                                            _dates.push(getConvertedDate(date, updatedOptions.displayFormat));
+                                        });
+                                    }
+                                    _indicatorList.push({'dates': _dates, 'color': val.color});
+                                }
+                            });
+                            isChanged = true;
+                            newOptions[option] = [..._indicatorList];
                         } else {
                             newOptions[option] = value;
                             isChanged = true;

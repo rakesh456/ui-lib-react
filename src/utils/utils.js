@@ -14,6 +14,11 @@ export function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj === null || !obj)? true : false;
 }
 
+// Function to check obj is undefined or null
+export function isObject(obj){
+    return (typeof obj === 'object' && obj !== null);
+}
+
 // Funtion to check string is blank, undefined or null
 export function isBlank(string){
     return (typeof string === "undefined" || string === null || string === '')? true : false;
@@ -186,7 +191,6 @@ export const isStringExists = (string, substring) => {
 }
 
 
-
 export const compareObjects = (o1, o2) => {
     for(var p in o1){
         if(o1.hasOwnProperty(p)){
@@ -195,9 +199,9 @@ export const compareObjects = (o1, o2) => {
             }
         }
     }
-    for(var p in o2){
-        if(o2.hasOwnProperty(p)){
-            if(o1[p] !== o2[p]){
+    for(var p1 in o2){
+        if(o2.hasOwnProperty(p1)){
+            if(o1[p1] !== o2[p1]){
                 return false;
             }
         }

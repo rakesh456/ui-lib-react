@@ -56,15 +56,6 @@ class DatePicker extends React.PureComponent {
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
 
-        // const _date = this.getDefaultDate();
-        // const _selectedYear = this.getDefaultYear();
-
-        // let isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
-
-        // let _lowerDate = (datePickerOptions)? getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions) : "";
-        // const isDisabledFull = (datePickerOptions)? (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions)) : false;
-        // isDisabled = (isDisabledFull === true)? true : isDisabled;
-
         this.state = { selectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: false, isDisabledFull: false, options: datePickerOptions};
     }
 
@@ -86,16 +77,9 @@ class DatePicker extends React.PureComponent {
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
         
-        // let isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
-        // let _lowerDate = (datePickerOptions)? getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions) : "";
-        // const isDisabledFull = (datePickerOptions)? (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions)) : false;
-        // isDisabled = (isDisabledFull === true)? true : isDisabled;
-        
         this.setState({
             selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat),
             selectedYear: _selectedYear,
-            // isDisabled: isDisabled,
-            // isDisabledFull: isDisabledFull
         });
     }
 
@@ -105,12 +89,9 @@ class DatePicker extends React.PureComponent {
         const displayFormat = (thisOptions)? thisOptions.displayFormat : '';
         const objSame = compareObjects(prevOptions, thisOptions);
         
-        console.log(prevOptions, ' prevOptions, thisOptions ', thisOptions);
-        console.log(objSame, ' objSame ');
-        if(!objSame && prevOptions.lowerLimit !== thisOptions.lowerLimit && prevOptions.upperLimit !== thisOptions.upperLimit){
-            console.log(prevOptions.lowerLimit, ' thisOptions ', thisOptions.lowerLimit);
+        if(!objSame && (prevOptions.lowerLimit !== thisOptions.lowerLimit || prevOptions.upperLimit !== thisOptions.upperLimit || prevOptions.disabledList !== thisOptions.disabledList)){
             const _date = this.getDefaultDate();
-            console.log( '_date ', _date);
+            
             this.setState({
                 selectedDate:  (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat),
                 isCalendar: isCalendarFormat(displayFormat), 
@@ -118,7 +99,6 @@ class DatePicker extends React.PureComponent {
             });
         }
     }
-
     // Component lifecycle methods end
 
     // Component explicit methods started 
@@ -620,7 +600,7 @@ class DatePicker extends React.PureComponent {
     render() {
         const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection } = this.state;
         const { options } = this.state;
-        const { displayFormat } = options;
+        const displayFormat = (options)? options.displayFormat : "";
         const showClearIcon = (options && options.showClearIcon === true);
         const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();

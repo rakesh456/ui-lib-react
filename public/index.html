@@ -386,11 +386,7 @@
             let fromElement = document.getElementById(from);
             let element = document.getElementById(to);
             let _value = fromElement.getValue();
-            element.setDataOption({"lowerLimit": _value, "upperLimit": _value});
-
-            // element.setDataOption("showButtons", true);
-            // element.setDataOption("showClearIcon", true);
-            // element.setDataOption("displayFormat", "MM/DD/YYYY");
+            element.setDataOption({"lowerLimit": "20/01/2019", "upperLimit": "25/12/2021", "disabledList": [_value, "06/2019", "2020"], "indicatorList": [{ "dates": [_value, "06/11/2019"], "color": "#ff0000" }]});
         }
 
         function displayValue(id, divId) {
@@ -497,7 +493,7 @@
         <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()" onChange="updateToDate('datepicker1', 'datepicker3')"></date-picker>
 
         <label>To Date:</label>
-        <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "DD/MM/YYYY", "defaultDate": "10/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker>
+        <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019", "05/11/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker>
     </div>
     
     <br>
