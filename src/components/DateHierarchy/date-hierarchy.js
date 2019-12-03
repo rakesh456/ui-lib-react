@@ -10,7 +10,7 @@ class DateHierarchy extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
         this.state = { years: yearList};
     }
-   
+
     updateDimensions() { }
 
     componentDidMount() {
@@ -18,6 +18,7 @@ class DateHierarchy extends React.PureComponent {
 
     expandYear(row, index) {
         let years = [...this.state.years]
+        console.log('expand year called');
         years[index]['isShowChild'] = true;
         this.setState({
             years: [...years]
@@ -102,6 +103,16 @@ class DateHierarchy extends React.PureComponent {
         )
     }
 
+    getYearCheckBoxClass = () => {
+        let flag = false;
+        console.log();
+        return (flag )? 'VS-Check-Checkmark VS-Check-Particial' : 'VS-Check-Checkmark';
+    }
+
+    onChange = () => {
+        console.log("onchange called");
+    }
+
     renderYearRow = (row, index) => {
         return (
             
@@ -111,9 +122,12 @@ class DateHierarchy extends React.PureComponent {
                         <a className="VS-Plus-Minus" onClick={() => this.collapseYear(row, index)}>-</a> :
                         <a className="VS-Plus-Minus" onClick={() => this.expandYear(row, index)}>+</a>
                 }
-                <label class="VS-Checkbox-Container">{row.year}
-                    <input className="VS-Checkbox" type="checkbox"></input>
-                    <span class="VS-Check-Checkmark"></span>
+                <label class="VS-Checkbox-Container" >{row.year}
+                    <input className="VS-Checkbox" type="checkbox" onChange={this.onChange}>
+                    </input>
+                    <span class={this.getYearCheckBoxClass()} >
+                        
+                    </span>
                 </label>
                 {
                     (row.isShowChild && row.children) ?

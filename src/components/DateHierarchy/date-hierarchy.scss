@@ -80,6 +80,7 @@ $font-family: 'Roboto', sans-serif;
     width: 0;
 }
   
+
 .VS-Check-Checkmark {
     position: absolute;
     top: 0;
@@ -106,6 +107,19 @@ content: "";
 
 .VS-Checkbox-Container input:checked ~ .VS-Check-Checkmark:after {
     display: block;
+}
+
+// .VS-Checkbox-Container .VS-Check-Checkmark:before {
+
+// }
+
+.VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Particial:after {
+    left: 5px;
+    top: 5px;
+    width: 0px;
+    height: 0px;
+    border: solid #2196F3;
+    border-width: 3px;
 }
 
 .VS-Checkbox-Container .VS-Check-Checkmark:after {
