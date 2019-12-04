@@ -5,6 +5,7 @@ import {
     getDateByFormat,
     getDateByFormatNew,
     isUndefinedOrNull,
+    convertYYYYMMDDByFormat,
     isObject
 } from "../../utils/utils";
 import {
@@ -12,7 +13,6 @@ import {
     isCalendarFormat,
     resetOptions,
     formatOptions,
-    currentFormatToYYYYMMDDNew,
     isValidDDMMYYYYValue,
     isValidMMYYYYValue,
     isValidQQYYYYValue,
@@ -96,9 +96,9 @@ function datepickerRender(el) {
                     const value = updatedOptions[key];
                     const option = key;
                     
-                    if(!isUndefinedOrNull(option) && (option in options)){
+                    if(!isUndefinedOrNull(option)){
                         if(option === 'lowerLimit' || option === 'upperLimit'){
-                            let _date = currentFormatToYYYYMMDDNew(value, newOptions);
+                            let _date = convertYYYYMMDDByFormat(value, newOptions.displayFormat);
                             newOptions[option] = _date;
                             isChanged = true;
                         } else if(option === 'disabledList' && Array.isArray(value)){
