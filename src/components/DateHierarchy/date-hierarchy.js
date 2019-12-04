@@ -37,6 +37,8 @@ class DateHierarchy extends React.PureComponent {
     expandQuarter(qt, yindex,qindex) {
         let years = [...this.state.years];
         years[yindex]['children'][qindex]['isShowChild']=true;
+        console.log( years[yindex],'yearindex');
+        console.log(years[yindex]['children'][qindex],'childrenIndex');
         this.setState({
             years: [...years]
         })
@@ -45,6 +47,7 @@ class DateHierarchy extends React.PureComponent {
     collapseQuarter(qt, yindex, qindex) {
         let years = [...this.state.years];
         years[yindex]['children'][qindex]['isShowChild']=false;
+      
         this.setState({
             years: [...years]
         })
@@ -65,6 +68,26 @@ class DateHierarchy extends React.PureComponent {
             years: [...years]
         })
     }
+
+    onCheckQuarter(qt, yindex,qindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['isChecked']=true;
+        console.log(years[yindex]['children'][qindex],'inside quarter');
+        console.log(qindex,yindex,qt,'oncheckQuarter Called');
+        this.setState({
+            years: [...years]
+        })
+    }
+
+    onUnCheckQuarter(qt, yindex,qindex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['isChecked']=false;
+        console.log(qt,'onUncheckQuarter Called');
+        this.setState({
+            years: [...years]
+        })
+    }
+
     renderMonths = (qt, row, yindex, qindex, mindex) =>{
         return (
             <div className="VS-MonthRow" key={'month' + mindex}>
@@ -81,6 +104,43 @@ class DateHierarchy extends React.PureComponent {
         )
     }
 
+    getYearCheckBoxClass = () => {
+        let flag = false;
+        console.log();
+        return (flag )? 'VS-Check-Checkmark VS-Check-Particial' : 'VS-Check-Checkmark';
+    }
+
+    onCheckYear(row, index) {
+        let years = [...this.state.years];
+        console.log(index,'isChecked called');
+        years[index]['isChecked'] = true
+        let children = years[index]['children'];
+        console.log(years[index],"years",children,"children");
+        children.forEach((element,index) => {
+            children[index]['isChecked'] = true;
+            console.log(index,"index inside loop");
+        });
+        years[index]['children'] = children;
+        this.setState({
+            years: [...years]
+            })
+    }
+
+    onUnCheckYear(row, index) {
+        let years = [...this.state.years]
+        console.log('isUnChecked called');
+        years[index]['isChecked'] = false
+        let children = years[index]['children'];
+        children.forEach((element,index) => {
+            children[index]['isChecked'] = false;
+        });
+        years[index]['children'] = children;
+        console.log(row, "row");
+        this.setState({
+            years: [...years]
+            })
+    } 
+        
     renderQuarter = (qt,row, yindex, qindex) => {
         return (
             <div className="VS-QuarterRow"key={'quarter' + qindex}>
@@ -90,12 +150,16 @@ class DateHierarchy extends React.PureComponent {
                         <a className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt,yindex, qindex)}>+</a>
                 }
                 <label class="VS-Checkbox-Container">{qt.quarter}-{row.year}
-                    <input className="VS-Checkbox" type="checkbox"></input>
-                    <span class="VS-Check-Checkmark"></span>
+                {
+                     (qt.isChecked) ? 
+                    <input className="VS-Checkbox" type="checkbox" checked={qt.isChecked} onChange={ () =>       this.onUnCheckQuarter(qt,yindex, qindex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={qt.isChecked} onChange={ () => this.onCheckQuarter(qt,yindex, qindex)}></input>
+                }
+                <span class="VS-Check-Checkmark"></span>
                 </label>
                 {
                     (qt.isShowChild && qt.children) ?
-                        qt.children.map((qt, qindex, mindex) => this.renderMonths(qt,row, yindex, qindex, mindex)) : ''
+                        qt.children.map((qt, qindex, mindex) => this.renderMonths(qt, row, yindex, qindex, mindex)) : ''
                 }
                
             </div>
@@ -103,15 +167,7 @@ class DateHierarchy extends React.PureComponent {
         )
     }
 
-    getYearCheckBoxClass = () => {
-        let flag = false;
-        console.log();
-        return (flag )? 'VS-Check-Checkmark VS-Check-Particial' : 'VS-Check-Checkmark';
-    }
 
-    onChange = () => {
-        console.log("onchange called");
-    }
 
     renderYearRow = (row, index) => {
         return (
@@ -122,9 +178,13 @@ class DateHierarchy extends React.PureComponent {
                         <a className="VS-Plus-Minus" onClick={() => this.collapseYear(row, index)}>-</a> :
                         <a className="VS-Plus-Minus" onClick={() => this.expandYear(row, index)}>+</a>
                 }
-                <label class="VS-Checkbox-Container" >{row.year}
-                    <input className="VS-Checkbox" type="checkbox" onChange={this.onChange}>
-                    </input>
+                <label class="VS-Checkbox-Container" key={'year' + index}>{row.year}
+                {
+                     (row.isChecked) ? 
+                    <input className="VS-Checkbox" type="checkbox" checked={row.isChecked} onChange={ () =>       this.onUnCheckYear(row, index)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={row.isChecked} onChange={ () => this.onCheckYear(row, index)}></input>
+
+                } 
                     <span class={this.getYearCheckBoxClass()} >
                         
                     </span>
