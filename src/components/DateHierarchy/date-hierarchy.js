@@ -71,9 +71,17 @@ class DateHierarchy extends React.PureComponent {
 
     onCheckQuarter(qt, yindex,qindex) {
         let years = [...this.state.years];
+        //console.log('years before change:', years);
+        console.log("onCheckQuarter() Line 75");
+        console.log('yindex before change', yindex);
+        console.log('qindex before change', qindex);
+
         years[yindex]['children'][qindex]['isChecked']=true;
-        console.log(years[yindex]['children'][qindex],'inside quarter');
-        console.log(qindex,yindex,qt,'oncheckQuarter Called');
+        console.log('yindex after change', yindex);        
+        console.log('qindex before change', qindex);
+
+        console.log('years after change:', years);
+
         this.setState({
             years: [...years]
         })
@@ -152,7 +160,7 @@ class DateHierarchy extends React.PureComponent {
                 <label class="VS-Checkbox-Container">{qt.quarter}-{row.year}
                 {
                      (qt.isChecked) ? 
-                    <input className="VS-Checkbox" type="checkbox" checked={qt.isChecked} onChange={ () =>       this.onUnCheckQuarter(qt,yindex, qindex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={qt.isChecked} onChange={ () => this.onUnCheckQuarter(qt,yindex, qindex)}></input>:
                     <input className="VS-Checkbox" type="checkbox" checked={qt.isChecked} onChange={ () => this.onCheckQuarter(qt,yindex, qindex)}></input>
                 }
                 <span class="VS-Check-Checkmark"></span>
@@ -185,7 +193,7 @@ class DateHierarchy extends React.PureComponent {
                     <input className="VS-Checkbox" type="checkbox" checked={row.isChecked} onChange={ () => this.onCheckYear(row, index)}></input>
 
                 } 
-                    <span class={this.getYearCheckBoxClass()} >
+                    <span className={this.getYearCheckBoxClass()} >
                         
                     </span>
                 </label>

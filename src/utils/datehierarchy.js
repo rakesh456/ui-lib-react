@@ -1,5 +1,7 @@
-export const CHILDREN = [{
-  "quarter": "Q1",
+export const getChildren = function (year) {
+  
+  var quarterArray = [{
+  "quarter": "Q1-" + year,
   "isShowChild": false,
   "isChecked": false,
   "children": [{
@@ -96,6 +98,8 @@ export const CHILDREN = [{
   ]
  }
 ]
+return quarterArray;
+}
 export const getListOfYears = function(lowerLimit, upperLimit) {
 
     let years = [];
@@ -104,7 +108,7 @@ export const getListOfYears = function(lowerLimit, upperLimit) {
       "year": lowerLimit,
       "isShowChild": false,
       "isChecked": false,
-      "children": CHILDREN
+      "children": getChildren(lowerLimit)
      }
      years.push(year);
      lowerLimit++;
