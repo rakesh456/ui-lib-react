@@ -57,7 +57,7 @@ class ItemsList extends React.PureComponent {
     }
 
     renderSubitem(item, index) {
-        const { currentHierarchyItemIndex } = this.props;
+        // const { currentHierarchyItemIndex } = this.props;
         // if(currentHierarchyItemIndex === item.length){
         //     this.props.updateHierarchyIndex();
         // }

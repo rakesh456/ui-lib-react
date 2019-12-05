@@ -367,6 +367,34 @@ class TagSelector extends React.PureComponent {
         this.props.onSelect(item);
     }
     
+    removeListItem(item) {
+        const {allowHierarchy} = this.props.options;
+        let listItems = [...this.state.listItems];
+        if(allowHierarchy === true){
+            let key;
+            let results1 = [];
+            listItems.forEach((element, index) => {
+                for (key in element) {
+                    const _item = element[key];
+                    const _key = key;
+
+                    let items = _item.filter((obj) => {
+                        return (obj.value !== item.value && obj.key !== item.key);
+                    });
+                    results1.push({[_key]: items});
+                }
+            });
+            listItems = (results1 && results1.length > 0)? [...results1] : [...listItems];
+        } else {
+            listItems = listItems.filter((obj) => {
+                return (obj.value !== item.value && obj.key !== item.key);
+            });
+        }
+        this.setState({
+            listItems: [...listItems]
+        });
+    }
+    
     removeItem(item, index) {
         if(index >= 0){
             let selectedItems = [...this.state.selectedItems];
