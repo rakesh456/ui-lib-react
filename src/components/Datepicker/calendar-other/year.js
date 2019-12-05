@@ -15,6 +15,7 @@ import {
 } from "../../../utils/utils";
 import MonthsView from "./months-view";
 import YearsView from "./years-view";
+import * as CONSTANTS from '../../../utils/constants'
 
 class Year extends React.PureComponent {
     constructor(props) {
@@ -22,7 +23,7 @@ class Year extends React.PureComponent {
         const { options } = this.props;
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
-        var year = new Date().getFullYear();
+        let year = new Date().getFullYear();
         year = parseInt(year);
 
         this.state = { year: year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
@@ -56,7 +57,7 @@ class Year extends React.PureComponent {
         const { options } = this.props;
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
-        var { year } = this.state;
+        let { year } = this.state;
         year = parseInt(year);
 
         this.setState({ isDisabledNext: ((year + 1) >= upperYearLimit) ? true : false, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit });
@@ -90,12 +91,18 @@ class Year extends React.PureComponent {
         this.props.onYearSelect(quarter + '/' + this.state.year);
     }
 
+    onGoToSelectYearHandler = () => {
+        this.setState({
+            isYearSelected: false
+        });
+    }
+
     getQuarters = () => {
         return splitArray(QUARTERS_NAMES, 2);
     }
 
     getCalendarQuartersClass = () => {
-        return "VS-CalendarContainer VS-modal VS-shape-rounded-fill-for-quarter";
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_FOR_QUARTER}`;
     }
     
     checkYearIsEnabled = (year) => {
@@ -127,8 +134,8 @@ class Year extends React.PureComponent {
             <Fragment key={guid()}>
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && _q < _l) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && _q > _u) || (!isEnabled)) ?
-                        <span className={`VS-MonthQuater VS-Disabled`}>{quater}</span>:
-                        <span className={`${activeClass} VS-MonthQuater`} onClick={() => this.onSelectQuarterHandler(quater)}>{quater}</span>
+                        <span className={`${CONSTANTS.CLASSES.VS_MONTH_QUATER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{quater}</span>:
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER}`} onClick={() => this.onSelectQuarterHandler(quater)}>{quater}</span>
                 }
             </Fragment>
         );
@@ -140,8 +147,26 @@ class Year extends React.PureComponent {
         });
 
         return (
-            <div className="VS-DateRowFlex" key={guid()}>{rows}</div>
+            <div className={`${CONSTANTS.CLASSES.VS_DATE_ROW_FLEX}`} key={guid()}>{rows}</div>
         )
+    }
+
+    goToNextYearHandler = () => {
+        const { year } = this.state;
+        const currentDateYear = year + 1;
+        
+        this.setState({
+            year: parseInt(currentDateYear)
+        });
+    }
+    
+    goToPrevYearHandler = () => {
+        const { year } = this.state;
+        const currentDateYear = year - 1;
+        
+        this.setState({
+            year: parseInt(currentDateYear)
+        });
     }
 
     render() {
@@ -161,7 +186,7 @@ class Year extends React.PureComponent {
                                     {this.getQuarters().map((row, index) => this.renderQuarterRow(row, index))}
                                 </Fragment>
                             </div> :
-                            <MonthsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectMonth={this.onSelectMonthHandler}></MonthsView>
+                            <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={year} style={this.props.style} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} onSelectMonth={this.onSelectMonthHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView>
                 }
             </div>
         );

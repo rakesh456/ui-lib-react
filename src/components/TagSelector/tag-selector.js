@@ -13,13 +13,12 @@ import {
     isValidJsonFormat
 } from "../../utils/tagselectorutils";
 import { CountryService } from '../../services/CountryService';
-import { exists } from "fs";
 
 class TagSelector extends React.PureComponent {
     constructor(props) {
         super(props);
         const {maxItemCounter} = this.props.options;
-        this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: []};
+        this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [], currentItemIndex: 0, currentHierarchyItemIndex: 0, hierarchyParentKey: '', hierarchySelectedItem: null, hierarchyParentLength: 0};
         this.countryservice = new CountryService();
     }
 
@@ -46,15 +45,71 @@ class TagSelector extends React.PureComponent {
             });
         }
     }
+    
+    setSelectedItems(selectedItems){
+        let currentSelectedItems = [...this.state.selectedItems];
+        if(isValidJsonFormat(false, selectedItems)){
+            selectedItems.forEach((item) => {
+                this.checkItemExistInList(item, (isExists) => {
+                    if(isExists){
+                        let results = currentSelectedItems.filter((obj) => {
+                            return obj.value === item.value
+                        });
+                        
+                        if(!results || results.length <= 0){
+                            currentSelectedItems.push(item);
+                        }
+                    }
+                })           
+            });
+            this.setState({
+                selectedItems: currentSelectedItems
+            });
+        }
+    }
+
+    checkItemExistInList = (item, callback) => {
+        const { allowHierarchy } = this.props.options;
+        const { listItems } = this.state;
+        if(allowHierarchy){
+            // Function to check object contains in list
+            let key;
+            let flag = false;
+            listItems.forEach((element, index) => {
+                for (key in element) {
+                    const _item = element[key];
+                    if(flag === false){
+                        let results = _item.filter((obj) => {
+                            return (obj.value === item.value && obj.key === item.key)
+                        });
+                        flag = (results && results.length > 0);
+                    }
+                }
+            });
+            callback(flag);
+        } else {
+            let results = listItems.filter((obj) => {
+                return (obj.value === item.value && obj.key === item.key)
+            });
+            callback((results && results.length > 0));
+        }
+    }
+    
+    refresh(){
+        this.setState({
+            selectedItems: []
+        });
+    }
 
     addItemAndUpdateList = (obj) => {
+        const {allowHierarchy} = this.props.options;
         const {listItems, newlyAddedElements} = this.state;
         let _items = [...listItems];
         let _newItems = [...newlyAddedElements];
         _items.push(obj);
         _newItems.push(obj);
         this.setState({
-            listItems: [..._items],
+            listItems: sortListingByType(allowHierarchy, [..._items]),
             newlyAddedElements: [..._newItems]
         });
     }
@@ -98,7 +153,7 @@ class TagSelector extends React.PureComponent {
         });
 
         this.props.onFocus();
-        this.updateFilterItems('');
+        this.updateFilterItems(this.inputEl.value);
     }
 
     onBlur = () => {
@@ -106,10 +161,110 @@ class TagSelector extends React.PureComponent {
         this.props.onBlur();
     }
 
+    onKeyDownHandler = (evt) => {
+        if(evt){
+            evt = (evt) ? evt : window.event;
+            const charCode = (evt.which) ? evt.which : evt.keyCode;
+            const _val = this.state.currentItemIndex;
+            const {allowHierarchy} = this.props.options;
+            
+            let _counter = (charCode === 38 && _val >= 0)? -1 : (charCode === 40 && _val < this.state.filteredlistItems.length)? 1 : 0;
+
+            let _indexChanged = false;
+            let _itemIndex = this.state.currentItemIndex;
+            let _hierarchyIndex = this.state.currentHierarchyItemIndex;
+            let _hierarchyParentKey = this.state.hierarchyParentKey;
+            let _hierarchyParentLength = this.state.hierarchyParentLength;
+            let _list = this.state.filteredlistItems[_hierarchyIndex];
+
+            if(_list && allowHierarchy === true && _counter !== 0){
+                let _len = 0;
+                let key;
+                for (key in _list) {
+                    _len = _list[key].length;
+                        
+                    if((_itemIndex + 1) >= _len && _counter === 1){
+                        _itemIndex = ((_hierarchyIndex + 1) === this.state.filteredlistItems.length)? _itemIndex : 0;
+                        _indexChanged = true;
+                        _hierarchyParentLength = _len;
+                        
+                        let _list2 = this.state.filteredlistItems[_hierarchyIndex + 1];
+                        let key2;
+                        for (key2 in _list2) {
+                            _hierarchyParentKey = key2;
+                            _hierarchyIndex = this.state.currentHierarchyItemIndex + 1;
+                        }
+                    } else if((_itemIndex) <= 0 && _counter === -1){
+                        _indexChanged = true;
+                        
+                        let _list2 = this.state.filteredlistItems[_hierarchyIndex - 1];
+                        let key2;
+                        for (key2 in _list2) {
+                            _hierarchyParentKey = key2;
+                            _itemIndex = _list2[key2].length - 1;
+                            _hierarchyIndex = this.state.currentHierarchyItemIndex - 1;
+                        }
+                    }
+                }
+            }
+
+            if(_counter !== 0){
+                this.setState({
+                    currentItemIndex: (_indexChanged)? _itemIndex : (this.state.currentItemIndex + (_counter)),
+                    currentHierarchyItemIndex: _hierarchyIndex,
+                    hierarchyParentKey: _hierarchyParentKey,
+                    hierarchyParentLength: _hierarchyParentLength
+                });
+            }
+
+            if(charCode === 13){
+                this.addItemOnEnter();
+            }
+        }
+    }
+
+    updateHierarchyIndexHandler = () => {
+        this.setState({
+            currentHierarchyItemIndex: (this.state.currentHierarchyItemIndex + 1)
+        });
+    }
+
+    addItemOnEnter = () => {
+        const {currentHierarchyItemIndex, currentItemIndex} = this.state;
+        const {allowHierarchy} = this.props.options;
+        if(currentItemIndex >= 0){
+
+            let filteredlistItems = [...this.state.filteredlistItems];
+            let item = filteredlistItems[currentItemIndex];
+            
+            if(allowHierarchy === true){
+                let _list = filteredlistItems[currentHierarchyItemIndex];  
+                let key;
+                for (key in _list) {
+                    item = _list[key][currentItemIndex];
+                }
+            }
+
+            if(item){
+                if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
+                    let selectedItems = [...this.state.selectedItems];
+                    selectedItems.push(item);
+                    this.setState({ selectedItems: selectedItems });
+                } else {
+                    let selectedItems = [...this.state.selectedItems];
+                    selectedItems = selectedItems.filter((obj) => {
+                        return obj.key !== item.key;
+                    });
+                    this.setState({ selectedItems: selectedItems });
+                }
+                this.props.onSelect(item);
+            }
+        }
+    }
+
     filterItemsList = (e) => {
         setTimeout(() => {
             let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
-            console.log('_val ', _val)
             this.updateFilterItems(_val);
             if(_val && this.state.filteredlistItems.length <= 0){
                 this.props.onNotFound();
@@ -147,8 +302,17 @@ class TagSelector extends React.PureComponent {
             results = (_val)? this.state.listItems.filter((item, index) => (this.checkStringSearchInListByType(item, _val))) : [...this.state.listItems];
         }
         
-        console.log(' results.length ', results.length)
-        this.setState({ filteredlistItems: results, noDataFound: (results.length <= 0) });
+        const sortedList = sortListingByType(allowHierarchy, results);
+
+        let _key = '';
+        let key2;
+        let _len = 0;
+        for (key2 in sortedList[0]) {
+            _len = sortedList[0][key2].length;
+            _key = key2;
+        }
+
+        this.setState({ filteredlistItems: [...sortedList], noDataFound: (results.length <= 0), currentItemIndex: -1, currentHierarchyItemIndex: 0, hierarchyParentKey: _key, hierarchyParentLength: _len });
     }
 
     checkStringSearchInListByType = (item, _val) => {
@@ -161,7 +325,7 @@ class TagSelector extends React.PureComponent {
     }
     
     closeTagSelector = (e) => {
-        var shouldListOpen = true;
+        let shouldListOpen = true;
         
         if (((e.target && e.target.classList && !e.target.classList.contains("VS-TagSelector-Input") && this.state.shouldListOpen === true)) && (e.target.nodeName !== 'path')) {
             if(e.target.classList.contains("VS-App-header") || e.target.classList.length === 0){
@@ -181,6 +345,12 @@ class TagSelector extends React.PureComponent {
         if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
             let selectedItems = [...this.state.selectedItems];
             selectedItems.push(item);
+            this.setState({ selectedItems: selectedItems });
+        } else {
+            let selectedItems = [...this.state.selectedItems];
+            selectedItems = selectedItems.filter((obj) => {
+                return obj.key !== item.key;
+            });
             this.setState({ selectedItems: selectedItems });
         }
         
@@ -212,14 +382,15 @@ class TagSelector extends React.PureComponent {
     }
     
     renderRemoveIcon(item, index){
-        const { readOnly } = this.props.options;
+        const { canRemoveAll, readOnly } = this.props.options;
         return (
-            (readOnly === false)? <span className="VS-AutoCompleteItem-Icon pi pi-fw pi-times" onClick={(e) => this.removeItem(item, index)}>X</span> : <span className="VS-AutoCompleteItem-Icon VS-Disabled pi pi-fw pi-times">X</span>
+            (canRemoveAll === true && readOnly === false)? <span className="VS-AutoCompleteItem-Icon pi pi-fw pi-times" onClick={(e) => this.removeItem(item, index)}>X</span> : <span className="VS-AutoCompleteItem-Icon VS-Disabled pi pi-fw pi-times">X</span>
         )
     }
 
     renderSelectedItems() {
         const { selectedItems, maxItemCounter } = this.state;
+        const { readOnly } = this.props.options;
         return (
             <ul>
                 {
@@ -234,9 +405,11 @@ class TagSelector extends React.PureComponent {
                     <Input ref={(el) => this.inputEl = ReactDOM.findDOMNode(el)} type="text"
                         className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
                         placeholder={this.getPlaceholder()}
+                        onKeyDown={this.onKeyDownHandler}
                         onClick={this.onFocus}
                         onBlur={this.onBlur}
                         onChange={this.filterItemsList}
+                        readOnly={readOnly}
                     />
                 </li>
             </ul>
@@ -244,25 +417,26 @@ class TagSelector extends React.PureComponent {
     }
 
     render() {
-        const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems } = this.state;
+        const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems, currentItemIndex, currentHierarchyItemIndex, hierarchySelectedItem } = this.state;
         const { options } = this.props;
+        const { readOnly } = this.props.options;
         const _uuid = guid();
         let _selectedInput = this.renderSelectedItems();
-
+        const readOnlyClass = (readOnly === true)? 'VS-ReadOnly' : '';
         return (
             <div className="VS-App">
                 <div id={`${_uuid}`}></div>
                 <header className="VS-App-header">
                     <div>
                         <div ref={(el) => this.el = el}>
-                            <div className={`VS-Tag-Input-Border`}>
+                            <div className={`VS-Tag-Input-Border ${readOnlyClass}`}>
                                 {_selectedInput}
                             </div>
                         </div>
                         {
-                            (shouldListOpen) ?
+                            (shouldListOpen && readOnly !== true) ?
                                 <TagSelectorPortal parent="#parent" position="right" arrow="center" uuid={_uuid}>
-                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler}> </ItemsList>
+                                    <ItemsList style={this.state.style} inputEl={this.inputEl} selectedItems={selectedItems} listItems={listItems} filteredlistItems={filteredlistItems} options={options} noDataFound={noDataFound} onSelect={this.onSelectHandler} addNewItem={this.onAddNewItemHandler} currentItemIndex={currentItemIndex} currentHierarchyItemIndex={currentHierarchyItemIndex} updateHierarchyIndex={this.updateHierarchyIndexHandler} hierarchySelectedItem={hierarchySelectedItem}> </ItemsList>
                                 </TagSelectorPortal>
                                 : ''
                         }

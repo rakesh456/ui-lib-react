@@ -4,15 +4,18 @@ import calendar, {
     isSameMonth,
     checkDateInBetween,
     getUpperLimitFromOptions,
-    getLowerLimitFromOptions
+    getLowerLimitFromOptions,
+    checkFullMonthOrYearDisabled
 } from "../../../utils/calendar";
 
 import {
     splitArray,
     convertYYYYMMDD,
     guid,
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    isValidDate
 } from "../../../utils/utils";
+import * as CONSTANTS from '../../../utils/constants'
 
 class Days extends React.PureComponent {
     constructor(props) {
@@ -20,7 +23,7 @@ class Days extends React.PureComponent {
         const options = this.props.options;
         const selectedDate = (this.props.selectedDate)? new Date(convertYYYYMMDD(this.props.selectedDate, options)) : new Date();
         this.state = { current: selectedDate, lowerLimit: new Date()};
-        var _lowerdate = getLowerLimitFromOptions(options);
+        let _lowerdate = getLowerLimitFromOptions(options);
     
         if(_lowerdate){
             _lowerdate = new Date(_lowerdate);
@@ -52,8 +55,8 @@ class Days extends React.PureComponent {
     getCalendarDates = () => {
         const { current } = this.state;
         const { month, year } = this.props;
-        const calendarMonth = month || +current.getMonth() + 1;
-        const calendarYear = year || current.getFullYear();
+        const calendarMonth = month || (!isValidDate(current))? month : +current.getMonth() + 1;
+        const calendarYear = year || (!isValidDate(current))? year : current.getFullYear();
         const _array = calendar(calendarMonth, calendarYear);
         
         return splitArray(_array, 7);
@@ -68,6 +71,12 @@ class Days extends React.PureComponent {
 
     checkDisabledList = (isEnabled, _date) => {
         const disabledList = (this.props.options)? this.props.options.disabledList : [];
+
+        // Check full year or month is disabled
+        if(!checkFullMonthOrYearDisabled(_date, disabledList)){
+            return false;
+        }
+
         return (disabledList && disabledList.length > 0 && _date)? ((disabledList.indexOf(_date) !== -1)? false : isEnabled) : isEnabled;
     }
     
@@ -88,7 +97,7 @@ class Days extends React.PureComponent {
     }
 
     getClassName = (index) => {
-        return (index % 6 === 0) ? 'VS-Day VS-Medium-UPPER-Case VS-DayStart' : 'VS-Day VS-Medium-UPPER-Case';
+        return (index % 6 === 0) ? `${CONSTANTS.CLASSES.VS_DAY} ${CONSTANTS.CLASSES.VS_MED_UPPER_CASE} ${CONSTANTS.CLASSES.VS_DAY_START}` : `${CONSTANTS.CLASSES.VS_DAY} ${CONSTANTS.CLASSES.VS_MED_UPPER_CASE}`;
     }
 
     renderCalendarDate = (date, index) => {
@@ -106,7 +115,7 @@ class Days extends React.PureComponent {
         const upperLimit = getUpperLimitFromOptions(options);
         let isEnabled = (isToday || checkDateInBetween(_date, this.state.lowerLimit, upperLimit));
         isEnabled = this.checkDisabledList(isEnabled, date.join('-'));
-
+        
         const dayClassName = (isCurrent) ? 'VS-DaySelected' : ((isToday) ? 'VS-DayCurrent' : 'VS-NormalDay');
         const padClassName = (_date.getDate() <= 9)? 'VS-PadExtra' : '';
         const showIndicator = this.getShowIndicatorColor(date.join('-'));
@@ -118,14 +127,14 @@ class Days extends React.PureComponent {
                         <div {...props} className={this.getClassName(props.index)} onClick={() => this.selectDate(_date)}>
                             {
                                 (inMonth) ?
-                                    <span className={`VS-CalDay ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className="VS-indicator"></p> : '' }</span>
+                                    <span className={`${CONSTANTS.CLASSES.VS_CAL_DAY} ${dayClassName} ${padClassName}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className={`${CONSTANTS.CLASSES.VS_INDIVATOR}`}></p> : '' }</span>
                                     :
-                                    <span className={`VS-NextPrevDay ${padClassName}`}>{_date.getDate()}</span>
+                                    <span className={`${CONSTANTS.CLASSES.VS_NEXT_PREV_DAY} ${padClassName}`}>{_date.getDate()}</span>
                             }    
                         </div> 
                         :
                         <div {...props} className={this.getClassName(props.index)}>
-                            <span className='VS-DisabledDay'>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className="VS-indicator"></p> : '' }</span>
+                            <span className={`${CONSTANTS.CLASSES.VS_DISABLED_DAY}`}>{_date.getDate()} { (showIndicator !== '')?  <p style={{'backgroundColor': showIndicator}} className={`${CONSTANTS.CLASSES.VS_INDIVATOR}`}></p> : '' }</span>
                         </div>
                 } 
             </Fragment>
@@ -138,13 +147,13 @@ class Days extends React.PureComponent {
         });
 
         return (
-            <div className="VS-DateRow" key={guid()}>{rows}</div>
+            <div className={`${CONSTANTS.CLASSES.VS_DATE_ROW}`} key={guid()}>{rows}</div>
         )
     }
 
     render() {
         return (
-            <div className="VS-CalendarDay">
+            <div className={`${CONSTANTS.CLASSES.VS_CAL_DAY}`}>
                 <Fragment>
                     {this.getCalendarDates().map((row, index) => this.renderCalendarRow(row, index))}
                 </Fragment>

@@ -373,6 +373,7 @@
     //         ]);
     //     }
 
+<<<<<<< HEAD
     //     function displayValue(id, divId) {
     //         let element = document.getElementById(id);
     //         let dateValue = element.getValue();
@@ -381,6 +382,26 @@
     //             element2.innerHTML = 'From displayValue function : ' + dateValue;
     //         }
     //     }
+=======
+        function reloadDatepicker(id) {
+            let element = document.getElementById(id);
+            let options = JSON.parse(element.getAttribute('data-options'));
+            options.isDisabled = true;
+            element.setAttribute('data-options', JSON.stringify(options));
+            element.reload();
+        }
+
+        function displayValue(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getValue();
+            let element2 = document.getElementById(divId);
+
+            if(element2){
+                element2.innerHTML = 'From displayValue function : ' + dateValue;
+            }
+
+        }
+>>>>>>> girish
 
     //     function submitForm(){
     //         var form = document.forms["myform"];
@@ -408,6 +429,7 @@
     //         let selectedCounter = tagElement1.refresh();
     //     }
         
+<<<<<<< HEAD
     //     function appendNewElementById(id){
     //         let tagElement1 = document.getElementById(id);
     //         let selectedCounter = tagElement1.appendNewElement({"key": "Test", "value": "AB"});
@@ -417,6 +439,20 @@
     //         let tagElement1 = document.getElementById(id);
     //         let selectedCounter = tagElement1.setSelectedItems([{"key": "Albania", "value": "AL"}]);
     //     }
+=======
+        function appendNewElementById(id){
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.appendNewElement({"key": "Test", "value": "BPO"});
+        }
+        
+        function setSelectedItems(id){
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.setSelectedItems([{"key": "Albania", "value": "AL"}]);
+            
+            let tagElement2 = document.getElementById('tagselector2');
+            let selectedCounter1 = tagElement2.setSelectedItems([{"key": "Adoni", "value": "Adoni"}]);
+        }
+>>>>>>> girish
         
     //     function getNewlyAddedById(id){
     //         let tagElement1 = document.getElementById(id);
@@ -457,6 +493,7 @@
     
 </head>
 <body>
+<<<<<<< HEAD
 
 
     <h2>Date Hierarchy Component using React Component</h2>
@@ -465,6 +502,9 @@
 
 <!-- 
 
+=======
+    <!-- <date-hierarchy></date-hierarchy> -->
+>>>>>>> girish
     <h2>Tag selector Sample using React Component</h2>
     <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button>
     <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button>
@@ -476,22 +516,29 @@
     <div id="SelectedCounter"></div>
     <div id="NewlyAddedElements"></div>
     <br>
-    <p>{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": false, "allowNewValue": true, "allowHierarchy": false}</p>
+    <p>{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "allowHierarchy": false}</p>
     <label>Select Country : </label>
-    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": false, "allowNewValue": true, "allowHierarchy": false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
+    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "allowHierarchy": false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
     <p>{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": false, "allowHierarchy": true}</p>
     <label>Select State : </label>
-    <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": false, "allowHierarchy": true}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
+    <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": true, "allowHierarchy": true, "readOnly":false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
 
+<<<<<<< HEAD
     <h2>Datepicker Sample using React Component</h2> -->
        <!--Sample Usage: Options Set by JS -->
     <!--
      <p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2007", "upperLimit": "18/11/2039", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+=======
+    <h2>Datepicker Sample using React Component</h2>
+    <!-- Sample Usage: Options Set by JS-->
+    
+    <p>{"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2007", "upperLimit": "18/11/2018", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p>
+>>>>>>> girish
 
     <div>
-        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2007", "upperLimit": "18/11/2039", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepicker1', 'display1')" onInput="onInputHandler()"></date-picker>
+        <date-picker name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2007", "upperLimit": "18/11/2028", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker>
     </div>
     
     <br>
@@ -499,6 +546,7 @@
     <div id="displayLower1"></div>
     <div id="displayUpper1"></div>
     <button onclick="displayValue('datepicker1', 'display1')">Display</button>
+    <button onclick="reloadDatepicker('datepicker1')">Reload</button>
     <button onclick="setValue('datepicker1', '23/09/2019');">Set Value to 23/09/2019</button>
     <button onclick="setValue('datepicker1', '01/10/2019');">Set Value to 01/12/2019</button>
     <button onclick="refresh('datepicker1');">Refresh</button>
@@ -506,9 +554,9 @@
     <button onclick="getEndDate('datepicker1', 'displayUpper1');">Get End Date</button>
     <br>
     <br>
-    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2010", "upperLimit": "11/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
+    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2010", "upperLimit": "07/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
 
-    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2010", "upperLimit": "11/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
+    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "defaultDate": "11/25/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2010", "upperLimit": "07/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="displayNew"></div>
@@ -522,8 +570,8 @@
     <br>
     
     <p>Display format : MM/YYYY</p>
-    <p>{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "12/2034", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024"]}</p>
-    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "12/2034", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024"]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024"]}</p>
+    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display2"></div>
@@ -537,8 +585,8 @@
     <br> 
 
     <p>Display format : QQ/YYYY</p>
-    <p>{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p>
-    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}' onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p>
+    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}' onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display3"></div>
@@ -552,8 +600,8 @@
     <br>
 
     <p>Display format : YYYY</p>
-    <p>{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p>
-    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}' onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p>
+    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}' onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display4"></div>

@@ -1,18 +1,18 @@
-export const DEFAULT_OPTIONS = {'placeholder': 'Search', 'listItems': [], 'allowNewValue': false, 'maxItemCounter': 0, 'searchWithHelper': false, 'readOnly': false, 'allowHierarchy': false};
+export const DEFAULT_OPTIONS = { 'placeholder': 'Search', 'listItems': [], 'allowNewValue': false, 'maxItemCounter': 0, 'searchWithHelper': false, 'canRemoveAll': true, 'readOnly': false, 'allowHierarchy': false };
 
 // Function to reset options with default options
 export const resetTagSelectorOptions = (options) => {
-    return {...DEFAULT_OPTIONS, ...options};
+    return { ...DEFAULT_OPTIONS, ...options };
 }
 
 // Function to reset options with default options
 export const isValidJsonFormat = (allowHierarchy, json) => {
     let isValidFormat = true;
     let key;
-    if(!json || json.length <= 0){
+    if (!json || json.length <= 0) {
         isValidFormat = false;
     } else {
-        if(allowHierarchy === true){
+        if (allowHierarchy === true) {
             json.forEach((item) => {
                 for (key in item) {
                     isValidFormat = (typeof key === 'string' && typeof item[key] === 'object')
@@ -29,21 +29,52 @@ export const isValidJsonFormat = (allowHierarchy, json) => {
     return isValidFormat;
 }
 
+const sortBy = fn => (a, b) => {
+    const fa = fn(a)
+    const fb = fn(b)
+    return -(fa < fb) || +(fa > fb)
+}
+
+const getField = o => o.value
+
+function objectFindByKey(array, key) {
+    let returnArray = [];
+    array.forEach((item) => {
+        if(item[key] && item[key] !== 'undefined'){
+            returnArray = [...item[key]];
+        }
+    });
+    return returnArray;
+}
+
+
 // Function to reset options with default options
 export const sortListingByType = (allowHierarchy, json) => {
-    if(!json || json.length <= 0){
+    let data = [];
+    if (!json || json.length <= 0) {
         return [];
     } else {
-        if(allowHierarchy === true){
-            // json.sort(function (a, b) {
-            //     return a.value - b.value;
-            // });
+        if (allowHierarchy === true) {
+            let _keys = [];
+            
+            json.forEach((item) => {
+                let prop;
+                for(prop in item) {
+                    _keys.push(prop);
+                }
+            });
+            _keys.sort();
+            _keys.forEach((key) => {
+                let result_obj = objectFindByKey(json, key);
+                const sortByField = sortBy(getField)
+                result_obj.sort(sortByField);
+                data.push({[key]: result_obj});
+            });
         } else {
-            // let data = json.sort(function (a, b) {
-            //     return b.value - a.value;
-            // });
-            // console.log(' data ', JSON.stringify(data));
+            const sortByField = sortBy(getField)
+            json.sort(sortByField)
+            data = [...json];
         }
     }
-    return json;
+    return data;
 }

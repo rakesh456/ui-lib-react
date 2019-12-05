@@ -1,5 +1,4 @@
 import React from "react";
-import { Input } from 'reactstrap';
 import CalendarDate from "./calendar-date/index";
 import Year from "./calendar-other/year";
 import MonthsView from "./calendar-other/months-view";
@@ -34,7 +33,9 @@ import {
     isLeft,
     isRight,
     getYYYYForLowerLimit,
-    getYYYYForUpperLimit
+    getYYYYForUpperLimit,
+    currentFormatToYYYYMMDDNew,
+    dateIsInDisabledList
 } from "../../utils/calendar";
 import {
     getDateByFormat,
@@ -57,12 +58,31 @@ class DatePicker extends React.PureComponent {
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
 
-        const isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === '') || (isYearFormat(displayFormat) && _selectedYear === ''));
+        let isDisabled = ((datePickerOptions && datePickerOptions.isDisabled === true) || (isCalendarFormat(displayFormat) && _date === null) || (isYearFormat(displayFormat) && _selectedYear === null));
 
-        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled};
-        this.handleChildUnmount = this.handleChildUnmount.bind(this);
+        let _lowerDate = (datePickerOptions)? getProperFormattedDate(datePickerOptions.lowerLimit, datePickerOptions) : "";
+        const isDisabledFull = (datePickerOptions)? (datePickerOptions.lowerLimit === datePickerOptions.upperLimit && dateIsInDisabledList(_lowerDate, datePickerOptions)) : false;
+        isDisabled = (isDisabledFull === true)? true : isDisabled;
+
+        this.state = { selectedDate: (typeof _date === 'string')? _date : getDateByFormat(_date, displayFormat), shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: _selectedYear, newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: isDisabled, isDisabledFull: isDisabledFull};
     }
 
+    // Component lifecycle methods started
+    componentDidMount() {
+        document.addEventListener('click', this.closeCalendar);
+        const dimensions = (this.el)? this.el.getBoundingClientRect() : {};
+        const style = {};
+        style.left = '0px';
+        style.right = dimensions.right;
+        style.top = '100%';
+        style.zIndex = '1';
+        this.setState({ style: style });
+
+        window.addEventListener("resize", this.updateDimensions);
+    }
+    // Component lifecycle methods end
+
+    // Component explicit methods started 
     setDateValue(dt, isInvalidDate, isInvalidRangeDate) {
         const options = this.props.options;
         if(isCalendarFormat(options.displayFormat)){
@@ -109,67 +129,85 @@ class DatePicker extends React.PureComponent {
         }
     }
     
-    handleChildUnmount() {}
-
     getDefaultDate(){
         const options = (this.props.options)? this.props.options : {};
-        var _lowerDate = getProperFormattedDate(options.lowerLimit, options);
-        var _upperLimit = getProperFormattedDate(options.upperLimit, options);
-        var { displayFormat } = options;
-        var _date = (_lowerDate >= new Date())? _lowerDate : new Date();
-        _date = (_upperLimit <= new Date())? _lowerDate : _date;
-        
-        if(!isValidDate(_lowerDate) && isValidDate(_upperLimit)){
-            _date = (_upperLimit <= new Date())? _upperLimit : _date;
-        } else if(!isValidDate(_upperLimit) && isValidDate(_lowerDate)){
-            _date = (_lowerDate >= new Date())? _lowerDate : new Date();
-        }
-        
-        var _dateIn = checkDateInBetween(new Date(), isValidDate(_lowerDate)? _lowerDate : null, isValidDate(_upperLimit)? _upperLimit : null);
-        
-        let updatedDate = '';
-        if(_dateIn){
-            updatedDate = (isValidOutsideRangeDate(_date, options))? _date : getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+        let {defaultDate} = options;
+        if(defaultDate === ""){
+            return "";
+        } else if(typeof(defaultDate) !== "undefined"){
+            let _isValid = false;
+
+            let _date = currentFormatToYYYYMMDDNew(defaultDate, options);
+            let _valid = (isValidDate(_date));
+                _isValid = (_valid)? isValidOutsideRangeDate(_date, options) : _valid; 
+            return (_isValid)? defaultDate : '';
         } else {
-            var _dt = getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
-            updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
+            let _lowerDate = getProperFormattedDate(options.lowerLimit, options);
+            let _upperLimit = getProperFormattedDate(options.upperLimit, options);
+            let { displayFormat } = options;
+            let _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+            _date = (_upperLimit <= new Date())? _lowerDate : _date;
+            
+            if(!isValidDate(_lowerDate) && isValidDate(_upperLimit)){
+                _date = (_upperLimit <= new Date())? _upperLimit : _date;
+            } else if(!isValidDate(_upperLimit) && isValidDate(_lowerDate)){
+                _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+            }
+            
+            let _dateIn = checkDateInBetween(new Date(), isValidDate(_lowerDate)? _lowerDate : null, isValidDate(_upperLimit)? _upperLimit : null);
+            
+            let updatedDate = null;
+            if(_dateIn){
+                updatedDate = (isValidOutsideRangeDate(_date, options))? _date : getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+            } else {
+                let _dt = getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+                updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
+            }
+            
+            let _valid = isValidOutsideRangeDate(updatedDate, options);
+            return (_valid)? updatedDate : null;
         }
-        
-        var _valid = isValidOutsideRangeDate(updatedDate, options);
-        return (_valid)? updatedDate : '';
+            
     }
     
     getDefaultYear(){
         const options = (this.props.options)? this.props.options : {};
-        var { displayFormat, lowerLimit, upperLimit, disabledList } = options;
-        let _val = getDefaultQQMMYYYYDateByFormat(options);
-        const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
-        
-        var _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
-
-        let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
-
-        let _returnValue = ((_valid)? updatedValue : _updatedUpperLimit).toString();
-        let isInDisabledList = (disabledList && disabledList.indexOf(_returnValue) > -1);
-
-        return (isInDisabledList)? '' : _returnValue;
+        let {defaultDate, displayFormat} = options;
+        if(defaultDate === ""){
+            return "";
+        } else if(typeof(defaultDate) !== "undefined"){
+            let _isValid = false;
+            
+            if(displayFormat === 'QQ/YYYY'){
+                let _valid = (isValidQQYYYYValue(defaultDate));
+                _isValid = (_valid)? isValidOutsideRangeDateQQYear(defaultDate, options) : _valid; 
+            } else if(displayFormat === 'MM/YYYY'){
+                let _valid = (isValidMMYYYYValue(defaultDate));
+                _isValid = (_valid)? isValidOutsideRangeDateMonthYear(defaultDate, options) : _valid;  
+            } else if(displayFormat === 'YYYY'){
+                let _valid = (isValidYYYYValue(defaultDate));
+                _isValid = (_valid)? isValidOutsideRangeDateYear(defaultDate, options): _valid;  
+            }
+            return (_isValid)? defaultDate : '';
+        } else {
+            const options = (this.props.options)? this.props.options : {};
+            let { displayFormat, lowerLimit, upperLimit, disabledList } = options;
+            let _val = getDefaultQQMMYYYYDateByFormat(options);
+            const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
+            
+            let _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
+    
+            let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
+    
+            let _returnValue = ((_valid)? updatedValue : _updatedUpperLimit).toString();
+            let isInDisabledList = (disabledList && disabledList.indexOf(_returnValue) > -1);
+    
+            return (isInDisabledList)? null : _returnValue;
+        }
     }
+    // Component explicit methods end
 
-    updateDimensions() {}
-
-    componentDidMount() {
-        document.addEventListener('click', this.closeCalendar);
-        const dimensions = (this.el)? this.el.getBoundingClientRect() : {};
-        const style = {};
-        style.left = '0px';
-        style.right = dimensions.right;
-        style.top = '100%';
-        style.zIndex = '1';
-        this.setState({ style: style });
-
-        window.addEventListener("resize", this.updateDimensions);
-    }
-
+    // Component method handler called from child started
     onSelectHandler = date => {
         const { displayFormat, showButtons } = this.props.options;
         const newDate = getDateByFormat(date, displayFormat);
@@ -204,6 +242,103 @@ class DatePicker extends React.PureComponent {
         this.setState({ showMonthSelection: true });
     }
 
+    
+    onSelectMonthHandler = (month) => {
+        const { options } = this.props;
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+        _date.setMonth(parseInt(getMonthIndex(month)) - 1);
+        const newDate = getDateByFormat(_date, options.displayFormat);
+
+        this.setState({
+            isMonthSelected: true,
+            isYearSelected: false,
+            showYearSelection: false,
+            showMonthSelection: false,
+            selectedDate: newDate, 
+            shouldCalendarOpen: true
+        });
+    }
+    
+    onSelectYearHandler = (year) => {
+        const { options } = this.props;
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        _date.setFullYear(parseInt(year));
+        const newDate = getDateByFormat(_date, options.displayFormat);
+
+        this.setState({
+            isMonthSelected: false,
+            isYearSelected: true,
+            showYearSelection: false,
+            showMonthSelection: true,
+            selectedDate: newDate, 
+            shouldCalendarOpen: true
+        });
+    }
+    
+    onGoToSelectYearHandler = () => {
+        this.setState({
+            showMonthSelection: false,
+            showYearSelection: true
+        });
+    }
+
+    goToNextYearHandler = () => {
+        const { selectedDate } = this.state;
+        const { options } = this.props;
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+
+        let currentDateYear = getSelectedYearFromDate(selectedDate, options);
+        currentDateYear = (Number.isNaN(currentDateYear))? _date.getFullYear() : currentDateYear;
+        _date.setFullYear(parseInt(currentDateYear) + 1);
+        const newDate = getDateByFormat(_date, options.displayFormat);
+        this.setState({
+            selectedDate: newDate
+        });
+    }
+    
+    goToPrevYearHandler = () => {
+        const { selectedDate } = this.state;
+        const { options } = this.props;
+        const _date = (this.state.selectedDate)? new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options)) : new Date();
+        // const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
+        let currentDateYear = getSelectedYearFromDate(selectedDate, options);
+        currentDateYear = (Number.isNaN(currentDateYear))? _date.getFullYear() : currentDateYear;
+        _date.setFullYear(parseInt(currentDateYear) - 1);
+        const newDate = getDateByFormat(_date, options.displayFormat);
+        this.setState({
+            selectedDate: newDate
+        });
+    }
+
+    closeCalendar = (e) => {
+        const { displayFormat } = this.props.options;
+        const { isMonthSelected, isYearSelected } = this.state;
+        
+        let shouldCalendarOpen = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat));
+
+        if(isValidMMYYYYValue(this.state.newSelectedYear) || (e.target.classList.length <= 0)){
+            shouldCalendarOpen = false;
+        }
+
+        shouldCalendarOpen = (isMonthSelected === true || isYearSelected === true)? true : shouldCalendarOpen;
+
+        if (((e.target && e.target.classList && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_CALENDAR_INPUT}`) && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_DAY}`) && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_CAL_DAY}`) && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_NEXT_PREV_DAY}`) && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_ICON}`) && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH}`) && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path') && !e.target.classList.contains(`${CONSTANTS.CLASSES.VS_MONTH_NAME}`)) {
+            if(e.target.classList.contains(`${CONSTANTS.CLASSES.VS_APP_HEADER}`)){
+                this.setState({
+                    shouldCalendarOpen: false
+                });
+            } else {
+                this.setState({
+                    shouldCalendarOpen: shouldCalendarOpen
+                });
+            }
+        }
+    }
+    // Component method handler called from child end
+
+    // Component events handler started
     onFocus = () => {
         const _selectedDate = (isValidFormattedDate(this.state.selectedDate, this.props.options))? this.state.selectedDate : "";
         const { displayFormat } = this.props.options;
@@ -228,10 +363,10 @@ class DatePicker extends React.PureComponent {
                 if(this.state.isMonthYear){
                     const { selectedYear } = this.state;
                     if(isQQYYYYFormat(displayFormat)){
-                        var _upperYear = selectedYear.toUpperCase();
-                        var _validFormatQQYear = isValidQQYYYYValue(_upperYear); 
+                        let _upperYear = selectedYear.toUpperCase();
+                        let _validFormatQQYear = isValidQQYYYYValue(_upperYear); 
                         if(_validFormatQQYear){
-                            var _validQQYear = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
+                            let _validQQYear = isValidOutsideRangeDateQQYear(_upperYear, this.props.options); 
                             if(_validQQYear){
                                 if(!showButtons){
                                     this.setState({ selectedYear: _upperYear});
@@ -239,14 +374,14 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(_upperYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                         }
                     } else if(isMMYYYYFormat(displayFormat)) {
                         if(isValidMMYYYYValue(selectedYear)){
-                            var _validMonthYear = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
+                            let _validMonthYear = isValidOutsideRangeDateMonthYear(selectedYear, this.props.options);  
                             if(_validMonthYear){
                                 if(!showButtons){
                                     this.setState({ selectedYear: selectedYear});
@@ -254,14 +389,14 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(selectedYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                         }
                     } else {
                         if(isValidYYYYValue(selectedYear)){
-                            var _validDateYear = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
+                            let _validDateYear = isValidOutsideRangeDateYear(selectedYear, this.props.options);  
                             if(_validDateYear){
                                 if(!showButtons){
                                     this.setState({ selectedYear: selectedYear});
@@ -269,16 +404,16 @@ class DatePicker extends React.PureComponent {
                                 this.props.onSelect(selectedYear);
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
-                                this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                                this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                             }
                         } else {
                             this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
                         }
                     }
                 } else {
-                    var _validFormat = isValidFormattedDate(this.state.selectedDate, this.props.options); 
+                    let _validFormat = isValidFormattedDate(this.state.selectedDate, this.props.options); 
                     if(_validFormat){
-                        var _validOutRange = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
+                        let _validOutRange = isValidOutsideRangeDate(this.state.selectedDate, this.props.options);
                         if(_validOutRange){
                             if(!showButtons){
                                 this.setState({ selectedDate: this.state.selectedDate});
@@ -286,7 +421,7 @@ class DatePicker extends React.PureComponent {
                             this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             this.props.onSelect(this.state.selectedDate);
                         } else {
-                            this.setState({ isInvalidDate: true, isInvalidRangeDate: true });
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                         }
                     } else {
                         this.setState({ isInvalidDate: true, isInvalidRangeDate: false });
@@ -304,7 +439,7 @@ class DatePicker extends React.PureComponent {
             evt = (evt) ? evt : window.event;
             const charCode = (evt.which) ? evt.which : evt.keyCode;
             const { options } = this.props;
-            var { displayFormat, lowerLimit, upperLimit } = options;
+            let { displayFormat, lowerLimit, upperLimit } = options;
     
             lowerLimit = (lowerLimit)? ((isValidDate(lowerLimit))? lowerLimit : null) : null;
             upperLimit = (upperLimit)? ((isValidDate(upperLimit))? upperLimit : null) : null;
@@ -388,7 +523,7 @@ class DatePicker extends React.PureComponent {
     onKeyPressHandler = (evt) => {
         const { displayFormat } = this.props.options;
         evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        let charCode = (evt.which) ? evt.which : evt.keyCode;
        
         if ((charCode >= CONSTANTS.KEY_CODES.SPACE && (charCode <= CONSTANTS.KEY_CODES.COMMA || charCode > CONSTANTS.KEY_CODES.NINE)) && (!isQQYYYYFormat(displayFormat))) {
             evt.preventDefault();
@@ -407,96 +542,7 @@ class DatePicker extends React.PureComponent {
             });
         }
     }
-
-    onSelectMonthHandler = (month) => {
-        const { options } = this.props;
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
-        _date.setMonth(parseInt(getMonthIndex(month)) - 1);
-        const newDate = getDateByFormat(_date, options.displayFormat);
-        
-        this.setState({
-            isMonthSelected: true,
-            isYearSelected: false,
-            showYearSelection: false,
-            showMonthSelection: false,
-            selectedDate: newDate, 
-            shouldCalendarOpen: true
-        });
-    }
-    
-    onSelectYearHandler = (year) => {
-        const { options } = this.props;
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
-        _date.setFullYear(parseInt(year));
-        const newDate = getDateByFormat(_date, options.displayFormat);
-
-        this.setState({
-            isMonthSelected: false,
-            isYearSelected: true,
-            showYearSelection: false,
-            showMonthSelection: true,
-            selectedDate: newDate, 
-            shouldCalendarOpen: true
-        });
-    }
-    
-    onGoToSelectYearHandler = () => {
-        this.setState({
-            showMonthSelection: false,
-            showYearSelection: true
-        });
-    }
-
-    goToNextYearHandler = () => {
-        const { selectedDate } = this.state;
-        const { options } = this.props;
-        const currentDateYear = getSelectedYearFromDate(selectedDate, options);
-        
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
-        _date.setFullYear(parseInt(currentDateYear) + 1);
-        const newDate = getDateByFormat(_date, options.displayFormat);
-        this.setState({
-            selectedDate: newDate
-        });
-    }
-    
-    goToPrevYearHandler = () => {
-        const { selectedDate } = this.state;
-        const { options } = this.props;
-        const currentDateYear = getSelectedYearFromDate(selectedDate, options);
-        
-        const _date = new Date(currentFormatToYYYYMMDD(this.state.selectedDate, options));
-        _date.setFullYear(parseInt(currentDateYear) - 1);
-        const newDate = getDateByFormat(_date, options.displayFormat);
-        this.setState({
-            selectedDate: newDate
-        });
-    }
-
-    closeCalendar = (e) => {
-        const { displayFormat } = this.props.options;
-        const { isMonthSelected, isYearSelected } = this.state;
-        
-        var shouldCalendarOpen = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat));
-
-        if(isValidMMYYYYValue(this.state.newSelectedYear) || (e.target.classList.length <= 0)){
-            shouldCalendarOpen = false;
-        }
-
-        shouldCalendarOpen = (isMonthSelected === true || isYearSelected === true)? true : shouldCalendarOpen;
-
-        if (((e.target && e.target.classList && !e.target.classList.contains("VS-Calendar-Input") && !e.target.classList.contains("VS-Day") && !e.target.classList.contains("VS-CalDay") && !e.target.classList.contains("VS-NextPrevDay") && !e.target.classList.contains("VS-Icon") && !e.target.classList.contains("VS-CalendarMonth") && this.state.shouldCalendarOpen === true)) && (e.target.nodeName !== 'path') && !e.target.classList.contains("VS-MonthName")) {
-            if(e.target.classList.contains("VS-App-header")){
-                this.setState({
-                    shouldCalendarOpen: false
-                });
-            } else {
-                this.setState({
-                    shouldCalendarOpen: shouldCalendarOpen
-                });
-            }
-        }
-    }
+    // Component events handler end
 
     handleChildUnmount = (_date) => {
         this.setState({
@@ -505,19 +551,20 @@ class DatePicker extends React.PureComponent {
         });
     }
 
+    // Component methods to return classes started
     getIconAlignClass() {
         const options = this.props.options;
-        return (options && isLeft(options.iconAlignment)) ? 'VS-PullLeft VS-MrgT5' : 'VS-PullRight VS-MrgT5';
+        return (options && isLeft(options.iconAlignment)) ? `${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_MRG_T5}` : `${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_MRG_T5}`;
     }
 
     getDateAlignClass() {
         const options = this.props.options;
-        return (options && isRight(options.dateStringAlignment)) ? 'VS-PullRight1 VS-TextRight' : 'VS-PullLeft1 VS-TextLeft';
+        return (options && isRight(options.dateStringAlignment)) ? `${CONSTANTS.CLASSES.VS_TEXT_RIGHT}` : `${CONSTANTS.CLASSES.VS_TEXT_LEFT}`;
     }
     
     getInvalidClass() {
         const { isInvalidDate } = this.state;
-        return (isInvalidDate === true) ? 'VS-Invalid-Input' : '';
+        return (isInvalidDate === true) ? `${CONSTANTS.CLASSES.VS_INVALID_INPUT}` : '';
     }
 
     getPlaceholder(){
@@ -528,7 +575,9 @@ class DatePicker extends React.PureComponent {
     getSelectedValue(){
         return (this.state.isMonthYear)? this.state.selectedYear : this.state.selectedDate;
     }
+    // Component methods to return classes end
 
+    // Component render methods started
     render() {
         const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection, isDisabled } = this.state;
         const { options } = this.props;
@@ -540,16 +589,16 @@ class DatePicker extends React.PureComponent {
         const currentDateYear = getSelectedYearFromDate(selectedDate, options);
 
         return (
-            <div className="VS-App">
+            <div className={`${CONSTANTS.CLASSES.VS_APP}`}>
                 <div id={`${_uuid}`}></div>
-                <header className="VS-App-header">
-                    <div className="VS-DatepickerContainer">
+                <header className={`${CONSTANTS.CLASSES.VS_APP_HEADER}`}>
+                    <div className={`${CONSTANTS.CLASSES.VS_DATEPICKER_CONTAINER}`}>
                         <div ref={(el) => this.el = el}>
-                            <div className={`VS-Input-Border ${this.getInvalidClass()} ${(showClearIcon) ? 'VS-Input-Icon' : ''} ${(isDisabled) ? 'VS-Disabled' : ''}`}>
-                                <span className={this.getIconAlignClass()}><FaCalendar className="VS-Shape VS-TextDark" /></span>
-                                <Input type="text"
+                            <div className={`${CONSTANTS.CLASSES.VS_INPUT_BORDER} ${this.getInvalidClass()} ${(showClearIcon) ? `${CONSTANTS.CLASSES.VS_INPUT_ICON}` : ''} ${(isDisabled) ? `${CONSTANTS.CLASSES.VS_DISABLED}` : ''}`}>
+                                <span className={this.getIconAlignClass()}><FaCalendar className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} /></span>
+                                <input type="text"
                                     value={this.getSelectedValue()}
-                                    className={`VS-Regular-UPPER-Case VS-Calendar-Input ${this.getDateAlignClass()}`}
+                                    className={`${CONSTANTS.CLASSES.VS_REG_UPPER_CASE} ${CONSTANTS.CLASSES.VS_CALENDAR_INPUT} ${this.getDateAlignClass()}`}
                                     placeholder={this.getPlaceholder()}
                                     onClick={this.onFocus}
                                     onKeyDown={(e) => this.onKeyDownHandler(e)}
@@ -559,11 +608,11 @@ class DatePicker extends React.PureComponent {
                                 />
                                 {
                                     (showClearIcon === true)?
-                                    <span className="VS-PullRight VS-MrgT5"><FaClose className="VS-Shape VS-TextDark VS-CloseIcon" onClick={() => this.onClearButtonClickHandler()} /></span> : ''
+                                    <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_MRG_T5}`}><FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.onClearButtonClickHandler()} /></span> : ''
                                 }
                                 {
                                     ((isInvalidDate === true || isInvalidRangeDate === true) && showErrorMessage === true)?
-                                    <span className="VS-InvalidText">{getInvalidDateMessage(options.validationMessages, isInvalidDate, isInvalidRangeDate)}</span> : ''
+                                    <span className={`${CONSTANTS.CLASSES.VS_INVALID_TEXT}`}>{getInvalidDateMessage(options.validationMessages, isInvalidDate, isInvalidRangeDate)}</span> : ''
                                 }
                             </div>
                         </div>
@@ -586,13 +635,14 @@ class DatePicker extends React.PureComponent {
                             (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.props.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
                         }
                         {
-                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.props.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
+                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
                         }
                     </div>
                 </header>
             </div>
         );
     }
+    // Component render methods end
 }
 
 export default DatePicker;
