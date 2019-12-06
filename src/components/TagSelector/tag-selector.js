@@ -393,6 +393,11 @@ class TagSelector extends React.PureComponent {
         this.setState({
             listItems: [...listItems]
         });
+
+        let selectedIndex = this.state.selectedItems.findIndex((x) => x.value === item.value);
+        if(selectedIndex !== -1){
+            this.removeItem(item, selectedIndex);
+        }
     }
     
     removeItem(item, index) {
@@ -432,8 +437,8 @@ class TagSelector extends React.PureComponent {
                     (selectedItems && selectedItems.length > 0)?
                         (maxItemCounter === 0 || maxItemCounter >= selectedItems.length)?
                             selectedItems.map((item, index) =>  {
-                                return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" >{item.value} {this.renderRemoveIcon(item, index)}</span></li>
-                            }) : <li><span className="VS-AutoCompleteItem" >{selectedItems.length} SELECTED {this.renderRemoveIcon(null, -1)}</span></li>
+                                return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" ><span className="VS-AutoCompleteItem-Span">{item.value}</span> {this.renderRemoveIcon(item, index)}</span></li>
+                            }) : <li><span className="VS-AutoCompleteItem VS-ExtraWidth" ><span className="VS-AutoCompleteItem-Span">{selectedItems.length} SELECTED </span>{this.renderRemoveIcon(null, -1)}</span></li>
                     :  ''
                 }
                 <li>
