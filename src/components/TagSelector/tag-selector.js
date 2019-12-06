@@ -438,7 +438,7 @@ class TagSelector extends React.PureComponent {
                         (maxItemCounter === 0 || maxItemCounter >= selectedItems.length)?
                             selectedItems.map((item, index) =>  {
                                 return <li key={index + '_data'}><span key={index + '_item'} className="VS-AutoCompleteItem" ><span className="VS-AutoCompleteItem-Span">{item.value}</span> {this.renderRemoveIcon(item, index)}</span></li>
-                            }) : <li><span className="VS-AutoCompleteItem VS-ExtraWidth" ><span className="VS-AutoCompleteItem-Span">{selectedItems.length} SELECTED </span>{this.renderRemoveIcon(null, -1)}</span></li>
+                            }) : <li><span className="VS-AutoCompleteItem VS-ExtraWidth" ><span className="VS-AutoCompleteItem-Span">{selectedItems.length} SELECTED</span>{this.renderRemoveIcon(null, -1)}</span></li>
                     :  ''
                 }
                 <li>

@@ -60,11 +60,10 @@ describe('should render without crashing', () => {
             {"key": "Armenia", "value": "AM"}]);
         instant.appendNewElement({"key": "Pakistan", "value": "PK"});
         wrapper.update();
-        console.log('wrapper',wrapper.state());
         expect(wrapper.state().newlyAddedElements).toEqual([{"key": "Pakistan", "value": "PK"}]);    
     })
 
-    //Checking whereas the new element we added is rendering properly in the list or not.
+    //add selected item.
     test('add selected item ', () => {
         let options ={"searchWithHelper": false, "allowNewValue": true, "allowHierarchy": false}
         let wrapper = shallow(<TagSelector options={options} />);
@@ -81,11 +80,65 @@ describe('should render without crashing', () => {
             {"key": "Antigua and Barbuda", "value": "AG"}, 
             {"key": "Argentina", "value": "AR"}, 
             {"key": "Armenia", "value": "AM"}]);
-        
         wrapper.find('li').simulate('click');
         wrapper.update();
-        console.log('wrapper',wrapper.state());
         expect(true).toEqual(true);    
     })
+    
+    //Check list of items while searching using input value.
+    test('Check list of items while searching using input value ', () => {
+        let options ={"searchWithHelper": false, "allowNewValue": true, "allowHierarchy": false}
+        let wrapper = shallow(<TagSelector options={options} />);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Afghanistan", "value": "AF"}, 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Algeria", "value": "DZ"}, 
+            {"key": "American Samoa", "value": "AS"}, 
+            {"key": "AndorrA", "value": "AD"}, 
+            {"key": "Angola", "value": "AO"}, 
+            {"key": "Anguilla", "value": "AI"}, 
+            {"key": "Antarctica", "value": "AQ"}, 
+            {"key": "Antigua and Barbuda", "value": "AG"}, 
+            {"key": "Argentina", "value": "AR"}, 
+            {"key": "Armenia", "value": "AM"}]);
+        instant.updateFilterItems('af');
+        wrapper.update();
+        expect(wrapper.state().filteredlistItems).toEqual([{"key": "Afghanistan", "value": "AF"}]);    
+    })
 
+    //Check selected items using maxItemCounter.
+    test('Check selected items using maxItemCounter ', () => {
+        let options ={"searchWithHelper": false, "maxItemCounter": 2}
+        let wrapper = shallow(<TagSelector options={options} />);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Armenia", "value": "AM"},
+            {"key": "Angola", "value": "AO"}, 
+            {"key": "Anguilla", "value": "AI"}
+        ]);
+        
+        instant.setSelectedItems([{"key": "Albania", "value": "AL"}, {"key": "Angola", "value": "AO"}, {"key": "Anguilla", "value": "AI"}]);
+        wrapper.update();
+        const selectedWrapper = wrapper.find('.VS-AutoCompleteItem .VS-AutoCompleteItem-Span');
+        expect(selectedWrapper.text()).toEqual("3 SELECTED");    
+    })
+    
+    //Check remove button enabled or not when canRemoveAll is true.
+    test('Check remove button enabled or not when canRemoveAll is true ', () => {
+        let options ={"searchWithHelper": false, "allowNewValue": true, "allowHierarchy": false, "canRemoveAll": true, "maxItemCounter": 2}
+        let wrapper = shallow(<TagSelector options={options} />);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Armenia", "value": "AM"}
+        ]);
+        
+        instant.setSelectedItems([{"key": "Albania", "value": "AL"}]);
+        wrapper.update();
+        const removeButtonWrapper = wrapper.find('.VS-AutoCompleteItem .VS-AutoCompleteItem-Icon');
+        const classNames = removeButtonWrapper.prop('className');
+        expect(classNames).toMatch(/VS-Disabled/);    
+    })
 })
