@@ -87,14 +87,29 @@ class DateHierarchy extends React.PureComponent {
     
 
     onCheckQuarter(qt, yindex,qindex) {
-        console.log('onCheckQuarter called');
+        // console.log('onCheckQuarter called');
+        // console.log(qt);
+        
+        
         let years = [...this.state.years];
+        //console.log(years[yindex]);
+        var stateSum = 0;
+
+        
         years[yindex]['children'][qindex]['state']=1;
+
+        for (var i=0; i<years[yindex]["children"].length; i++) {
+            stateSum += years[yindex]["children"][i]["state"];
+        }
+        years[yindex]["state"] = (stateSum < 4) ? -1:1;
+
+
         let children = years[yindex]['children'][qindex]['children'];
         children.forEach((element,qindex) => {
             children[qindex]['state'] = 1;
         });
-        console.log("children",children[qindex]);
+        console.log(years);
+        //console.log("children",children[qindex]);
         this.setState({
             years: [...years]
         })
@@ -148,11 +163,13 @@ class DateHierarchy extends React.PureComponent {
     } 
     
     getYearCheckBoxClass = (row, index) => {
-        let flag = true
-        ;
+        let flag = false;        
         let years = [...this.state.years];
+        console.log(years);
+        flag = (years[index]["state"] == -1) ? true : false;
         let children = years[index]['children'];
         console.log("checkmark called", children);
+        console.log(flag);
         return (flag )? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
@@ -215,7 +232,7 @@ class DateHierarchy extends React.PureComponent {
                 <label className="VS-Checkbox-Container" key={'year' + index}>{row.year}
                 {
                      (row.state) ? 
-                    <input className="VS-Checkbox" type="checkbox" checked={row.state} onChange={ () =>       this.onUnCheckYear(row, index)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={row.state} onChange={ () => this.onUnCheckYear(row, index)}></input>:
                     <input className="VS-Checkbox" type="checkbox" checked={row.state} onChange={ () => this.onCheckYear(row, index)}></input>
                     
                 } 
