@@ -2,97 +2,97 @@ export const getChildren = function (year) {
   
   var quarterArray = [{
   "quarter": "Q1-" + year,
-  "isShowChild": false,
-  "isChecked": false,
+  "ShowChild": false,
+  "state": 0,
   "children": [{
     "month": "Jan-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "Feb-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
 
    },
    {
     "month": "March-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    }
   ]
  },
  {
   "quarter": "Q2-"+year,
-  "isShowChild": false,
-  "isChecked": false,
+  "ShowChild": false,
+  "state": 0,
   "children": [{
     "month": "April-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "May-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": false,
     "children": []
    },
    {
     "month": "June-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    }
   ]
  },
  {
   "quarter": "Q3-"+year,
-  "isShowChild": false,
-  "isChecked": false,
+  "ShowChild": false,
+  "state": 0,
   "children": [{
     "month": "July-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "August-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "September-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    }
   ]
  },
  {
   "quarter": "Q4-"+year,
-  "isShowChild": false,
-  "isChecked": false,
+  "ShowChild": false,
+  "state": 0,
   "children": [{
     "month": "October-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "November-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    },
    {
     "month": "December-"+year,
-    "isShowChild": false,
-    "isChecked": false,
+    "ShowChild": false,
+    "state": 0,
     "children": []
    }
   ]
@@ -106,8 +106,8 @@ export const getListOfYears = function(lowerLimit, upperLimit) {
     while (lowerLimit <= upperLimit) {
      var year = {
       "year": lowerLimit,
-      "isShowChild": false,
-      "isChecked": false,
+      "ShowChild": false,
+      "state": 0,
       "children": getChildren(lowerLimit)
      }
      years.push(year);
@@ -115,3 +115,4 @@ export const getListOfYears = function(lowerLimit, upperLimit) {
     }
     return years;
    }
+  
