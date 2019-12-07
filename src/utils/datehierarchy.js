@@ -101,7 +101,7 @@ export const getChildren = function (year) {
 return quarterArray;
 }
 export const getListOfYears = function(lowerLimit, upperLimit) {
-
+  parseInt(lowerLimit);
     let years = [];
     while (lowerLimit <= upperLimit) {
      var year = {

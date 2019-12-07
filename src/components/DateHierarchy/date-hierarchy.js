@@ -70,7 +70,12 @@ class DateHierarchy extends React.PureComponent {
     onCheckMonth(mnth,yindex, qindex, mindex){
         console.log('onCheckMonth called');
         let years = [...this.state.years];
+        let stateSum = 0;
         years[yindex]['children'][qindex]['children'][mindex]['state']=1;
+        for (var i=0; i<years[yindex]["children"][qindex]['children']; i++) {
+            stateSum += years[yindex]["children"][qindex]['children'][i]["state"];
+        }
+        years[yindex]['children'][qindex]["state"] = (stateSum < 4) ? -1:1;
         this.setState({
             years: [...years]
         })
@@ -87,29 +92,19 @@ class DateHierarchy extends React.PureComponent {
     
 
     onCheckQuarter(qt, yindex,qindex) {
-        // console.log('onCheckQuarter called');
-        // console.log(qt);
-        
-        
+        console.log("onCheckQuarter Called");
         let years = [...this.state.years];
-        //console.log(years[yindex]);
-        var stateSum = 0;
-
-        
+        let stateSum = 0;
         years[yindex]['children'][qindex]['state']=1;
-
         for (var i=0; i<years[yindex]["children"].length; i++) {
             stateSum += years[yindex]["children"][i]["state"];
         }
         years[yindex]["state"] = (stateSum < 4) ? -1:1;
-
-
         let children = years[yindex]['children'][qindex]['children'];
         children.forEach((element,qindex) => {
             children[qindex]['state'] = 1;
         });
         console.log(years);
-        //console.log("children",children[qindex]);
         this.setState({
             years: [...years]
         })
@@ -118,7 +113,12 @@ class DateHierarchy extends React.PureComponent {
     onUnCheckQuarter(qt, yindex,qindex) {
         console.log('onUnCheckQuarter called');
         let years = [...this.state.years];
+        let stateSum = 0;
         years[yindex]['children'][qindex]['state']=0;
+        for (var i=0; i<years[yindex]["children"].length; i++) {
+            stateSum += years[yindex]["children"][i]["state"];
+        }
+        years[yindex]["state"] = (stateSum < 4) ? -1:1;
         let children = years[yindex]['children'][qindex]['children'];
         children.forEach((element,qindex) => {
             
@@ -165,15 +165,13 @@ class DateHierarchy extends React.PureComponent {
     getYearCheckBoxClass = (row, index) => {
         let flag = false;        
         let years = [...this.state.years];
-        console.log(years);
         flag = (years[index]["state"] == -1) ? true : false;
         let children = years[index]['children'];
-        console.log("checkmark called", children);
-        console.log(flag);
         return (flag )? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
+        console.log("mnth",mnth);
         return (
             <div className="VS-MonthRow" key={'month' + mindex}>
                 {
