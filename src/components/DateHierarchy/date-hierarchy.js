@@ -52,8 +52,8 @@ class DateHierarchy extends React.PureComponent {
     }
     
     expandMonth(mnth, yindex,qindex, mindex) {
+        console.log('expandMonthCalled')
         let years = [...this.state.years];
-        years[yindex]['children'][qindex]['children'][mindex]['ShowChild']=true;
         this.setState({
             years: [...years]
         })
@@ -72,10 +72,11 @@ class DateHierarchy extends React.PureComponent {
         let years = [...this.state.years];
         let stateSum = 0;
         years[yindex]['children'][qindex]['children'][mindex]['state']=1;
-        for (var i=0; i<years[yindex]["children"][qindex]['children']; i++) {
+        for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
             stateSum += years[yindex]["children"][qindex]['children'][i]["state"];
         }
-        years[yindex]['children'][qindex]["state"] = (stateSum < 4) ? -1:1;
+        console.log('statesum',stateSum);
+        years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? -1: 1;
         this.setState({
             years: [...years]
         })
@@ -84,7 +85,12 @@ class DateHierarchy extends React.PureComponent {
     onUnCheckMonth(mnth,yindex, qindex, mindex){
         console.log('onUnCheckMonth called');
         let years = [...this.state.years];
+        let stateSum = 0;
         years[yindex]['children'][qindex]['children'][mindex]['state']=0;
+        for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
+            stateSum += years[yindex]["children"][qindex]['children'][i]["state"];
+        }
+        years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? (stateSum === 0)? 0: -1: 1;
         this.setState({
             years: [...years]
         })
@@ -104,7 +110,6 @@ class DateHierarchy extends React.PureComponent {
         children.forEach((element,qindex) => {
             children[qindex]['state'] = 1;
         });
-        console.log(years);
         this.setState({
             years: [...years]
         })
@@ -118,7 +123,7 @@ class DateHierarchy extends React.PureComponent {
         for (var i=0; i<years[yindex]["children"].length; i++) {
             stateSum += years[yindex]["children"][i]["state"];
         }
-        years[yindex]["state"] = (stateSum < 4) ? -1:1;
+        years[yindex]["state"] = (stateSum < 4) ? (stateSum === 0) ? 0 : -1: 1;
         let children = years[yindex]['children'][qindex]['children'];
         children.forEach((element,qindex) => {
             
@@ -161,40 +166,45 @@ class DateHierarchy extends React.PureComponent {
             years: [...years]
             })
     } 
+    getQuarterCheckBoxClass = (qt, row, yindex, qindex) => {
+        let flag = false;
+        let years = [...this.state.years];
+        flag = ((years[yindex]["children"][qindex]["state"] === -1)) ? true :false;
+        return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
+    }
     
     getYearCheckBoxClass = (row, index) => {
         let flag = false;        
         let years = [...this.state.years];
-        flag = (years[index]["state"] == -1) ? true : false;
-        let children = years[index]['children'];
+        flag = (years[index]["state"] === -1) ? true : false;
         return (flag )? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
+
+
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
-        console.log("mnth",mnth);
         return (
-            <div className="VS-MonthRow" key={'month' + mindex}>
+            <div className="VS-MonthRow" key={'month' + yindex.toString() + qindex.toString() + mindex.toString()}>
                 {
                     (mnth.ShowChild) ?
                         <a className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(mnth, yindex, qindex, mindex)}>-</a> :
-                        <a className="VS-Month-Plus-Minus" >+</a>
+                        <a className="VS-Month-Plus-Minus" onClick={() => this.expandMonth(mnth, yindex, qindex, mindex)} >+</a>
                 }
-            <label className="VS-Checkbox-Container">{mnth.month}
-                <input className="VS-Checkbox " type="checkbox"></input>
+           <label className="VS-Checkbox-Container">{mnth.month}
                 {
                      (mnth.state) ? 
                     <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onUnCheckMonth(mnth,yindex, qindex, mindex)}></input>:
-                    <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onCheckMonth(mnth, yindex, qindex, mindex)}></input>
+                    <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onCheckMonth(mnth,yindex, qindex, mindex)}></input>
                 }
                 <span className="VS-Check-Checkmark"></span>
-            </label>
+                </label>
             </div>
         )
     }
         
     renderQuarter = (qt,row, yindex, qindex) => {
         return (
-            <div className="VS-QuarterRow"key={'quarter' + qindex}>
+            <div className="VS-QuarterRow"key={'quarter' + yindex.toString() + qindex.toString() }>
                  {
                     (qt.ShowChild) ?
                         <a className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, yindex, qindex)}>-</a> :
@@ -206,11 +216,11 @@ class DateHierarchy extends React.PureComponent {
                     <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onUnCheckQuarter(qt,yindex, qindex)}></input>:
                     <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onCheckQuarter(qt,yindex, qindex)}></input>
                 }
-                <span className="VS-Check-Checkmark"></span>
+                <span className={this.getQuarterCheckBoxClass(row, qt, yindex, qindex)}></span>
                 </label>
                 {
                     (qt.ShowChild && qt.children) ?
-                        qt.children.map((mnth, qindex, mindex) => this.renderMonths(mnth, row, yindex, qindex, mindex)) : ''
+                        qt.children.map((mnth, mindex) => this.renderMonths(mnth, row, yindex, qindex, mindex)) : ''
                 }
                
             </div>
