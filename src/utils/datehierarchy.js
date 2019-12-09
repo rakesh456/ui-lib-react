@@ -1,3 +1,23 @@
+
+export const getMonthDays = (month, year) => {
+  const months30 = [4, 6, 9, 11];
+  const leapYear = year % 4 === 0;
+
+  let day =  month === 2
+      ? leapYear
+          ? 29
+          : 28
+      : (months30.indexOf(month) !== -1)
+          ? 30
+          : 31;
+          var days = [];
+          for(let i = 1 ; i <= day ; i++){
+            var dayObj = {day :i,state : 0}
+            days.push(dayObj);
+          }
+          return days;
+}
+
 export const getChildren = function (year) {
   
   var quarterArray = [{
@@ -8,20 +28,21 @@ export const getChildren = function (year) {
     "month": "Jan-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(1, year)
    },
    {
     "month": "Feb-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children":getMonthDays(2, year),
+    "state":0
 
    },
    {
-    "month": "March-"+year,
+    "month": "Mar-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(3, year)
    }
   ]
  },
@@ -30,22 +51,22 @@ export const getChildren = function (year) {
   "ShowChild": false,
   "state": 0,
   "children": [{
-    "month": "April-"+year,
+    "month": "Apr-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children":getMonthDays(4, year)
    },
    {
     "month": "May-"+year,
     "ShowChild": false,
     "state": false,
-    "children": []
+    "children":getMonthDays(5, year)
    },
    {
-    "month": "June-"+year,
+    "month": "Jun-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(6, year)
    }
   ]
  },
@@ -54,22 +75,22 @@ export const getChildren = function (year) {
   "ShowChild": false,
   "state": 0,
   "children": [{
-    "month": "July-"+year,
+    "month": "Jul-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(7, year)
    },
    {
-    "month": "August-"+year,
+    "month": "Aug-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(8, year)
    },
    {
-    "month": "September-"+year,
+    "month": "Sep-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(9, year)
    }
   ]
  },
@@ -78,22 +99,22 @@ export const getChildren = function (year) {
   "ShowChild": false,
   "state": 0,
   "children": [{
-    "month": "October-"+year,
+    "month": "Oct-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(10, year)
    },
    {
-    "month": "November-"+year,
+    "month": "Nov-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(11, year)
    },
    {
-    "month": "December-"+year,
+    "month": "Dec-"+year,
     "ShowChild": false,
     "state": 0,
-    "children": []
+    "children": getMonthDays(12, year)
    }
   ]
  }
