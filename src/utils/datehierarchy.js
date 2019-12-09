@@ -101,7 +101,7 @@ export const getChildren = function (year) {
 return quarterArray;
 }
 export const getListOfYears = function(lowerLimit, upperLimit) {
-if((lowerLimit % 1 !=0 || upperLimit % 1 != 0)||(lowerLimit > upperLimit)){
+if((lowerLimit % 1 !==0 || upperLimit % 1 !== 0)||(lowerLimit > upperLimit)){
   console.error("either lowerLimit or upperLimit not is in valid format");
 }
   parseInt(lowerLimit);
