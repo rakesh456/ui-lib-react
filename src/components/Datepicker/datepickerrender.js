@@ -4,13 +4,20 @@ import DatePicker from "./index";
 import {
     getDateByFormat,
     getDateByFormatNew,
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    convertYYYYMMDDByFormat,
+    isObject
 } from "../../utils/utils";
 import {
     checkValueByDisplayFormat,
     isCalendarFormat,
     resetOptions,
-    formatOptions
+    formatOptions,
+    isValidDDMMYYYYValue,
+    isValidMMYYYYValue,
+    isValidQQYYYYValue,
+    isValidYYYYValue,
+    getConvertedDate
 } from "../../utils/calendar";
 
 
@@ -79,8 +86,63 @@ function datepickerRender(el) {
         myComponentInstance.refresh();
     }
     
+    el.setDataOption = function (updatedOptions) {
+        let newOptions = {...options};
+        let key;
+        let isChanged = false;
+        if(!isUndefinedOrNull(updatedOptions)){
+            for (key in updatedOptions) {
+                if (updatedOptions.hasOwnProperty(key)) {
+                    const value = updatedOptions[key];
+                    const option = key;
+                    
+                    if(!isUndefinedOrNull(option)){
+                        if(option === 'lowerLimit' || option === 'upperLimit'){
+                            let _date = convertYYYYMMDDByFormat(value, newOptions.displayFormat);
+                            newOptions[option] = _date;
+                            isChanged = true;
+                        } else if(option === 'disabledList' && Array.isArray(value)){
+                            let _disabledList = [];
+                            value.forEach((val) => {
+                                if(isValidDDMMYYYYValue(val) || 
+                                isValidMMYYYYValue(val) || 
+                                isValidQQYYYYValue(val) ||
+                                isValidYYYYValue(val)){
+                                    let formattedDate = (isValidDDMMYYYYValue(val))?  getConvertedDate(val, updatedOptions.displayFormat) : val;
+                                    _disabledList.push(formattedDate);
+                                }
+                            });
+                            isChanged = true;
+                            newOptions[option] = [..._disabledList];
+                        } else if(option === 'indicatorList' && Array.isArray(value)){
+                            let _indicatorList = [];
+                            value.forEach((val) => {
+                                if(isObject(val)){
+                                    let  _dates = [];
+                                    if(val && val.dates && val.dates.length > 0){
+                                        val.dates.forEach((date) => {
+                                            _dates.push(getConvertedDate(date, updatedOptions.displayFormat));
+                                        });
+                                    }
+                                    _indicatorList.push({'dates': _dates, 'color': val.color});
+                                }
+                            });
+                            isChanged = true;
+                            newOptions[option] = [..._indicatorList];
+                        } else {
+                            newOptions[option] = value;
+                            isChanged = true;
+                        }
+                    }
+                }
+            }
+            if(isChanged === true){
+                myComponentInstance.setState({ options: {...newOptions}});
+            }
+        }
+    }
+
     el.reload = function () {
-        console.log(' after update ' + JSON.stringify(options));
     }
 
     el.getStartDate = function () {

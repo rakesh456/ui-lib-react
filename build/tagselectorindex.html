@@ -312,6 +312,14 @@
             let tagElement1 = document.getElementById(id);
             let selectedCounter = tagElement1.refresh();
         }
+
+        function remove(id, id2){
+            let tagElement1 = document.getElementById(id);
+            tagElement1.remove({"key": "Albania", "value": "AL"});
+            
+            let tagElement2 = document.getElementById(id2);
+            tagElement2.remove({"key": "Surat", "value": "Surat"});
+        }
         
         function appendNewElementById(id){
             let tagElement1 = document.getElementById(id);
@@ -357,6 +365,7 @@
     <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button>
     <button onclick="setSelectedItems('tagselector1');">Set Selected Items</button>
     <button onclick="refreshTagSelector('tagselector1');">Refresh</button>
+    <button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button>
     <div id="SelectedValues"></div>
     <div id="SelectedCounter"></div>
     <div id="NewlyAddedElements"></div>
