@@ -113,6 +113,10 @@ function tagSelectorRender(el) {
     el.appendNewElement = function (obj) {
         tagComponentInstance.appendNewElement(obj);
     }
+
+    el.remove = function (item) {
+        tagComponentInstance.removeListItem(item);
+    }
     
     el.setJsonData = function (json) {
         tagComponentInstance.setJsonData(json);
