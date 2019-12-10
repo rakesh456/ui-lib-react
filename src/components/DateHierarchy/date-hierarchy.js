@@ -171,10 +171,10 @@ class DateHierarchy extends React.PureComponent {
         }
         years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? (stateSum === 0)? 0: -1: 1;
         for (var j=0; j<years[yindex]["children"].length; j++){
-            // if(years[yindex]["children"][j]['state']=== -1){
-            //     qstateSum = -1;
-            //     break;
-            // }
+            if(years[yindex]["children"][j]['state']=== -1){
+                qstateSum = -1;
+                break;
+            }
             qstateSum += years[yindex]["children"][j]["state"];
         }
         years[yindex]["state"] = (qstateSum !== 0) ? (qstateSum < 4) ? -1 : 1: 0;
