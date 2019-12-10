@@ -5,7 +5,7 @@ exports[`Tag-Selector component renders the default options correctly 1`] = `
   className="VS-App"
 >
   <div
-    id="3895629d-580a-6af8-8d46-52b753aa8f36"
+    id="3c8c3f12-9a3a-0019-700d-da430eb5ed43"
   />
   <header
     className="VS-App-header"
@@ -13,7 +13,7 @@ exports[`Tag-Selector component renders the default options correctly 1`] = `
     <div>
       <div>
         <div
-          className="VS-Tag-Input-Border"
+          className="VS-Tag-Input-Border "
         >
           <ul>
             
@@ -23,7 +23,9 @@ exports[`Tag-Selector component renders the default options correctly 1`] = `
                 onBlur={[Function]}
                 onChange={[Function]}
                 onClick={[Function]}
+                onKeyDown={[Function]}
                 placeholder="Search"
+                readOnly={false}
                 type="text"
               />
             </li>

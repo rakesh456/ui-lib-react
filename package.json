@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build1": "react-scripts build",
-    "build": "npm run test && npm run webpack",
+    "build": "npm test -- -u && npm run webpack",
     "webpack": "webpack -p",
     "testcase": "npm test -- -u",
     "test": "jest",
