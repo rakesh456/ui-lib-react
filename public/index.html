@@ -432,7 +432,7 @@
         
         function remove(id, id2){
             let tagElement1 = document.getElementById(id);
-            tagElement1.remove({"key": "Albania", "value": "AL"});
+            tagElement1.remove({"key": "AL", "value": "Albania"});
             
             let tagElement2 = document.getElementById(id2);
             tagElement2.remove({"key": "Surat", "value": "Surat"});
@@ -445,7 +445,7 @@
         
         function setSelectedItems(id){
             let tagElement1 = document.getElementById(id);
-            let selectedCounter = tagElement1.setSelectedItems([{"key": "Albania", "value": "AL"}]);
+            let selectedCounter = tagElement1.setSelectedItems([{"value": "Albania", "key": "AL"}, {"value": "Turkey", "key": "TR"}]);
             
             let tagElement2 = document.getElementById('tagselector2');
             let selectedCounter1 = tagElement2.setSelectedItems([{"key": "Adoni", "value": "Adoni"}]);
@@ -471,20 +471,47 @@
         }
 
     </script>
+    <style>
+        .div-buttons{
+            display: block;
+            margin: 10px;
+        }
+    </style>
 </head>
 <body>
     <!-- <date-hierarchy></date-hierarchy> -->
     <h2>Tag selector Sample using React Component</h2>
-    <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button>
-    <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button>
-    <button onclick="appendNewElementById('tagselector1');">Append new element</button>
-    <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button>
-    <button onclick="setSelectedItems('tagselector1');">Set Selected Items</button>
-    <button onclick="refreshTagSelector('tagselector1');">Refresh</button>
-    <button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button>
-    <div id="SelectedValues"></div>
-    <div id="SelectedCounter"></div>
-    <div id="NewlyAddedElements"></div>
+    <div class="div-buttons">
+        <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> : 
+        <span>To display selected values</span>
+        <div id="SelectedValues"></div>
+    </div>
+    <div class="div-buttons">
+        <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button> : 
+        <span>To display selected items counter</span>
+        <div id="SelectedCounter"></div>
+    </div>
+    <div class="div-buttons">
+        <button onclick="appendNewElementById('tagselector1');">Append new element</button> : 
+        <span>It will append new element in list i.e. <q> {"key": "Test", "value": "BPO"}</q></span>
+    </div>
+    <div class="div-buttons">
+        <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button> : 
+        <span>It will return newly added element</span>
+        <div id="NewlyAddedElements"></div>
+    </div>
+    <div class="div-buttons">
+        <button onclick="setSelectedItems('tagselector1');">Set Selected Items</button> : 
+        <span>It will set two selected items : i.e <q>[{"key": "AL", "value": "Albania"}, {"key": "TR", "value": "Turkey"}]</q></span>
+    </div>
+    <div class="div-buttons">
+        <button onclick="refreshTagSelector('tagselector1');">Refresh</button> : 
+        <span>It will clear selected items</span>
+    </div>
+    <div class="div-buttons">
+        <button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button> : <span>To remove item from list and selected items i.e. <q>{"key": "AL", "value": "Albania"}</q></span>
+    </div>
+    
     <br>
     <p>{"placeholder": "Select country", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "allowHierarchy": false}</p>
     <label>Select Country : </label>
