@@ -10,7 +10,8 @@ module.exports = {
         bundle: ['./src/index.js'],
         styles: [
             './src/components/Datepicker/date-picker.scss',
-            './src/components/TagSelector/tag-selector.scss'
+            './src/components/TagSelector/tag-selector.scss',
+            './src/components/DateHierarchy/date-hierarchy.scss'
         ]
     },
     output: {
@@ -61,7 +62,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: 'bundle.css'
+            filename: '[name].css'
         })
     ]
 };

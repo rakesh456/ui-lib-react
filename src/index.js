@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 import {
     isUndefinedOrNull
 } from "../src/utils/utils";
@@ -14,7 +15,6 @@ import {
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
-import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 
 
 (function () {
