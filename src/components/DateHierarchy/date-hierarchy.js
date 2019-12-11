@@ -377,7 +377,7 @@ class DateHierarchy extends React.PureComponent {
                 {
                     (row.ShowChild) ?
                         <a className="VS-Plus-Minus" onClick={() => this.collapseYear(row, index)}><span className = "VS-ExpandCollapseSign">-</span></a> :
-                        <a className="VS-Plus-Minus" onClick={() => this.expandYear(row, index)}><span className = "VS-Expand">+</span></a>
+                        <a className="VS-Plus-Minus" onClick={() => this.expandYear(row, index)}><span className = "VS-ExpandCollapseSign">+</span></a>
                 }
                 <label className="VS-Checkbox-Container" key={'year' + index}>{row.year}
                 {
