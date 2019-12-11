@@ -1,6 +1,6 @@
 import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormat, getDateByFormatNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD, dateToYear, dateToMMYYYY, dateToQQYYYY } from "./utils";
 
-export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "showErrorMessage": false};
+export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "showErrorMessage": false};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
 export const YEAR_FORMATS = ["YYYY", "MM/YYYY", "QQ/YYYY"];
 export const CURRENT_YEAR = +(new Date().getFullYear());

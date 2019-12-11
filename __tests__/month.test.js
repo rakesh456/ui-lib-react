@@ -69,8 +69,8 @@ describe('Should render without crashing', () => {
   test('checking the default Year in YYYY format', () =>{
     let options = {"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2017", "upperLimit": "2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2020", "2025"]};
     var wrapper = shallow(<DatePicker options={options} />);
-    let html = wrapper.find('.VS-Calendar-Input').props().value;
-    expect(html).toEqual('2019');
+    let html = parseInt(wrapper.find('.VS-Calendar-Input').props().value);
+    expect(html).toEqual(new Date().getFullYear());
   })
   
 })

@@ -57,7 +57,7 @@ class ItemsList extends React.PureComponent {
     }
 
     renderSubitem(item, index) {
-        const { currentHierarchyItemIndex } = this.props;
+        // const { currentHierarchyItemIndex } = this.props;
         // if(currentHierarchyItemIndex === item.length){
         //     this.props.updateHierarchyIndex();
         // }
@@ -105,17 +105,25 @@ class ItemsList extends React.PureComponent {
         );
     }
 
+    getTooltipClassNames = (index, isLeft) => {
+        return ((this.props.filteredlistItems && (index + 1) >= this.props.filteredlistItems.length)? 'VS-TooltipText VS-TooltipText-Top' : 'VS-TooltipText') + ((isLeft === true)? ' VS-Left' : ' VS-Right');
+    }
+
+    renderTooltip = (index, val, isLeft) => {
+        return ((val && val.length >= 20)? <span className={this.getTooltipClassNames(index, isLeft)}>{val}</span> : '');
+    }
+
     renderLIItem(item, index) {
         const { selectedItems } = this.state;
         const { searchWithHelper } = this.props.options;
 
         if (!selectedItems || selectedItems.length <= 0) {
-            return <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span>{(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}</span> : ''}</li>
+            return <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}{this.renderTooltip(index, item.value, true)}</span>{(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}{this.renderTooltip(index, item.key, false)}</span> : ''}</li>
         } else {
             let itemFound = selectedItems.filter((obj) => obj.key === item.key);
             return (
                 (itemFound.length) ?
-                    null : <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText'>{item.value}</span> {(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}</span> : ''}</li>
+                    null : <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}</span> {(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}</span> : ''}</li>
             );
         }
     }
