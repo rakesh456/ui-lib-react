@@ -6,106 +6,105 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <script>
 
-        function onInputHandler() {
-            console.log('onInputHandler called ');
-        }
+    //     function onInputHandler() {
+    //         console.log('onInputHandler called ');
+    //     }
         
-        function onFocusHandler() {
-            console.log('onFocusHandler called ');
-        }
+    //     function onFocusHandler() {
+    //         console.log('onFocusHandler called ');
+    //     }
         
-        function onBlurHandler() {
-            console.log('onBlurHandler called ');
-        }
+    //     function onBlurHandler() {
+    //         console.log('onBlurHandler called ');
+    //     }
         
-        function onKeyDownHandler() {
-            console.log('onKeyDownHandler called ');
-        }
+    //     function onKeyDownHandler() {
+    //         console.log('onKeyDownHandler called ');
+    //     }
        
-        function onKeyUpHandler() {
-            console.log('onKeyUpHandler called ');
-        }
+    //     function onKeyUpHandler() {
+    //         console.log('onKeyUpHandler called ');
+    //     }
         
-        function onDoubleClickHandler() {
-            console.log('onDoubleClickHandler called ');
-        }
+    //     function onDoubleClickHandler() {
+    //         console.log('onDoubleClickHandler called ');
+    //     }
         
-        function onMouseDownHandler() {
-            console.log('onMouseDownHandler called ');
-        }
+    //     function onMouseDownHandler() {
+    //         console.log('onMouseDownHandler called ');
+    //     }
         
-        function onMouseUpHandler() {
-            console.log('onMouseUpHandler called ');
-        }
+    //     function onMouseUpHandler() {
+    //         console.log('onMouseUpHandler called ');
+    //     }
         
-        function onMouseEnterHandler() {
-            console.log('onMouseEnterHandler called ');
-        }
+    //     function onMouseEnterHandler() {
+    //         console.log('onMouseEnterHandler called ');
+    //     }
         
-        function onMouseLeaveHandler() {
-            console.log('onMouseLeaveHandler called ');
-        }
+    //     function onMouseLeaveHandler() {
+    //         console.log('onMouseLeaveHandler called ');
+    //     }
         
-        function onMouseMoveHandler() {
-            console.log('onMouseMoveHandler called ');
-        }
+    //     function onMouseMoveHandler() {
+    //         console.log('onMouseMoveHandler called ');
+    //     }
         
-        function onMouseOverHandler() {
-            console.log('onMouseOverHandler called ');
-        }
+    //     function onMouseOverHandler() {
+    //         console.log('onMouseOverHandler called ');
+    //     }
         
-        function onMouseOutHandler() {
-            console.log('onMouseOutHandler called ');
-        }
+    //     function onMouseOutHandler() {
+    //         console.log('onMouseOutHandler called ');
+    //     }
         
-        function onWheelHandler() {
-            console.log('onWheelHandler called ');
-        }
+    //     function onWheelHandler() {
+    //         console.log('onWheelHandler called ');
+    //     }
         
-        function setValue(id, value) {
-            let element = document.getElementById(id);
-            element.setValue(value);
-        }
+    //     function setValue(id, value) {
+    //         let element = document.getElementById(id);
+    //         element.setValue(value);
+    //     }
         
-        function refresh(id) {
-            let element = document.getElementById(id);
-            element.refresh();
-        }
+    //     function refresh(id) {
+    //         let element = document.getElementById(id);
+    //         element.refresh();
+    //     }
 
-        function getStartDate(id, divId) {
-            let element = document.getElementById(id);
-            let dateValue = element.getStartDate();
-            let element2 = document.getElementById(divId);
-            if(element2){
-                element2.innerHTML = 'Get Start Date : ' + dateValue;
-            }
-        }
+    //     function getStartDate(id, divId) {
+    //         let element = document.getElementById(id);
+    //         let dateValue = element.getStartDate();
+    //         let element2 = document.getElementById(divId);
+    //         if(element2){
+    //             element2.innerHTML = 'Get Start Date : ' + dateValue;
+    //         }
+    //     }
         
-        function getEndDate(id, divId) {
-            let element = document.getElementById(id);
-            let dateValue = element.getEndDate();
-            let element2 = document.getElementById(divId);
-            if(element2){
-                element2.innerHTML = 'Get End Date : ' + dateValue;
-            }
-        }
+    //     function getEndDate(id, divId) {
+    //         let element = document.getElementById(id);
+    //         let dateValue = element.getEndDate();
+    //         let element2 = document.getElementById(divId);
+    //         if(element2){
+    //             element2.innerHTML = 'Get End Date : ' + dateValue;
+    //         }
+    //     }
 
-        function addDatepickerNew(id) {
-            let element = document.getElementById(id);
-            // element.innerHTML = `<date-picker id="datepicker2" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Right", "dateStringAlignment": "Left", "lowerLimit": "01/06/2019", "upperLimit": "25/12/2025"}'></date-picker>`;
-            // addReactDatepicker(element.children[0]);
-        }
+    //     function addDatepickerNew(id) {
+    //         let element = document.getElementById(id);
+            
+    //     }
 
-        window.onload = bodyOnload;
+    //     window.onload = bodyOnload;
 
-        function bodyOnload() {
-            let element = document.getElementById('datepicker1');
-            let elementDiv = document.getElementById('display2');
+    //     function bodyOnload() {
+    //         let element = document.getElementById('datepicker1');
+    //         let elementDiv = document.getElementById('display2');
 
-            element.addEventListener("selected", function (event) {
-                let value = event.srcElement.getValue();
-                elementDiv.innerHTML = 'From addEventListener : ' + value;
-            });
+    //         element.addEventListener("selected", function (event) {
+    //             let value = event.srcElement.getValue();
+    //             elementDiv.innerHTML = 'From addEventListener : ' + value;
+    //         });
             
             let tagselector1 = document.getElementById('tagselector1');
             tagselector1.setJsonData([ 
@@ -409,26 +408,26 @@
             var form = document.forms["myform"];
         }
 
-        function getSelectedValuesById(id){
-            let tagElement1 = document.getElementById(id);
-            let divElement = document.getElementById('SelectedValues');
-            let selectedValues = tagElement1.getSelectedValues();
-            divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
-            console.log(' selectedValues ', selectedValues);
-        }
+    //     function getSelectedValuesById(id){
+    //         let tagElement1 = document.getElementById(id);
+    //         let divElement = document.getElementById('SelectedValues');
+    //         let selectedValues = tagElement1.getSelectedValues();
+    //         divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
+    //         console.log(' selectedValues ', selectedValues);
+    //     }
         
-        function getSelectedCounterById(id){
-            let tagElement1 = document.getElementById(id);
-            let divElement = document.getElementById('SelectedCounter');
-            let selectedCounter = tagElement1.getSelectedCounter();
-            divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
-            console.log(' selectedCounter ', selectedCounter);
-        }
+    //     function getSelectedCounterById(id){
+    //         let tagElement1 = document.getElementById(id);
+    //         let divElement = document.getElementById('SelectedCounter');
+    //         let selectedCounter = tagElement1.getSelectedCounter();
+    //         divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
+    //         console.log(' selectedCounter ', selectedCounter);
+    //     }
         
-        function refreshTagSelector(id){
-            let tagElement1 = document.getElementById(id);
-            let selectedCounter = tagElement1.refresh();
-        }
+    //     function refreshTagSelector(id){
+    //         let tagElement1 = document.getElementById(id);
+    //         let selectedCounter = tagElement1.refresh();
+    //     }
         
         function remove(id, id2){
             let tagElement1 = document.getElementById(id);
@@ -451,24 +450,41 @@
             let selectedCounter1 = tagElement2.setSelectedItems([{"key": "Adoni", "value": "Adoni"}]);
         }
         
-        function getNewlyAddedById(id){
-            let tagElement1 = document.getElementById(id);
-            let divElement = document.getElementById('NewlyAddedElements');
-            let newlyAddedElements = tagElement1.getNewlyAdded();
-            divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
-        }
+    //     function getNewlyAddedById(id){
+    //         let tagElement1 = document.getElementById(id);
+    //         let divElement = document.getElementById('NewlyAddedElements');
+    //         let newlyAddedElements = tagElement1.getNewlyAdded();
+    //         divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
+    //     }
 
-        function onSelectHandler(e) {
-            console.log('Tag selector onSelect called ', e.detail);
-        }
+    //     function onSelectHandler(e) {
+    //         console.log('Tag selector onSelect called ', e.detail);
+    //     }
        
-        function onDeSelectHandler(e) {
-            console.log('Tag selector onSelect called ', e.detail);
-        }
+    //     function onDeSelectHandler(e) {
+    //         console.log('Tag selector onSelect called ', e.detail);
+    //     }
         
-        function onNotFoundHandler(e) {
-            console.log('onNotFound called ');
-        }
+    //     function onNotFoundHandler(e) {
+    //         console.log('onNotFound called ');
+    //     }
+    //     function myFunction() {
+    //         document.getElementById("myDropdown").classList.toggle("show");
+    //    }
+    //    window.onclick = function(event) {
+    //         if (!event.target.matches('.dropbtn')) {
+    //                var dropdowns = document.getElementsByClassName("dropdown-content");
+    //               var i;
+    //               for (i = 0; i < dropdowns.length; i++) {
+    //                 var openDropdown = dropdowns[i];
+    //                     if (openDropdown.classList.contains('show')) {
+    //                        openDropdown.classList.remove('show');
+    //                     }
+    //             }
+    //         }
+    //    }
+
+        </script>
 
     </script>
     <style>
@@ -479,7 +495,15 @@
     </style>
 </head>
 <body>
-    <!-- <date-hierarchy></date-hierarchy> -->
+
+    <h2>Date Hierarchy Component using React Component</h2>
+        
+    <p>data-options='{"lowerLimit": "2019", "upperLimit": "2020", "showWeeks": "false"}' </p>
+    <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2019", "upperLimit": "2020", "showWeeks": "false"}'></date-hierarchy>
+
+
+<!-- 
+
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
         <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> : 
@@ -609,10 +633,10 @@
     <button onclick="getEndDate('datepicker4', 'displayUpper4');">Get End Date</button>
     <br> -->
 
-    <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button> -->
+    <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
-    <br>
-    <div id="newdatepicker"></div>
+    <br> 
+    <div id="newdatepicker"></div>  --> 
 
 </body>
 
