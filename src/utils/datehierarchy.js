@@ -22,25 +22,24 @@ export const getChildren = function (year) {
   
   var quarterArray = [{
   "quarter": "Q1-" + year,
-  "ShowChild": false,
+  "showChild": false,
   "state": 0,
   "children": [{
     "month": "Jan-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(1, year)
    },
    {
     "month": "Feb-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children":getMonthDays(2, year),
-    "state":0
 
    },
    {
     "month": "Mar-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(3, year)
    }
@@ -48,23 +47,23 @@ export const getChildren = function (year) {
  },
  {
   "quarter": "Q2-"+year,
-  "ShowChild": false,
+  "showChild": false,
   "state": 0,
   "children": [{
     "month": "Apr-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children":getMonthDays(4, year)
    },
    {
     "month": "May-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": false,
     "children":getMonthDays(5, year)
    },
    {
     "month": "Jun-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(6, year)
    }
@@ -72,23 +71,23 @@ export const getChildren = function (year) {
  },
  {
   "quarter": "Q3-"+year,
-  "ShowChild": false,
+  "showChild": false,
   "state": 0,
   "children": [{
     "month": "Jul-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(7, year)
    },
    {
     "month": "Aug-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(8, year)
    },
    {
     "month": "Sep-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(9, year)
    }
@@ -96,23 +95,23 @@ export const getChildren = function (year) {
  },
  {
   "quarter": "Q4-"+year,
-  "ShowChild": false,
+  "showChild": false,
   "state": 0,
   "children": [{
     "month": "Oct-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(10, year)
    },
    {
     "month": "Nov-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(11, year)
    },
    {
     "month": "Dec-"+year,
-    "ShowChild": false,
+    "showChild": false,
     "state": 0,
     "children": getMonthDays(12, year)
    }
@@ -122,15 +121,14 @@ export const getChildren = function (year) {
 return quarterArray;
 }
 export const getListOfYears = function(lowerLimit, upperLimit) {
-if((lowerLimit % 1 !==0 || upperLimit % 1 !== 0)||(lowerLimit > upperLimit)){
-  console.error("either lowerLimit or upperLimit not is in valid format");
-}
-  parseInt(lowerLimit);
+if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimit % 1 ==0 && upperLimit % 1 == 0)
+{
+  console.log("lowerLimit",lowerLimit);
     let years = [];
     while (lowerLimit <= upperLimit) {
      var year = {
-      "year": lowerLimit,
-      "ShowChild": false,
+      "year":parseInt(lowerLimit),
+      "showChild": false,
       "state": 0,
       "children": getChildren(lowerLimit)
      }
@@ -139,4 +137,25 @@ if((lowerLimit % 1 !==0 || upperLimit % 1 !== 0)||(lowerLimit > upperLimit)){
     }
     return years;
    }
-
+  
+  else
+  {
+    lowerLimit = 2;
+    upperLimit = 1;
+    let years = [];
+    while (lowerLimit <= upperLimit) {
+     var year = {
+      "year": lowerLimit,
+      "showChild": false,
+      "state": 0,
+      "children": getChildren(lowerLimit)
+     }
+     years.push(year);
+     lowerLimit++;
+    }
+    console.error("either lowerLimit or upperLimit is not in valid format");
+    return years;
+   
+    
+  }
+}
