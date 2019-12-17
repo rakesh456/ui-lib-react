@@ -20,7 +20,6 @@ test('Month component renders the month correctly', () => {
 
 // Test for isUndefinedOrNull 
 describe('Testing on function isUndefinedOrNull',()=>{
-  
   let dateTestValuesInputArray = [123,undefined,null]
   let dateTestValuesOutputArray = [false,true,true]
   let messageDisplayForEachTestCase = ['If any defined variable or truthy value is passed then function will return False','If Undefined value is passed then function returns true', 'If null value is passed then function returns true']
@@ -33,11 +32,8 @@ describe('Testing on function isUndefinedOrNull',()=>{
   }
 
 })
-
-
 //Test for isObject
 describe('Testing on function isObject',()=>{
-
   let obj = {}
   test('Object',()=>{
     return expect(isObject(obj)).toEqual(true)
@@ -46,24 +42,18 @@ describe('Testing on function isObject',()=>{
 })
 //Test for isBlank
 describe('Testing on function isBlank',()=>{
-  
-
   let dateTestValuesInputArray = ['JSTIGERS',undefined,null,'']
   let dateTestValuesOutputArray = [false,true,true,true]
   let messageDisplayForEachTestCase = ['If any defined variable or truthy value is passed then function will return False','If Undefined value is passed then function returns true', 'If null value is passed then function returns true']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(isBlank(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
     
   }
 })
-
-
 // Test for splitArray 
 describe('Testing on function splitArray',()=>{
-  
   let splitTestValuesInputArray = [[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10],[]]
   let splitTestValuesOutputArray = [[[1,2],[3,4],[5,6],[7,8],[9,10]],[[1,2,3,4,5],[6,7,8,9,10]],[]]
   let chunkingSizeofInputArray = [2,5,2]
@@ -76,58 +66,40 @@ describe('Testing on function splitArray',()=>{
     
   }
 })
-
 // Test for getFormatfromOptions that converts any date formate into 'MM/DD/YYYY'
 describe('Testing on function getFormatfromOption',()=>{
-  
-
-  
-
   let dateTestValuesInputArray = ['YYYY/MM/DD','DD/MM/YYYY',undefined,null]
   let dateTestValuesOutputArray = ['MM/DD/YYYY','MM/DD/YYYY','MM/DD/YYYY','MM/DD/YYYY']
   let messageDisplayForEachTestCase = ['If any format of date is passed to a function it returns in as specified in option format','If change the format of date is passed to a function it returns in as specified in option format','If Undefined value is passed then function returns in MM/DD/YYYY format ', 'If null value is passed then function returns in MM/DD/YYYY format']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(getFormatfromOptions(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-
 })
 //Test for getDateByFormat
 describe('Testing on function getDateByFormat ',()=>{
-
-
   let dateTestValuesInputArray = ['12/01/2019','12/01/2019','12/01/2019','12/01/2019']
   let dateTestValueInputFormatArray = ['DD/MM/YYYY','MM/DD/YYYY',undefined,null]
   let dateTestValuesOutputArray = ['01/12/2019','12/01/2019','12/01/2019','12/01/2019']
   let messageDisplayForEachTestCase = ['If any date is passed in DD/MM/YYYY format to the function it returns in the format same as given','If any date is passed in MM/DD/YYYY format to the function it returns in the default format MM/DD/YYYY ', 'If for any date, undefined value is passed as format then function returns in default format MM/DD/YYYY','If for any date, null value is passed as format then function returns in default format MM/DD/YYYY']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(getDateByFormat(dateTestValuesInputArray[i],dateTestValueInputFormatArray[i])).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-
 })
 
 //isValid
 describe('Testing on function isValid',()=>{
-  
-
   let dateTestValuesInputArray = ['12/01/2019','18/01/2019']
   let dateTestValuesOutputArray = [true,false]
   let messageDisplayForEachTestCase = ['If any valid date is passed to the function it return true','If any Invalid date is passed to the function it return false']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(isValidDate(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-
 })
 
 //Tast for getDateDDMMYYYYNew
@@ -147,29 +119,22 @@ describe('Testing on function getDateDDMMYYYYNew',()=>{
 
 //Test for getDateMMDDYYYY
 describe('Testing on function getDateMMDDYYYY',()=>{
-
   let dateTestValuesInputArray = ['3/4/2019','18/01/2019','2019/02/03','02/2019/03',]
   let dateTestValuesOutputArray = ['03/04/2019','NaN/NaN/NaN','02/03/2019','NaN/NaN/NaN']
   let messageDisplayForEachTestCase = ['If we pass date the function return in MM/DD/YYYY format','If we pass invalid date returns Not a Number','If we pass date in different format YYYY/MM/DD it converts to MM/DD/YYYY','If we pass date DD/YYYY/MM it returns Not a number']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(getDateMMDDYYYY(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-  
 })
-
 //Test for getYYYYMMDD\
 describe('Testing on funtion getYYYYMMDD',()=>{
   test('If we pass date then the function getYYYYMMDD return date in YYYYMMDD format',()=>{
     let date = '02/05/2019'
     expect(getYYYYMMDD(date)).toEqual('2019-02-05')
   })
-
 })
-
 // Test for dateToYear
 describe('Testing on function dateToYear',()=>{
   let d = new Date()
@@ -178,10 +143,8 @@ describe('Testing on function dateToYear',()=>{
   let messageDisplayForEachTestCase = ["If we pass date to function it return it's full year",'If we pass invalid date function returns current date full year ',"If we pass date in different format then also it gives it's full year","For null value function will return current date fully year","For udefined value function will return current date fully year"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(dateToYear(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
 })
 
@@ -193,12 +156,9 @@ describe('Testing on function dateToMMYYYY',()=>{
   let messageDisplayForEachTestCase = ["If we pass date to function it return it's months and full year of the date in MM/YYYY format",'If we pass invalid date function returns current date month and full year in MM/YYYY format',"If we pass date in different format then also it gives it's month and full year date in MM/YYYY format","For null value function will return current date month and fully year in MM/YYYY format","For udefined value function will return current date month and fully year in MM/YYYY format"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(dateToMMYYYY(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-  
 })
 
 //Test of function dateToQQYYYY
@@ -212,12 +172,9 @@ describe('Testing on function dateToQQYYYY',()=>{
   let messageDisplayForEachTestCase = ["If we pass date to function it return Quater with its full year",'If we pass invalid date function returns current month Quater and its full year ',"If we pass date in different format then also it gives it's current quater and full year","For null value function will return current month quater and fully year","For udefined value function will return current month quater and  fully year"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
-    
       expect(dateToQQYYYY(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
     })
-    
   }
-  
 })
 
 //Test of function getQQFromMonth
@@ -238,8 +195,7 @@ describe('Should render without crashing', () => {
     wrapper = shallow(<Month month='12' year='2019' />);
     let html = wrapper.find('.VS-MonthName').text();
     expect(html).toEqual('DECEMBER 2019');
-
-  })
+})
 
   test('check defauLt date if current date is in the limit in DD/MM/YYYY', () => {
     let options = {"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]};
