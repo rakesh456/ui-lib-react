@@ -33,7 +33,7 @@ export function splitArray(array, chunk_size){
     return tempArray;
 }
 
-// Funtion to return display format from options. Send MM/DD/YYYY if nout found
+// Funtion to return display format from options. Send MM/DD/YYYY if not found
 export function getFormatfromOptions(options){
     return (!isUndefinedOrNull(options) && options.displayFormat)? options.displayFormat : 'MM/DD/YYYY';
 }
