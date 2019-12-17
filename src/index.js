@@ -4,6 +4,8 @@ import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+import WeekHierarchy from './components/DateHierarchy/week-hierarchy';
+
 import {
     isUndefinedOrNull
 } from "../src/utils/utils";
@@ -15,6 +17,7 @@ import {
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
+//import './components/DateHierarchy/week-hierarchy.scss';
 
 
 (function () {
@@ -149,12 +152,23 @@ Array.prototype.forEach.call(
 
 function dateHierarchyRender(el) { 
     let options = JSON.parse(el.getAttribute('data-options'));
-
-    var HierarchyComponentElement = <DateHierarchy options={options} />;
-
-    var HierarchyComponentInstance = ReactDOM.render(
-        HierarchyComponentElement,
-        el
+    
+      var HierarchyComponentElement1 = <WeekHierarchy options={options} />
+      var HierarchyComponentElement = <DateHierarchy options={options} />;
+console.log('options',options);
+   if(options.showWeeks===false) {
+        console.log('inside date hierarchy', options.showWeeks);
+        var HierarchyComponentInstance = ReactDOM.render(
+            HierarchyComponentElement,
+            el
+        )
+    }
+   else{
+        console.log('inside week hirarchy');
+        var HierarchyComponentInstance = ReactDOM.render(
+            HierarchyComponentElement1,
+            el
     )
+    }
 }
 serviceWorker.unregister();
