@@ -3,6 +3,7 @@ import Week from "./week";
 import Month from "./month";
 import Days from "./days";
 import Buttons from "./buttons";
+import * as CONSTANTS from '../../../utils/constants'
 
 import {
     convertYYYYMMDD,
@@ -27,7 +28,7 @@ class CalendarDate extends React.PureComponent {
     componentDidMount() {}
 
     componentDidUpdate(prevProps) {
-        var { options } = this.props;
+        let { options } = this.props;
 
         const selectedDate1 = currentFormatToYYYYMMDDNew(this.props.selectedDate, options);
         const selectedDate2 = currentFormatToYYYYMMDDNew(prevProps.selectedDate, options);
@@ -60,6 +61,10 @@ class CalendarDate extends React.PureComponent {
         this.props.onClearButtonClick();
     }
 
+    goToSelectMonthYear = () => {
+        this.props.goToSelectMonthYear();
+    }
+    
     goToPrevMonth = () => {
         if (this.state.month === 1) {
             this.setState({
@@ -88,7 +93,7 @@ class CalendarDate extends React.PureComponent {
 
     getCalendarContainerClass = () => {
         const { showButtons } = this.props.options;
-        return "VS-CalendarContainer VS-modal " + ((showButtons && showButtons === true)? "VS-shape-rounded-fill-with-button" : "VS-shape-rounded-fill");
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ` + ((showButtons && showButtons === true)? `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_BUTTON}` : `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL}`);
     }
 
     render() {
@@ -98,11 +103,10 @@ class CalendarDate extends React.PureComponent {
         if (!this.props.shouldCalendarOpen) {
             return null;
         }
-        
 
         return (
-            <div className={this.getCalendarContainerClass()} style={this.props.style} tabIndex="0" onKeyDown={(e) => this.props.onKeyDown(e)}>
-                <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} />
+            <div className={this.getCalendarContainerClass()} style={this.props.style} onKeyDown={(e) => this.props.onKeyDown(e)}>
+                <Month options={this.props.options} month={month} year={year} goToNextMonth={this.goToNextMonth} goToPrevMonth={this.goToPrevMonth} goToSelectMonthYear={this.goToSelectMonthYear} />
                 <Week />
                 <Days options={this.props.options} selectedDate={selectedDate} month={month} year={year} onSelect={this.onSelectHandler} />
                 {

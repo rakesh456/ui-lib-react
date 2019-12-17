@@ -14,6 +14,11 @@ export function isUndefinedOrNull(obj){
     return (typeof obj === "undefined" || obj === null || !obj)? true : false;
 }
 
+// Function to check obj is undefined or null
+export function isObject(obj){
+    return (typeof obj === 'object' && obj !== null);
+}
+
 // Funtion to check string is blank, undefined or null
 export function isBlank(string){
     return (typeof string === "undefined" || string === null || string === '')? true : false;
@@ -21,9 +26,9 @@ export function isBlank(string){
 
 // Split array with chunk size
 export function splitArray(array, chunk_size){
-    var index = 0;
-    var arrayLength = array.length;
-    var tempArray = [];
+    let index = 0;
+    let arrayLength = array.length;
+    let tempArray = [];
     
     for (index = 0; index < arrayLength; index += chunk_size) {
         const myChunk = array.slice(index, index+chunk_size);
@@ -40,7 +45,7 @@ export function getFormatfromOptions(options){
 
 // Get date by display format
 export function getDateByFormat(date, format){
-    return (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date);
+    return (date)? (format && format === 'DD/MM/YYYY')? getDateDDMMYYYY(date) : getDateMMDDYYYY(date) : "";
 }
 
 // Get date by display format new
@@ -167,3 +172,39 @@ export function s4() {
         .toString(16)
         .substring(1);
 }
+
+// Function to check object contains in list
+export const arrayIncludesInObj = (arr, key, valueToCheck) => {
+    let found = false;
+  
+    arr.forEach((element) => {
+        if (element[key] === valueToCheck) {
+          found = true;
+        }
+    });
+    return found;
+}
+
+// Function to check string exists in another string
+export const isStringExists = (string, substring) => {
+    return (string, substring)? string.toLowerCase().indexOf(substring.toLowerCase()) !== -1 : false;
+}
+
+
+export const compareObjects = (o1, o2) => {
+    for(var p in o1){
+        if(o1.hasOwnProperty(p)){
+            if(o1[p] !== o2[p]){
+                return false;
+            }
+        }
+    }
+    for(var p1 in o2){
+        if(o2.hasOwnProperty(p1)){
+            if(o1[p1] !== o2[p1]){
+                return false;
+            }
+        }
+    }
+    return true;
+};

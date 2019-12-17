@@ -1,0 +1,199 @@
+$primary-one-light: #e6f0f6;
+$primary-one-dark: #006ba6;
+$primary-one-bright: #1a7aaf;
+$primary-two-light: #eeeeef;
+$primary-two-bright: #76797b;
+$primary-two-dark: #54585a;
+$primary-three-dark: #000080;
+$secondary-one-light: #f3f8e6;
+$secondary-one-bright: #9dca33;
+$secondary-one-dark: #84bd00;
+$secondary-two-bright: #335161;
+$secondary-three-bright: #78909C;
+$secondary-four-bright: #5D717C;
+$secondary-two-light: #e6e9eb;
+$secondary-two-dark: #00263a;
+$grey-one: #ececec;
+$complementary-one: #f8f8f9;
+$complementary-two: #e6edf3;
+$complementary-three: #ccdbe7;
+$complementary-four: #80a5c3;
+$complementary-five: #bbbbbb;
+$text-black: #000000;
+$text-white: #ffffff;
+$text-tertiary: #bbbcbd;
+$cg-aqua-10: #ecf9f7;
+$cg-aqua-30: #c6ece6;
+$cg-aqua-50: #a0e0d6;
+$cg-aqua-70: #79d4c5;
+$cg-aqua: #40c1ac;
+$cg-crimson-10: #fbeae8;
+$cg-crimson-30: #f4bfbb;
+$cg-crimson-60: #e97f77;
+$cg-crimson-80: #e15449;
+$cg-crimson-90: #de3e33;
+$cg-navy-10: #b3c9db;
+$cg-navy-80: #336f9f;
+$cg-navy-90: #1a5d93;
+$cg-navy: #004b87;
+$gui-slate: #78909c;
+$gui-green: #00b16a;
+$gui-mango: #ffb900;
+$gui-gold: #fff1d2;
+$gui-snow: #fafafa;
+$gui-blue: #069abc;
+$gui-white: #fffffe;
+$gui-no-data: #eeeeee;
+$gui-error-red: #fd462a;
+$font-family: 'Roboto', sans-serif;
+
+
+.VS-Hidden{
+    display: none;
+    visibility: hidden;
+}
+
+.VS-Show{
+    position: absolute;
+    display: block;
+}
+
+.VS-Checkbox-Container{
+    display: inline-block;
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+
+.VS-Checkbox-Container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+  
+
+.VS-Check-Checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    background-color: #fff;
+    border: 1px solid #eee;
+}
+  
+.VS-Checkbox-Container:hover input ~ .VS-Check-Checkmark {
+    background-color: #fff;
+}
+
+.VS-Checkbox-Container input:checked ~ .VS-Check-Checkmark {
+    background-color: white;
+}
+
+.VS-Check-Checkmark:after {
+content: "";
+    position: absolute;
+    display: none;
+}
+
+.VS-Checkbox-Container input:checked ~ .VS-Check-Checkmark:after {
+    display: block;
+}
+
+// .VS-Checkbox-Container .VS-Check-Checkmark:before {
+
+// }
+
+.VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
+    left: 5px;
+    top: 5px;
+    width: 0px;
+    height: 0px;
+    border: solid #2196F3;
+    border-width: 3px;
+}
+
+.VS-Checkbox-Container .VS-Check-Checkmark:after {
+    left: 5px;
+    top: 2px;
+    width: 3px;
+    height: 7px;
+    border: solid #2196F3;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.VS-Plus-Minus,
+.VS-Month-Plus-Minus,
+.VS-Quarter-Plus-Minus{
+    position: relative;
+    font-size: 22px;
+    padding: 5px;
+    font-weight: bold;
+    color: #80a5c3;
+    cursor: pointer;
+    top: 2px;
+}
+.VS-ExpandCollapseSign{
+    padding: 5px;
+}
+
+.VS-DayRow{
+    list-style: none;
+    margin: 1px 44px;
+    right: 0;
+}
+
+.VS-MonthRow{
+    list-style: none;
+    margin: 5px 16px;
+    right: 30;
+}
+
+.VS-QuarterRow{
+    list-style: none;
+    margin: 8px 18px;
+}
+
+.VS-YearRow{
+    list-style: none ;
+    margin: 5px 20px;
+}
+
+.hierarcy{
+    position: relative;
+    margin: 5px 20px;
+    padding: 20px;
+}
+
+
+.VS-Checkbox{
+    display: inline-block;
+    top: 2px;
+    position: relative;
+}
+
+.VS-Quarter-Details:hover{
+    border: 1px solid #ddd;
+}
+
+.VS-Quarter-Details{
+    display: inline-block;
+    padding: 2px;
+}
+
+.VS-Quarter-Details .VS-Quarter-Name{
+    display: inline-block;
+}
+

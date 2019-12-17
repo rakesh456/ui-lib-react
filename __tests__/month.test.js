@@ -1,10 +1,14 @@
 import Month from '../src/components/Datepicker/calendar-date/month';
+import DatePicker from '../src/components/Datepicker/index';
 import DEFAULT_OPTIONS from '../src/utils/constants';
-import {isUndefinedOrNull, isBlank,splitArray,getFormatfromOptions,getDateByFormat,isValidDate,getDateDDMMYYYYNew,getDateMMDDYYYY,getYYYYMMDD,dateToYear,dateToMMYYYY,dateToQQYYYY,getQQFromMonth} from '../src/utils/utils.js'
+import {isUndefinedOrNull, isBlank,splitArray,getFormatfromOptions,getDateByFormat,isValidDate,getDateDDMMYYYYNew,getDateMMDDYYYY,getYYYYMMDD,dateToYear,dateToMMYYYY,dateToQQYYYY,getQQFromMonth,isObject} from '../src/utils/utils.js';
+import {zeroPad, MONTH_NAMES} from '../src/utils/calendar';
 import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import React from 'react';
+import Days from '../src/components/Datepicker/calendar-date/days';
+import { FaCaretRight } from 'react-icons/lib/fa';
 
 test('Month component renders the month correctly', () => {
   const options = DEFAULT_OPTIONS;
@@ -16,22 +20,7 @@ test('Month component renders the month correctly', () => {
 
 // Test for isUndefinedOrNull 
 describe('Testing on function isUndefinedOrNull',()=>{
-  // test('Checking by passing defined value',()=>{
-  //   let obj= 123;
-  // let check= isUndefinedOrNull(obj)
-  //   expect(check).toEqual(false);
-  // })
-
-  // test('undefuned or null',()=>{
-  //   let obj;
-  // let check= isUndefinedOrNull(obj)
-  //   expect(check).toEqual(true);
-  // })
-
-  // test('Checking by passing null value',()=>{
-  //   let obj = null
-  //   expect(isUndefinedOrNull(obj)).toBe(true)
-  // })
+  
   let dateTestValuesInputArray = [123,undefined,null]
   let dateTestValuesOutputArray = [false,true,true]
   let messageDisplayForEachTestCase = ['If any defined variable or truthy value is passed then function will return False','If Undefined value is passed then function returns true', 'If null value is passed then function returns true']
@@ -44,30 +33,20 @@ describe('Testing on function isUndefinedOrNull',()=>{
   }
 
 })
+
+
+//Test for isObject
+describe('Testing on function isObject',()=>{
+
+  let obj = {}
+  test('Object',()=>{
+    return expect(isObject(obj)).toEqual(true)
+  })
+
+})
 //Test for isBlank
 describe('Testing on function isBlank',()=>{
-  // test('Checking by passing defined value',()=>{
-  //   let obj= 'JSTIGERS';
-  // let check= isBlank(obj)
-  //   expect(check).toEqual(false);
-  // })
-
-  // test('undefined or null',()=>{
-  //   let obj;
-  // let check= isBlank(obj)
-  //   expect(check).toEqual(true);
-  // })
-
-  // test('Checking by passing null value',()=>{
-  //   let obj = null
-  //   expect(isBlank(obj)).toBe(true)
-  // })
-
-  // test('Checking by passing defined value',()=>{
-  //   let obj= '';
-  // let check= isBlank(obj)
-  //   expect(check).toEqual(true);
-  // })
+  
 
   let dateTestValuesInputArray = ['JSTIGERS',undefined,null,'']
   let dateTestValuesOutputArray = [false,true,true,true]
@@ -84,21 +63,7 @@ describe('Testing on function isBlank',()=>{
 
 // Test for splitArray 
 describe('Testing on function splitArray',()=>{
-  // test('Checking for splitArray or chunking Array',()=>{
-  //   let arr = [1,2,3,4,5,6,7,8,9,10]
-  //   expect(splitArray(arr,2)).toEqual([[1,2],[3,4],[5,6],[7,8],[9,10]])
-  // })
-
-  // test('Checking for splitArray or chunking Array',()=>{
-  //   let arr = [1,2,3,4,5,6,7,8,9,10]
-  //   expect(splitArray(arr,5)).toEqual([[1,2,3,4,5],[6,7,8,9,10]])
-  // })
-
-  // test('Checking for splitArray or chunking Array',()=>{
-  //   let arr = []
-  //   expect(splitArray(arr,2)).toEqual([])
-  // })
-
+  
   let splitTestValuesInputArray = [[1,2,3,4,5,6,7,8,9,10],[1,2,3,4,5,6,7,8,9,10],[]]
   let splitTestValuesOutputArray = [[[1,2],[3,4],[5,6],[7,8],[9,10]],[[1,2,3,4,5],[6,7,8,9,10]],[]]
   let chunkingSizeofInputArray = [2,5,2]
@@ -114,25 +79,7 @@ describe('Testing on function splitArray',()=>{
 
 // Test for getFormatfromOptions that converts any date formate into 'MM/DD/YYYY'
 describe('Testing on function getFormatfromOption',()=>{
-  // test('Checking for the format of date',()=>{
-  //   let date = 'YYYY/MM/DD'
-  //   expect(getFormatfromOptions(date)).toEqual('MM/DD/YYYY')
-  // })
-
-  // test('Checking for the format of date',()=>{
-  //   let date = 'DD/MM/YYYY'
-  //   expect(getFormatfromOptions(date)).toEqual('MM/DD/YYYY')
-  // })
-
-  // test('Checking for the format of date',()=>{
-  //   let date;
-  //   expect(getFormatfromOptions(date)).toEqual('MM/DD/YYYY')
-  // })
-
-  // test('Checking for the format of date',()=>{
-  //   let date = null
-  //   expect(getFormatfromOptions(date)).toEqual('MM/DD/YYYY')
-  // })
+  
 
   
 
@@ -150,25 +97,7 @@ describe('Testing on function getFormatfromOption',()=>{
 })
 //Test for getDateByFormat
 describe('Testing on function getDateByFormat ',()=>{
-//   test('Checking for date format by passing some format',()=>{
-//     let date = '12/01/2019'
-//     expect(getDateByFormat(date,'DD/MM/YYYY')).toEqual('01/12/2019')
-//   })
 
-//   test('Checking for date format by passing some format',()=>{
-//     let date = '12/01/2019'
-//     expect(getDateByFormat(date,'MM/DD/YYYY')).toEqual('12/01/2019')
-//   })
-// // getDateByFormat Test undefinded
-//   test('Checking for date format by passing some format',()=>{
-//     let date = '12/01/2019'
-//     expect(getDateByFormat(date)).toEqual('12/01/2019')
-//   })
-
-//   test('Checking for date format by passing some format',()=>{
-//     let date = '12/01/2019'
-//     expect(getDateByFormat(date,null)).toEqual('12/01/2019')
-//   })
 
   let dateTestValuesInputArray = ['12/01/2019','12/01/2019','12/01/2019','12/01/2019']
   let dateTestValueInputFormatArray = ['DD/MM/YYYY','MM/DD/YYYY',undefined,null]
@@ -186,15 +115,7 @@ describe('Testing on function getDateByFormat ',()=>{
 
 //isValid
 describe('Testing on function isValid',()=>{
-  // test('Checking date is valid or not valid',()=>{
-  //   let date = '12/01/2019'
-  //   expect(isValidDate(date)).toEqual(true)
-  // })
-
-  // test('Checking date is valid or not valid',()=>{
-  //   let date = '18/01/2019'
-  //   expect(isValidDate(date)).toEqual(false)
-  // })
+  
 
   let dateTestValuesInputArray = ['12/01/2019','18/01/2019']
   let dateTestValuesOutputArray = [true,false]
@@ -309,5 +230,63 @@ describe('Testing of function getQQFromMonth',()=>{
     test('Testing a function that it return the quater of the date ',()=>{
       expect(getQQFromMonth(month)).toEqual('Q1')
     })
+})
+
+describe('Should render without crashing', () => {
+   let wrapper;
+   test('Check month rendering correctly', () => {
+    wrapper = shallow(<Month month='12' year='2019' />);
+    let html = wrapper.find('.VS-MonthName').text();
+    expect(html).toEqual('DECEMBER 2019');
+
+  })
+
+  test('check defauLt date if current date is in the limit in DD/MM/YYYY', () => {
+    let options = {"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2022", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]};
+    var month = zeroPad((new Date().getMonth()+1), 2);
+    var day = zeroPad((new Date().getDate()), 2);
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = wrapper.find('.VS-Calendar-Input').props().value
+    expect(html).toEqual(day+'/'+month+'/'+new Date().getFullYear());
+  })
+
+  test('check defaut date if current date is in the limit in MM/DD/YYYY', () => {
+    let options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/08/2019", "upperLimit": "12/29/2024", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/28/2019", "10/15/2020", "11/01/2020", "11/20/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
+    var month = zeroPad((new Date().getMonth()+1), 2);
+    var day = zeroPad((new Date().getDate()), 2);
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = wrapper.find('.VS-Calendar-Input').props().value;
+    expect(html).toEqual(month+'/'+day+'/'+new Date().getFullYear());
+  })
+
+
+  test('check the default date if current date is not in the limit in DD/MM/YYYY', () =>{
+    let options = {"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/08/2015", "upperLimit": "30/09/2018", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["01/12/2019", "15/10/2020", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]};
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = wrapper.find('.VS-Calendar-Input').props().value;
+    expect(html).toEqual('08/08/2015');
+  })
+  
+   test('checking the default Year in MM/YYYY format', () =>{
+     let options = {"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/2018", "upperLimit": "03/2025", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/2019", "10/2024"]};
+     var wrapper = shallow(<DatePicker options={options} />);
+     let html = wrapper.find('.VS-Calendar-Input').props().value;
+     expect(html).toEqual(new Date().getMonth()+1+'/'+new Date().getFullYear());
+  })
+  
+  test('checking the default Year in QQ/YYYY format', () =>{
+    let options = {"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2018", "upperLimit": "Q3/2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2020", "Q3/2025"]};
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = wrapper.find('.VS-Calendar-Input').props().value;
+    expect(html).toEqual('Q4/2019');
+  })
+
+  test('checking the default Year in YYYY format', () =>{
+    let options = {"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2017", "upperLimit": "2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2020", "2025"]};
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = parseInt(wrapper.find('.VS-Calendar-Input').props().value);
+    expect(html).toEqual(new Date().getFullYear());
+  })
+  
 
 })
