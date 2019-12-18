@@ -1,7 +1,7 @@
 import Month from '../src/components/Datepicker/calendar-date/month';
 import DatePicker from '../src/components/Datepicker/index';
 import DEFAULT_OPTIONS from '../src/utils/constants';
-import {isUndefinedOrNull, isBlank,splitArray,getFormatfromOptions,getDateByFormat,isValidDate,getDateDDMMYYYYNew,getDateMMDDYYYY,getYYYYMMDD,dateToYear,dateToMMYYYY,dateToQQYYYY,getQQFromMonth,isObject} from '../src/utils/utils.js';
+import {isUndefinedOrNull, isBlank,splitArray,getFormatfromOptions,getDateByFormat,isValidDate,getDateDDMMYYYYNew,getDateMMDDYYYY,getYYYYMMDD,dateToYear,dateToMMYYYY,dateToQQYYYY,getQQFromMonth,isObject,isStringExists,compareObjects} from '../src/utils/utils.js';
 import {zeroPad, MONTH_NAMES} from '../src/utils/calendar';
 import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
@@ -35,10 +35,16 @@ describe('Testing on function isUndefinedOrNull',()=>{
 //Test for isObject
 describe('Testing on function isObject',()=>{
   let obj = {}
-  test('Object',()=>{
-    return expect(isObject(obj)).toEqual(true)
-  })
-
+  let obj1;
+  let obj2 = null;
+  let dateTestValuesInputArray = [obj,obj1,obj2]
+  let dateTestValuesOutputArray = [true,false,false]
+  let messageDisplayForEachTestCase = ['Passing object function returns true ','Passing undefined object then function returns false', 'Passing null object then function returns false']
+  for (let i = 0; i < dateTestValuesInputArray.length; i++) {
+    test(`${messageDisplayForEachTestCase[i]}`,()=>{
+      expect(isObject(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
+    })
+  }
 })
 //Test for isBlank
 describe('Testing on function isBlank',()=>{
@@ -188,6 +194,41 @@ describe('Testing of function getQQFromMonth',()=>{
       expect(getQQFromMonth(month)).toEqual('Q1')
     })
 })
+
+//Test of isStringExist
+describe('Testing on function isStringExists',()=>{
+  let TestValuesInputStringArray = ['amanverma','thisisbengaluru']
+  let TestValuesInputSubStringArray = ['aman','balloon']
+  let TestValuesOutputArray = [true,false]
+  let messageDisplayForEachTestCase = ['Passing string and substring if substring present then function return true','Passing string and substring if substring not present then function return false', 'If null value is passed then function returns true']
+  for (let i = 0; i < TestValuesInputStringArray.length; i++) {
+    test(`${messageDisplayForEachTestCase[i]}`,()=>{
+      expect(isStringExists(TestValuesInputStringArray[i],TestValuesInputSubStringArray[i])).toEqual(TestValuesOutputArray[i])
+    })
+  }
+})
+
+//Test for compareObjects
+describe('Testing on function compareObjects',()=>{
+
+  let person = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+  let otherPerson = {firstName:"John", lastName:"Doe", age:50, eyeColor:"blue"};
+  let differentValuePerson = {firstName:"suraj", lastName:"verma", age:30, eyeColor:"brown"};
+  let differentPropertyPerson = { hairColor:'brown', tall:'6.0ft' }
+  let emptyObject = {}
+  let emptyObject2 = {}
+  let TestValuesInputObjectArray = [person,person,person,emptyObject,person]
+  let TestValuesInputOtherObjectArray = [otherPerson,differentValuePerson,emptyObject,emptyObject2,differentPropertyPerson]
+  let TestValuesOutputArray = [true,false,false,true,false]
+  let messageDisplayForEachTestCase = ['Passing two objects having same property and values then the function return true','Passing two different  objects having same property and different values then the function return flase', 'Comparing Object to an empty object then the function returns false',"Compare two empty objects then the funtions returns true","Compare two objects having different property then the function return false"]
+  for (let i = 0; i < TestValuesInputObjectArray.length; i++) {
+    test(`${messageDisplayForEachTestCase[i]}`,()=>{
+      expect(compareObjects(TestValuesInputObjectArray[i],TestValuesInputOtherObjectArray[i])).toEqual(TestValuesOutputArray[i])
+    })
+  }
+
+})
+
 
 describe('Should render without crashing', () => {
    let wrapper;
