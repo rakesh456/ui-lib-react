@@ -4,7 +4,7 @@ export const DEFAULT_OPTIONS = { 'placeholder': 'Search', 'listItems': [], 'allo
 export const resetTagSelectorOptions = (options) => {
     return { ...DEFAULT_OPTIONS, ...options };
 }
-
+ 
 // Function to reset options with default options
 export const isValidJsonFormat = (allowHierarchy, json) => {
     let isValidFormat = true;

@@ -22,11 +22,14 @@ test('Month component renders the month correctly', () => {
 describe('Testing on function isUndefinedOrNull',()=>{
   let dateTestValuesInputArray = [123,undefined,null]
   let dateTestValuesOutputArray = [false,true,true]
-  let messageDisplayForEachTestCase = ['If any defined variable or truthy value is passed then function will return False','If Undefined value is passed then function returns true', 'If null value is passed then function returns true']
+  let messageDisplayForEachTestCase = ['If any defined variable or truthy value is passed then function will return False',
+                                      'If Undefined value is passed then function returns true',
+                                      'If null value is passed then function returns true']
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
     
-      expect(isUndefinedOrNull(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
+      expect(isUndefinedOrNull(dateTestValuesInputArray[i],))
+      .toEqual(dateTestValuesOutputArray[i])
     })
     
   }
