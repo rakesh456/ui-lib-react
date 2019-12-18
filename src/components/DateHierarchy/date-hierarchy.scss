@@ -134,10 +134,13 @@ content: "";
     transform: rotate(45deg);
 }
 
+
+.VS-week-Plus-Minus,
 .VS-Plus-Minus,
 .VS-Month-Plus-Minus,
 .VS-Quarter-Plus-Minus{
     position: relative;
+    border-radius: 5px;
     font-size: 22px;
     padding: 5px;
     font-weight: bold;
@@ -172,10 +175,21 @@ content: "";
     border: grey
 }
 
+.VS-WeekRow{
+    list-style: none;
+    margin: 2px 16px;
+    right: 30;
+}
+
+.VS-WeekDayRow{
+    list-style: none;
+    margin: 2px 40px;
+    right: 30; 
+}
 .VS-Hierarchy{
   position: relative;
   background: #F8F8F7;
-  width: 230px;
+  width: 300px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
@@ -206,4 +220,7 @@ content: "";
 
 .VS-SearchBox{
     width: -webkit-fill-available;
+    margin-right: -3px;
+    margin-top: -1px;
+    margin-left: -1px;
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { Input } from 'reactstrap';
 import ReactDOM from 'react-dom';
 import { getListOfYears } from "../../utils/datehierarchy";
+import WeekHierarchy from "./week-hierarchy";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
@@ -10,7 +11,6 @@ class DateHierarchy extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
         this.state = { years: yearList};
     }
-
     updateDimensions() { }
 
     componentDidMount() {
@@ -284,7 +284,6 @@ class DateHierarchy extends React.PureComponent {
 
     renderDays = (days, row, yindex, qindex, mindex, dindex) =>{
         let {options} = this.props;
-        console.log("options", options.showWeeks);
             return (
             <div className="VS-DayRow" key={'day' + yindex.toString() + qindex.toString() + mindex.toString() + dindex.toString()}>
                
@@ -304,7 +303,6 @@ class DateHierarchy extends React.PureComponent {
 
 
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
-
         return (
             <div className="VS-MonthRow" key={'month' + yindex.toString() + qindex.toString() + mindex.toString()}>
                 {
@@ -327,8 +325,7 @@ class DateHierarchy extends React.PureComponent {
             
             </div>
         )
-    }
-    
+}
 
         
     renderQuarter = (qt,row, yindex, qindex) => {

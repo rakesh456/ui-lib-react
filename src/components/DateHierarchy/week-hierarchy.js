@@ -232,6 +232,25 @@ class WeekHierarchy extends React.PureComponent {
     }
 
 
+    renderWeekDays = (weekDays, row, yindex, qindex, mindex, windex, wdindex) =>{
+            return (
+            <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
+               
+           <label className="VS-Checkbox-Container">{weekDays.date + " "+weekDays.day}
+
+                {
+                     (weekDays.state) ? 
+                    <input className="VS-Checkbox" type="checkbox" checked={weekDays.state} onChange={ () => this.onUnCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={weekDays.state} onChange={ () => this.onCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex)}></input>
+                }
+                
+                <span className="VS-Check-Checkmark"></span>
+                </label>
+            </div>
+        )
+    }
+
+
     renderWeeks = (weeks, row, yindex, qindex, mindex, windex) =>{
         console.log("weeks", weeks);
             return (
@@ -252,6 +271,11 @@ class WeekHierarchy extends React.PureComponent {
                 
                 <span className="VS-Check-Checkmark"></span>
                 </label>
+                {
+                    (weeks.showChild && weeks.children) ?
+                        weeks.children.map((weekDays, wdindex) => this.renderWeekDays(weekDays, row, yindex, qindex, mindex, windex, wdindex)) : ''
+                }
+            
             </div>
         )
     }
