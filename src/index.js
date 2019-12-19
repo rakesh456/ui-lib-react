@@ -152,23 +152,11 @@ Array.prototype.forEach.call(
 
 function dateHierarchyRender(el) { 
     let options = JSON.parse(el.getAttribute('data-options'));
-    
-      var HierarchyComponentElement1 = <WeekHierarchy options={options} />
-      var HierarchyComponentElement = <DateHierarchy options={options} />;
-console.log('options',options);
-   if(options.showWeeks===false) {
-        console.log('inside date hierarchy', options.showWeeks);
+      var HierarchyComponentElement = <DateHierarchy options={options} />
+
         var HierarchyComponentInstance = ReactDOM.render(
             HierarchyComponentElement,
             el
         )
-    }
-   else{
-        console.log('inside week hirarchy');
-        var HierarchyComponentInstance = ReactDOM.render(
-            HierarchyComponentElement1,
-            el
-    )
-    }
 }
 serviceWorker.unregister();

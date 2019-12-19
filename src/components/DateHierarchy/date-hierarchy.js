@@ -303,6 +303,7 @@ class DateHierarchy extends React.PureComponent {
 
 
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
+        
         return (
             <div className="VS-MonthRow" key={'month' + yindex.toString() + qindex.toString() + mindex.toString()}>
                 {
@@ -383,13 +384,22 @@ class DateHierarchy extends React.PureComponent {
     }
     
     render() {
+        const {options} = this.props;
+        if(options.showWeeks === false){
         return (
-            <div className= "VS-Hierarchy">
+            <div className= "VS-Hierarchy" options = {options}>
                 <input className= "VS-SearchBox" type="text" placeholder="Search..">
                 </input>
                 {this.state.years.map((row, index) => this.renderYear(row, index))}
             </div>
         )
+        }
+        else
+        {
+            return (
+                <WeekHierarchy options = {options}></WeekHierarchy>
+            )
+        }
     }
 }
 export default DateHierarchy;

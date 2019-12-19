@@ -63,6 +63,7 @@ class WeekHierarchy extends React.PureComponent {
     expandWeek(weeks, yindex, qindex, mindex, windex) {
         let years = [...this.state.years];
         years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=true;
+        console.log("show child",years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild'])
         this.setState({
             years: [...years]
         })
@@ -236,7 +237,7 @@ class WeekHierarchy extends React.PureComponent {
             return (
             <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
                
-           <label className="VS-Checkbox-Container">{weekDays.date + " "+weekDays.day}
+           <label className="VS-Checkbox-Container">{weekDays.date+ " "+weekDays.day}
 
                 {
                      (weekDays.state) ? 
@@ -362,7 +363,6 @@ class WeekHierarchy extends React.PureComponent {
     }
     
     render() {
-        console.log("this.props", this.props);
         return (
             <div className= "VS-Hierarchy">
                 <input className= "VS-SearchBox" type="text" placeholder="Search..">
