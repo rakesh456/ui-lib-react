@@ -3,8 +3,9 @@ import {DEFAULT_OPTIONS} from '../src/utils/tagselectorutils';
 //Test for resetTagSelectorOptions
 describe('Testing on function resetTagSelectorOptions',()=>{
     let options ={myproperty:'five'}
+    DEFAULT_OPTIONS['myproperty'] = 'five';
     test('testing',()=>{
-        expect(resetTagSelectorOptions(options)).toEqual()
+        expect(resetTagSelectorOptions(options)).toEqual(DEFAULT_OPTIONS)
 })
     })
     
