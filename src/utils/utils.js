@@ -174,7 +174,7 @@ export function s4() {
 }
 
 // Function to check object contains in list
-export const arrayIncludesInObj = (arr, key, valueToCheck) => {
+export const objectIncludesInArray = (arr, key, valueToCheck) => {
     let found = false;
   
     arr.forEach((element) => {

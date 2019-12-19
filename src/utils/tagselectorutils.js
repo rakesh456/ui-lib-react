@@ -1,4 +1,4 @@
-export const DEFAULT_OPTIONS = { 'placeholder': 'Search', 'listItems': [], 'allowNewValue': false, 'maxItemCounter': 0, 'searchWithHelper': false, 'canRemoveAll': true, 'readOnly': false, 'allowHierarchy': false };
+export const DEFAULT_OPTIONS = { 'placeholder': 'Search', 'listItems': [], 'allowNewValue': false, 'maxItemCounter': 0, 'showHelper': false, 'canRemoveAll': true, 'readOnly': false, 'showHierarchy': false };
 
 // Function to reset options with default options
 export const resetTagSelectorOptions = (options) => {
@@ -6,13 +6,13 @@ export const resetTagSelectorOptions = (options) => {
 }
 
 // Function to reset options with default options
-export const isValidJsonFormat = (allowHierarchy, json) => {
+export const isValidJsonFormat = (showHierarchy, json) => {
     let isValidFormat = true;
     let key;
     if (!json || json.length <= 0) {
         isValidFormat = false;
     } else {
-        if (allowHierarchy === true) {
+        if (showHierarchy === true) {
             json.forEach((item) => {
                 for (key in item) {
                     isValidFormat = (typeof key === 'string' && typeof item[key] === 'object')
@@ -49,12 +49,12 @@ function objectFindByKey(array, key) {
 
 
 // Function to reset options with default options
-export const sortListingByType = (allowHierarchy, json) => {
+export const sortListingByType = (showHierarchy, json) => {
     let data = [];
     if (!json || json.length <= 0) {
         return [];
     } else {
-        if (allowHierarchy === true) {
+        if (showHierarchy === true) {
             let _keys = [];
             
             json.forEach((item) => {
