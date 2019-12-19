@@ -1,21 +1,15 @@
 import React from "react";
 import { Input } from 'reactstrap';
 import ReactDOM from 'react-dom';
-import { getListOfYears } from "../../utils/datehierarchy";
-import WeekHierarchy from "./week-hierarchy";
+import { getListOfYearsForWeeks} from "../../utils/datehierarchy";
 
-class DateHierarchy extends React.PureComponent {
+class WeekHierarchy extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
+        let yearList = getListOfYearsForWeeks(options.lowerLimit,options.upperLimit);
         this.state = { years: yearList};
     }
-    updateDimensions() { }
-
-    componentDidMount() {
-    }
-
     expandYear(row, index) {
         let years = [...this.state.years]
         years[index]['showChild'] = true;
@@ -58,6 +52,24 @@ class DateHierarchy extends React.PureComponent {
         })
     }
 
+    collapseWeek(weeks, yindex, qindex, mindex, windex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=false;
+        this.setState({
+            years: [...years]
+        })
+    }
+
+    expandWeek(weeks, yindex, qindex, mindex, windex) {
+        let years = [...this.state.years];
+        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=true;
+        console.log("show child",years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild'])
+        this.setState({
+            years: [...years]
+        })
+    }
+
+
     collapseMonth(mnth, yindex, qindex, mindex) {
         let years = [...this.state.years];
         years[yindex]['children'][qindex]['children'][mindex]['showChild']=false;
@@ -65,68 +77,6 @@ class DateHierarchy extends React.PureComponent {
             years: [...years]
         })
     }
-
-    onCheckDay(days, yindex, qindex, mindex, dindex){
-        let years = [...this.state.years];
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][dindex]['state']=1;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-
-     
-        
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    onUnCheckDay(days, yindex, qindex, mindex, dindex){
-        let years = [...this.state.years];
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][dindex]['state']=0;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (dstateSum ===0)? 0: -1: 1;
-
-       
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
-            }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
-
-        this.setState({
-            years: [...years]
-        })
-    }
-   
-
     onCheckMonth(mnth,yindex, qindex, mindex){
         let years = [...this.state.years];
         let mstateSum = 0;
@@ -282,17 +232,17 @@ class DateHierarchy extends React.PureComponent {
         return (flag )? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
-    renderDays = (days, row, yindex, qindex, mindex, dindex) =>{
-        let {options} = this.props;
+
+    renderWeekDays = (weekDays, row, yindex, qindex, mindex, windex, wdindex) =>{
             return (
-            <div className="VS-DayRow" key={'day' + yindex.toString() + qindex.toString() + mindex.toString() + dindex.toString()}>
+            <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
                
-           <label className="VS-Checkbox-Container">{days.day}
+           <label className="VS-Checkbox-Container">{weekDays.date+ " "+weekDays.day}
 
                 {
-                     (days.state) ? 
-                    <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={ () => this.onUnCheckDay(days, yindex, qindex, mindex, dindex)}></input>:
-                    <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={ () => this.onCheckDay(days, yindex, qindex, mindex, dindex)}></input>
+                     (weekDays.state) ? 
+                    <input className="VS-Checkbox" type="checkbox" checked={weekDays.state} onChange={ () => this.onUnCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={weekDays.state} onChange={ () => this.onCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex)}></input>
                 }
                 
                 <span className="VS-Check-Checkmark"></span>
@@ -302,8 +252,36 @@ class DateHierarchy extends React.PureComponent {
     }
 
 
+    renderWeeks = (weeks, row, yindex, qindex, mindex, windex) =>{
+        console.log("weeks", weeks);
+            return (
+            <div className="VS-WeekRow" key={'day' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString()}>
+                {
+                    (weeks.showChild) ?
+                        <a className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(weeks, yindex, qindex, mindex, windex)}>-</a> :
+                        <a className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks, yindex, qindex, mindex, windex)} >+</a>
+                }
+               
+           <label className="VS-Checkbox-Container">{weeks.week}
+
+                {
+                     (weeks.state) ? 
+                    <input className="VS-Checkbox" type="checkbox" checked={weeks.state} onChange={ () => this.onUnCheckDay(weeks, yindex, qindex, mindex, windex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={weeks.state} onChange={ () => this.onCheckDay(weeks, yindex, qindex, mindex, windex)}></input>
+                }
+                
+                <span className="VS-Check-Checkmark"></span>
+                </label>
+                {
+                    (weeks.showChild && weeks.children) ?
+                        weeks.children.map((weekDays, wdindex) => this.renderWeekDays(weekDays, row, yindex, qindex, mindex, windex, wdindex)) : ''
+                }
+            
+            </div>
+        )
+    }
+
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
-        
         return (
             <div className="VS-MonthRow" key={'month' + yindex.toString() + qindex.toString() + mindex.toString()}>
                 {
@@ -321,12 +299,13 @@ class DateHierarchy extends React.PureComponent {
                 </label>
                 {
                     (mnth.showChild && mnth.children) ?
-                        mnth.children.map((days, dindex) => this.renderDays(days, row, yindex, qindex, mindex, dindex)) : ''
+                        mnth.children.map((weeks, windex) => this.renderWeeks(weeks, row, yindex, qindex, mindex, windex)) : ''
                 }
             
             </div>
         )
-}
+    }
+    
 
         
     renderQuarter = (qt,row, yindex, qindex) => {
@@ -384,22 +363,13 @@ class DateHierarchy extends React.PureComponent {
     }
     
     render() {
-        const {options} = this.props;
-        if(options.showWeeks === false){
         return (
-            <div className= "VS-Hierarchy" options = {options}>
+            <div className= "VS-Hierarchy">
                 <input className= "VS-SearchBox" type="text" placeholder="Search..">
                 </input>
                 {this.state.years.map((row, index) => this.renderYear(row, index))}
             </div>
         )
-        }
-        else
-        {
-            return (
-                <WeekHierarchy options = {options}></WeekHierarchy>
-            )
-        }
     }
 }
-export default DateHierarchy;
+export default WeekHierarchy;
