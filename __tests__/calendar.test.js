@@ -1,4 +1,4 @@
-import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate} from '../src/utils/calendar';
+import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate} from '../src/utils/calendar';
 
 //Test for isCalendarFormat
 describe('Testing on function isCalendarFormat',()=>{
@@ -419,3 +419,236 @@ describe('Testing on function isDate',()=>{
     }
 
 })
+
+// Test for isSameDay
+describe('Testing on function isSameDay',()=>{
+
+    let date = new Date()
+    let date1 = new Date('08/26/2019')
+    let baseDate1 = new Date('08/26/2019')
+    let input = [date,date1,undefined]
+    let baseDates = [undefined,baseDate1,undefined]
+    let output = [true,true,false]
+    let messages = ['Passing current date and udefined then function will return true',
+                    'Passing any valid  date and for basedate same date is passed then function will return true',
+                    'Passing both value undefined in place of date and basedate  then function retruns false']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isSameDay(input[i],baseDates[i]))
+            .toEqual(output[i])
+        })
+
+    }                       
+})
+
+// Test for getIsoDate
+describe('Testing on function getIsoDate',()=>{
+
+    let date = new Date()
+    let date1 = new Date('8/26/2019')
+    let d = '09/24/2019'
+    let input = [date,date1,undefined,null,d]
+    let output = ['2019-12-20','2019-08-26','2019-12-20',null,null]
+    let messages = ['Passing current date the function will return date n format YYYY-MM-DD',
+                    'Passing any date then function still returns date in format YYYY-MM-DD',
+                    'Passing undefined then function retruns current date in format YYYY-MM-DD',
+                    'Passing null to function then it return null',
+                    'Passing some string of then it returns null']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(getIsoDate(input[i]))
+            .toEqual(output[i])
+        })
+
+    }                       
+})
+
+// Test for checkDateInBetween
+describe('Testing on function checkDateInBetween',()=>{
+    let date = new Date('09/12/2019')
+    let from  = new Date('02/05/2019')
+    let to = new Date('12/25/2019')
+    let dateOutofRange = new Date('01/01/2020')
+    let input = [date,undefined,date,date,date,dateOutofRange]
+    let fromDates = [from,from,undefined,from,undefined,from]
+    let toDates = [to,to,to,undefined,undefined,to]
+    let output = [true,false,true,true,true,false]
+    let messages = ['Passing Current Date, From date and To date then function will return true if date is in between from and to',
+                    'Passing undefined Date, valid From date and valid To date then function will return false because of date value passed as undefined',
+                    'Passing valid Date ,udefined From date and valid To date then also  function retruns True but condition is date should previous date to To date',
+                    'Passing valid Date ,valid From date and Undefined To date then function retruns true but condition is date should after date to From date',
+                    'Passing valid Date and both From and To dates are undefined in that condition function will return true',
+                    'Passing valid Date but this is not in range of From and To dates so the function returns flase']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(checkDateInBetween(input[i],fromDates[i],toDates[i]))
+            .toEqual(output[i])
+        })
+    }      
+})
+
+// Test for isValidOutsideRangeDateQQYear
+describe('Testing on function isValidOutsideRangeDateQQYear',()=>{
+
+    let options = {
+        lowerLimit:'Q1/2000',
+        upperLimit:'Q4/2015',
+        displayFormat:'QQ/YYYY',
+        disabledList :true
+    }
+    let options1 = {
+        lowerLimit:undefined,
+        upperLimit:'Q4/2015',
+        displayFormat:'QQ/YYYY',
+        disabledList :true
+    }
+    let options2 = {
+        lowerLimit:'Q1/2000',
+        upperLimit:undefined,
+        displayFormat:'QQ/YYYY',
+        disabledList :true
+    }
+    let options3 = {
+        lowerLimit:undefined,
+        upperLimit:undefined,
+        displayFormat:'QQ/YYYY',
+        disabledList :true
+    }
+    let date = 'Q3/2013'
+    let dateOutRange = 'Q4/2017'
+    let input = [date,date,date,date,dateOutRange,'','']
+    let optionsArray = [options,options1,options2,options3,options,options,options3]
+    let output = [true,true,true,true,false,false,true]
+    let messages = ['Passing date and options the function will return true because date passed it is between lower and upper limit in qq/YYYY format',
+                    'Passing date, lowerLimit is undefined and upperLimit is Valid date then function returns true ',
+                    'Passing date, lowerLimit is valid date and upperLimit is undefined date then function returns true',
+                    'Passing date and both lowerlimit and upperLimit are undefined then function then it return true',
+                    'Passing date is out of range then function  returns false',
+                    'Passing in place of date empty string and lower and upper limit is valid then it returns false',
+                    'Passing in place of date empty string and lower and upper limit is also undefined then it returns true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isValidOutsideRangeDateQQYear(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+})
+
+// Test for isValidOutsideRangeDateYear
+describe('Testing on function isValidOutsideRangeDateYear',()=>{
+
+    let options = {
+        lowerLimit:'2000',
+        upperLimit:'2015',
+        displayFormat:'YYYY',
+        disabledList :[]
+    }
+    let options1 = {
+        lowerLimit:undefined,
+        upperLimit:'2015',
+        displayFormat:'YYYY',
+        disabledList :[]
+    }
+    let options2 = {
+        lowerLimit:'2000',
+        upperLimit:undefined,
+        displayFormat:'YYYY',
+        disabledList :[]
+    }
+    let options3 = {
+        lowerLimit:undefined,
+        upperLimit:undefined,
+        displayFormat:'YYYY',
+        disabledList :[]
+    }
+    let year = '2014'
+    let yearOutofRange = '2018'
+    let input = [year,year,year,year,yearOutofRange,'','']
+    let optionsArray = [options,options1,options2,options3,options,options,options3]
+    let output = [true,true,true,true,false,false,true]
+    let messages = ['Passing year and options the function will return true because year passed it is between lower and upper limit in YYYY format',
+                    'Passing year, lowerLimit is undefined and upperLimit is Valid year then function returns true ',
+                    'Passing year, lowerLimit is valid year and upperLimit is undefined date then function returns true',
+                    'Passing year and both lowerlimit and upperLimit are undefined then function then it return true',
+                    'Passing year is out of range then function  returns false',
+                    'Passing in place of year empty string and lower and upper limit is valid then it returns false',
+                    'Passing in place of year empty string and lower and upper limit is also undefined then it returns true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isValidOutsideRangeDateYear(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+})
+
+// Test for isValidOutsideRangeDateMonthYear
+describe('Testing on function isValidOutsideRangeDateMonthYear',()=>{
+
+    let options = {
+        lowerLimit:'02/01/2000',
+        upperLimit:'05/01/2015',
+        displayFormat:'MM/YYYY',
+        disabledList :[]
+    }
+    let options1 = {
+        lowerLimit:undefined,
+        upperLimit:'05/01/2015',
+        displayFormat:'MM/YYYY',
+        disabledList :[]
+    }
+    let options2 = {
+        lowerLimit:'02/01/2000',
+        upperLimit:undefined,
+        displayFormat:'MM/YYYY',
+        disabledList :[]
+    }
+    let options3 = {
+        lowerLimit:undefined,
+        upperLimit:undefined,
+        displayFormat:'MM/YYYY',
+        disabledList :[]
+    }
+
+    let date = '04/2013'
+    let dateOutofRange = '09/2018'
+    test('testing',()=>{
+        expect(isValidOutsideRangeDateMonthYear(date,options)).toEqual(true)
+    })
+
+    let input = [date,date,date,date,dateOutofRange,'','']
+    let optionsArray = [options,options1,options2,options3,options,options,options3]
+    let output = [true,true,true,true,false,false,false]
+    let messages = ['Passing year and options the function will return true because year passed it is between lower and upper limit in YYYY format',
+                    'Passing year, lowerLimit is undefined and upperLimit is Valid year then function returns true ',
+                    'Passing year, lowerLimit is valid year and upperLimit is undefined date then function returns true',
+                    'Passing year and both lowerlimit and upperLimit are undefined then function then it return true',
+                    'Passing year is out of range then function  returns false',
+                    'Passing in place of year empty string and lower and upper limit is valid then it returns false',
+                    'Passing in place of year empty string and lower and upper limit is also undefined then it returns true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isValidOutsideRangeDateMonthYear(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+})
+
+// Test for isValidOutsideRangeDate
+// describe('Testing on function isValidOutsideRangeDate',()=>{
+
+//     let options = {
+//         lowerLimit:'02/01/2000',
+//         upperLimit:'05/01/2015',
+//         displayFormat:'MM/DD/YYYY',
+//         disabledList :['']
+//     }
+//     let date = '03/06/2012'
+
+//     test('testing',()=>{
+
+//         expect(isValidOutsideRangeDate(date,options)).toEqual(true)
+//     })
+// })
