@@ -2,7 +2,6 @@
 export const getMonthDays = (month, year) => {
   const months30 = [4, 6, 9, 11];
   const leapYear = year % 4 === 0;
-
   let day =  month === 2
       ? leapYear
           ? 29
