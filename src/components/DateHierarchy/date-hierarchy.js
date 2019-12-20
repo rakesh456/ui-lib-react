@@ -11,10 +11,10 @@ class DateHierarchy extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks);
         this.state = { years: yearList};
     }
-    updateDimensions() { }
-
-    componentDidMount() {
+    updateDimensions() { 
+        
     }
+
     render() {
         const {options} = this.props;
         
@@ -22,7 +22,7 @@ class DateHierarchy extends React.PureComponent {
             <div options = {options}>
                 <input className= "VS-SearchBox" type="text" placeholder="Search..">
                 </input>
-                <YearView options={options}></YearView>
+                <YearView options={options} ></YearView>
                 {/* {this.state.years.map((row, index) => this.renderYear(row, index))} */}
             </div>
         )    

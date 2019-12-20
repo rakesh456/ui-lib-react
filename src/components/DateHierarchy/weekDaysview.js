@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDom from "react-dom";
 import { getListOfYears } from "../../utils/datehierarchy";
+import { weekdays } from "moment";
 
 
 class WeekDaysView extends React.PureComponent {
@@ -20,9 +21,10 @@ class WeekDaysView extends React.PureComponent {
     }
 
     expandWeek(weeks, yindex, qindex, mindex, windex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
+        console.log("show child",years[yindex]['children'][qindex]['children'][mindex]['children'][windex])
         years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=true;
-        console.log("show child",years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild'])
+        console.log("show child",years[yindex]['children'][qindex]['children'][mindex]['children'][windex])
         this.setState({
             years: [...years]
         })
@@ -30,8 +32,12 @@ class WeekDaysView extends React.PureComponent {
 
     
     renderWeekDays = (weekDays, row, yindex, qindex, mindex, windex, wdindex) =>{
+        console.log('weekdays');
+        // yindex = this.props.yindex;
+        // qindex = this.props.qindex;
+        // mindex = this.props.mindex;
         return (
-        <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
+        <div className="VS-WeekDayRow" key={'weekDay' +  yindex.toString() }>
            
        <label className="VS-Checkbox-Container">{weekDays.date+ " "+weekDays.day}
 
@@ -53,6 +59,7 @@ renderWeeks = (weeks, mnth, qt, row, yindex, qindex, mindex, windex) =>{
     yindex = this.props.yindex;
     qindex = this.props.qindex;
     mindex = this.props.mindex;
+    console.log("weeks.showchild",weeks.showChild)
         return (
         <div className="VS-WeekRow" key={'week' + yindex.toString() + qindex.toString() + windex.toString()}>
             {
@@ -73,7 +80,7 @@ renderWeeks = (weeks, mnth, qt, row, yindex, qindex, mindex, windex) =>{
             </label>
             {
                 (weeks.showChild && weeks.children) ?
-                    weeks.children.map((weekDays, wdindex) => this.renderWeekDays(weekDays, row, yindex, qindex, mindex, windex)) : ''
+                    weeks.children.map((weekDays, wdindex) => this.renderWeekDays(weekDays, yindex, qindex, mindex, wdindex)) : ''
             }
         
         </div>
