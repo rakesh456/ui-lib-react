@@ -7,7 +7,7 @@ class YearView extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
+        let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
         this.state = { years: yearList};
     }
 

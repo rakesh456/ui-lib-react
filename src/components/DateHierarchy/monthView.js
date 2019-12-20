@@ -2,13 +2,14 @@ import React from "react";
 import ReactDom from "react-dom";
 import { getListOfYears } from "../../utils/datehierarchy";
 import DaysView from "./daysView";
+import WeekDaysView from "./weekDaysview";
 
 
 class MonthView extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
+        let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
         this.state = { years: yearList};
     }
 
@@ -87,10 +88,12 @@ class MonthView extends React.PureComponent {
     }
 
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
-        console.log('row',mnth);
         let {options} = this.props;
+        let qt = this.props.years[this.props.yindex]['children'][this.props.qindex];
+        yindex = this.props.yindex;
+        qindex = this.props.qindex;
         return (
-            <div className="VS-MonthRow" key={'month' + mindex.toString()}>
+            <div className="VS-MonthRow" key={'month' + yindex.toString() + mindex.toString() + qindex.toString() + mindex.toString()}>
                 {
                     (mnth.showChild) ?
                         <a className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(mnth, mindex)}>-</a> :
@@ -102,11 +105,12 @@ class MonthView extends React.PureComponent {
                     <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onUnCheckMonth(mnth,yindex, qindex, mindex)}></input>:
                     <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onCheckMonth(mnth,yindex, qindex, mindex)}></input>
                 }
-                <span className={this.getMonthCheckBoxClass(mnth,mindex)}></span>
+                <span className={this.getMonthCheckBoxClass(mnth,yindex,qindex,mindex)}></span>
                 </label>
-                {
-                    (mnth.showChild && mnth.children) ?
-                    <DaysView options={options} years={this.state.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex}></DaysView> : ''
+                {(mnth.showChild && mnth.children) ?
+                  options.showWeeks ?
+                     <WeekDaysView options={options} years={this.state.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex}></WeekDaysView> :
+                     <DaysView options={options} years={this.state.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex}></DaysView> : ''
                 }
             
             </div>
@@ -119,7 +123,6 @@ class MonthView extends React.PureComponent {
         let row = this.props.years[this.props.yindex];
         let {yindex} = this.props.yindex;
         let {qindex} = this.props.qindex;
-        console.log("qt",qt);
         return (
             <div options = {options}>
                { qt.children.map((mnth, mindex) => this.renderMonths(mnth, row, yindex, qindex, mindex))}

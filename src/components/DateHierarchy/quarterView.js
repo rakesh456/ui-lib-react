@@ -7,7 +7,7 @@ class QuarterView extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
+       let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
         this.state = { years: yearList};
     }
 
@@ -85,6 +85,7 @@ class QuarterView extends React.PureComponent {
 
     renderQuarter = (qt,row, yindex, qindex) => {
         let {options} = this.props;
+        console.log('yindex', row)
         return (
             <div className="VS-QuarterRow"key={'quarter' + yindex.toString() + qindex.toString() }>
                  {
@@ -95,7 +96,7 @@ class QuarterView extends React.PureComponent {
                 <label className="VS-Checkbox-Container">{qt.quarter}
                 {
                      (qt.state) ? 
-                    <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onUnCheckQuarter(qt,row, yindex, qindex)}></input>:
+                    <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onUnCheckQuarter(qt, row, yindex, qindex)}></input>:
                     <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onCheckQuarter(qt,row, yindex, qindex)}></input>
                 }
                 <span className={this.getQuarterCheckBoxClass(row, qt, yindex, qindex)}></span>
