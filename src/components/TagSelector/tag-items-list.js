@@ -137,7 +137,7 @@ class ItemsList extends React.PureComponent {
                     (listItems && listItems.length > 0) ?
                         (filteredlistItems && filteredlistItems.length > 0) ?
                             filteredlistItems.map((item, index) => this.renderLIItem(item, index))
-                            : (allowNewValue === true && showHierarchy === false && showHelper === false) ? this.addItemButton() : 'No Data Found' :
+                            : (allowNewValue === true && showHierarchy === false) ? this.addItemButton() : 'No Data Found' :
                         'No List Items'
                 }
             </ul>
