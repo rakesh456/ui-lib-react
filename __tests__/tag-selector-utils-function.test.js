@@ -55,9 +55,9 @@ describe('Testing on function isValidJsonFormat',()=>{
       }]
     let emptyJson = []
     let undefinedJson;
-    let input = [jsonHierarchy,json,emptyJson,undefinedJson]
-    let output = [true,true,false,false]
-    let allowHierarchy = [true,false,false,false]
+    let input = [jsonHierarchy,jsonHierarchy,json,json,emptyJson,undefinedJson,emptyJson,undefinedJson]
+    let expectedOutput = [true,false,false,true,false,false,false,false]
+    let allowHierarchy = [true,false,true,false,false,false,true,true]
     let messages = ['Testing for valid hierarchy json file for that function return true',
                     'Testing for simple valid json file then function returns true',
                     'Passing empty json file then function returns false',
@@ -65,7 +65,7 @@ describe('Testing on function isValidJsonFormat',()=>{
     for (let i = 0; i < input.length; i++) {
         test(`${messages[i]}`,()=>{
             expect(isValidJsonFormat(allowHierarchy[i],input[i],))
-            .toEqual(output[i])
+            .toEqual(expectedOutput[i])
         })
     }
 })
