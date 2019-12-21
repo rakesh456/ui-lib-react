@@ -8,11 +8,12 @@ class DaysView extends React.PureComponent {
         super(props);
         let {options} = this.props;
         let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
-        this.state = { years: yearList};
+        //this.state = { years: yearList};
+        this.state = {years: this.props.years};
     }
 
     onCheckDay(days, mnth, qt, row, yindex, qindex, mindex, dindex){
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let dstateSum = 0;
         let qstateSum = 0;
         let mstateSum = 0;
@@ -40,7 +41,7 @@ class DaysView extends React.PureComponent {
     }
 
     onUnCheckDay(days, mnth, qt, row, yindex, qindex, mindex, dindex){
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let dstateSum = 0;
         let qstateSum = 0;
         let mstateSum = 0;

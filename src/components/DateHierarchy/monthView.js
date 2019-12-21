@@ -10,7 +10,8 @@ class MonthView extends React.PureComponent {
         super(props);
         let {options} = this.props;
         let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
-        this.state = { years: yearList};
+        //this.state = { years: yearList};
+        this.state = { years : this.props.years};
     }
 
     expandMonth(mnth, mindex) {
@@ -32,7 +33,7 @@ class MonthView extends React.PureComponent {
 
     
     onCheckMonth(mnth,yindex, qindex, mindex){
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let mstateSum = 0;
         let qstateSum = 0;
         years[yindex]['children'][qindex]['children'][mindex]['state']=1;
@@ -55,7 +56,7 @@ class MonthView extends React.PureComponent {
     }
 
     onUnCheckMonth(mnth,yindex, qindex, mindex){
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let stateSum = 0;
         let qstateSum = 0;
         years[yindex]['children'][qindex]['children'][mindex]['state']=0;
@@ -82,8 +83,9 @@ class MonthView extends React.PureComponent {
 
     getMonthCheckBoxClass = (mnth,yindex,qindex,mindex) => {
         let flag = false;
-        let years = [...this.state.years];
-        flag = mnth['state'] === -1 ? true :false;
+        let years = [...this.props.years];
+        //flag = mnth['state'] === -1 ? true :false;
+        flag = years[yindex]['children'][qindex]['children'][mindex]['state'];
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 
     }
 

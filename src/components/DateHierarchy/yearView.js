@@ -58,7 +58,7 @@ class YearView extends React.PureComponent {
                 children[index]['children'][index1]['children'].forEach((element,index2) => {
                     children[index]['children'][index1]['children'][index2]['state'] = 0;
 
-            });
+                });
             });
         });
         this.setState({

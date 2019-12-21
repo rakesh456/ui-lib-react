@@ -8,12 +8,13 @@ class QuarterView extends React.PureComponent {
         super(props);
         let {options} = this.props;
        let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
-        this.state = { years: yearList};
+       // this.state = { years: yearList};
+        this.state = {years: this.props.years}
     }
 
     expandQuarter(qt, yindex,qindex) {
         console.log('expand quarter called',  qt);
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         qt['showChild']=true;
         this.setState({
             years: [...years]
@@ -21,7 +22,7 @@ class QuarterView extends React.PureComponent {
     }
 
     collapseQuarter(qt, yindex,qindex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         qt['showChild']=false;
         this.setState({
             years: [...years]
@@ -29,7 +30,7 @@ class QuarterView extends React.PureComponent {
     }
 
     onCheckQuarter(qt,row, yindex, qindex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let stateSum = 0;
         years[yindex]['children'][qindex]['state']=1;
         console.log("oncheckquarter called", years[yindex]['children'][qindex]);
@@ -52,7 +53,7 @@ class QuarterView extends React.PureComponent {
 
     
     onUnCheckQuarter(qt,row, yindex, qindex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         let stateSum = 0;
         years[yindex]['children'][qindex]['state']=0;
         for (var i=0; i<years[yindex]["children"].length; i++) {
@@ -76,7 +77,7 @@ class QuarterView extends React.PureComponent {
     getQuarterCheckBoxClass = (row, qt , yindex, qindex) => {
         console.log('getquarter checkbox called');
         let flag = false;
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         flag = ((years[yindex]["children"][qindex]["state"] === -1)) ? true :false;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
 
