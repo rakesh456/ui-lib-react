@@ -13,7 +13,6 @@ class QuarterView extends React.PureComponent {
     }
 
     expandQuarter(qt, yindex,qindex) {
-        console.log('expand quarter called',  qt);
         let years = [...this.props.years];
         qt['showChild']=true;
         this.setState({
@@ -30,6 +29,7 @@ class QuarterView extends React.PureComponent {
     }
 
     onCheckQuarter(qt,row, yindex, qindex) {
+        console.log('oncheckquarter called')
         let years = [...this.props.years];
         let stateSum = 0;
         years[yindex]['children'][qindex]['state']=1;
@@ -43,12 +43,17 @@ class QuarterView extends React.PureComponent {
             children[qindex]['state'] = 1;
             children[qindex]['children'].forEach((element,qindex1) => {
                 children[qindex]['children'][qindex1]['state']= 1 ;
-
+                if(children[qindex]['children'][qindex1]['children']){
+                    children[qindex]['children'][qindex1]['children'].forEach((element,qindex2) => {
+                        children[qindex]['children'][qindex1]['children'][qindex2]['state']= 1 ;
+                    })
+                }
             })
         });
         this.setState({
             years: [...years]
         })
+        console.log(qt);
     }
 
     
@@ -65,6 +70,11 @@ class QuarterView extends React.PureComponent {
             children[qindex]['state'] = 0;
             children[qindex]['children'].forEach((element,qindex1) => {
                 children[qindex]['children'][qindex1]['state'] = 0 ;
+                if(children[qindex]['children'][qindex1]['children']){
+                    children[qindex]['children'][qindex1]['children'].forEach((element,qindex2) => {
+                        children[qindex]['children'][qindex1]['children'][qindex2]['state']= 0 ;
+                    })
+                }
 
             })
         });
@@ -72,10 +82,8 @@ class QuarterView extends React.PureComponent {
             years: [...years]
         })
     }
-
-
+ 
     getQuarterCheckBoxClass = (row, qt , yindex, qindex) => {
-        console.log('getquarter checkbox called');
         let flag = false;
         let years = [...this.props.years];
         flag = ((years[yindex]["children"][qindex]["state"] === -1)) ? true :false;
@@ -86,7 +94,6 @@ class QuarterView extends React.PureComponent {
 
     renderQuarter = (qt,row, yindex, qindex) => {
         let {options} = this.props;
-        console.log('yindex', row)
         return (
             <div className="VS-QuarterRow"key={'quarter' + yindex.toString() + qindex.toString() }>
                  {
@@ -104,7 +111,7 @@ class QuarterView extends React.PureComponent {
                 </label>
                 {
                     (qt.showChild && qt.children) ?
-                    <MonthView options={options} years= {this.state.years} yindex={yindex} qindex={qindex}></MonthView>
+                    <MonthView options={options} years= {this.state.years} yindex={yindex} qindex={qindex} ></MonthView>
                          : ''
                 }
                
@@ -114,8 +121,8 @@ class QuarterView extends React.PureComponent {
     }
 
     render() {
-        console.log('render quarter called');
         const {options} = this.props;
+        const updateState = this.props.updateState;
         let row = this.props.years[this.props.yindex];
         let yindex = this.props.yindex;
         return (

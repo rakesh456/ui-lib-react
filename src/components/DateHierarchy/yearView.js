@@ -12,7 +12,6 @@ class YearView extends React.PureComponent {
     }
 
     expandYear(year, index) {
-        console.log('expand year called');
         let years = [...this.state.years]
         year['showChild'] = true;
         this.setState({
@@ -38,13 +37,19 @@ class YearView extends React.PureComponent {
                 children[index]['children'][index1]['state'] = 1;
                    children[index]['children'][index1]['children'].forEach((element,index2) => {
                     children[index]['children'][index1]['children'][index2]['state'] = 1;
-
+                    if(children[index]['children'][index1]['children'][index2]['children']){
+                        children[index]['children'][index1]['children'][index2]['children'].forEach((element,index3) => {
+                            children[index]['children'][index1]['children'][index2]['children'][index3]['state'] = 1;
+                        });
+                    }
                 });
             });
         });
         this.setState({
             years: [...years]
             })
+            console.log(children);
+
     }
 
     onUnCheckYear(year, index) {
@@ -57,7 +62,11 @@ class YearView extends React.PureComponent {
                 children[index]['children'][index1]['state'] = 0;
                 children[index]['children'][index1]['children'].forEach((element,index2) => {
                     children[index]['children'][index1]['children'][index2]['state'] = 0;
-
+                    if(children[index]['children'][index1]['children'][index2]['children']){
+                        children[index]['children'][index1]['children'][index2]['children'].forEach((element,index3) => {
+                            children[index]['children'][index1]['children'][index2]['children'][index3]['state'] = 0;
+                        });
+                    }
                 });
             });
         });
@@ -95,7 +104,7 @@ class YearView extends React.PureComponent {
                 </label>
                 {
                 (year.showChild && year.children) ?
-                <QuarterView options={options} years={this.state.years} yindex={index} ></QuarterView> : ''
+                <QuarterView options={options} years={this.state.years} yindex={index}></QuarterView> : ''
                 }
             </div>
            

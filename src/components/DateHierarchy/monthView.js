@@ -49,6 +49,11 @@ class MonthView extends React.PureComponent {
         let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
         children.forEach((element,mindex) => {
             children[mindex]['state'] = 1;
+            if(children[mindex]['children']){
+                children[mindex]['children'].forEach((element, mindex1) =>{
+                    children[mindex]['children'][mindex1]['state'] = 1;
+                })
+            }
         });
         this.setState({
             years: [...years]
@@ -75,6 +80,11 @@ class MonthView extends React.PureComponent {
         let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
         children.forEach((element,mindex) => {
             children[mindex]['state'] = 0;
+            if(children[mindex]['children']){
+                children[mindex]['children'].forEach((element, mindex1) =>{
+                    children[mindex]['children'][mindex1]['state'] = 0;
+                })
+            }
         });
         this.setState({
             years: [...years]
@@ -85,7 +95,7 @@ class MonthView extends React.PureComponent {
         let flag = false;
         let years = [...this.props.years];
         //flag = mnth['state'] === -1 ? true :false;
-        flag = years[yindex]['children'][qindex]['children'][mindex]['state'];
+        flag = years[yindex]["children"][qindex]["children"][mindex]['state'] === -1 ? true :false ;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 
     }
 

@@ -424,7 +424,7 @@ if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimi
       var weekobj = { week : "week "+ weekNo, state: 0, showChild: false, children:[]}
       for(var i = start; i < (lastOfMonth).getDate()+1;i++ ){
           var monthDate = new Date(year, month_number-1, i);
-          var dayObj = {date: i, day: weekdays[monthDate.getDay()], state: false}; 
+          var dayObj = {date: i, day: weekdays[monthDate.getDay()], state: 0}; 
           weekobj.children.push(dayObj);
           if(monthDate.getDay()===6){
               start = i + 1;
