@@ -1,4 +1,4 @@
-import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate} from '../src/utils/calendar';
+import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual} from '../src/utils/calendar';
 
 //Test for isCalendarFormat
 describe('Testing on function isCalendarFormat',()=>{
@@ -448,7 +448,7 @@ describe('Testing on function getIsoDate',()=>{
     let date1 = new Date('8/26/2019')
     let d = '09/24/2019'
     let input = [date,date1,undefined,null,d]
-    let output = [date.getFullYear()+'-'+date.getMonth()+1+'-'+date.getDate(),'2019-08-26',date.getFullYear()+'-'+date.getMonth()+1+'-'+date.getDate(),null,null]
+    let output = [date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),'2019-08-26',date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),null,null]
     let messages = ['Passing current date the function will return date n format YYYY-MM-DD',
                     'Passing any date then function still returns date in format YYYY-MM-DD',
                     'Passing undefined then function retruns current date in format YYYY-MM-DD',
@@ -639,16 +639,245 @@ describe('Testing on function isValidOutsideRangeDateMonthYear',()=>{
 // Test for isValidOutsideRangeDate
 describe('Testing on function isValidOutsideRangeDate',()=>{
 
-    let options = {
+    let options1 = {
         lowerLimit:'02/01/2000',
-        upperLimit:'05/01/2015',
+        upperLimit:'05/01/2018',
         displayFormat:'MM/DD/YYYY',
-        disabledList :['']
+        disabledList :''
     }
-    let date = '03/06/2012'
+    let options2 = {
+        lowerLimit:'02/01/2000',
+        upperLimit:'05/01/2019',
+        displayFormat:'MM/DD/YYYY',
+        disabledList :'03/06/2012'
+    }
+    let options3 = {
+        lowerLimit:undefined,
+        upperLimit:'05/01/2019',
+        displayFormat:'MM/DD/YYYY',
+        disabledList :''
+    }
+    let options4 = {
+        lowerLimit:'02/01/2000',
+        upperLimit:undefined,
+        displayFormat:'MM/DD/YYYY',
+        disabledList :''
+    }
+    let options5 = {
+        lowerLimit:undefined,
+        upperLimit:undefined,
+        displayFormat:'MM/DD/YYYY',
+        disabledList :''
+    }
+    let date1 = '04/06/2012'
+    let dateOutofRange = '01/01/2020'
+    let input = [date1,date1,date1,date1,dateOutofRange,date1,'','',dateOutofRange]
+    let optionsArray = [options1,options2,options3,options4,options1,options5,options1,options5,options5]
+    let output = [true,false,true,true,false,true,false,true,true]
+    let messages = ['Passing date and options the function will return true because date passed it is between lower and upper limit',
+                    'Passing date which is present in disabledLIst so function will return false because it is in disbaled list',
+                    'Passing date, lowerLimit is undefined and upperLimit is Valid year then function returns true ',
+                    'Passing date, lowerLimit is valid year and upperLimit is undefined date then function returns true',
+                    'Passing date is out of range then function  returns false',
+                    'Passing  both lowerlimit and upperLimit are undefined then function then it return true',
+                    'Passing in place of date empty string and lower and upper limit is valid then it returns false',
+                    'Passing in place of date empty string and lower and upper limit is also undefined then it returns true',
+                    'Pasing date is out of range and lower and upper limit is also udefined then function true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isValidOutsideRangeDate(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
 
-    test('testing',()=>{
-
-        expect(isValidOutsideRangeDate(date,options)).toEqual(true)
-    })
+    }    
 })
+
+// Test for resetOptions
+describe('Testing on function resetOptions',()=>{
+    let options ={myproperty:'five'}
+    DEFAULT_OPTIONS['myproperty'] = 'five';
+    test('Adding a new property to DEFAULT_OPTIONS and then checking property got merged or not',()=>{
+        expect(resetOptions(options)).toEqual(DEFAULT_OPTIONS)
+    })
+    let options1 = {
+        "iconAlignment":"right"
+    }
+    DEFAULT_OPTIONS['iconAlignment'] = 'right'
+    test('Changing the existing value and then same changes happen in DEFAULT_OPTIONS',()=>{
+        expect(resetOptions(options1)).toEqual(DEFAULT_OPTIONS)
+    })
+
+})
+
+// Test for getYYYYForLowerLimit
+describe('Testing on function getYYYYForLowerLimit',()=>{
+
+    let options = {
+        lowerLimit : 'Q2/1990',
+        displayFormat :'QQ/YYYY'
+    }
+    let options1 = {
+        displayFormat:'MM/YYYY'
+    }
+    let options2 = {  
+        lowerLimit:'07/02/1992',
+        displayFormat:'MM/YYYY'
+    }
+    let options3 = {  
+        displayFormat:'YYYY'
+    }
+    let options4 = {
+        lowerLimit:'07/02/1992',
+        displayFormat:'YYYY'
+    }
+    let options5 = {  
+        displayFormat:'MM/DD/YYYY'
+    }
+    let options6 = {  
+        lowerLimit:'07/02/1992',
+        displayFormat:'MM/DD/YYYY'
+    }
+    let options7 = {  
+        lowerLimit:'07/02/1992',
+        displayFormat:'DD/MM/YYYY'
+    }
+    let options8 = {}
+    let input = [options,options1,options2,options3,options4,options5,options6,options6,options7.options8]
+    let output = [{lowerMonthLimit: 'Q2', lowerYearLimit: 1990},{},{lowerMonthLimit: '07', lowerYearLimit: 1992},{},{lowerYearLimit:1992},{},{lowerMonthLimit: 7, lowerYearLimit:1992},{lowerMonthLimit: 7, lowerYearLimit:1992},{}]
+    let messages = ['Passing options object to the function will return object specifying its lower quater month limit and its lower year limit',
+                    'Passing options1 object without giving its property lowerLimit then functon will return empty object',
+                    'Passing options2 object with MM/YYYY format then function will return object specifying its lower month limit and its lower year limit.',
+                    'Passing options3 object with YYYY format without giving its property lowerLimit then functon will return empty object ',
+                    'Passing options4 object with YYYY format then function will return object specifying its lower year limit.',
+                    'Passing options5 object with MM/DD/YYYY format without giving its property lowerLimit then functon will return empty object',
+                    'Passing options6 object with MM/DD/YYYY format then function will return lower month limit and lower year limit',
+                    'Passing options7 object with DD/MM/YYYY format then function will return lower month limit and lower year limit',
+                    'Passing empty onbject options8 then the function is also return empty object']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(getYYYYForLowerLimit(input[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+
+})
+
+// Test for getYYYYForUpperLimit
+describe('Testing on function getYYYYForUpperLimit',()=>{
+
+    let options = {
+        upperLimit : 'Q2/2020',
+        displayFormat :'QQ/YYYY'
+    }
+    let options1 = {
+        displayFormat:'MM/YYYY'
+    }
+    let options2 = {  
+        upperLimit:'07/02/2020',
+        displayFormat:'MM/YYYY'
+    }
+    let options3 = {  
+        displayFormat:'YYYY'
+    }
+    let options4 = {
+        upperLimit:'07/02/2020',
+        displayFormat:'YYYY'
+    }
+    let options5 = {  
+        displayFormat:'MM/DD/YYYY'
+    }
+    let options6 = {  
+        upperLimit:'07/02/2020',
+        displayFormat:'MM/DD/YYYY'
+    }
+    let options7 = {  
+        upperLimit:'07/02/2020',
+        displayFormat:'DD/MM/YYYY'
+    }
+    let options8 = {}
+    let input = [options,options1,options2,options3,options4,options5,options6,options7,options8]
+    let output = [{upperMonthLimit: 'Q2', upperYearLimit: 2020},{},{upperMonthLimit: '07', upperYearLimit: 2020},{},{upperYearLimit:2020},{},{upperMonthLimit: 7, upperYearLimit:2020},{upperMonthLimit: 7, upperYearLimit:2020},{}]
+    let messages = ['Passing options object to the function will return object specifying its upper quater month limit and its upper year limit',
+                    'Passing options1 object without giving its property upperLimit then functon will return empty object',
+                    'Passing options2 object with MM/YYYY format then function will return object specifying its upper month limit and its upper year limit.',
+                    'Passing options3 object with YYYY format without giving its property upperLimit then functon will return empty object ',
+                    'Passing options4 object with YYYY format then function will return object specifying its upper year limit.',
+                    'Passing options5 object with MM/DD/YYYY format without giving its property upperLimit then functon will return empty object',
+                    'Passing options6 object with MM/DD/YYYY format then function will return upper month limit and upper year limit',
+                    'Passing options7 object with DD/MM/YYYY format then function will return upper month limit and upper year limit',
+                    'Passing empty object options8 then the function is also return empty object']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(getYYYYForUpperLimit(input[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+
+})
+
+// Test for isEqual
+describe('Testing for function isEqual',()=>{
+
+    let inputStr1 = ['jstigers','india',1234,'',undefined]
+    let inputStr2 = ['jstigers','pakistan',1234,'',undefined]
+    let output = [true,false,true,'', undefined ]
+    let messages = ['Passing to same string then fucntion will return true',
+                    'Passing to different string then the function will return true',
+                    ''] 
+    for (let i = 0; i < inputStr1.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(isEqual(inputStr1[i],inputStr2[i]))
+            .toEqual(output[i])
+        })
+
+    }    
+})
+
+// Test for getInvalidDateMessage
+
+
+// Test for dateIsInDisabledList
+// describe('Testing on the function dateIsInDisabledList',()=>{
+
+//     let newDate1 = new Date('05/07/2020')
+//     let options1 = {
+//         disabledList:'05/07/2020'
+
+//     }
+//     let newDate2 = new Date('03/04/2019')
+//     let options2 = {
+//         disabledList:'04/05/2019'
+//     }
+//     let newDate3 = new Date('07/21/2019')
+//     let options3 = {
+//         disabledList:['02/19/2018','11/21/2008','10/23/2015']
+
+//     }
+//     let newDate4 = new Date('01/26/1993')
+//     let options4 = ['01/26/1993','02/28/2020']
+    
+
+//     let input = [newDate1,newDate2,newDate3,newDate4]
+//     let optionsArray = [options1,options2,options3,options4]
+//     let output = [true,false,false,true]
+//     let messages = ['Passing date and options the function will return true because date passed it is between lower and upper limit',
+//                     'Passing date which is present in disabledLIst so function will return false because it is in disbaled list',
+//                     'Passing date, lowerLimit is undefined and upperLimit is Valid year then function returns true ',
+//                     'Passing date, lowerLimit is valid year and upperLimit is undefined date then function returns true',
+//                     'Passing date is out of range then function  returns false',
+//                     'Passing  both lowerlimit and upperLimit are undefined then function then it return true',
+//                     'Passing in place of date empty string and lower and upper limit is valid then it returns false',
+//                     'Passing in place of date empty string and lower and upper limit is also undefined then it returns true',
+//                     'Pasing date is out of range and lower and upper limit is also udefined then function true']
+//     for (let i = 0; i < input.length; i++) {
+//         test(`${messages[i]}`,()=>{
+//             expect(dateIsInDisabledList(input[i],optionsArray[i]))
+//             .toEqual(output[i])
+//         })
+
+//     }    
+   
+
+// })
