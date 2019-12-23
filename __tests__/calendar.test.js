@@ -448,7 +448,7 @@ describe('Testing on function getIsoDate',()=>{
     let date1 = new Date('8/26/2019')
     let d = '09/24/2019'
     let input = [date,date1,undefined,null,d]
-    let output = ['2019-12-20','2019-08-26','2019-12-20',null,null]
+    let output = [date.getFullYear()+'-'+date.getMonth()+1+'-'+date.getDate(),'2019-08-26',date.getFullYear()+'-'+date.getMonth()+1+'-'+date.getDate(),null,null]
     let messages = ['Passing current date the function will return date n format YYYY-MM-DD',
                     'Passing any date then function still returns date in format YYYY-MM-DD',
                     'Passing undefined then function retruns current date in format YYYY-MM-DD',
@@ -637,18 +637,18 @@ describe('Testing on function isValidOutsideRangeDateMonthYear',()=>{
 })
 
 // Test for isValidOutsideRangeDate
-// describe('Testing on function isValidOutsideRangeDate',()=>{
+describe('Testing on function isValidOutsideRangeDate',()=>{
 
-//     let options = {
-//         lowerLimit:'02/01/2000',
-//         upperLimit:'05/01/2015',
-//         displayFormat:'MM/DD/YYYY',
-//         disabledList :['']
-//     }
-//     let date = '03/06/2012'
+    let options = {
+        lowerLimit:'02/01/2000',
+        upperLimit:'05/01/2015',
+        displayFormat:'MM/DD/YYYY',
+        disabledList :['']
+    }
+    let date = '03/06/2012'
 
-//     test('testing',()=>{
+    test('testing',()=>{
 
-//         expect(isValidOutsideRangeDate(date,options)).toEqual(true)
-//     })
-// })
+        expect(isValidOutsideRangeDate(date,options)).toEqual(true)
+    })
+})
