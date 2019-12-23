@@ -35,16 +35,25 @@ class YearView extends React.PureComponent {
     onCheckYear(year, index) {
         let years = [...this.state.years];
         year["state"] = 1
-        let children = year['children'];
-        children.forEach((element, index) => {
-            children[index]['state'] = 1;
-            children[index]['children'].forEach((element, index1) => {
-                children[index]['children'][index1]['state'] = 1;
-                children[index]['children'][index1]['children'].forEach((element, index2) => {
-                    children[index]['children'][index1]['children'][index2]['state'] = 1;
-                    if (children[index]['children'][index1]['children'][index2]['children']) {
-                        children[index]['children'][index1]['children'][index2]['children'].forEach((element, index3) => {
-                            children[index]['children'][index1]['children'][index2]['children'][index3]['state'] = 1;
+        let quarter = year['children'];
+
+        quarter.forEach((element, qtIndex) => {
+
+            quarter[qtIndex]['state'] = 1;
+            let months = quarter[qtIndex]['children'];
+
+            months.forEach((element, moIndex) => {
+                months[moIndex]['state'] = 1;
+                let weeks = months[moIndex]['children'];
+
+                weeks.forEach((element, wkIndex) => {                    
+                    weeks[wkIndex]['state'] = 1;
+
+                    if (weeks[wkIndex]['children']) {
+                        let days = weeks[wkIndex]['children'];
+
+                        days.forEach((element, dayIndex) => {                            
+                            days[dayIndex]['state'] = 1;
                         });
                     }
                 });
@@ -52,8 +61,7 @@ class YearView extends React.PureComponent {
         });
         this.setState({
             years: [...years]
-        })
-        console.log(children);
+        })    
 
     }
 
