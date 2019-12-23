@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { getListOfYears } from "../../utils/datehierarchy";
 import DaysView from "./daysView";
 import WeekDaysView from "./weekDaysview";
 
@@ -8,11 +7,13 @@ import WeekDaysView from "./weekDaysview";
 class MonthView extends React.PureComponent {
     constructor(props) {
         super(props);
-        let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
-        //this.state = { years: yearList};
-        this.state = { years : this.props.years};
     }
+
+    componentDidMount () {
+        let years = this.props.years;
+        this.setState({years: [...years]});
+    }
+
 
     expandMonth(mnth, mindex) {
         let years = [...this.state.years];
@@ -33,68 +34,43 @@ class MonthView extends React.PureComponent {
 
     
     onCheckMonth(mnth,yindex, qindex, mindex){
-        let years = [...this.props.years];
-        let mstateSum = 0;
-        let qstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['state']=1;
-        for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][i]["state"];
+        let monthObj = {
+            mnth: mnth,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            isCheck: true
         }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-        
-        for (var j=0; j < years[yindex]["children"].length; j++) {
-            qstateSum += years[yindex]["children"][j]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-        let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
-        children.forEach((element,mindex) => {
-            children[mindex]['state'] = 1;
-            if(children[mindex]['children']){
-                children[mindex]['children'].forEach((element, mindex1) =>{
-                    children[mindex]['children'][mindex1]['state'] = 1;
-                })
-            }
-        });
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeMonth(monthObj);
     }
 
     onUnCheckMonth(mnth,yindex, qindex, mindex){
-        let years = [...this.props.years];
-        let stateSum = 0;
-        let qstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['state']=0;
-        for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
-            stateSum += years[yindex]["children"][qindex]['children'][i]["state"];
+        let monthObj = {
+            mnth: mnth,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            isCheck: false
         }
-        years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? (stateSum === 0)? 0: -1: 1;
-        for (var j=0; j<years[yindex]["children"].length; j++){
-            if(years[yindex]["children"][j]['state']=== -1){
-                qstateSum = -1;
-                break;
-            }
-            qstateSum += years[yindex]["children"][j]["state"];
-        }
-        years[yindex]["state"] = (qstateSum !== 0) ? (qstateSum < 4) ? -1 : 1: 0;
-        let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
-        children.forEach((element,mindex) => {
-            children[mindex]['state'] = 0;
-            if(children[mindex]['children']){
-                children[mindex]['children'].forEach((element, mindex1) =>{
-                    children[mindex]['children'][mindex1]['state'] = 0;
-                })
-            }
-        });
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeMonth(monthObj);
     }
+
+    onChangeDays = (daysObj) =>{
+        this.props.onChangeDays(daysObj);
+    }
+
+    onChangeWeeks = (weeksObj) =>{
+        this.props.onChangeWeeks(weeksObj);
+    }
+
+    onChangeWeekDays = (weekDaysObj) =>{
+        this.props.onChangeWeekDays(weekDaysObj);
+    }
+
 
     getMonthCheckBoxClass = (mnth,yindex,qindex,mindex) => {
         let flag = false;
         let years = [...this.props.years];
-        //flag = mnth['state'] === -1 ? true :false;
         flag = years[yindex]["children"][qindex]["children"][mindex]['state'] === -1 ? true :false ;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 
     }
@@ -121,8 +97,8 @@ class MonthView extends React.PureComponent {
                 </label>
                 {(mnth.showChild && mnth.children) ?
                   options.showWeeks ?
-                     <WeekDaysView options={options} years={this.state.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex}></WeekDaysView> :
-                     <DaysView options={options} years={this.state.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex}></DaysView> : ''
+                     <WeekDaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></WeekDaysView> :
+                     <DaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex} onChangeDays={this.onChangeDays}></DaysView> : ''
                 }
             
             </div>

@@ -1,14 +1,15 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { getListOfYears } from "../../utils/datehierarchy";
 
 class WeekDaysView extends React.PureComponent {
     constructor(props) {
         super(props);
-        let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit, options.showWeeks);
-        this.state = { years: yearList};
     }
+
+    componentDidMount () {
+
+    }
+
 
     expandWeek(weeks, yindex, qindex, mindex, windex) {
         let years = [...this.props.years];
@@ -27,161 +28,62 @@ class WeekDaysView extends React.PureComponent {
     }
 
     onCheckWeek(weeks, yindex, qindex, mindex, windex){
-        let years = [...this.props.years];
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        yindex = this.props.yindex;
-        qindex = this.props.qindex;
-        mindex = this.props.mindex;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state']=1;
-        if(years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']){
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element,windex1) => {
-            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 1;
-        });
+       let weeksObj = {
+            weeks: weeks,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            windex: windex,
+            isCheck: true
         }
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeWeeks(weeksObj);
     }
 
     onUnCheckWeek(weeks, yindex, qindex, mindex, windex){
-        let years = [...this.props.years];
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        yindex = this.props.yindex;
-        qindex = this.props.qindex;
-        mindex = this.props.mindex;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state']=0;
-        if(years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']){
-            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element,windex1) => {
-                years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 0;
-            });
-            }
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+        let weeksObj = {
+            weeks: weeks,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            windex: windex,
+            isCheck: false
         }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum ===0)? 0: -1: 1;
-
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
-            }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
-
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeWeeks(weeksObj);
     }
 
     onCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex){
-        let years = [...this.props.years];
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        let wdstateSum = 0;
-        yindex = this.props.yindex;
-        qindex = this.props.qindex;
-        mindex = this.props.mindex;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state']=1;
-        for (var n=0; n< years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++){
-            wdstateSum +=  years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
+        let weekDaysObj = {
+            weekDays: weekDays,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            windex: windex,
+            wdindex: wdindex,
+            isCheck: true
         }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length ) ? -1: 1;
-
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })  
-
+        this.props.onChangeWeekDays(weekDaysObj);
+       
     }
 
     onUnCheckWeekDay(weekDays, yindex, qindex, mindex, windex, wdindex){
-        let years = [...this.props.years];
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        let wdstateSum = 0;
-        yindex = this.props.yindex;
-        qindex = this.props.qindex;
-        mindex = this.props.mindex;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state']=0;
-
-        for ( var n=0; n<years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++){
-            wdstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
+        let weekDaysObj = {
+            weekDays: weekDays,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            windex: windex,
+            wdindex: wdindex,
+            isCheck: false
         }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length) ? (wdstateSum ===0)? 0: -1: 1;
-
-
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum ===0)? 0: -1: 1;
-
-       
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
-            }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
-
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeWeekDays(weekDaysObj);
+        
     }
 
    getWeekCheckBoxClass = (weeks,yindex,qindex,mindex,windex) => {
         let flag = false;
-        console.log('week check box called');
         let years = [...this.props.years];
-        flag = years[yindex]["children"][qindex]["children"][mindex]['children'][windex]['children']['state'] === -1 ? true :false ;
+        console.log('week check box called',weeks['state'] );
+        flag = weeks['state'] === -1 ? true :false ;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 
     }
 

@@ -1,75 +1,40 @@
 import React from "react";
 import ReactDom from "react-dom";
-import { getListOfYears } from "../../utils/datehierarchy";
-
 
 class DaysView extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit,options.upperLimit);
-        //this.state = { years: yearList};
-        this.state = {years: this.props.years};
     }
 
+    componentDidMount () {
+        let years = this.props.years;
+        this.setState({years: [...years]});
+    }
+
+
     onCheckDay(days, mnth, qt, row, yindex, qindex, mindex, dindex){
-        let years = [...this.props.years];
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        days['state']=1;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+        let daysObj = {
+            days: days,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            dindex: dindex,
+            isCheck: true
         }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-
-     
-        
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeDays(daysObj);
     }
 
     onUnCheckDay(days, mnth, qt, row, yindex, qindex, mindex, dindex){
-        let years = [...this.props.years];
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][dindex]['state']=0;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+        let daysObj = {
+            days: days,
+            yindex: yindex,
+            qindex: qindex,
+            mindex: mindex,
+            dindex: dindex,
+            isCheck: false
         }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (dstateSum ===0)? 0: -1: 1;
-
-       
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
-            }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
-
-        this.setState({
-            years: [...years]
-        })
+        this.props.onChangeDays(daysObj);
     }
 
     renderDays = (days, mnth, qt, row, yindex, qindex, mindex, dindex) =>{
@@ -103,7 +68,7 @@ class DaysView extends React.PureComponent {
         let {qindex} = this.props.qindex;
         let {mindex} = this.props.mindex;        
         return (
-            <div options = {options}>
+            <div options = {options} >
                { mnth.children.map((days, dindex) => this.renderDays(days, mnth, qt, row, yindex, qindex, mindex, dindex))}
             </div>
         )

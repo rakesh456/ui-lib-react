@@ -421,7 +421,7 @@ if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimi
     weekdays[5] = "Fri";
     weekdays[6] = "Sat";
     for(let weekNo = 1; weekNo <=  Math.ceil(used/7); weekNo++){
-      var weekobj = { week : "week "+ weekNo, state: 0, showChild: false, children:[]}
+      var weekobj = { week : "Week "+ weekNo, state: 0, showChild: false, children:[]}
       for(var i = start; i < (lastOfMonth).getDate()+1;i++ ){
           var monthDate = new Date(year, month_number-1, i);
           var dayObj = {date: i, day: weekdays[monthDate.getDay()], state: 0}; 

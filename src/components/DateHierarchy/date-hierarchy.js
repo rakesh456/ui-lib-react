@@ -23,7 +23,6 @@ class DateHierarchy extends React.PureComponent {
                 <input className= "VS-SearchBox" type="text" placeholder="Search..">
                 </input>
                 <YearView options={options} ></YearView>
-                {/* {this.state.years.map((row, index) => this.renderYear(row, index))} */}
             </div>
         )    
     }
