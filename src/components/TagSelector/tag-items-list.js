@@ -115,21 +115,21 @@ class ItemsList extends React.PureComponent {
 
     renderLIItem(item, index) {
         const { selectedItems } = this.state;
-        const { searchWithHelper } = this.props.options;
+        const { showHelper } = this.props.options;
 
         if (!selectedItems || selectedItems.length <= 0) {
-            return <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}{this.renderTooltip(index, item.value, true)}</span>{(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}{this.renderTooltip(index, item.key, false)}</span> : ''}</li>
+            return <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}{this.renderTooltip(index, item.value, true)}</span>{(showHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}{this.renderTooltip(index, item.key, false)}</span> : ''}</li>
         } else {
             let itemFound = selectedItems.filter((obj) => obj.key === item.key);
             return (
                 (itemFound.length) ?
-                    null : <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}</span> {(searchWithHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}</span> : ''}</li>
+                    null : <li className={this.getLiListClass(item, index)} key={index + '_item'} onClick={(e) => this.selectItem(e, item)}><span className='VS-CodeText VS-PullLeft'>{item.value}</span> {(showHelper === true) ? <span className="VS-HelperText VS-PullRight">{item.key}</span> : ''}</li>
             );
         }
     }
 
     renderULItems() {
-        const { allowNewValue, allowHierarchy, searchWithHelper } = this.props.options;
+        const { allowNewValue, showHierarchy, showHelper } = this.props.options;
         const { filteredlistItems, listItems } = this.props;
         return (
             <ul className={this.getUlListClass()}>
@@ -137,7 +137,7 @@ class ItemsList extends React.PureComponent {
                     (listItems && listItems.length > 0) ?
                         (filteredlistItems && filteredlistItems.length > 0) ?
                             filteredlistItems.map((item, index) => this.renderLIItem(item, index))
-                            : (allowNewValue === true && allowHierarchy === false && searchWithHelper === false) ? this.addItemButton() : 'No Data Found' :
+                            : (allowNewValue === true && showHierarchy === false) ? this.addItemButton() : 'No Data Found' :
                         'No List Items'
                 }
             </ul>
@@ -162,11 +162,11 @@ class ItemsList extends React.PureComponent {
     }
 
     render() {
-        const { allowHierarchy } = this.props.options;
+        const { showHierarchy } = this.props.options;
         return (
             <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style}>
                 {
-                    (allowHierarchy === true) ?
+                    (showHierarchy === true) ?
                         this.renderHeirarchyItems()
                         : this.renderULItems()
                 }
