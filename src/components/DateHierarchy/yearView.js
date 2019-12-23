@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDom from "react-dom";
 import { getListOfYears } from "../../utils/datehierarchy";
 import QuarterView from "./quarterView";
 
@@ -119,11 +118,10 @@ class YearView extends React.PureComponent {
             })
             console.log(qt);
         }
-        else 
-        {
+        else {
             let stateSum = 0;
             years[yindex]['children'][qindex]['state'] = 0;
-            for (var i = 0; i < years[yindex]["children"].length; i++) {
+            for ( i = 0; i < years[yindex]["children"].length; i++) {
                 stateSum += years[yindex]["children"][i]["state"];
             }
             years[yindex]["state"] = (stateSum < 4) ? (stateSum === 0) ? 0 : -1 : 1;
@@ -148,30 +146,30 @@ class YearView extends React.PureComponent {
 
     onChangeMonth = (monthObj) => {
         let years = [...this.state.years];
-        let  mnth = monthObj.mnth;
-        console.log("monthObj",monthObj);
+        let mnth = monthObj.mnth;
+        console.log("monthObj", monthObj);
         let yindex = monthObj.yindex;
         let qindex = monthObj.qindex;
         let mindex = monthObj.mindex;
         let mstateSum = 0;
         let qstateSum = 0;
-        if(monthObj.isCheck ===true){
-         
-            years[yindex]['children'][qindex]['children'][mindex]['state']=1;
-            for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
+        if (monthObj.isCheck === true) {
+
+            years[yindex]['children'][qindex]['children'][mindex]['state'] = 1;
+            for (var i = 0; i < years[yindex]["children"][qindex]['children'].length; i++) {
                 mstateSum += years[yindex]["children"][qindex]['children'][i]["state"];
             }
-            years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-            
-            for (var j=0; j < years[yindex]["children"].length; j++) {
+            years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1 : 1;
+
+            for (var j = 0; j < years[yindex]["children"].length; j++) {
                 qstateSum += years[yindex]["children"][j]["state"];
             }
-            years[yindex]["state"] = (qstateSum < 4) ? -1:1;
+            years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
             let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
-            children.forEach((element,mindex) => {
+            children.forEach((element, mindex) => {
                 children[mindex]['state'] = 1;
-                if(children[mindex]['children']){
-                    children[mindex]['children'].forEach((element, mindex1) =>{
+                if (children[mindex]['children']) {
+                    children[mindex]['children'].forEach((element, mindex1) => {
                         children[mindex]['children'][mindex1]['state'] = 1;
                     })
                 }
@@ -180,27 +178,27 @@ class YearView extends React.PureComponent {
                 years: [...years]
             })
         }
-        else{
+        else {
             let stateSum = 0;
             let qstateSum = 0;
-            years[yindex]['children'][qindex]['children'][mindex]['state']=0;
-            for (var i=0; i<years[yindex]["children"][qindex]['children'].length; i++) {
+            years[yindex]['children'][qindex]['children'][mindex]['state'] = 0;
+            for ( i = 0; i < years[yindex]["children"][qindex]['children'].length; i++) {
                 stateSum += years[yindex]["children"][qindex]['children'][i]["state"];
             }
-            years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? (stateSum === 0)? 0: -1: 1;
-            for (var j=0; j<years[yindex]["children"].length; j++){
-                if(years[yindex]["children"][j]['state']=== -1){
+            years[yindex]['children'][qindex]["state"] = (stateSum < 3) ? (stateSum === 0) ? 0 : -1 : 1;
+            for ( j = 0; j < years[yindex]["children"].length; j++) {
+                if (years[yindex]["children"][j]['state'] === -1) {
                     qstateSum = -1;
                     break;
                 }
                 qstateSum += years[yindex]["children"][j]["state"];
             }
-            years[yindex]["state"] = (qstateSum !== 0) ? (qstateSum < 4) ? -1 : 1: 0;
+            years[yindex]["state"] = (qstateSum !== 0) ? (qstateSum < 4) ? -1 : 1 : 0;
             let children = years[yindex]['children'][qindex]['children'][mindex]['children'];
-            children.forEach((element,mindex) => {
+            children.forEach((element, mindex) => {
                 children[mindex]['state'] = 0;
-                if(children[mindex]['children']){
-                    children[mindex]['children'].forEach((element, mindex1) =>{
+                if (children[mindex]['children']) {
+                    children[mindex]['children'].forEach((element, mindex1) => {
                         children[mindex]['children'][mindex1]['state'] = 0;
                     })
                 }
@@ -213,68 +211,68 @@ class YearView extends React.PureComponent {
 
     onChangeDays = (daysObj) => {
         let years = [...this.state.years];
-        let  days = daysObj.days;
+        let days = daysObj.days;
         let yindex = daysObj.yindex;
         let qindex = daysObj.qindex;
         let mindex = daysObj.mindex;
         let dindex = daysObj.dindex;
-        if(daysObj.isCheck === true){
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        days['state']=1;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-
-     
-        
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })
-    }
-    else{
-        let years = [...this.state.years];
-        let dstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][dindex]['state']=0;
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (dstateSum ===0)? 0: -1: 1;
-
-       
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
+        if (daysObj.isCheck === true) {
+            let dstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            days['state'] = 1;
+            for (var j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
             }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? -1 : 1;
 
-        this.setState({
-            years: [...years]
-        })
-    }
+
+
+            for (var k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1 : 1;
+
+            for (var i = 0; i < years[yindex]["children"].length; i++) {
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
+        else {
+            let years = [...this.state.years];
+            let dstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            years[yindex]['children'][qindex]['children'][mindex]['children'][dindex]['state'] = 0;
+            for ( j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                dstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+            }
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (dstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (dstateSum === 0) ? 0 : -1 : 1;
+
+
+
+            for ( k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+            for (i = 0; i < years[yindex]["children"].length; i++) {
+                if (years[yindex]["children"][i]['state'] === -1) {
+                    qstateSum = -1;
+                    break;
+                }
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
     }
 
     onChangeWeeks = (weeksObj) => {
@@ -284,68 +282,68 @@ class YearView extends React.PureComponent {
         let mindex = weeksObj.mindex;
         let windex = weeksObj.windex;
 
-        if(weeksObj.isCheck === true){
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state']=1;
-        if(years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']){
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element,windex1) => {
-            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 1;
-        });
-        }
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        })
-    }
-    else{
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state']=0;
-        if(years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']){
-            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element,windex1) => {
-                years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 0;
-            });
+        if (weeksObj.isCheck === true) {
+            let wstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state'] = 1;
+            if (years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']) {
+                years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element, windex1) => {
+                    years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 1;
+                });
             }
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum ===0)? 0: -1: 1;
-
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
+            for (var j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
             }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? -1 : 1;
+            for (var k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1 : 1;
 
-        this.setState({
-            years: [...years]
-        })
-    }
+            for (var i = 0; i < years[yindex]["children"].length; i++) {
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
+        else {
+            let wstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['state'] = 0;
+            if (years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children']) {
+                years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'].forEach((element, windex1) => {
+                    years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][windex1]['state'] = 0;
+                });
+            }
+            for ( j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+            }
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum === 0) ? 0 : -1 : 1;
+
+
+            for ( k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+            for ( i = 0; i < years[yindex]["children"].length; i++) {
+                if (years[yindex]["children"][i]['state'] === -1) {
+                    qstateSum = -1;
+                    break;
+                }
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
     }
 
     onChangeWeekDays = (weekDaysObj) => {
@@ -355,75 +353,75 @@ class YearView extends React.PureComponent {
         let mindex = weekDaysObj.mindex;
         let windex = weekDaysObj.windex;
         let wdindex = weekDaysObj.wdindex;
-        if(weekDaysObj.isCheck === true){
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        let wdstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state']=1;
-        for (var n=0; n< years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++){
-            wdstateSum +=  years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['children'][windex]['state'] = (wdstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length ) ? -1: 1;
-        console.log("weeekchild length",wdstateSum);
-
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length ) ? -1: 1;
-
-        for (var k=0; k<years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1: 1;
-
-        for (var i=0; i < years[yindex]["children"].length; i++) {
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? -1:1;
-
-        this.setState({
-            years: [...years]
-        }) 
-    }
-    else{
-        let wstateSum = 0;
-        let qstateSum = 0;
-        let mstateSum = 0;
-        let wdstateSum = 0;
-        years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state']=0;
-
-        for ( var n=0; n<years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++){
-            wdstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['children'][windex]['state'] = (wdstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length) ? (wdstateSum === 0)? 0: -1: 1;
-
-
-        for (var j=0; j<years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
-            wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
-        }
-        years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum ===0)? 0: -1: 1;
-
-       
-
-        for (var k=0; k < years[yindex]["children"][qindex]['children'].length; k++) {
-            mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
-        }
-        years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0)? 0: -1: 1;
-
-        for (var i=0; i<years[yindex]["children"].length; i++) {
-            if(years[yindex]["children"][i]['state']=== -1){
-                qstateSum = -1;
-                break;
+        if (weekDaysObj.isCheck === true) {
+            let wstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            let wdstateSum = 0;
+            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state'] = 1;
+            for (var n = 0; n < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++) {
+                wdstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
             }
-            qstateSum += years[yindex]["children"][i]["state"];
-        }
-        years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1: 1;
+            years[yindex]['children'][qindex]["children"][mindex]['children'][windex]['state'] = (wdstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length) ? -1 : 1;
+            console.log("weeekchild length", wdstateSum);
 
-        this.setState({
-            years: [...years]
-        })
-    }
+            for (var j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+            }
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? -1 : 1;
+
+            for (var k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < 3) ? -1 : 1;
+
+            for (var i = 0; i < years[yindex]["children"].length; i++) {
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
+        else {
+            let wstateSum = 0;
+            let qstateSum = 0;
+            let mstateSum = 0;
+            let wdstateSum = 0;
+            years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['children'][wdindex]['state'] = 0;
+
+            for ( n = 0; n < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length; n++) {
+                wdstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'][n]["state"];
+            }
+            years[yindex]['children'][qindex]["children"][mindex]['children'][windex]['state'] = (wdstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'][windex]['children'].length) ? (wdstateSum === 0) ? 0 : -1 : 1;
+
+
+            for ( j = 0; j < years[yindex]["children"][qindex]['children'][mindex]['children'].length; j++) {
+                wstateSum += years[yindex]["children"][qindex]['children'][mindex]['children'][j]["state"];
+            }
+            years[yindex]['children'][qindex]["children"][mindex]['state'] = (wstateSum < years[yindex]["children"][qindex]['children'][mindex]['children'].length) ? (wstateSum === 0) ? 0 : -1 : 1;
+
+
+
+            for ( k = 0; k < years[yindex]["children"][qindex]['children'].length; k++) {
+                mstateSum += years[yindex]["children"][qindex]['children'][k]["state"];
+            }
+            years[yindex]['children'][qindex]["state"] = (mstateSum < years[yindex]["children"][qindex]['children'].length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+            for ( i = 0; i < years[yindex]["children"].length; i++) {
+                if (years[yindex]["children"][i]['state'] === -1) {
+                    qstateSum = -1;
+                    break;
+                }
+                qstateSum += years[yindex]["children"][i]["state"];
+            }
+            years[yindex]["state"] = (qstateSum < 4) ? (qstateSum === 0) ? 0 : -1 : 1;
+
+            this.setState({
+                years: [...years]
+            })
+        }
     }
 
     renderYear = (year, index) => {

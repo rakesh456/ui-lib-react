@@ -1,22 +1,12 @@
 import React from "react";
-import ReactDom from "react-dom";
 import DaysView from "./daysView";
 import WeekDaysView from "./weekDaysview";
 
 
 class MonthView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount () {
-        let years = this.props.years;
-        this.setState({years: [...years]});
-    }
-
 
     expandMonth(mnth, mindex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         mnth['showChild']=true;
         this.setState({
             years: [...years]
@@ -24,7 +14,7 @@ class MonthView extends React.PureComponent {
     }
 
     collapseMonth(mnth, yindex, qindex, mindex) {
-        let years = [...this.state.years];
+        let years = [...this.props.years];
         mnth['showChild']=false;
         this.setState({
             years: [...years]
@@ -77,7 +67,6 @@ class MonthView extends React.PureComponent {
 
     renderMonths = (mnth, row, yindex, qindex, mindex) =>{
         let {options} = this.props;
-        let qt = this.props.years[this.props.yindex]['children'][this.props.qindex];
         yindex = this.props.yindex;
         qindex = this.props.qindex;
         return (

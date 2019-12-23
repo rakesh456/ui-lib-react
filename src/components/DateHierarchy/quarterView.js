@@ -1,18 +1,7 @@
 import React from "react";
-import ReactDom from "react-dom";
-import { getListOfYears } from "../../utils/datehierarchy";
 import MonthView from "./monthView";
 
 class QuarterView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        let {options} = this.props;
-    }
-
-    componentDidMount () {
-        let years = this.props.years;
-        this.setState({years: [...years]});
-    }
 
     expandQuarter(qt, yindex,qindex) {
         let years = [...this.props.years];

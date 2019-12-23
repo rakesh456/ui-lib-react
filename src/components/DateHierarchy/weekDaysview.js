@@ -1,16 +1,7 @@
 import React from "react";
-import ReactDom from "react-dom";
 
 class WeekDaysView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
-    componentDidMount () {
-
-    }
-
-
+    
     expandWeek(weeks, yindex, qindex, mindex, windex) {
         let years = [...this.props.years];
         years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=true;
@@ -81,7 +72,6 @@ class WeekDaysView extends React.PureComponent {
 
    getWeekCheckBoxClass = (weeks,yindex,qindex,mindex,windex) => {
         let flag = false;
-        let years = [...this.props.years];
         console.log('week check box called',weeks['state'] );
         flag = weeks['state'] === -1 ? true :false ;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 

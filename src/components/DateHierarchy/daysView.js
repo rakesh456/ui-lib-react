@@ -1,18 +1,7 @@
 import React from "react";
-import ReactDom from "react-dom";
 
 class DaysView extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        let {options} = this.props;
-    }
-
-    componentDidMount () {
-        let years = this.props.years;
-        this.setState({years: [...years]});
-    }
-
-
+    
     onCheckDay(days, mnth, qt, row, yindex, qindex, mindex, dindex){
         let daysObj = {
             days: days,
@@ -38,7 +27,6 @@ class DaysView extends React.PureComponent {
     }
 
     renderDays = (days, mnth, qt, row, yindex, qindex, mindex, dindex) =>{
-        let {options} = this.props;
         yindex = this.props.yindex;
         qindex = this.props.qindex;
         mindex = this.props.mindex;

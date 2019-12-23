@@ -119,7 +119,7 @@ export const getChildren = function (year, showWeeks) {
 ]
 }
 else{
-  var quarterArray = [{
+   quarterArray = [{
     "quarter": "Q1",
     "showChild": false,
     "state": 0,
@@ -243,7 +243,7 @@ if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimi
     upperLimit = 1;
     let years = [];
     while (lowerLimit <= upperLimit) {
-     var year = {
+      year = {
       "year": lowerLimit,
       "showChild": false,
       "state": 0,
@@ -260,150 +260,6 @@ if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimi
 }
 
 
-
-// export const getListOfYearsForWeeks = function(lowerLimit, upperLimit) {
-//   if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimit % 1 ===0 && upperLimit % 1 === 0)
-//   {
-//     console.log("lowerLimit",lowerLimit);
-//       let years = [];
-//       while (lowerLimit <= upperLimit) {
-//         var year = {
-//         "year":parseInt(lowerLimit),
-//         "showChild": false,
-//         "state": 0,
-//         "children": getChildrenForWeeks(lowerLimit)
-//        }
-//        years.push(year);
-//        lowerLimit++;
-//       }
-//       return years;
-//      }
-    
-//     else
-//     {
-//       lowerLimit = 2;
-//       upperLimit = 1;
-//       let years = [];
-//       while (lowerLimit <= upperLimit) {
-//         var year = {
-//         "year": lowerLimit,
-//         "showChild": false,
-//         "state": 0,
-//         "children": getChildrenForWeeks(lowerLimit)
-//        }
-//        years.push(year);
-//        lowerLimit++;
-//       }
-//       console.error("either lowerLimit or upperLimit is not in valid format");
-//       return years;
-     
-      
-//     }
-//   }
-
-
-  // export const getChildrenForWeeks = function (year) {
-  
-  //   var quarterArray = [{
-  //   "quarter": "Q1",
-  //   "showChild": false,
-  //   "state": 0,
-  //   "children": [{
-  //     "month": "Jan",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(1, year)
-  //    },
-  //    {
-  //     "month": "Feb",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children":getMonthWeeks(2, year),
-  
-  //    },
-  //    {
-  //     "month": "Mar",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(3, year)
-  //    }
-  //   ]
-  //  },
-  //  {
-  //   "quarter": "Q2",
-  //   "showChild": false,
-  //   "state": 0,
-  //   "children": [{
-  //     "month": "Apr",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children":getMonthWeeks(4, year)
-  //    },
-  //    {
-  //     "month": "May",
-  //     "showChild": false,
-  //     "state": false,
-  //     "children":getMonthWeeks(5, year)
-  //    },
-  //    {
-  //     "month": "Jun",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(6, year)
-  //    }
-  //   ]
-  //  },
-  //  {
-  //   "quarter": "Q3",
-  //   "showChild": false,
-  //   "state": 0,
-  //   "children": [{
-  //     "month": "Jul",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(7, year)
-  //    },
-  //    {
-  //     "month": "Aug",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(8, year)
-  //    },
-  //    {
-  //     "month": "Sep",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(9, year)
-  //    }
-  //   ]
-  //  },
-  //  {
-  //   "quarter": "Q4",
-  //   "showChild": false,
-  //   "state": 0,
-  //   "children": [{
-  //     "month": "Oct",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(10, year)
-  //    },
-  //    {
-  //     "month": "Nov",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(11, year)
-  //    },
-  //    {
-  //     "month": "Dec",
-  //     "showChild": false,
-  //     "state": 0,
-  //     "children": getMonthWeeks(12, year)
-  //    }
-  //   ]
-  //  }
-  // ]
-  // return quarterArray;
-  // }
 
   export const getMonthWeeks = function (month_number,year ) {
 
