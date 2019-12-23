@@ -91,7 +91,6 @@ class YearView extends React.PureComponent {
         let years = [...this.state.years];
         let yindex = quarterObj.yindex;
         let qindex = quarterObj.qindex;
-        let row = quarterObj.row;
         let qt = quarterObj.qt;
         let stateSum = 0;
         if (quarterObj.isCheck === true) {
@@ -146,7 +145,6 @@ class YearView extends React.PureComponent {
 
     onChangeMonth = (monthObj) => {
         let years = [...this.state.years];
-        let mnth = monthObj.mnth;
         console.log("monthObj", monthObj);
         let yindex = monthObj.yindex;
         let qindex = monthObj.qindex;
@@ -431,8 +429,8 @@ class YearView extends React.PureComponent {
             <div className="VS-YearRow" key={'year' + index} >
                 {
                     (year.showChild) ?
-                        <a className="VS-Plus-Minus" onClick={() => this.collapseYear(year, index)}><span className="VS-ExpandCollapseSign">-</span></a> :
-                        <a className="VS-Plus-Minus" onClick={() => this.expandYear(year, index)}><span className="VS-ExpandCollapse">+</span></a>
+                        <span className="VS-Plus-Minus" onClick={() => this.collapseYear(year, index)}><span className="VS-ExpandCollapseSign">-</span></span> :
+                        <span className="VS-Plus-Minus" onClick={() => this.expandYear(year, index)}><span className="VS-ExpandCollapse">+</span></span>
                 }
                 <label className="VS-Checkbox-Container" key={'year' + index}>{year.year}
                     {
