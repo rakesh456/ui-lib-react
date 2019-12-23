@@ -6,105 +6,105 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <script>
 
-    //     function onInputHandler() {
-    //         console.log('onInputHandler called ');
-    //     }
+        function onInputHandler() {
+            console.log('onInputHandler called ');
+        }
         
-    //     function onFocusHandler() {
-    //         console.log('onFocusHandler called ');
-    //     }
+        function onFocusHandler() {
+            console.log('onFocusHandler called ');
+        }
         
-    //     function onBlurHandler() {
-    //         console.log('onBlurHandler called ');
-    //     }
+        function onBlurHandler() {
+            console.log('onBlurHandler called ');
+        }
         
-    //     function onKeyDownHandler() {
-    //         console.log('onKeyDownHandler called ');
-    //     }
+        function onKeyDownHandler() {
+            console.log('onKeyDownHandler called ');
+        }
        
-    //     function onKeyUpHandler() {
-    //         console.log('onKeyUpHandler called ');
-    //     }
+        function onKeyUpHandler() {
+            console.log('onKeyUpHandler called ');
+        }
         
-    //     function onDoubleClickHandler() {
-    //         console.log('onDoubleClickHandler called ');
-    //     }
+        function onDoubleClickHandler() {
+            console.log('onDoubleClickHandler called ');
+        }
         
-    //     function onMouseDownHandler() {
-    //         console.log('onMouseDownHandler called ');
-    //     }
+        function onMouseDownHandler() {
+            console.log('onMouseDownHandler called ');
+        }
         
-    //     function onMouseUpHandler() {
-    //         console.log('onMouseUpHandler called ');
-    //     }
+        function onMouseUpHandler() {
+            console.log('onMouseUpHandler called ');
+        }
         
-    //     function onMouseEnterHandler() {
-    //         console.log('onMouseEnterHandler called ');
-    //     }
+        function onMouseEnterHandler() {
+            console.log('onMouseEnterHandler called ');
+        }
         
-    //     function onMouseLeaveHandler() {
-    //         console.log('onMouseLeaveHandler called ');
-    //     }
+        function onMouseLeaveHandler() {
+            console.log('onMouseLeaveHandler called ');
+        }
         
-    //     function onMouseMoveHandler() {
-    //         console.log('onMouseMoveHandler called ');
-    //     }
+        function onMouseMoveHandler() {
+            console.log('onMouseMoveHandler called ');
+        }
         
-    //     function onMouseOverHandler() {
-    //         console.log('onMouseOverHandler called ');
-    //     }
+        function onMouseOverHandler() {
+            console.log('onMouseOverHandler called ');
+        }
         
-    //     function onMouseOutHandler() {
-    //         console.log('onMouseOutHandler called ');
-    //     }
+        function onMouseOutHandler() {
+            console.log('onMouseOutHandler called ');
+        }
         
-    //     function onWheelHandler() {
-    //         console.log('onWheelHandler called ');
-    //     }
+        function onWheelHandler() {
+            console.log('onWheelHandler called ');
+        }
         
-    //     function setValue(id, value) {
-    //         let element = document.getElementById(id);
-    //         element.setValue(value);
-    //     }
+        function setValue(id, value) {
+            let element = document.getElementById(id);
+            element.setValue(value);
+        }
         
-    //     function refresh(id) {
-    //         let element = document.getElementById(id);
-    //         element.refresh();
-    //     }
+        function refresh(id) {
+            let element = document.getElementById(id);
+            element.refresh();
+        }
 
-    //     function getStartDate(id, divId) {
-    //         let element = document.getElementById(id);
-    //         let dateValue = element.getStartDate();
-    //         let element2 = document.getElementById(divId);
-    //         if(element2){
-    //             element2.innerHTML = 'Get Start Date : ' + dateValue;
-    //         }
-    //     }
+        function getStartDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getStartDate();
+            let element2 = document.getElementById(divId);
+            if(element2){
+                element2.innerHTML = 'Get Start Date : ' + dateValue;
+            }
+        }
         
-    //     function getEndDate(id, divId) {
-    //         let element = document.getElementById(id);
-    //         let dateValue = element.getEndDate();
-    //         let element2 = document.getElementById(divId);
-    //         if(element2){
-    //             element2.innerHTML = 'Get End Date : ' + dateValue;
-    //         }
-    //     }
+        function getEndDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getEndDate();
+            let element2 = document.getElementById(divId);
+            if(element2){
+                element2.innerHTML = 'Get End Date : ' + dateValue;
+            }
+        }
 
-    //     function addDatepickerNew(id) {
-    //         let element = document.getElementById(id);
+        function addDatepickerNew(id) {
+            let element = document.getElementById(id);
             
-    //     }
+        }
 
-    //     window.onload = bodyOnload;
+        window.onload = bodyOnload;
 
-    //     function bodyOnload() {
-    //         let element = document.getElementById('datepicker1');
-    //         let elementDiv = document.getElementById('display2');
+        function bodyOnload() {
+            let element = document.getElementById('datepicker1');
+            let elementDiv = document.getElementById('display2');
 
-    //         element.addEventListener("selected", function (event) {
-    //             let value = event.srcElement.getValue();
-    //             elementDiv.innerHTML = 'From addEventListener : ' + value;
-    //         });
+            element.addEventListener("selected", function (event) {
+                let value = event.srcElement.getValue();
+                elementDiv.innerHTML = 'From addEventListener : ' + value;
+            });
             
         //     let tagselector1 = document.getElementById('tagselector1');
         //     tagselector1.setJsonData([ 
@@ -408,26 +408,26 @@
             var form = document.forms["myform"];
         }
 
-    //     function getSelectedValuesById(id){
-    //         let tagElement1 = document.getElementById(id);
-    //         let divElement = document.getElementById('SelectedValues');
-    //         let selectedValues = tagElement1.getSelectedValues();
-    //         divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
-    //         console.log(' selectedValues ', selectedValues);
-    //     }
+        function getSelectedValuesById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedValues');
+            let selectedValues = tagElement1.getSelectedValues();
+            divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
+            console.log(' selectedValues ', selectedValues);
+        }
         
-    //     function getSelectedCounterById(id){
-    //         let tagElement1 = document.getElementById(id);
-    //         let divElement = document.getElementById('SelectedCounter');
-    //         let selectedCounter = tagElement1.getSelectedCounter();
-    //         divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
-    //         console.log(' selectedCounter ', selectedCounter);
-    //     }
+        function getSelectedCounterById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedCounter');
+            let selectedCounter = tagElement1.getSelectedCounter();
+            divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
+            console.log(' selectedCounter ', selectedCounter);
+        }
         
-    //     function refreshTagSelector(id){
-    //         let tagElement1 = document.getElementById(id);
-    //         let selectedCounter = tagElement1.refresh();
-    //     }
+        function refreshTagSelector(id){
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.refresh();
+        }
         
         function remove(id, id2){
             let tagElement1 = document.getElementById(id);
@@ -450,39 +450,39 @@
             let selectedCounter1 = tagElement2.setSelectedItems([{"key": "Adoni", "value": "Adoni"}]);
         }
         
-    //     function getNewlyAddedById(id){
-    //         let tagElement1 = document.getElementById(id);
-    //         let divElement = document.getElementById('NewlyAddedElements');
-    //         let newlyAddedElements = tagElement1.getNewlyAdded();
-    //         divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
-    //     }
+        function getNewlyAddedById(id){
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('NewlyAddedElements');
+            let newlyAddedElements = tagElement1.getNewlyAdded();
+            divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
+        }
 
-    //     function onSelectHandler(e) {
-    //         console.log('Tag selector onSelect called ', e.detail);
-    //     }
+        function onSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
        
-    //     function onDeSelectHandler(e) {
-    //         console.log('Tag selector onSelect called ', e.detail);
-    //     }
+        function onDeSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
         
-    //     function onNotFoundHandler(e) {
-    //         console.log('onNotFound called ');
-    //     }
-    //     function myFunction() {
-    //         document.getElementById("myDropdown").classList.toggle("show");
-    //    }
-    //    window.onclick = function(event) {
-    //         if (!event.target.matches('.dropbtn')) {
-    //                var dropdowns = document.getElementsByClassName("dropdown-content");
-    //               var i;
-    //               for (i = 0; i < dropdowns.length; i++) {
-    //                 var openDropdown = dropdowns[i];
-    //                     if (openDropdown.classList.contains('show')) {
-    //                        openDropdown.classList.remove('show');
-    //                     }
-    //             }
-    //         }
-    //    }
+        function onNotFoundHandler(e) {
+            console.log('onNotFound called ');
+        }
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+       }
+       window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                   var dropdowns = document.getElementsByClassName("dropdown-content");
+                  var i;
+                  for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                        if (openDropdown.classList.contains('show')) {
+                           openDropdown.classList.remove('show');
+                        }
+                }
+            }
+       }
 
         </script>
 
@@ -502,7 +502,7 @@
     <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2015", "upperLimit": "2020", "showWeeks": "false"}'></date-hierarchy>
 
 
-<!-- 
+
 
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
@@ -555,17 +555,18 @@
         <!-- <label>From Date:</label> -->
         <date-picker1 name="dob" id="datepicker1" data-options='{"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()" onChange="updateToDate('datepicker1', 'datepicker3')"></date-picker>
 
-        <!-- <label>To Date:</label>
-        <date-picker name="dob" id="datepicker3"></date-picker> -->
-        <!-- <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019", "05/11/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker> -->
+        <label>To Date:</label>
+        <date-picker name="dob" id="datepicker3"></date-picker>
+         <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019", "05/11/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker> 
     </div>
     
     <br>
     <!-- <div id="display1"></div>
     <div id="displayLower1"></div>
     <div id="displayUpper1"></div>
-    <button onclick="displayValue('datepicker1', 'display1')">Display</button> -->
-<!--      <button onclick="reloadDatepicker('datepicker1')">Reload</button>
+    <button onclick="displayValue('datepicker1', 'display1')">Display</button>
+      <button onclick="reloadDatepicker('datepicker1')">Reload</button>
+
     <button onclick="setValue('datepicker1', '23/09/2019');">Set Value to 23/09/2019</button>
     <button onclick="setValue('datepicker1', '01/10/2019');">Set Value to 01/12/2019</button>
     <button onclick="refresh('datepicker1');">Refresh</button>
@@ -636,8 +637,7 @@
     <!-- <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
     <br> 
-    <div id="newdatepicker"></div>  -->
-
+    <div id="newdatepicker"></div>  
 </body>
 
 </html>
