@@ -73,8 +73,8 @@ class QuarterView extends React.PureComponent {
             <div className="VS-QuarterRow"key={'quarter' + yindex.toString() + qindex.toString() }>
                  {
                     (qt.showChild) ?
-                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, yindex, qindex)}>-</a> :
-                        <a className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt,yindex, qindex)}>+</a>
+                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, yindex, qindex)}>-</span> :
+                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt,yindex, qindex)}>+</span>
                 }
                 <label className="VS-Checkbox-Container">{qt.quarter}
                 {

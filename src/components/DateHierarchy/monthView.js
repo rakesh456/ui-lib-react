@@ -73,8 +73,8 @@ class MonthView extends React.PureComponent {
             <div className="VS-MonthRow" key={'month' + yindex.toString() + mindex.toString() + qindex.toString() + mindex.toString()}>
                 {
                     (mnth.showChild) ?
-                        <a className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(mnth, mindex)}>-</a> :
-                        <a className="VS-Month-Plus-Minus" onClick={() => this.expandMonth(mnth, mindex)} >+</a>
+                        <span className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(mnth, mindex)}>-</span> :
+                        <span className="VS-Month-Plus-Minus" onClick={() => this.expandMonth(mnth, mindex)} >+</span>
                 }
            <label className="VS-Checkbox-Container">{mnth.month}
                 {
@@ -86,8 +86,8 @@ class MonthView extends React.PureComponent {
                 </label>
                 {(mnth.showChild && mnth.children) ?
                   options.showWeeks ?
-                     <WeekDaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></WeekDaysView> :
-                     <DaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} mindex={mindex} onChangeDays={this.onChangeDays}></DaysView> : ''
+                     <WeekDaysView options={options} years={this.props.years} yindex={yindex} qindex={qindex} mindex={mindex} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></WeekDaysView> :
+                     <DaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} onChangeDays={this.onChangeDays}></DaysView> : ''
                 }
             
             </div>

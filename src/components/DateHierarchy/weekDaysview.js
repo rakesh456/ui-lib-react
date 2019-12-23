@@ -1,7 +1,7 @@
 import React from "react";
 
 class WeekDaysView extends React.PureComponent {
-    
+
     expandWeek(weeks, yindex, qindex, mindex, windex) {
         let years = [...this.props.years];
         years[yindex]['children'][qindex]['children'][mindex]['children'][windex]['showChild']=true;
@@ -108,8 +108,8 @@ renderWeeks = (weeks, mnth, qt, row, yindex, qindex, mindex, windex) =>{
         <div className="VS-WeekRow" key={'week' + yindex.toString() + qindex.toString() + mindex.toString()+    windex.toString()}>
             {
                 (weeks.showChild) ?
-                    <a className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(weeks, yindex, qindex, mindex, windex)}>-</a> :
-                    <a className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks, yindex, qindex, mindex, windex)} >+</a>
+                    <span className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(weeks, yindex, qindex, mindex, windex)}>-</span> :
+                    <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks, yindex, qindex, mindex, windex)} >+</span>
             }
            
        <label className="VS-Checkbox-Container">{weeks.week}
