@@ -5,7 +5,7 @@ import ItemsList from "./tag-items-list";
 import TagSelectorPortal from "./portal";
 import {
     guid,
-    arrayIncludesInObj,
+    objectIncludesInArray,
     isStringExists
 } from "../../utils/utils";
 import {
@@ -38,10 +38,10 @@ class TagSelector extends React.PureComponent {
     }
 
     setJsonData(listItems){
-        const {allowHierarchy} = this.props.options;
-        if(isValidJsonFormat(allowHierarchy, listItems)){
+        const {showHierarchy} = this.props.options;
+        if(isValidJsonFormat(showHierarchy, listItems)){
             this.setState({
-                listItems: sortListingByType(allowHierarchy, listItems)
+                listItems: sortListingByType(showHierarchy, listItems)
             });
         }
     }
@@ -69,9 +69,9 @@ class TagSelector extends React.PureComponent {
     }
 
     checkItemExistInList = (item, callback) => {
-        const { allowHierarchy } = this.props.options;
+        const { showHierarchy } = this.props.options;
         const { listItems } = this.state;
-        if(allowHierarchy){
+        if(showHierarchy){
             // Function to check object contains in list
             let key;
             let flag = false;
@@ -102,21 +102,21 @@ class TagSelector extends React.PureComponent {
     }
 
     addItemAndUpdateList = (obj) => {
-        const {allowHierarchy} = this.props.options;
+        const {showHierarchy} = this.props.options;
         const {listItems, newlyAddedElements} = this.state;
         let _items = [...listItems];
         let _newItems = [...newlyAddedElements];
         _items.push(obj);
         _newItems.push(obj);
         this.setState({
-            listItems: sortListingByType(allowHierarchy, [..._items]),
+            listItems: sortListingByType(showHierarchy, [..._items]),
             newlyAddedElements: [..._newItems]
         });
     }
 
     appendNewElement(obj) {
-        const {allowHierarchy} = this.props.options;
-        if(allowHierarchy === false){
+        const {showHierarchy} = this.props.options;
+        if(showHierarchy === false){
             this.addItemAndUpdateList(obj);
             let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
             this.updateFilterItems(_val);
@@ -166,7 +166,7 @@ class TagSelector extends React.PureComponent {
             evt = (evt) ? evt : window.event;
             const charCode = (evt.which) ? evt.which : evt.keyCode;
             const _val = this.state.currentItemIndex;
-            const {allowHierarchy} = this.props.options;
+            const {showHierarchy} = this.props.options;
             
             let _counter = (charCode === 38 && _val >= 0)? -1 : (charCode === 40 && _val < this.state.filteredlistItems.length)? 1 : 0;
 
@@ -177,7 +177,7 @@ class TagSelector extends React.PureComponent {
             let _hierarchyParentLength = this.state.hierarchyParentLength;
             let _list = this.state.filteredlistItems[_hierarchyIndex];
 
-            if(_list && allowHierarchy === true && _counter !== 0){
+            if(_list && showHierarchy === true && _counter !== 0){
                 let _len = 0;
                 let key;
                 for (key in _list) {
@@ -231,13 +231,13 @@ class TagSelector extends React.PureComponent {
 
     addItemOnEnter = () => {
         const {currentHierarchyItemIndex, currentItemIndex} = this.state;
-        const {allowHierarchy} = this.props.options;
+        const {showHierarchy} = this.props.options;
         if(currentItemIndex >= 0){
 
             let filteredlistItems = [...this.state.filteredlistItems];
             let item = filteredlistItems[currentItemIndex];
             
-            if(allowHierarchy === true){
+            if(showHierarchy === true){
                 let _list = filteredlistItems[currentHierarchyItemIndex];  
                 let key;
                 for (key in _list) {
@@ -246,7 +246,7 @@ class TagSelector extends React.PureComponent {
             }
 
             if(item){
-                if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
+                if(!objectIncludesInArray(this.state.selectedItems, 'key', item.key)){
                     let selectedItems = [...this.state.selectedItems];
                     selectedItems.push(item);
                     this.setState({ selectedItems: selectedItems });
@@ -274,10 +274,10 @@ class TagSelector extends React.PureComponent {
 
     updateFilterItems = (_val) => {
         const {listItems} = this.state;
-        const {allowHierarchy} = this.props.options;
+        const {showHierarchy} = this.props.options;
         let key;
         let results = [];
-        if(allowHierarchy === true){
+        if(showHierarchy === true){
             let results1 = [];
             listItems.forEach((element, index) => {
                 for (key in element) {
@@ -302,7 +302,7 @@ class TagSelector extends React.PureComponent {
             results = (_val)? this.state.listItems.filter((item, index) => (this.checkStringSearchInListByType(item, _val))) : [...this.state.listItems];
         }
         
-        const sortedList = sortListingByType(allowHierarchy, results);
+        const sortedList = sortListingByType(showHierarchy, results);
 
         let _key = '';
         let key2;
@@ -316,8 +316,8 @@ class TagSelector extends React.PureComponent {
     }
 
     checkStringSearchInListByType = (item, _val) => {
-        const {searchWithHelper} = this.props.options;
-        if(searchWithHelper){
+        const {showHelper} = this.props.options;
+        if(showHelper){
             return (isStringExists(item.value, _val) || isStringExists(item.key, _val))
         } else {
             return (isStringExists(item.value, _val))
@@ -342,7 +342,7 @@ class TagSelector extends React.PureComponent {
 
     onSelectHandler = (item) => {
         this.setState({ shouldListOpen: true });
-        if(!arrayIncludesInObj(this.state.selectedItems, 'key', item.key)){
+        if(!objectIncludesInArray(this.state.selectedItems, 'key', item.key)){
             let selectedItems = [...this.state.selectedItems];
             selectedItems.push(item);
             this.setState({ selectedItems: selectedItems });
@@ -361,9 +361,9 @@ class TagSelector extends React.PureComponent {
     }
     
     removeListItem(item) {
-        const {allowHierarchy} = this.props.options;
+        const {showHierarchy} = this.props.options;
         let listItems = [...this.state.listItems];
-        if(allowHierarchy === true){
+        if(showHierarchy === true){
             let key;
             let results1 = [];
             listItems.forEach((element, index) => {

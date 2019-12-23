@@ -128,7 +128,6 @@ export function checkValueByDisplayFormat(date, options, callback){
             let _dateNew = convertYYYYMMDDByFormat(_date, options.displayFormat);
             let  _validFormat = (isValidDate(_dateNew));
             let  _validOutRange = isValidOutsideRangeDate(_dateNew, options);
-            console.log(_dateNew, ' isValidDate(date) ', _validFormat, _validOutRange);
             
             callback(_date, !_validFormat, !_validOutRange);
         } else {
