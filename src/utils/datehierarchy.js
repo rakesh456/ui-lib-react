@@ -16,7 +16,8 @@ export const getMonthDays = (month, year) => {
           }
           return days;
 }
-export const getChildren = function (year) {
+export const getChildren = function (year, showWeeks) {
+  if(showWeeks === false){
   
   var quarterArray = [{
   "quarter": "Q1-" + year,
@@ -26,7 +27,7 @@ export const getChildren = function (year) {
     "month": "Jan-"+year,
     "showChild": false,
     "state": 0,
-    "children": getMonthDays(1, year)
+    "children": getMonthDays(1, year),
    },
    {
     "month": "Feb-"+year,
@@ -116,94 +117,9 @@ export const getChildren = function (year) {
   ]
  }
 ]
-return quarterArray;
 }
-export const getListOfYears = function(lowerLimit, upperLimit) {
-if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimit % 1 ==0 && upperLimit % 1 == 0)
-{
-  console.log("lowerLimit",lowerLimit);
-    let years = [];
-    while (lowerLimit <= upperLimit) {
-     var year = {
-      "year":parseInt(lowerLimit),
-      "showChild": false,
-      "state": 0,
-      "children": getChildren(lowerLimit)
-     }
-     years.push(year);
-     lowerLimit++;
-    }
-    return years;
-   }
-  
-  else
-  {
-    lowerLimit = 2;
-    upperLimit = 1;
-    let years = [];
-    while (lowerLimit <= upperLimit) {
-     var year = {
-      "year": lowerLimit,
-      "showChild": false,
-      "state": 0,
-      "children": getChildren(lowerLimit)
-     }
-     years.push(year);
-     lowerLimit++;
-    }
-    console.error("either lowerLimit or upperLimit is not in valid format");
-    return years;
-   
-    
-  }
-}
-
-
-
-export const getListOfYearsForWeeks = function(lowerLimit, upperLimit) {
-  if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimit % 1 ==0 && upperLimit % 1 == 0)
-  {
-    console.log("lowerLimit",lowerLimit);
-      let years = [];
-      while (lowerLimit <= upperLimit) {
-       var year = {
-        "year":parseInt(lowerLimit),
-        "showChild": false,
-        "state": 0,
-        "children": getChildrenForWeeks(lowerLimit)
-       }
-       years.push(year);
-       lowerLimit++;
-      }
-      return years;
-     }
-    
-    else
-    {
-      lowerLimit = 2;
-      upperLimit = 1;
-      let years = [];
-      while (lowerLimit <= upperLimit) {
-       var year = {
-        "year": lowerLimit,
-        "showChild": false,
-        "state": 0,
-        "children": getChildrenForWeeks(lowerLimit)
-       }
-       years.push(year);
-       lowerLimit++;
-      }
-      console.error("either lowerLimit or upperLimit is not in valid format");
-      return years;
-     
-      
-    }
-  }
-
-
-  export const getChildrenForWeeks = function (year) {
-  
-    var quarterArray = [{
+else{
+   quarterArray = [{
     "quarter": "Q1",
     "showChild": false,
     "state": 0,
@@ -301,8 +217,49 @@ export const getListOfYearsForWeeks = function(lowerLimit, upperLimit) {
     ]
    }
   ]
-  return quarterArray;
+}
+return quarterArray;
+}
+export const getListOfYears = function(lowerLimit, upperLimit, showWeeks) {
+if(lowerLimit > 999 && upperLimit>999 && (lowerLimit <= upperLimit) && lowerLimit % 1 ===0 && upperLimit % 1 === 0)
+{
+    let years = [];
+    while (lowerLimit <= upperLimit) {
+     var year = {
+      "year":parseInt(lowerLimit),
+      "showChild": false,
+      "state": 0,
+      "children": getChildren(lowerLimit, showWeeks)
+     }
+     years.push(year);
+     lowerLimit++;
+    }
+    return years;
+   }
+  
+  else
+  {
+    lowerLimit = 2;
+    upperLimit = 1;
+    let years = [];
+    while (lowerLimit <= upperLimit) {
+      year = {
+      "year": lowerLimit,
+      "showChild": false,
+      "state": 0,
+      "children": getChildren(lowerLimit)
+     }
+     years.push(year);
+     lowerLimit++;
+    }
+    console.error("either lowerLimit or upperLimit is not in valid format");
+    return years;
+   
+    
   }
+}
+
+
 
   export const getMonthWeeks = function (month_number,year ) {
 
@@ -320,10 +277,10 @@ export const getListOfYearsForWeeks = function(lowerLimit, upperLimit) {
     weekdays[5] = "Fri";
     weekdays[6] = "Sat";
     for(let weekNo = 1; weekNo <=  Math.ceil(used/7); weekNo++){
-      var weekobj = { week : "week "+ weekNo, state: 0, showChild: false, children:[]}
+      var weekobj = { week : "Week "+ weekNo, state: 0, showChild: false, children:[]}
       for(var i = start; i < (lastOfMonth).getDate()+1;i++ ){
           var monthDate = new Date(year, month_number-1, i);
-          var dayObj = {date: i, day: weekdays[monthDate.getDay()], state: false}; 
+          var dayObj = {date: i, day: weekdays[monthDate.getDay()], state: 0}; 
           weekobj.children.push(dayObj);
           if(monthDate.getDay()===6){
               start = i + 1;
