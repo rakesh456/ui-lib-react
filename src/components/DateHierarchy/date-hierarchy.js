@@ -1,5 +1,5 @@
 import React from "react";
-import { getListOfYears } from "../../utils/datehierarchy";
+import { getListOfYears } from "../../utils/datehierarchyutils";
 import YearView from "./yearView";
 
 class DateHierarchy extends React.PureComponent {

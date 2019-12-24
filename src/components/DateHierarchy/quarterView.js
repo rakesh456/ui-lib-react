@@ -28,7 +28,6 @@ class QuarterView extends React.PureComponent {
             isCheck: true
         }
         this.props.onChangeQuarter(quarterObj);
-        console.log('oncheckquarter called');
     }
 
     
@@ -46,7 +45,7 @@ class QuarterView extends React.PureComponent {
     getQuarterCheckBoxClass = (row, qt , yindex, qindex) => {
         let flag = false;
         let years = [...this.props.years];
-        flag = ((years[yindex]["children"][qindex]["state"] === -1)) ? true :false;
+        flag = ((years[yindex]["quarters"][qindex]["state"] === -1)) ? true :false;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
 
     }
@@ -85,7 +84,7 @@ class QuarterView extends React.PureComponent {
                 <span className={this.getQuarterCheckBoxClass(row, qt, yindex, qindex)}></span>
                 </label>
                 {
-                    (qt.showChild && qt.children) ?
+                    (qt.showChild && qt.months) ?
                     <MonthView options={options} years= {this.props.years} yindex={yindex} qindex={qindex} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonth} onChangeDays={this.onChangeDays} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView>
                          : ''
                 }
@@ -102,7 +101,7 @@ class QuarterView extends React.PureComponent {
         return (
             <div options = {options} onChange={this.props.onChangeHandler}>
             {
-                 row.children.map((qt, qindex) =>  this.renderQuarter(qt, row, yindex, qindex))
+                 row.quarters.map((qt, qindex) =>  this.renderQuarter(qt, row, yindex, qindex))
             }
             </div>
         )
