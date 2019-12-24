@@ -1,4 +1,4 @@
-import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual} from '../src/utils/calendar';
+import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual,valueIsInDisabledList,checkIsInValidLowerUpper,isLeft,isRight,checkFullMonthOrYearDisabled,getInvalidDateMessage,getNewUpdateDateByArrow} from '../src/utils/calendar';
 
 //Test for isCalendarFormat
 describe('Testing on function isCalendarFormat',()=>{
@@ -836,48 +836,243 @@ describe('Testing for function isEqual',()=>{
 })
 
 // Test for getInvalidDateMessage
+describe('Testing on function getInvalidDateMessage',()=>{
 
+    test('If is date is invalid then then function shows msg "Invalid Date"',()=>{
+        expect(getInvalidDateMessage('',true,false)).toEqual('Invalid Date')
+    })
+    test('If date is not valid then the function shows msg "Invalid Date"',()=>{
+        expect(getInvalidDateMessage('',true,true)).toEqual('Invalid Date')
+    })
+    test('If the date is valid but not in range the function return msg "Outside allowed range"',()=>{
+        expect(getInvalidDateMessage('',false,true)).toEqual('Outside allowed range')
+    })
+    test('If the format of date is not valid then function give the msg "Not in valid format" ',()=>{
+        expect(getInvalidDateMessage([{inValidFormat:'Not in valid format'},{inValidFormat:'Not in valid format'}],true,false)).toEqual('Invalid date is passed')
+    })
+    test('If date is valid and is invalid range then the function return "Outside allowed range"',()=>{
+        expect(getInvalidDateMessage([{outsideRange:'Outside Range value'}],false,true)).toEqual('Outside allowed range')
+    })
+    test('If both date and its range is valid',()=>{
+        expect(getInvalidDateMessage([{outsideRange:'Outside Range value'}],false,false)).toEqual('')
+    })
+    test('If both date and range si invalid',()=>{
+        expect(getInvalidDateMessage([{inValidFormat:'Not in valid format'}],true,true)).toEqual('Not in valid format')
+    })
 
+})
+
+// Test for getNewUpdateDateByArrow
+// describe('Testing on function getNewUpdateDateByArrow',()=>{
+
+//     let options = {
+
+        
+//     }
+//     test('testing',()=>{
+//         expect(getNewUpdateDateByArrow('02/03/2019',true,))
+//     })
+// })
 // Test for dateIsInDisabledList
-// describe('Testing on the function dateIsInDisabledList',()=>{
+describe('Testing on the function dateIsInDisabledList',()=>{
 
-//     let newDate1 = new Date('05/07/2020')
-//     let options1 = {
-//         disabledList:'05/07/2020'
+    let value1 = new Date('05/07/2020')
+    let options1 = {
+        disabledList:'05/07/2020'
+    }
+    let newDate2 = new Date('03/04/2019')
+    let options2 = {
+        disabledList:'04/05/2019'
+    }
+    let newDate3 = new Date('07/21/2019')
+    let options3 = {
+        disabledList:['02/19/2018','11/21/2008','10/23/2015']
 
-//     }
-//     let newDate2 = new Date('03/04/2019')
-//     let options2 = {
-//         disabledList:'04/05/2019'
-//     }
-//     let newDate3 = new Date('07/21/2019')
-//     let options3 = {
-//         disabledList:['02/19/2018','11/21/2008','10/23/2015']
+    }
+    let newDate4 = new Date('1/26/1993')
+    let options4 = {
+        disabledList:['09/25/2023','01/26/1993','12/20/2020']
+    }
+    let newDate5 = '11/02/2020'
+    let options5 = {
+        disabledList : '11/07/2020'
+    }
 
-//     }
-//     let newDate4 = new Date('01/26/1993')
-//     let options4 = ['01/26/1993','02/28/2020']
+    let input = [value1,newDate2,newDate3,newDate4,newDate5]
+    let optionsArray = [options1,options2,options3,options4,options5]
+    let output = [true,true,false,true,true]
+    let messages = ['Passing date to the function and the same date is present in disabled list then function will return true that date is present in the list',
+                    'Passing date which is not present in disabledLIst but year is same so function will return true because of same year',
+                    'Passing date which is not present in the disabledList Array so function will return false.',
+                    'Passing date which is present in disabledList Array then function will return true',
+                    'Passing date which is not present in the disabledList but date month and year are same so the function will return true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(dateIsInDisabledList(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
+    }    
+})
+
+// Test for valueIsInDisabledList
+describe('Testing on function valueIsInDisabledList',()=>{
+
+    let value1 = '09/08/2018'
+    let options1 = {
+        disabledList:'09/08/2018'
+    }
+    let value2 = '2014'
+    let options2 = {
+        disabledList:'03/04/2014'
+    }
+    let value3 = '06/08/2013'
+    let options3 = {
+        disabledList: '07/22/1996'
+    }
+    let value4 = '04/03/2020'
+    let options4 = {
+        disabledList: ['02/24/2010','04/03/2020','09/04/2017']
+    }
+    let value5 = '06/08/2013'
+    let options5 = {
+        disabledList: ['02/24/2010','04/03/2020','09/04/2017']
+    }
+    let value6 = '2019'
+    let options6 = {
+        disabledList:'12/14/2014'
+    }
+    let input = [value1,value2,value3,value4,value5,value6]
+    let optionsArray = [options1,options2,options3,options4,options5,options6]
+    let output = [true,true,false,true,false,false]
+    let messages = ['Passing date to the function and the same date is present in disabled list then function wil return true that date is present in the list',
+                    'Passing date which is not present in disabledLIst but year is same so function will return true because of same year',
+                    'Passing date which is not present in the disabledList Array so function will return false.',
+                    'Passing date which is present in disabledList Array then function will return true',
+                    'Passing date which is not present in the disabledList but date month and year are same so the function will return true']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(valueIsInDisabledList(input[i],optionsArray[i]))
+            .toEqual(output[i])
+        })
+    }    
+
+})
+
+// Test for checkIsInValidLowerUpper
+describe('Testing on the function checkIsInValidLowerUpper',()=>{
+
+    let options1={
+        lowerLimit:new Date('01/01/1990'),
+        upperLimit:new Date('12/31/2030')
+    }
+    let options2 = {
+        lowerLimit:undefined,
+        upperLimit:new Date('12/31/2030')
+    } 
+    let options3 = {
+        lowerLimit:new Date('01/01/1990'),
+        upperLimit:undefined
+    } 
+    let options4 = {
+        lowerLimit:undefined,
+        upperLimit:undefined
+    } 
+    let options5 = {
+        lowerLimit:new Date('01/1990'),
+        upperLimit:new Date('31/2030')
+    }
+    let options6 = {
+        lowerLimit:new Date('01/1990'),
+        upperLimit:new Date('01/31/2030')
+    }
+    let options7 = {
+        lowerLimit:new Date('01/23/1990'),
+        upperLimit:new Date('31/2030')
+    }
+
+    test('testing',()=>{
+        expect(checkIsInValidLowerUpper(options5)).toEqual(true)
+    })
+
+    let input = [options1,options2,options3,options4,options5,options6,options7]
+    let output = [false,false,false,true,true,false,false]
+    let messages = ['Passing options object having vaid lower and upper limit then the function in isInvalidLowerUpper return false because they are vaild dates',
+                    'Passing options object having undefined lower limit and valid upper limit then the function in isInvalidLowerUpper return false because upper limit is vaild dates',
+                    'Passing options object having valid lower limit and undefined upper limit then the function in isInvalidLowerUpper return false because lower limit is vaild dates',
+                    'Passing options object having both lower limit and  upper limit are undefined then the function in isInvalidLowerUpper return true because they are Invaild dates',
+                    'Passing options object having both lower limit and  upper limit are inValid dates then the function in isInvalidLowerUpper return true because they are Invaild dates',
+                    'Passing options object having Invaid lower and valid upper limit then the function in isInvalidLowerUpper return false because upper limit is vaild dates',
+                    'Passing options object having vaid lower and Invalid upper limit then the function in isInvalidLowerUpper return false because lower limit is vaild dates']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(checkIsInValidLowerUpper(input[i]))
+            .toEqual(output[i])
+        })
+    }    
+
+})
+
+// Test for isLeft
+describe('Testing on function isLeft',()=>{
+
+    let value1 = "Left"
+    let value2 = 'notLeft'
+    test('Passing value whose value is "left" which is equals to the "Left" so the function returns true',()=>{
+        expect(isLeft(value1)).toEqual(true)
+    })
+    test('Passing value whose value is "notLeft" which is not equal to "left" so function return false',()=>{
+        expect(isLeft(value2)).toEqual(false)
+    })
+})
+
+// Test for isRight
+describe('Testing on function isRight',()=>{
+
+    let value1 = "Right"
+    let value2 = 'notRight'
+    test('Passing value whose value is "Right" which is equals to the "right" so the function returns true',()=>{
+        expect(isRight(value1)).toEqual(true)
+    })
+    test('Passing value whose value is "notRightt" which is not equal to "right" so function return false',()=>{
+        expect(isRight(value2)).toEqual(false)
+    })
+})
+
+// Test for checkFullMonthOrYearDisabled
+describe('Testing on function checkFullMonthOrYearDisabled',()=>{
+
+    let date1 = '01/02/2020'
+    let disabledList1 = '01/02/2020'
+
+    let date2 = '04/25/2018'
+    let disabledList2 = '02/21/2017'
+
+    let date3 = '2019'
+    let disabledList3 = '03/09/2019'
+    
+    let date4 = '4/09/2018'
+    let disabledList4 = '04/02/2018'
+
     
 
-//     let input = [newDate1,newDate2,newDate3,newDate4]
-//     let optionsArray = [options1,options2,options3,options4]
-//     let output = [true,false,false,true]
-//     let messages = ['Passing date and options the function will return true because date passed it is between lower and upper limit',
-//                     'Passing date which is present in disabledLIst so function will return false because it is in disbaled list',
-//                     'Passing date, lowerLimit is undefined and upperLimit is Valid year then function returns true ',
-//                     'Passing date, lowerLimit is valid year and upperLimit is undefined date then function returns true',
-//                     'Passing date is out of range then function  returns false',
-//                     'Passing  both lowerlimit and upperLimit are undefined then function then it return true',
-//                     'Passing in place of date empty string and lower and upper limit is valid then it returns false',
-//                     'Passing in place of date empty string and lower and upper limit is also undefined then it returns true',
-//                     'Pasing date is out of range and lower and upper limit is also udefined then function true']
-//     for (let i = 0; i < input.length; i++) {
-//         test(`${messages[i]}`,()=>{
-//             expect(dateIsInDisabledList(input[i],optionsArray[i]))
-//             .toEqual(output[i])
-//         })
+    test('testing',()=>{
+        expect(checkFullMonthOrYearDisabled(date4,disabledList4)).toEqual(false)
+    })
 
-//     }    
-   
+    let input = [date1,date2,date3,date4,undefined,undefined]
+    let disabledListArray = [disabledList1,disabledList2,disabledList3,disabledList4,disabledList1,undefined]
+    let output = [false,true,false,false,true,true]
+    let messages = ['Passing date and disabledList if date is present in disabledList then function will return false',
+                    'Passing date and disabledList, here date is not present in disabledList then function will return true',
+                    'here in place of full date date I passed only year then this year is present in disabledList then the function return false',
+                    'Passing date and disabledList but in date value month and year is present in disabledList then function will return false',
+                    'Passing date which is undefined to the function then it will return true',
+                    'passing both value undefined then function will return true.']
+    for (let i = 0; i < input.length; i++) {
+        test(`${messages[i]}`,()=>{
+            expect(checkFullMonthOrYearDisabled(input[i],disabledListArray[i]))
+            .toEqual(output[i])
+        })
+    }    
+})
 
-// })
