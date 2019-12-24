@@ -3,6 +3,7 @@ import DaysView from "./daysView";
 import WeekDaysView from "./weekDaysView";
 
 
+
 class MonthView extends React.PureComponent {
 
     expandMonth(mnth, mindex) {
@@ -69,6 +70,7 @@ class MonthView extends React.PureComponent {
         let {options} = this.props;
         yindex = this.props.yindex;
         qindex = this.props.qindex;
+        console.log("row",row);
         return (
             <div className="VS-MonthRow" key={'month' + yindex.toString() + mindex.toString() + qindex.toString() + mindex.toString()}>
                 {
@@ -76,7 +78,7 @@ class MonthView extends React.PureComponent {
                         <span className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(mnth, mindex)}>-</span> :
                         <span className="VS-Month-Plus-Minus" onClick={() => this.expandMonth(mnth, mindex)} >+</span>
                 }
-           <label className="VS-Checkbox-Container">{mnth.month}
+    <label className="VS-Checkbox-Container"><div className="tooltip">{mnth.month}<span className="tooltiptext">{mnth.month}-{row.year}</span></div>
                 {
                      (mnth.state) ? 
                     <input className="VS-Checkbox" type="checkbox" checked={mnth.state} onChange={ () => this.onUnCheckMonth(mnth,yindex, qindex, mindex)}></input>:

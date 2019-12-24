@@ -75,7 +75,7 @@ class QuarterView extends React.PureComponent {
                         <span className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt, yindex, qindex)}>-</span> :
                         <span className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt,yindex, qindex)}>+</span>
                 }
-                <label className="VS-Checkbox-Container">{qt.quarter}
+                <label className="VS-Checkbox-Container"><div className="tooltip">{qt.quarter}<span className="tooltiptext">{qt.quarter}-{row.year}</span></div>
                 {
                      (qt.state) ? 
                     <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={ () => this.onUnCheckQuarter(qt, row, yindex, qindex)}></input>:

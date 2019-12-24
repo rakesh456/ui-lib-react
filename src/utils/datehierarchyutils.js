@@ -26,25 +26,25 @@ export const getMonthDays = (month, year) => {
 export const getChildren = function (year, showWeeks) {
 	if (showWeeks === false) {
 		var quarterArray = [{
-			"quarter": "Q1-" + year,
+			"quarter": "Q1",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
-					"month": "Jan-" + year,
+					"month": "Jan",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(1, year),
 				},
 				{
-					"month": "Feb-" + year,
+					"month": "Feb" ,
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(2, year),
 
 				},
 				{
-					"month": "Mar-" + year,
+					"month": "Mar",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(3, year)
@@ -52,24 +52,24 @@ export const getChildren = function (year, showWeeks) {
 			]
 		},
 		{
-			"quarter": "Q2-" + year,
+			"quarter": "Q2",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
-					"month": "Apr-" + year,
+					"month": "Apr",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(4, year)
 				},
 				{
-					"month": "May-" + year,
+					"month": "May",
 					"showChild": false,
 					"state": false,
 					"days": getMonthDays(5, year)
 				},
 				{
-					"month": "Jun-" + year,
+					"month": "Jun",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(6, year)
@@ -77,24 +77,24 @@ export const getChildren = function (year, showWeeks) {
 			]
 		},
 		{
-			"quarter": "Q3-" + year,
+			"quarter": "Q3",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
-					"month": "Jul-" + year,
+					"month": "Jul",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(7, year)
 				},
 				{
-					"month": "Aug-" + year,
+					"month": "Aug",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(8, year)
 				},
 				{
-					"month": "Sep-" + year,
+					"month": "Sep",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(9, year)
@@ -102,24 +102,24 @@ export const getChildren = function (year, showWeeks) {
 			]
 		},
 		{
-			"quarter": "Q4-" + year,
+			"quarter": "Q4",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
-					"month": "Oct-" + year,
+					"month": "Oct",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(10, year)
 				},
 				{
-					"month": "Nov-" + year,
+					"month": "Nov",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(11, year)
 				},
 				{
-					"month": "Dec-" + year,
+					"month": "Dec",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(12, year)
