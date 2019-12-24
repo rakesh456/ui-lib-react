@@ -1,6 +1,6 @@
 import React from "react";
 import DaysView from "./daysView";
-import WeekDaysView from "./weekDaysview";
+import WeekDaysView from "./weekDaysView";
 
 
 class MonthView extends React.PureComponent {
@@ -61,7 +61,7 @@ class MonthView extends React.PureComponent {
     getMonthCheckBoxClass = (mnth,yindex,qindex,mindex) => {
         let flag = false;
         let years = [...this.props.years];
-        flag = years[yindex]["children"][qindex]["children"][mindex]['state'] === -1 ? true :false ;
+        flag = years[yindex]["quarters"][qindex]["months"][mindex]['state'] === -1 ? true :false ;
         return (flag)? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark'; 
     }
 
@@ -84,7 +84,7 @@ class MonthView extends React.PureComponent {
                 }
                 <span className={this.getMonthCheckBoxClass(mnth,yindex,qindex,mindex)}></span>
                 </label>
-                {(mnth.showChild && mnth.children) ?
+                {(mnth.showChild && (mnth.weeks || mnth.days)) ?
                   options.showWeeks ?
                      <WeekDaysView options={options} years={this.props.years} yindex={yindex} qindex={qindex} mindex={mindex} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></WeekDaysView> :
                      <DaysView options={options} years={this.props.years} mindex={mindex} yindex={yindex} qindex={qindex} onChangeDays={this.onChangeDays}></DaysView> : ''
@@ -96,13 +96,13 @@ class MonthView extends React.PureComponent {
 
     render() {
         const {options} = this.props;
-        let qt = this.props.years[this.props.yindex]['children'][this.props.qindex];
+        let {yindex, qindex} = this.props; 
+        let qt = this.props.years[this.props.yindex]['quarters'][this.props.qindex];
         let row = this.props.years[this.props.yindex];
-        let {yindex} = this.props.yindex;
-        let {qindex} = this.props.qindex;
+
         return (
             <div options = {options}>
-               { qt.children.map((mnth, mindex) => this.renderMonths(mnth, row, yindex, qindex, mindex))}
+               { qt.months.map((mnth, mindex) => this.renderMonths(mnth, row, yindex, qindex, mindex))}
             </div>
         )
         

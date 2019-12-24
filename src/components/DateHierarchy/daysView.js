@@ -49,15 +49,13 @@ class DaysView extends React.PureComponent {
     
     render() {
         const {options} = this.props;
+        let {yindex, qindex, mindex} = this.props;
         let row = this.props.years[this.props.yindex];
-        let qt = this.props.years[this.props.yindex]['children'][this.props.qindex];
-        let mnth = this.props.years[this.props.yindex]['children'][this.props.qindex]['children'][this.props.mindex];
-        let {yindex} = this.props.yindex;
-        let {qindex} = this.props.qindex;
-        let {mindex} = this.props.mindex;        
+        let qt = this.props.years[this.props.yindex]['quarters'][this.props.qindex];
+        let mnth = this.props.years[this.props.yindex]['quarters'][this.props.qindex]['months'][this.props.mindex];
         return (
             <div options = {options} >
-               { mnth.children.map((days, dindex) => this.renderDays(days, mnth, qt, row, yindex, qindex, mindex, dindex))}
+               { mnth.days.map((days, dindex) => this.renderDays(days, mnth, qt, row, yindex, qindex, mindex, dindex))}
             </div>
         )
         
