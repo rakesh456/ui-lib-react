@@ -83,7 +83,7 @@ class WeekDaysView extends React.PureComponent {
         return (
             <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
 
-                <label className="VS-Checkbox-Container">{weekDays.date + " " + weekDays.day}
+        <label className="VS-Checkbox-Container"><div className="tooltip">{weekDays.date + " " + weekDays.day}<span className="tooltiptext">{weekDays.date}-{mnth.month}-{row.year}</span></div>
 
                     {
                         (weekDays.state) ?
@@ -110,7 +110,7 @@ class WeekDaysView extends React.PureComponent {
                         <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks, yindex, qindex, mindex, windex)} >+</span>
                 }
 
-                <label className="VS-Checkbox-Container">{weeks.week}
+                <label className="VS-Checkbox-Container"><div className="tooltip">{weeks.week}<span className="tooltiptext">{weeks.week}-{mnth.month}-{row.year}</span></div>
 
                     {
                         (weeks.state) ?
