@@ -10,16 +10,21 @@ class YearView extends React.PureComponent {
         super(props);
         let { options } = this.props;
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
-        this.state = { years: yearList, isSearching: false, searchValue: '', filteredYears: [] };
+        this.state = { years: yearList, isSearching: false, searchValue: '', filteredYears: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, lastFilterData: { 'value': '', 'list': [] } };
+    }
+
+    getYears() {
+        const { isSearching, years, filteredYears } = this.state;
+        return (isSearching === true) ? [...filteredYears] : [...years];
     }
 
     componentDidMount() {
-        let years = this.state.years;
+        let years = [...this.getYears()];
         this.setState({ years: [...years] });
     }
 
     expandYear(year, index) {
-        let years = [...this.state.years]
+        let years = [...this.getYears()];
         year['showChild'] = true;
         this.setState({
             years: [...years]
@@ -27,7 +32,7 @@ class YearView extends React.PureComponent {
     }
 
     collapseYear(year, index) {
-        let years = [...this.state.years]
+        let years = [...this.getYears()];
         year['showChild'] = false;
         this.setState({
             years: [...years]
@@ -35,7 +40,7 @@ class YearView extends React.PureComponent {
     }
 
     onCheckYear(year, index) {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
         year["state"] = 1
         let quarters = year['quarters'];
@@ -65,7 +70,7 @@ class YearView extends React.PureComponent {
     }
 
     onUnCheckYear(year, index) {
-        let years = [...this.state.years]
+        let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
         year['state'] = 0
         let quarters = year['quarters'];
@@ -94,15 +99,11 @@ class YearView extends React.PureComponent {
         })
     }
 
-
-
-
     onChangeQuarterHandler = (quarterObj) => {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
         let { yindex, qindex } = quarterObj;
         let stateSum = 0;
-
 
         if (quarterObj.isCheck === true) {
             years[yindex]['quarters'][qindex]['state'] = 1;
@@ -173,13 +174,12 @@ class YearView extends React.PureComponent {
     }
 
     onChangeMonth = (monthObj) => {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
         let { yindex, qindex, mindex } = monthObj;
         let mstateSum = 0;
         let qstateSum = 0;
         if (monthObj.isCheck === true) {
-
             years[yindex]['quarters'][qindex]["months"][mindex]['state'] = 1;
             for (var i = 0; i < years[yindex]["quarters"][qindex]["months"].length; i++) {
                 mstateSum += years[yindex]["quarters"][qindex]["months"][i]["state"];
@@ -192,9 +192,7 @@ class YearView extends React.PureComponent {
             years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
 
             if (showWeeks === true) {
-
                 let weeks = years[yindex]['quarters'][qindex]["months"][mindex]['weeks'];
-
                 weeks.forEach((element, mindex) => {
                     weeks[mindex]['state'] = 1;
                     if (weeks[mindex]['days']) {
@@ -205,10 +203,11 @@ class YearView extends React.PureComponent {
                 });
             } else {
                 let days = years[yindex]['quarters'][qindex]["months"][mindex]['days'];
-
-                days.forEach((element, mindex) => {
-                    days[mindex]['state'] = 1;
-                });
+                if(days){
+                    days.forEach((element, mindex) => {
+                        days[mindex]['state'] = 1;
+                    });
+                }
             }
 
             this.setState({
@@ -246,10 +245,11 @@ class YearView extends React.PureComponent {
                 });
             } else {
                 let days = years[yindex]['quarters'][qindex]["months"][mindex]['days'];
-
-                days.forEach((element, mindex) => {
-                    days[mindex]['state'] = 0;
-                });
+                if(days){
+                    days.forEach((element, mindex) => {
+                        days[mindex]['state'] = 0;
+                    });
+                }
             }
 
             this.setState({
@@ -259,7 +259,7 @@ class YearView extends React.PureComponent {
     }
 
     onChangeDays = (daysObj) => {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let days = daysObj.days;
         let { yindex, qindex, mindex, dindex, isCheck } = daysObj;
 
@@ -288,7 +288,7 @@ class YearView extends React.PureComponent {
             })
         }
         else {
-            let years = [...this.state.years];
+            let years = [...this.getYears()];
             let dstateSum = 0;
             let qstateSum = 0;
             let mstateSum = 0;
@@ -321,7 +321,7 @@ class YearView extends React.PureComponent {
     }
 
     onChangeWeeks = (weeksObj) => {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let { yindex, qindex, mindex, windex, isCheck } = weeksObj;
         if (isCheck === true) {
             let wstateSum = 0;
@@ -388,7 +388,7 @@ class YearView extends React.PureComponent {
     }
 
     onChangeWeekDays = (weekDaysObj) => {
-        let years = [...this.state.years];
+        let years = [...this.getYears()];
         let { yindex, qindex, mindex, windex, wdindex, isCheck } = weekDaysObj;
 
         if (isCheck === true) {
@@ -462,8 +462,8 @@ class YearView extends React.PureComponent {
     }
     getYearCheckBoxClass = (row, index) => {
         let flag = false;
-        let years = [...this.state.years];
-        flag = (years[index]["state"] === -1) ? true : false;
+        const _years = [...this.getYears()];
+        flag = (_years[index]["state"] === -1) ? true : false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
@@ -471,7 +471,7 @@ class YearView extends React.PureComponent {
     renderYear = (year, index) => {
         let { options } = this.props;
         const { isSearching, years, filteredYears } = this.state;
-        const _years = (isSearching === true)? [...filteredYears] : [...years];
+        const _years = (isSearching === true) ? [...filteredYears] : [...years];
 
         return (
 
@@ -502,137 +502,61 @@ class YearView extends React.PureComponent {
     getSeachIconAlignClass() {
         return 'VS-PullLeft VS-SeachIcon';
     }
-    
+
     getInputClass() {
         const { isSearching } = this.state;
-        return (isSearching === true)? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
+        return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
     }
 
-    filterQuaters = (val) => {
+    filterYears = (val, years) => {
         let _years = [];
-        let { years } = this.state;
-        years.forEach((yr) => {
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((qt) => {
-                var quarter = qt['quarter'].toString();
-                var n = quarter.includes(val.toString());
-
-                if(n === true){
-                    _quaters.push({
-                        "quarter": qt.quarter,
-                        "showChild": qt.showChild,
-                        "state": 1,
-                        "months": qt.months
-                    });
-                }
-            });
-            _years.push({
-                "year": yr.year,
-                "showChild": true,
-                "state": 1,
-                "quarters": [..._quaters]
-            });
-        });
-        this.setState({
-            filteredYears: _years
-        });
-    }
-   
-    filterMonths = (val) => {
-        let _years = [];
-        let { years, showWeeks } = this.state;
-        let existsInMonth = false;
+        let { showWeeks } = this.props.options;
         years.forEach((yr) => {
             let _quaters = [];
             let quaters = [...yr['quarters']];
             quaters.forEach((qt) => {
                 let _months = [];
-                var months = [...qt['months']];
-                existsInMonth = false;
-                months.forEach((mn) => {
-                    var month = mn['month'].toString();
-                    var _camel = toCamelCase(val.toString());
-                    var n = month.includes(_camel);
-                    if(n === true){
-                        existsInMonth = true;
-                        if(showWeeks === true){
-                            _months.push({
-                                "month": mn.month,
-                                "showChild": true,
-                                "state": 1,
-                                "weeks": mn.weeks
-                            });
-                        } else {
-                            _months.push({
-                                "month": mn.month,
-                                "showChild": true,
-                                "state": 1,
-                                "days": mn.days
-                            });
-                        }
-                    }
-                });
-                if(existsInMonth === true){
-                    _quaters.push({
-                        "quarter": qt.quarter,
-                        "showChild": true,
-                        "state": 1,
-                        "months": [..._months]
-                    });
-                }
-            });
-            _years.push({
-                "year": yr.year,
-                "showChild": true,
-                "state": 1,
-                "quarters": [..._quaters]
-            });
-        });
-        this.setState({
-            filteredYears: _years
-        });
-    }
-
-    filterWeeks = (val) => {
-        let _years = [];
-        let { years } = this.state;
-        let existsInWeek = false;
-        years.forEach((yr) => {
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((qt) => {
-                let _months = [];
-                var months = [...qt['months']];
+                let months = [...qt['months']];
                 months.forEach((mn) => {
                     let _weeks = [];
-                    var weeks = [...mn['weeks']];
-                    existsInWeek = false;
-                    weeks.forEach((wk) => {
-                        var week = wk['week'].toString();
-                        week = week.replace(/ +(?= )/g,'');
-                        week = toCamelCase(week.toString())
-                        var _camel = toCamelCase(val.toString());
-                        var n = week.includes(_camel.toString());
-                        if(n === true){
-                            existsInWeek = true;
+                    let weeks = [...mn['weeks']];
+                    if(showWeeks === true){
+                        weeks.forEach((wk) => {
+                            let _days = [];
+                            let days = [...wk['days']];
+                            days.forEach((dy) => {
+                                _days.push({
+                                    "date": dy.date,
+                                    "day": dy.day,
+                                    "state": 1
+                                });
+                            });
+
                             _weeks.push({
                                 "week": wk.week,
-                                "showChild": true,
+                                "showChild": false,
                                 "state": 1,
-                                "days": wk.days
+                                "days": [..._days]
                             });
-                        }
-                    });
-                    if(existsInWeek === true){
+                        });
+
                         _months.push({
                             "month": mn.month,
-                            "showChild": true,
+                            "showChild": false,
                             "state": 1,
                             "weeks": [..._weeks]
                         });
+
+                    } else {
+                        _months.push({
+                            "month": mn.month,
+                            "showChild": false,
+                            "state": 1,
+                            "days": [...mn.days]
+                        });
                     }
                 });
+
                 _quaters.push({
                     "quarter": qt.quarter,
                     "showChild": true,
@@ -652,9 +576,262 @@ class YearView extends React.PureComponent {
         });
     }
     
+    filterQuaters = (val) => {
+        let _years = [];
+        let { years } = this.state;
+        let { showWeeks } = this.props.options;
+        years.forEach((yr) => {
+            let yearState = 0;
+            let _quaters = [];
+            let quaters = [...yr['quarters']];
+            quaters.forEach((qt) => {
+                var quarter = qt['quarter'].toString();
+                var _camel = toCamelCase(val.toString());
+                var n = quarter.includes(_camel.toString());
+                if (n === true) {
+                    yearState++;
+                    let _months = [];
+                    var months = [...qt['months']];
+                    months.forEach((mn) => {
+                        if (showWeeks === true) {
+                            let _weeks = [];
+                            var weeks = [...mn['weeks']];
+                            weeks.forEach((wk) => {
+                                let _days = [];
+                                var days = [...wk['days']];
+                                days.forEach((dy) => {
+                                    _days.push({
+                                        "date": dy.date,
+                                        "day": dy.day,
+                                        "state": 1
+                                    });
+                                });
+                                
+                                _weeks.push({
+                                    "week": wk.week,
+                                    "showChild": false,
+                                    "state": 1,
+                                    "days": [..._days]
+                                });
+                            });
+
+                            _months.push({
+                                "month": mn.month,
+                                "showChild": false,
+                                "state": 1,
+                                "weeks": [..._weeks]
+                            });
+                        } else {
+                            let _days = [];
+                            var days = [...mn['days']];
+                            days.forEach((dy) => {
+                                _days.push({
+                                    "date": dy.date,
+                                    "day": dy.day,
+                                    "state": 1
+                                });
+                            });
+
+                            _months.push({
+                                "month": mn.month,
+                                "showChild": false,
+                                "state": 1,
+                                "weeks": [..._days]
+                            });
+                        }
+                    });
+
+                    _quaters.push({
+                        "quarter": qt.quarter,
+                        "showChild": true,
+                        "state": 1,
+                        "months": [..._months]
+                    });
+                }
+            });
+            
+            _years.push({
+                "year": yr.year,
+                "showChild": true,
+                "state": (yearState === 4)? 1 : -1,
+                "quarters": [..._quaters]
+            });
+        });
+        this.setState({
+            filteredYears: _years
+        });
+    }
+
+    filterMonths = (val) => {
+        let _years = [];
+        let { years } = this.state;
+        let { showWeeks } = this.props.options;
+        let existsInMonth = false;
+        years.forEach((yr) => {
+            let yearState = 0;
+            let _quaters = [];
+            let quaters = [...yr['quarters']];
+            quaters.forEach((qt) => {
+                let quaterState = 0;
+                let _months = [];
+                var months = [...qt['months']];
+                existsInMonth = false;
+                months.forEach((mn) => {
+                    var month = mn['month'].toString();
+                    var _camel = toCamelCase(val.toString());
+                    var n = month.includes(_camel);
+                    if (n === true) {
+                        quaterState++;
+                        existsInMonth = true;
+                        if (showWeeks === true) {
+                            let _weeks = [];
+                            var weeks = [...mn['weeks']];
+                            weeks.forEach((wk) => {
+                                let _days = [];
+                                var days = [...wk['days']];
+                                days.forEach((dy) => {
+                                    _days.push({
+                                        "date": dy.date,
+                                        "day": dy.day,
+                                        "state": 1
+                                    });
+                                });
+                                
+                                _weeks.push({
+                                    "week": wk.week,
+                                    "showChild": false,
+                                    "state": 1,
+                                    "days": [..._days]
+                                });
+                            });
+
+                            _months.push({
+                                "month": mn.month,
+                                "showChild": false,
+                                "state": 1,
+                                "weeks": [..._weeks]
+                            });
+                        } else {
+                            let _days = [];
+                            var days = [...mn['days']];
+                            days.forEach((dy) => {
+                                _days.push({
+                                    "date": dy.date,
+                                    "day": dy.day,
+                                    "state": 1
+                                });
+                            });
+
+                            _months.push({
+                                "month": mn.month,
+                                "showChild": false,
+                                "state": 1,
+                                "weeks": [..._days]
+                            });
+                        }
+                    }
+                });
+                if (existsInMonth === true) {
+                    _quaters.push({
+                        "quarter": qt.quarter,
+                        "showChild": true,
+                        "state": (quaterState === 4)? 1 : -1,
+                        "months": [..._months]
+                    });
+                    yearState = (quaterState === 4)? yearState + 1 : yearState;
+                }
+            });
+            _years.push({
+                "year": yr.year,
+                "showChild": true,
+                "state": (yearState === 4)? 1 : -1,
+                "quarters": [..._quaters]
+            });
+        });
+        this.setState({
+            filteredYears: _years
+        });
+    }
+
+    filterWeeks = (val) => {
+        let _years = [];
+        let { years } = this.state;
+        let existsInWeek = false;
+        years.forEach((yr) => {
+            let yearState = 0;
+            let _quaters = [];
+            let quaters = [...yr['quarters']];
+            quaters.forEach((qt) => {
+                let quaterState = 0;
+                let _months = [];
+                var months = [...qt['months']];
+                months.forEach((mn) => {
+                    let monthState = 0;
+                    let _weeks = [];
+                    var weeks = [...mn['weeks']];
+                    existsInWeek = false;
+                    weeks.forEach((wk) => {
+                        var week = wk['week'].toString();
+                        week = week.replace(/ +(?= )/g, '');
+                        week = toCamelCase(week.toString())
+                        var _camel = toCamelCase(val.toString());
+                        var n = week.includes(_camel.toString());
+                        if (n === true) {
+                            monthState++;
+                            existsInWeek = true;
+
+                            let _days = [];
+                            var days = [...wk['days']];
+                            days.forEach((dy) => {
+                                _days.push({
+                                    "date": dy.date,
+                                    "day": dy.day,
+                                    "state": 1
+                                });
+                            });
+
+                            _weeks.push({
+                                "week": wk.week,
+                                "showChild": false,
+                                "state": 1,
+                                "days": [..._days]
+                            });
+                        }
+                    });
+                    if (existsInWeek === true) {
+                        _months.push({
+                            "month": mn.month,
+                            "showChild": true,
+                            "state": (monthState === weeks.length)? 1 : -1,
+                            "weeks": [..._weeks]
+                        });
+                        quaterState = (monthState === weeks.length)? quaterState + 1 : quaterState;
+                    }
+                });
+                _quaters.push({
+                    "quarter": qt.quarter,
+                    "showChild": true,
+                    "state": (quaterState === 4)? 1 : -1,
+                    "months": [..._months]
+                });
+                yearState = (quaterState === 4)? yearState + 1 : yearState;
+            });
+            _years.push({
+                "year": yr.year,
+                "showChild": true,
+                "state": (yearState === 4)? 1 : -1,
+                "quarters": [..._quaters]
+            });
+        });
+        this.setState({
+            filteredYears: _years
+        });
+    }
+
     filterDays = (val) => {
         let _years = [];
         let { years } = this.state;
+        let { showWeeks } = this.props.options;
         let existsInDay = false;
         years.forEach((yr) => {
             let _quaters = [];
@@ -663,27 +840,66 @@ class YearView extends React.PureComponent {
                 let _months = [];
                 var months = [...qt['months']];
                 months.forEach((mn) => {
-                    let _days = [];
-                    var days = [...mn['days']];
-                    existsInDay = false;
-                    days.forEach((dy) => {
-                        var day = dy['day'].toString();
-                        var n = day.includes(val.toString());
-                        if(n === true){
-                            existsInDay = true;
-                            _days.push({
-                                "day": dy.day,
-                                "state": 1
+                    
+                    if(showWeeks === true){
+                        let _weeks = [];
+                        var weeks = [...mn['weeks']];
+                        weeks.forEach((wk) => {
+                            let _days = [];
+                            var days = [...wk['days']];
+                            existsInDay = false;
+                            days.forEach((dy) => {
+                                var date = dy['date'].toString();
+                                var n = date.includes(val.toString());
+                                if (n === true) {
+                                    existsInDay = true;
+                                    _days.push({
+                                        "date": dy.date,
+                                        "day": dy.day,
+                                        "state": 1
+                                    });
+                                }
                             });
-                        }
-                    });
-                    if(existsInDay === true){
+                            
+                            if(existsInDay === true){
+                                _weeks.push({
+                                    "week": wk.week,
+                                    "showChild": true,
+                                    "state": 1,
+                                    "days": [..._days]
+                                });
+                            }
+                        });
+
                         _months.push({
                             "month": mn.month,
                             "showChild": true,
                             "state": 1,
-                            "days": [..._days]
+                            "weeks": [..._weeks]
                         });
+                    } else {
+                        let _days = [];
+                        var days = [...mn['days']];
+                        existsInDay = false;
+                        days.forEach((dy) => {
+                            var day = dy['day'].toString();
+                            var n = day.includes(val.toString());
+                            if (n === true) {
+                                existsInDay = true;
+                                _days.push({
+                                    "day": dy.day,
+                                    "state": 1
+                                });
+                            }
+                        });
+                        if (existsInDay === true) {
+                            _months.push({
+                                "month": mn.month,
+                                "showChild": true,
+                                "state": 1,
+                                "days": [..._days]
+                            });
+                        }
                     }
                 });
                 _quaters.push({
@@ -714,36 +930,34 @@ class YearView extends React.PureComponent {
         let val = e.target.value;
         let { years } = this.state;
 
-        if(!isUndefinedOrNull(val)){
-            if(!isNaN(val)){
+        if (!isUndefinedOrNull(val)) {
+            if (!isNaN(val)) {
                 let existsInYear = false;
                 let _years = [];
                 years.forEach((ele) => {
                     var year = ele['year'].toString();
                     var n = year.includes(val.toString());
-                    if(n === true){
+                    if (n === true) {
                         existsInYear = true;
                         _years.push(ele);
                     }
                 });
 
-                if(existsInYear){
-                    this.setState({
-                        filteredYears: _years
-                    });
-                } else if(isQuaterVal(val)){
+                if (existsInYear) {
+                    this.filterYears(val, _years);
+                } else if (isQuaterVal(val)) {
                     this.filterQuaters(val);
-                } else if(isWeekVal(val)){
+                } else if (isWeekVal(val)) {
                     this.filterWeeks(val);
-                } else if(isDayVal(val)){
+                } else if (isDayVal(val)) {
                     this.filterDays(val);
                 }
             } else {
-                if(isQuaterVal(val)){
+                if (isQuaterVal(val)) {
                     this.filterQuaters(val);
-                } else if(isMonthVal(val)){
+                } else if (isMonthVal(val)) {
                     this.filterMonths(val);
-                } else if(isWeekVal(val)){
+                } else if (isWeekVal(val)) {
                     this.filterWeeks(val);
                 } else {
                     this.setState({
@@ -758,31 +972,89 @@ class YearView extends React.PureComponent {
         }
     }
 
+    onSelectSearchResultChange = ({target}) => {
+        this.setState({
+            isSelectAllSearchResult: target.checked
+        });
+    }
+    
+    onAddCurrentSelectionChange = ({target}) => {
+        this.setState({
+            isAddCurrentSelection: target.checked
+        });
+    }
+
+    clearFilter = () => {
+        let { searchValue, filteredYears} = this.state;
+        let _lastFilterData = {
+            'value': searchValue,
+            'list': filteredYears
+        };
+        this.setState({
+            isSearching: false,
+            searchValue: "",
+            lastFilterData: _lastFilterData
+        });
+    }
+    
+    closeFilter = () => {
+        let { searchValue, filteredYears} = this.state;
+        let _lastFilterData = {
+            'value': searchValue,
+            'list': filteredYears
+        };
+        this.setState({
+            isSearching: false,
+            searchValue: "",
+            lastFilterData: _lastFilterData
+        });
+    }
+
+    getCheckBoxClass = () => {
+        return 'VS-Check-Checkmark';
+    }
+
     render() {
         const { options } = this.props;
-        const { isSearching, searchValue, years, filteredYears } = this.state;
+        const { isSearching, searchValue, years, filteredYears, isSelectAllSearchResult, lastFilterData, isAddCurrentSelection } = this.state;
         return (
-            <div id="VS-Scrollbar" className="VS-Hierarchy" options={options}>
+            <div className="VS-Hierarchy" options={options}>
                 <div className="VS-Hierarchy-Searchbox">
                     <span className={this.getSeachIconAlignClass()}>
                         <FaSearch className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} />
                     </span>
-                    <input className={this.getInputClass()} type="text" placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
+                    <input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === false)? CONSTANTS.CLASSES.VS_DISABLED_ICON : ''}`} />
+                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === false) ? CONSTANTS.CLASSES.VS_DISABLED_ICON : ''}`} onClick={() => this.clearFilter()} />
                     </span>
                     {
-                        (isSearching === true)?
-                        <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                            <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} />
-                        </span> : ''
+                        (isSearching === true) ?
+                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                                <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
+                            </span> : ''
                     }
                 </div>
-                {
-                    (isSearching === true)?
-                    filteredYears.map((year, index) => this.renderYear(year, index)) :
-                    years.map((year, index) => this.renderYear(year, index))
-                }
+                <div className="VS-Hierarchy-Filter-List VS-YearRow">
+                    <label className="VS-Checkbox-Container">Select All Search Results
+                        <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
+                        <span className={this.getCheckBoxClass()}></span>
+                    </label>
+                    {
+                        (isSearching === true && lastFilterData && lastFilterData.value && lastFilterData.list)?
+                        <label className="VS-Checkbox-Container">Add Current Selection
+                            <input className="VS-Checkbox" type="checkbox" checked={isAddCurrentSelection} onChange={(e) => this.onAddCurrentSelectionChange(e)}></input>
+                            <span className={this.getCheckBoxClass()}></span>
+                        </label> : ''
+                    }
+                    
+                </div>
+                <div id="VS-Scrollbar">
+                    {
+                        (isSearching === true) ?
+                            filteredYears.map((year, index) => this.renderYear(year, index)) :
+                            years.map((year, index) => this.renderYear(year, index))
+                    }
+                </div>
             </div>
         )
 
