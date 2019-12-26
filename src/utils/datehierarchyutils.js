@@ -1,8 +1,8 @@
-export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1 , 'showWeeks': false };
+export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1, 'showWeeks': false };
 
 // Function to reset options with default options
 export const resetDateHierarchyOptions = (options) => {
-    return { ...DEFAULT_OPTIONS, ...options };
+	return { ...DEFAULT_OPTIONS, ...options };
 }
 
 export const getMonthDays = (month, year) => {
@@ -37,7 +37,7 @@ export const getChildren = function (year, showWeeks) {
 					"days": getMonthDays(1, year),
 				},
 				{
-					"month": "Feb" ,
+					"month": "Feb",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(2, year),
@@ -231,8 +231,10 @@ export const getChildren = function (year, showWeeks) {
 	return quarterArray;
 }
 
-export const getListOfYears = function (lowerLimit, upperLimit, showWeeks) {
+export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, disabledYear) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
+		let initial = lowerLimit;
+		let final = upperLimit;
 		let years = [];
 		while (lowerLimit <= upperLimit) {
 			var year = {
@@ -244,6 +246,13 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks) {
 			years.push(year);
 			lowerLimit++;
 		}
+		if (disabledYear) {
+			for(var i= 0; i< disabledYear.length;i++){
+				if(disabledYear[i]>=initial && disabledYear[i]<= final)
+				years.splice(disabledYear[i] - lowerLimit, 1);
+			}
+		}
+
 		return years;
 	}
 

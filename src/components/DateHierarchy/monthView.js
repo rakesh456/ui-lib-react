@@ -70,7 +70,6 @@ class MonthView extends React.PureComponent {
         let {options} = this.props;
         yindex = this.props.yindex;
         qindex = this.props.qindex;
-        console.log("row",row);
         return (
             <div className="VS-MonthRow" key={'month' + yindex.toString() + mindex.toString() + qindex.toString() + mindex.toString()}>
                 {
