@@ -511,7 +511,6 @@ class YearView extends React.PureComponent {
     filterQuaters = (val) => {
         let _years = [];
         let { years } = this.state;
-        let existsInQuater = false;
         years.forEach((yr) => {
             let _quaters = [];
             let quaters = [...yr['quarters']];
@@ -520,7 +519,6 @@ class YearView extends React.PureComponent {
                 var n = quarter.includes(val.toString());
 
                 if(n === true){
-                    existsInQuater = true;
                     _quaters.push({
                         "quarter": qt.quarter,
                         "showChild": qt.showChild,
@@ -598,8 +596,7 @@ class YearView extends React.PureComponent {
 
     filterWeeks = (val) => {
         let _years = [];
-        let { years, showWeeks } = this.state;
-        let existsInMonth = false;
+        let { years } = this.state;
         let existsInWeek = false;
         years.forEach((yr) => {
             let _quaters = [];
@@ -607,7 +604,6 @@ class YearView extends React.PureComponent {
             quaters.forEach((qt) => {
                 let _months = [];
                 var months = [...qt['months']];
-                existsInMonth = false;
                 months.forEach((mn) => {
                     let _weeks = [];
                     var weeks = [...mn['weeks']];
@@ -658,8 +654,7 @@ class YearView extends React.PureComponent {
     
     filterDays = (val) => {
         let _years = [];
-        let { years, showWeeks } = this.state;
-        let existsInMonth = false;
+        let { years } = this.state;
         let existsInDay = false;
         years.forEach((yr) => {
             let _quaters = [];
@@ -667,7 +662,6 @@ class YearView extends React.PureComponent {
             quaters.forEach((qt) => {
                 let _months = [];
                 var months = [...qt['months']];
-                existsInMonth = false;
                 months.forEach((mn) => {
                     let _days = [];
                     var days = [...mn['days']];
@@ -765,7 +759,7 @@ class YearView extends React.PureComponent {
     }
 
     render() {
-        const { options, showClearIcon } = this.props;
+        const { options } = this.props;
         const { isSearching, searchValue, years, filteredYears } = this.state;
         return (
             <div id="VS-Scrollbar" className="VS-Hierarchy" options={options}>
