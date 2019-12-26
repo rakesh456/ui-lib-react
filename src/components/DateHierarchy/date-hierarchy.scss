@@ -202,9 +202,45 @@ $font-family: 'Roboto', sans-serif;
   padding-bottom: 00px;
   padding-left: 0px;
   margin: 5px 20px;
-  border : ridge;
+  border: 1px solid #ddd;
+  max-height: 500px;
+  overflow: auto;
 }
 
+.VS-Hierarchy-Searchbox{
+    border: 1px solid #ddd;
+}
+
+.VS-Hierarchy-Searchbox input:focus{
+    outline: none;
+}
+
+.VS-Hierarchy-Searchbox .VS-SearchBox{
+    border: 0px;
+    height: 24px;
+    width: 228px;
+    padding: 5px;
+    margin-top: 1px;
+}
+
+.VS-Hierarchy-Searchbox .VS-FilterIcon.VS-DisabledIcon{
+    color: #ddd;
+}
+
+.VS-Hierarchy-Searchbox .VS-FilterIcon{
+    color: $primary-one-dark;
+}
+
+.VS-Hierarchy-Searchbox .VS-SeachIcon svg{
+    height: 18px;
+    width: 20px;
+    margin-top: 8px;
+    color: #ddd;
+}
+
+.VS-Hierarchy-Searchbox .VS-IsSearching{
+    width: 192px;
+}
 
 .VS-Checkbox{
     display: inline-block;
@@ -230,4 +266,21 @@ $font-family: 'Roboto', sans-serif;
     margin-right: -3px;
     margin-top: -1px;
     margin-left: -1px;
+}
+
+#VS-Scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#VS-Scrollbar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#VS-Scrollbar::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
 }

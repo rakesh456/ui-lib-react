@@ -275,6 +275,7 @@ date-picker{
     height: 16px;
 }
 
+.VS-FilterIcon,
 .VS-CloseIcon{
     width: 15px;
     height: 20px;
@@ -358,8 +359,8 @@ date-picker{
     margin-top: 4px;
     cursor: pointer;
 }
-.VS-CalendarContainer .VS-CalendarMonth .Vs-DisabledIcon,
-.VS-CalendarContainer .VS-NextPrevArrow .Vs-DisabledIcon{
+.VS-CalendarContainer .VS-CalendarMonth .VS-DisabledIcon,
+.VS-CalendarContainer .VS-NextPrevArrow .VS-DisabledIcon{
     color: $complementary-three;
 }
 

@@ -1,5 +1,11 @@
 export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1 , 'showWeeks': false };
 
+export const MONTH_NAMES = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
+
+export const MONTH_SHORT_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+
+export const WEEK_NAMES = ["week 1", "week 2", "week 3", "week 4", "week 5"];
+
 // Function to reset options with default options
 export const resetDateHierarchyOptions = (options) => {
     return { ...DEFAULT_OPTIONS, ...options };
@@ -293,4 +299,43 @@ export const getMonthWeeks = function (month_number, year) {
 		weeks.push(weekobj);
 	}
 	return weeks;
+}
+
+
+// Function to check string is quater value
+export const isQuaterVal = (val) => {
+    let _val = (val)? val.toString() : '';
+    return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val == 'Q1' || _val == 'Q2' || _val == 'Q3' || _val == 'Q4' || _val == 'Q');
+}
+
+// Function to check string is month value
+export const isMonthVal = (val) => {
+	let _val = (val)? val.toString() : '';
+	let isExists = false;
+	MONTH_SHORT_NAMES.forEach((month) => {
+		let n = (month.indexOf(_val.toLowerCase()) !== -1);
+		if(n === true){
+			isExists = true;
+		}
+	});
+	return isExists;
+}
+
+// Function to check string is weeks value
+export const isWeekVal = (val) => {
+	let _val = (val)? val.toString() : '';
+	let isExists = false;
+	WEEK_NAMES.forEach((month) => {
+		let n = (month.indexOf(_val.toLowerCase()) !== -1);
+		if(n === true){
+			isExists = true;
+		}
+	});
+	return isExists;
+}
+
+// Function to check string is day value
+export const isDayVal = (val) => {
+    let _val = (val)? parseInt(val) : '';
+    return (_val <= 1 || _val <= 31);
 }
