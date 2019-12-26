@@ -289,7 +289,7 @@ $font-family: 'Roboto', sans-serif;
     display: inline-block;
 }
   
-.VS-Tooltip .VS-tooltiptext {
+.VS-Tooltip .VS-Tooltiptext {
     visibility: hidden;
     width: 92px;
     font-size: medium;
@@ -305,7 +305,7 @@ $font-family: 'Roboto', sans-serif;
     text-size-adjust:2px ;
 }
   
-.VS-Tooltip .VS-tooltiptext::after {
+.VS-Tooltip .VS-Tooltiptext::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -316,6 +316,6 @@ $font-family: 'Roboto', sans-serif;
     border-color: transparent black transparent transparent;
 }
 
-.VS-Tooltip:hover .VS-tooltiptext {
+.VS-Tooltip:hover .VS-Tooltiptext {
     visibility: visible;
 }
