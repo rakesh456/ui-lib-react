@@ -70,7 +70,7 @@ class WeekDaysView extends React.PureComponent {
 
     }
 
-    getWeekCheckBoxClass = (weeks, yindex, qindex, mindex, windex) => {
+    getWeekCheckBoxClass = (weeks) => {
         let flag = false;
         flag = weeks['state'] === -1 ? true : false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
@@ -83,7 +83,7 @@ class WeekDaysView extends React.PureComponent {
         return (
             <div className="VS-WeekDayRow" key={'weekDay' + yindex.toString() + qindex.toString() + mindex.toString() + windex.toString() + wdindex.toString()}>
 
-                <label className="VS-Checkbox-Container">{weekDays.date + " " + weekDays.day}
+        <label className="VS-Checkbox-Container"><div className="tooltip">{weekDays.date + " " + weekDays.day}<span className="tooltiptext">{weekDays.date}-{mnth.month}-{row.year}</span></div>
 
                     {
                         (weekDays.state) ?
@@ -110,7 +110,7 @@ class WeekDaysView extends React.PureComponent {
                         <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks, yindex, qindex, mindex, windex)} >+</span>
                 }
 
-                <label className="VS-Checkbox-Container">{weeks.week}
+                <label className="VS-Checkbox-Container"><div className="tooltip">{weeks.week}<span className="tooltiptext">{weeks.week}-{mnth.month}-{row.year}</span></div>
 
                     {
                         (weeks.state) ?
@@ -118,7 +118,7 @@ class WeekDaysView extends React.PureComponent {
                             <input className="VS-Checkbox" type="checkbox" checked={weeks.state} onChange={() => this.onCheckWeek(weeks, yindex, qindex, mindex, windex)}></input>
                     }
 
-                    <span className={this.getWeekCheckBoxClass(weeks, yindex, qindex, mindex, windex)}></span>
+                    <span className={this.getWeekCheckBoxClass(weeks)}></span>
                 </label>
                 {
                     (weeks.showChild && weeks.days) ?

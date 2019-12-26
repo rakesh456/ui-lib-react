@@ -6,7 +6,7 @@ class YearView extends React.PureComponent {
     constructor(props) {
         super(props);
         let { options } = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks);
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
         this.state = { years: yearList };
     }
 
@@ -33,14 +33,14 @@ class YearView extends React.PureComponent {
 
     onCheckYear(year, index) {
         let years = [...this.state.years];
-        let {showWeeks} = this.props.options;
+        let { showWeeks } = this.props.options;
         year["state"] = 1
         let quarters = year['quarters'];
         quarters.forEach((element, index) => {
             quarters[index]['state'] = 1;
             quarters[index]['months'].forEach((element, index1) => {
                 quarters[index]['months'][index1]['state'] = 1;
-                if(showWeeks === true){
+                if (showWeeks === true) {
                     quarters[index]['months'][index1]['weeks'].forEach((element, index2) => {
                         quarters[index]['months'][index1]['weeks'][index2]['state'] = 1;
                         if (quarters[index]['months'][index1]['weeks'][index2]['days']) {
@@ -63,14 +63,14 @@ class YearView extends React.PureComponent {
 
     onUnCheckYear(year, index) {
         let years = [...this.state.years]
-        let {showWeeks} = this.props.options;
+        let { showWeeks } = this.props.options;
         year['state'] = 0
         let quarters = year['quarters'];
         quarters.forEach((element, index) => {
             quarters[index]['state'] = 0;
             quarters[index]['months'].forEach((element, index1) => {
                 quarters[index]['months'][index1]['state'] = 0;
-                if(showWeeks === true){
+                if (showWeeks === true) {
                     quarters[index]['months'][index1]['weeks'].forEach((element, index2) => {
                         quarters[index]['months'][index1]['weeks'][index2]['state'] = 0;
                         if (quarters[index]['months'][index1]['weeks'][index2]['days']) {
@@ -92,67 +92,87 @@ class YearView extends React.PureComponent {
     }
 
 
-    getYearCheckBoxClass = (row, index) => {
-        let flag = false;
-        let years = [...this.state.years];
-        flag = (years[index]["state"] === -1) ? true : false;
-        return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
-    }
+
 
     onChangeQuarterHandler = (quarterObj) => {
         let years = [...this.state.years];
-        let {showWeeks} = this.props.options;
-        let {yindex, qindex} = quarterObj;
-        let qt = quarterObj.qt;
+        let { showWeeks } = this.props.options;
+        let { yindex, qindex } = quarterObj;
         let stateSum = 0;
 
-        years[yindex]['quarters'][qindex]['state'] = 1;
-        for (var i = 0; i < years[yindex]["quarters"].length; i++) {
-            stateSum += years[yindex]["quarters"][i]["state"];
-        }
-        
+
         if (quarterObj.isCheck === true) {
+            years[yindex]['quarters'][qindex]['state'] = 1;
+            for (var i = 0; i < years[yindex]["quarters"].length; i++) {
+                stateSum += years[yindex]["quarters"][i]["state"];
+            }
             years[yindex]["state"] = (stateSum < 4) ? -1 : 1;
-        } else {
-            years[yindex]["state"] = (stateSum < 4) ? (stateSum === 0) ? 0 : -1 : 1;
-        }
-
-        let quarters = years[yindex]['quarters'];
-
-        let val = (quarterObj.isCheck === true)? 1 : 0;
-        
-        quarters.forEach((element, qindex) => {
+            let quarters = years[yindex]['quarters'];
             quarters[qindex]["months"].forEach((element, qindex1) => {
-                quarters[qindex]["months"][qindex1]['state'] = val;
-                if(showWeeks === true){
-                    if (quarters[qindex]["months"][qindex1]['weeks']) {
-                        quarters[qindex]["months"][qindex1]['weeks'].forEach((element, qindex2) => {
-                            quarters[qindex]["months"][qindex1]['weeks'][qindex2]['state'] = val;
-                            if (quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days']) {
-                                quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
-                                    quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = val;
-                                })
-                            }
-                        })
-                    }
-                } else {
+                quarters[qindex]["months"][qindex1]['state'] = 1;
+                if (showWeeks === true) {
+                    quarters[qindex]["months"][qindex1]['weeks'].forEach((element, qindex2) => {
+                        quarters[qindex]["months"][qindex1]['weeks'][qindex2]['state'] = 1;
+                        if (quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days']) {
+                            quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
+                                quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = 1;
+                            })
+                        }
+                    })
+                }
+                else {
                     if (quarters[qindex]["months"][qindex1]['days']) {
                         quarters[qindex]["months"][qindex1]['days'].forEach((element, qindex2) => {
-                            quarters[qindex]["months"][qindex1]['days'][qindex2]['state'] = val;
+                            quarters[qindex]["months"][qindex1]['days'][qindex2]['state'] = 1;
                         })
                     }
                 }
             })
-        });
-        this.setState({
-            years: [...years]
-        })
+
+            this.setState({
+                years: [...years]
+            })
+
+        }
+        else {
+            years[yindex]['quarters'][qindex]['state'] = 0;
+            for (i = 0; i < years[yindex]["quarters"].length; i++) {
+                stateSum += years[yindex]["quarters"][i]["state"];
+            }
+            years[yindex]["state"] = (stateSum < 4) ? (stateSum === 0) ? 0 : -1 : 1;
+            let quarters = years[yindex]['quarters'];
+            quarters[qindex]["months"].forEach((element, qindex1) => {
+                quarters[qindex]["months"][qindex1]['state'] = 0;
+                if (showWeeks === true) {
+                    quarters[qindex]["months"][qindex1]['weeks'].forEach((element, qindex2) => {
+                        quarters[qindex]["months"][qindex1]['weeks'][qindex2]['state'] = 0;
+                        if (quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days']) {
+                            quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
+                                quarters[qindex]["months"][qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = 0;
+                            })
+                        }
+                    })
+                }
+                else {
+                    if (quarters[qindex]["months"][qindex1]['days']) {
+                        quarters[qindex]["months"][qindex1]['days'].forEach((element, qindex2) => {
+                            quarters[qindex]["months"][qindex1]['days'][qindex2]['state'] = 0;
+                        })
+                    }
+                }
+            })
+
+            this.setState({
+                years: [...years]
+            })
+
+        }
     }
 
     onChangeMonth = (monthObj) => {
         let years = [...this.state.years];
-        let {showWeeks} = this.props.options;
-        let {yindex, qindex, mindex} = monthObj;
+        let { showWeeks } = this.props.options;
+        let { yindex, qindex, mindex } = monthObj;
         let mstateSum = 0;
         let qstateSum = 0;
         if (monthObj.isCheck === true) {
@@ -168,10 +188,10 @@ class YearView extends React.PureComponent {
             }
             years[yindex]["state"] = (qstateSum < 4) ? -1 : 1;
 
-            if(showWeeks === true){
+            if (showWeeks === true) {
 
                 let weeks = years[yindex]['quarters'][qindex]["months"][mindex]['weeks'];
-    
+
                 weeks.forEach((element, mindex) => {
                     weeks[mindex]['state'] = 1;
                     if (weeks[mindex]['days']) {
@@ -182,7 +202,7 @@ class YearView extends React.PureComponent {
                 });
             } else {
                 let days = years[yindex]['quarters'][qindex]["months"][mindex]['days'];
-    
+
                 days.forEach((element, mindex) => {
                     days[mindex]['state'] = 1;
                 });
@@ -211,7 +231,7 @@ class YearView extends React.PureComponent {
             }
             years[yindex]["state"] = (qstateSum !== 0) ? (qstateSum < 4) ? -1 : 1 : 0;
 
-            if(showWeeks === true){
+            if (showWeeks === true) {
                 let weeks = years[yindex]['quarters'][qindex]["months"][mindex]['weeks'];
                 weeks.forEach((element, mindex) => {
                     weeks[mindex]['state'] = 0;
@@ -223,7 +243,7 @@ class YearView extends React.PureComponent {
                 });
             } else {
                 let days = years[yindex]['quarters'][qindex]["months"][mindex]['days'];
-    
+
                 days.forEach((element, mindex) => {
                     days[mindex]['state'] = 0;
                 });
@@ -238,8 +258,8 @@ class YearView extends React.PureComponent {
     onChangeDays = (daysObj) => {
         let years = [...this.state.years];
         let days = daysObj.days;
-        let {yindex, qindex, mindex, dindex, isCheck} = daysObj;
-        
+        let { yindex, qindex, mindex, dindex, isCheck } = daysObj;
+
         if (isCheck === true) {
             let dstateSum = 0;
             let qstateSum = 0;
@@ -299,7 +319,7 @@ class YearView extends React.PureComponent {
 
     onChangeWeeks = (weeksObj) => {
         let years = [...this.state.years];
-        let {yindex, qindex, mindex, windex, isCheck} = weeksObj;
+        let { yindex, qindex, mindex, windex, isCheck } = weeksObj;
         if (isCheck === true) {
             let wstateSum = 0;
             let qstateSum = 0;
@@ -366,7 +386,7 @@ class YearView extends React.PureComponent {
 
     onChangeWeekDays = (weekDaysObj) => {
         let years = [...this.state.years];
-        let {yindex, qindex, mindex, windex, wdindex, isCheck} = weekDaysObj;
+        let { yindex, qindex, mindex, windex, wdindex, isCheck } = weekDaysObj;
 
         if (isCheck === true) {
             let wstateSum = 0;
@@ -437,6 +457,13 @@ class YearView extends React.PureComponent {
             })
         }
     }
+    getYearCheckBoxClass = (row, index) => {
+        let flag = false;
+        let years = [...this.state.years];
+        flag = (years[index]["state"] === -1) ? true : false;
+        return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
+    }
+
 
     renderYear = (year, index) => {
         let { options } = this.props;
@@ -466,6 +493,7 @@ class YearView extends React.PureComponent {
         )
     }
 
+
     render() {
         const { options } = this.props;
         return (
@@ -475,5 +503,6 @@ class YearView extends React.PureComponent {
         )
 
     }
+
 }
 export default YearView;
