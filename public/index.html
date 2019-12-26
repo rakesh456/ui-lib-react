@@ -9,64 +9,64 @@
         function onInputHandler() {
             console.log('onInputHandler called ');
         }
-        
+
         function onFocusHandler() {
             console.log('onFocusHandler called ');
         }
-        
+
         function onBlurHandler() {
             console.log('onBlurHandler called ');
         }
-        
+
         function onKeyDownHandler() {
             console.log('onKeyDownHandler called ');
         }
-       
+
         function onKeyUpHandler() {
             console.log('onKeyUpHandler called ');
         }
-        
+
         function onDoubleClickHandler() {
             console.log('onDoubleClickHandler called ');
         }
-        
+
         function onMouseDownHandler() {
             console.log('onMouseDownHandler called ');
         }
-        
+
         function onMouseUpHandler() {
             console.log('onMouseUpHandler called ');
         }
-        
+
         function onMouseEnterHandler() {
             console.log('onMouseEnterHandler called ');
         }
-        
+
         function onMouseLeaveHandler() {
             console.log('onMouseLeaveHandler called ');
         }
-        
+
         function onMouseMoveHandler() {
             console.log('onMouseMoveHandler called ');
         }
-        
+
         function onMouseOverHandler() {
             console.log('onMouseOverHandler called ');
         }
-        
+
         function onMouseOutHandler() {
             console.log('onMouseOutHandler called ');
         }
-        
+
         function onWheelHandler() {
             console.log('onWheelHandler called ');
         }
-        
+
         function setValue(id, value) {
             let element = document.getElementById(id);
             element.setValue(value);
         }
-        
+
         function refresh(id) {
             let element = document.getElementById(id);
             element.refresh();
@@ -76,23 +76,23 @@
             let element = document.getElementById(id);
             let dateValue = element.getStartDate();
             let element2 = document.getElementById(divId);
-            if(element2){
+            if (element2) {
                 element2.innerHTML = 'Get Start Date : ' + dateValue;
             }
         }
-        
+
         function getEndDate(id, divId) {
             let element = document.getElementById(id);
             let dateValue = element.getEndDate();
             let element2 = document.getElementById(divId);
-            if(element2){
+            if (element2) {
                 element2.innerHTML = 'Get End Date : ' + dateValue;
             }
         }
 
         function addDatepickerNew(id) {
             let element = document.getElementById(id);
-            
+
         }
 
         window.onload = bodyOnload;
@@ -388,69 +388,69 @@
             let _value = fromElement.getValue();
 
             // {"displayFormat": "MM/DD/YYYY", "defaultDate": "11/25/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2018", "upperLimit": "07/25/2020", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}
-            element.setDataOption({"lowerLimit": "12/01/2019"});
+            element.setDataOption({ "lowerLimit": "12/01/2019" });
         }
 
         function displayValue(id, divId) {
             let element = document.getElementById('datepicker3');
-            
+
             element.setDataOption("lowerLimit", "18/12/2019");
 
             let dateValue = element.getValue();
             let element2 = document.getElementById(divId);
 
-            if(element2){
+            if (element2) {
                 element2.innerHTML = 'From displayValue function : ' + dateValue;
             }
         }
 
-        function submitForm(){
+        function submitForm() {
             var form = document.forms["myform"];
         }
 
-        function getSelectedValuesById(id){
+        function getSelectedValuesById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedValues');
             let selectedValues = tagElement1.getSelectedValues();
             divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
             console.log(' selectedValues ', selectedValues);
         }
-        
-        function getSelectedCounterById(id){
+
+        function getSelectedCounterById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedCounter');
             let selectedCounter = tagElement1.getSelectedCounter();
-            divElement.innerHTML = 'Selected Counter : ' +  selectedCounter;
+            divElement.innerHTML = 'Selected Counter : ' + selectedCounter;
             console.log(' selectedCounter ', selectedCounter);
         }
-        
-        function refreshTagSelector(id){
+
+        function refreshTagSelector(id) {
             let tagElement1 = document.getElementById(id);
             let selectedCounter = tagElement1.refresh();
         }
-        
-        function remove(id, id2){
+
+        function remove(id, id2) {
             let tagElement1 = document.getElementById(id);
-            tagElement1.remove({"key": "AL", "value": "Albania"});
-            
+            tagElement1.remove({ "key": "AL", "value": "Albania" });
+
             let tagElement2 = document.getElementById(id2);
-            tagElement2.remove({"key": "Surat", "value": "Surat"});
+            tagElement2.remove({ "key": "Surat", "value": "Surat" });
         }
-        
-        function appendNewElementById(id){
+
+        function appendNewElementById(id) {
             let tagElement1 = document.getElementById(id);
-            let selectedCounter = tagElement1.appendNewElement({"key": "Test", "value": "BPO"});
+            let selectedCounter = tagElement1.appendNewElement({ "key": "Test", "value": "BPO" });
         }
-        
-        function setSelectedItems(id){
+
+        function setSelectedItems(id) {
             let tagElement1 = document.getElementById(id);
-            let selectedCounter = tagElement1.setSelectedItems([{"value": "Albania", "key": "AL"}, {"value": "Turkey", "key": "TR"}]);
-            
+            let selectedCounter = tagElement1.setSelectedItems([{ "value": "Albania", "key": "AL" }, { "value": "Turkey", "key": "TR" }]);
+
             let tagElement2 = document.getElementById('tagselector2');
-            let selectedCounter1 = tagElement2.setSelectedItems([{"key": "Adoni", "value": "Adoni"}]);
+            let selectedCounter1 = tagElement2.setSelectedItems([{ "key": "Adoni", "value": "Adoni" }]);
         }
-        
-        function getNewlyAddedById(id){
+
+        function getNewlyAddedById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('NewlyAddedElements');
             let newlyAddedElements = tagElement1.getNewlyAdded();
@@ -460,86 +460,95 @@
         function onSelectHandler(e) {
             console.log('Tag selector onSelect called ', e.detail);
         }
-       
+
         function onDeSelectHandler(e) {
             console.log('Tag selector onSelect called ', e.detail);
         }
-        
+
         function onNotFoundHandler(e) {
             console.log('onNotFound called ');
         }
         function myFunction() {
             document.getElementById("myDropdown").classList.toggle("show");
-       }
-       window.onclick = function(event) {
+        }
+        window.onclick = function (event) {
             if (!event.target.matches('.dropbtn')) {
-                   var dropdowns = document.getElementsByClassName("dropdown-content");
-                  var i;
-                  for (i = 0; i < dropdowns.length; i++) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];
-                        if (openDropdown.classList.contains('show')) {
-                           openDropdown.classList.remove('show');
-                        }
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
                 }
             }
-       }
+        }
 
     </script>
     <style>
-        .div-buttons{
+        .div-buttons {
             display: block;
             margin: 10px;
         }
     </style>
 </head>
+
 <body>
 
     <h2>Date Hierarchy Component using React Component</h2>
-        
+
     <p>data-options='{"lowerLimit": "2019", "upperLimit": "2020", "showWeeks": "false"}' </p>
-    <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2017", "upperLimit": "2020", "showWeeks": true }'></date-hierarchy>
+    <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2030", "showWeeks": true, "disabledYear":["2022", "2025","2029"]}'></date-hierarchy>
 
 
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
-        <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> : 
+        <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> :
         <span>To display selected values</span>
         <div id="SelectedValues"></div>
     </div>
     <div class="div-buttons">
-        <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button> : 
+        <button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button> :
         <span>To display selected items counter</span>
         <div id="SelectedCounter"></div>
     </div>
     <div class="div-buttons">
-        <button onclick="appendNewElementById('tagselector1');">Append new element</button> : 
+        <button onclick="appendNewElementById('tagselector1');">Append new element</button> :
         <span>It will append new element in list i.e. <q> {"key": "Test", "value": "BPO"}</q></span>
     </div>
     <div class="div-buttons">
-        <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button> : 
+        <button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button> :
         <span>It will return newly added element</span>
         <div id="NewlyAddedElements"></div>
     </div>
     <div class="div-buttons">
-        <button onclick="setSelectedItems('tagselector1');">Set Selected Items</button> : 
-        <span>It will set two selected items : i.e <q>[{"key": "AL", "value": "Albania"}, {"key": "TR", "value": "Turkey"}]</q></span>
+        <button onclick="setSelectedItems('tagselector1');">Set Selected Items</button> :
+        <span>It will set two selected items : i.e <q>[{"key": "AL", "value": "Albania"}, {"key": "TR", "value":
+                "Turkey"}]</q></span>
     </div>
     <div class="div-buttons">
-        <button onclick="refreshTagSelector('tagselector1');">Refresh</button> : 
+        <button onclick="refreshTagSelector('tagselector1');">Refresh</button> :
         <span>It will clear selected items</span>
     </div>
     <div class="div-buttons">
-        <button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button> : <span>To remove item from list and selected items i.e. <q>{"key": "AL", "value": "Albania"}</q></span>
+        <button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button> : <span>To remove item from list
+            and selected items i.e. <q>{"key": "AL", "value": "Albania"}</q></span>
     </div>
-    
+
     <br>
-    <p>{"placeholder": "Select country", "maxItemCounter": 2, "showHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false}</p>
+    <p>{"placeholder": "Select country", "maxItemCounter": 2, "showHelper": true, "canRemoveAll": true,
+        "allowNewValue": true, "showHierarchy": false}</p>
     <label>Select Country : </label>
-    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "showHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
+    <tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "showHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false}'
+        onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)"
+        onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
-    <p>{"placeholder": "Select state", "maxItemCounter": 2, "showHelper": false, "canRemoveAll": false, "showHierarchy": true}</p>
+    <p>{"placeholder": "Select state", "maxItemCounter": 2, "showHelper": false, "canRemoveAll": false,
+        "showHierarchy": true}</p>
     <label>Select State : </label>
-    <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "showHelper": false, "canRemoveAll": true, "showHierarchy": true, "readOnly":false}' onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)" onNotFound="onNotFoundHandler()"></tag-selector>
+    <tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "showHelper": false, "canRemoveAll": true, "showHierarchy": true, "readOnly":false}'
+        onFocus="onFocusHandler()" onKeyDown="onKeyDownHandler()" onSelect="onSelectHandler(e)" onDeSelect="onDeSelectHandler(e)"
+        onNotFound="onNotFoundHandler()"></tag-selector>
     <br>
 
     <h2>Datepicker Sample using React Component</h2>
@@ -555,13 +564,13 @@
         <date-picker name="dob" id="datepicker3"></date-picker>
          <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019", "05/11/2019"], "color": "#ff0000" }]}' onInput="onInputHandler()"></date-picker> 
     </div>
-    
+
     <br>
     <div id="display1"></div>
     <div id="displayLower1"></div>
     <div id="displayUpper1"></div>
     <button onclick="displayValue('datepicker1', 'display1')">Display</button>
-      <button onclick="reloadDatepicker('datepicker1')">Reload</button>
+    <button onclick="reloadDatepicker('datepicker1')">Reload</button>
 
     <button onclick="setValue('datepicker1', '23/09/2019');">Set Value to 23/09/2019</button>
     <button onclick="setValue('datepicker1', '01/10/2019');">Set Value to 01/12/2019</button>
@@ -569,10 +578,16 @@
     <button onclick="getStartDate('datepicker1', 'displayLower1');">Get Start Date</button>
     <button onclick="getEndDate('datepicker1', 'displayUpper1');">Get End Date</button>
     <br>
-   <br>
-    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2010", "upperLimit": "07/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
+    <br>
+    <p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit":
+        "05/25/2010", "upperLimit": "07/25/2025", "showErrorMessage": true, "validationMessages": [{"inValidFormat":
+        "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false,
+        "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019",
+        "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates":
+        ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p>
 
-    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "defaultDate": "11/25/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2018", "upperLimit": "07/25/2020", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
+    <date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "defaultDate": "11/25/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2018", "upperLimit": "07/25/2020", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}'
+        onChange="displayValue('datepickerNew', 'displayNew')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="displayNew"></div>
@@ -584,10 +599,14 @@
     <button onclick="getStartDate('datepickerNew', 'displayLowerNew');">Get Start Date</button>
     <button onclick="getEndDate('datepickerNew', 'displayUpperNew');">Get End Date</button>
     <br>
-    
+
     <p>Display format : MM/YYYY</p>
-    <p>{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024"]}</p>
-    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}' onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left",
+        "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons":
+        false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013",
+        "10/2024"]}</p>
+    <date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}'
+        onSelected="displayValue('datepicker2', 'display2')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display2"></div>
@@ -598,11 +617,14 @@
     <button onclick="refresh('datepicker2');">Refresh</button>
     <button onclick="getStartDate('datepicker2', 'displayLower2');">Get Start Date</button>
     <button onclick="getEndDate('datepicker2', 'displayUpper2');">Get End Date</button>
-    <br> 
+    <br>
 
     <p>Display format : QQ/YYYY</p>
-    <p>{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p>
-    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}' onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left",
+        "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons":
+        false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p>
+    <date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}'
+        onSelected="displayValue('datepicker3', 'display3')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display3"></div>
@@ -616,8 +638,11 @@
     <br>
 
     <p>Display format : YYYY</p>
-    <p>{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p>
-    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}' onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
+    <p>{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left",
+        "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons":
+        false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p>
+    <date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}'
+        onSelected="displayValue('datepicker4', 'display4')" onInput="onInputHandler()"></date-picker>
 
     <br>
     <div id="display4"></div>
@@ -632,8 +657,6 @@
 
     <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
-    <br> 
-    <div id="newdatepicker"></div>  
 </body>
 
 </html>

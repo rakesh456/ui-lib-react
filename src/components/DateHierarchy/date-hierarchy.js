@@ -6,7 +6,7 @@ class DateHierarchy extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks);
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
         this.state = { years: yearList};
     }
     updateDimensions() { 
@@ -15,7 +15,6 @@ class DateHierarchy extends React.PureComponent {
 
     render() {
         const {options} = this.props;
-        
         return (
             <div options = {options}>
                 <YearView options={options} ></YearView>

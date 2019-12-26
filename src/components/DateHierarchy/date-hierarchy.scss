@@ -280,7 +280,42 @@ $font-family: 'Roboto', sans-serif;
 	background-color: #F5F5F5;
 }
 
-#VS-Scrollbar::-webkit-scrollbar-thumb
-{
+#VS-Scrollbar::-webkit-scrollbar-thumb {
 	background-color: #000000;
+}
+
+.VS-Tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+.VS-Tooltip .VS-tooltiptext {
+    visibility: hidden;
+    width: 92px;
+    font-size: medium;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 2px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 135%;
+    text-size-adjust:2px ;
+}
+  
+.VS-Tooltip .VS-tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.VS-Tooltip:hover .VS-tooltiptext {
+    visibility: visible;
 }

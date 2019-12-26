@@ -33,7 +33,7 @@ class DaysView extends React.PureComponent {
             return (
             <div className="VS-DayRow" key={'day' + dindex.toString() + mindex.toString() + qindex.toString() + yindex.toString()}>
                
-           <label className="VS-Checkbox-Container">{days.day}
+            <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{days.day}<span className="VS-Tooltiptext">{days.day}-{mnth.month}-{row.year}</span></div>
 
                 {
                      (days.state) ? 
