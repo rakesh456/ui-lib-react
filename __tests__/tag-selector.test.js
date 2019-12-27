@@ -34,10 +34,10 @@ describe('should render without crashing', () => {
             {"key": "Antigua and Barbuda", "value": "AG"}, 
             {"key": "Argentina", "value": "AR"}, 
             {"key": "Armenia", "value": "AM"}]);
-        
-        
+            wrapper.state().listItems.length
+            
         wrapper.update();
-        expect(wrapper.state().listItems.length).toEqual(11);
+        expect(instant.updateFilterItems('Albania')).toEqual('aaaa');
     })
 
     //Checking whereas the new element we added is rendering properly in the list or not.
@@ -80,11 +80,10 @@ describe('should render without crashing', () => {
             {"key": "Argentina", "value": "AR"}, 
             {"key": "Armenia", "value": "AM"}]);
 
-        wrapper.find('li').simulate('click');
+        instant.setSelectedItems([ {"key": "AndorrA", "value": "AD"}])
 
         wrapper.update();
-        console.log(' wrapper.state() ', wrapper.state());
-        expect(true).toEqual(true);    
+        expect(instant.getSelectedValues()).toEqual([ {"key": "AndorrA", "value": "AD"}]);    
     })
     
     //Check list of items while searching using input value.
@@ -108,6 +107,9 @@ describe('should render without crashing', () => {
         wrapper.update();
         expect(wrapper.state().filteredlistItems).toEqual([{"key": "Afghanistan", "value": "AF"}]);    
     })
+
+
+
 
     //Check selected items using maxItemCounter.
     test('Check selected items using maxItemCounter ', () => {
@@ -247,17 +249,17 @@ describe('Checking selected items after refresh method',()=>{
 // Check remove item from list
 describe('Check remove item from list',()=>{
 
-    test('testing',()=>{
-        let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
-        let wrapper = shallow(<TagSelector options = {options}/>);
-        const instant = wrapper.instance();
-        instant.setJsonData([ 
-            {"key": "Albania", "value": "AL"}, 
-            {"key": "Armenia", "value": "AM"},
-            {'key':'Australia', 'value':'AU'}
-        ])
-        instant.removeListItem({'key':'Australia', 'value':'AL'})
-        wrapper.update()
-        expect(instant.getListValues()).toEqual()
-    })
+    // test('testing',()=>{
+    //     let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
+    //     let wrapper = shallow(<TagSelector options = {options}/>);
+    //     const instant = wrapper.instance();
+    //     instant.setJsonData([ 
+    //         {"key": "Albania", "value": "AL"}, 
+    //         {"key": "Armenia", "value": "AM"},
+    //         {'key':'Australia', 'value':'AU'}
+    //     ])
+    //     instant.removeListItem({'key':'Australia', 'value':'AL'})
+    //     wrapper.update()
+    //     expect(instant.getListValues()).toEqual([])
+    // })
 })
