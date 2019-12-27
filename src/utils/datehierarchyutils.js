@@ -237,7 +237,7 @@ export const getChildren = function (year, showWeeks) {
 	return quarterArray;
 }
 
-export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, disabledYear) {
+export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		let initial = lowerLimit;
 		let final = upperLimit;
@@ -252,10 +252,10 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, disab
 			years.push(year);
 			lowerLimit++;
 		}
-		if (disabledYear) {
-			for(var i= 0; i< disabledYear.length;i++){
-				if(disabledYear[i]>=initial && disabledYear[i]<= final)
-				years.splice(disabledYear[i] - lowerLimit, 1);
+		if (disabledList) {
+			for (var i = 0; i < disabledList.length; i++) {
+				if (disabledList[i] >= initial && disabledList[i] <= final)
+					years.splice(disabledList[i] - lowerLimit, 1);
 			}
 		}
 
@@ -313,17 +313,17 @@ export const getMonthWeeks = function (month_number, year) {
 
 // Function to check string is quater value
 export const isQuaterVal = (val) => {
-    let _val = (val)? val.toString() : '';
-    return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val == 'Q1' || _val == 'Q2' || _val == 'Q3' || _val == 'Q4' || _val == 'Q');
+	let _val = (val) ? val.toString() : '';
+	return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val == 'Q1' || _val == 'Q2' || _val == 'Q3' || _val == 'Q4' || _val == 'Q');
 }
 
 // Function to check string is month value
 export const isMonthVal = (val) => {
-	let _val = (val)? val.toString() : '';
+	let _val = (val) ? val.toString() : '';
 	let isExists = false;
 	MONTH_SHORT_NAMES.forEach((month) => {
 		let n = (month.indexOf(_val.toLowerCase()) !== -1);
-		if(n === true){
+		if (n === true) {
 			isExists = true;
 		}
 	});
@@ -332,11 +332,11 @@ export const isMonthVal = (val) => {
 
 // Function to check string is weeks value
 export const isWeekVal = (val) => {
-	let _val = (val)? val.toString() : '';
+	let _val = (val) ? val.toString() : '';
 	let isExists = false;
 	WEEK_NAMES.forEach((month) => {
 		let n = (month.indexOf(_val.toLowerCase()) !== -1);
-		if(n === true){
+		if (n === true) {
 			isExists = true;
 		}
 	});
@@ -345,6 +345,6 @@ export const isWeekVal = (val) => {
 
 // Function to check string is day value
 export const isDayVal = (val) => {
-    let _val = (val)? parseInt(val) : '';
-    return (_val <= 1 || _val <= 31);
+	let _val = (val) ? parseInt(val) : '';
+	return (_val <= 1 || _val <= 31);
 }
