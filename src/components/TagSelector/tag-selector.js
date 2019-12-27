@@ -448,7 +448,10 @@ class TagSelector extends React.PureComponent {
             </ul>
         );
     }
-
+    // 
+    getListValues() {
+        return this.state.listItems;
+    }
     render() {
         const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems, currentItemIndex, currentHierarchyItemIndex, hierarchySelectedItem } = this.state;
         const { options } = this.props;
