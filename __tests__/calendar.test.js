@@ -848,7 +848,7 @@ describe('Testing on function getInvalidDateMessage',()=>{
         expect(getInvalidDateMessage('',false,true)).toEqual('Outside allowed range')
     })
     test('If the format of date is not valid then function give the msg "Not in valid format" ',()=>{
-        expect(getInvalidDateMessage([{inValidFormat:'Not in valid format'},{inValidFormat:'Not in valid format'}],true,false)).toEqual('Invalid date is passed')
+        expect(getInvalidDateMessage([{inValidFormat:'Not in valid format'},{inValidFormat:'Not in valid format'}],true,false)).toEqual('Not in valid format')
     })
     test('If date is valid and is invalid range then the function return "Outside allowed range"',()=>{
         expect(getInvalidDateMessage([{outsideRange:'Outside Range value'}],false,true)).toEqual('Outside allowed range')
@@ -863,16 +863,18 @@ describe('Testing on function getInvalidDateMessage',()=>{
 })
 
 // Test for getNewUpdateDateByArrow
-// describe('Testing on function getNewUpdateDateByArrow',()=>{
+describe('Testing on function getNewUpdateDateByArrow',()=>{
 
-//     let options = {
+    let options = {
 
-        
-//     }
-//     test('testing',()=>{
-//         expect(getNewUpdateDateByArrow('02/03/2019',true,))
-//     })
-// })
+        disabledList:['02/03/2019']
+    }
+    test('testing',()=>{
+        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',39,true,true)).toEqual()
+    })
+})
+
+
 // Test for dateIsInDisabledList
 describe('Testing on the function dateIsInDisabledList',()=>{
 
