@@ -123,12 +123,20 @@ class WeekDaysView extends React.PureComponent {
         let row = this.props.row;
         let qt = this.props.qt;
         let mnth = this.props.mnth;
+        if(this.props.options.showQuarters === true){
         return (
             <div options={options}>
                 {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, qt, row, windex))}
             </div>
         )
-
+        }
+        else{
+            return (
+                <div options={options}>
+                    {mnth.days.map((weeks, windex) => this.renderWeeks(weeks, mnth, -1, row, windex))}
+                </div>
+            ) 
+        }
     }
 }
 export default WeekDaysView;

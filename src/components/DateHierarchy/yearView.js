@@ -504,7 +504,7 @@ class YearView extends React.PureComponent {
                     (year.showChild && year.quarters ) ?
                         <QuarterView options={options} years={_years} row={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonth} onChangeDays={this.onChangeDays} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></QuarterView> : (year.showChild && year.months) ?   
 
-                        <MonthView options={options} years={this.state.years} yindex={index} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonth} onChangeDays={this.onChangeDays} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView> : ''
+                        <MonthView options={options} years={this.state.years} row={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonth} onChangeDays={this.onChangeDays} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView> : ''
                 }
             </div>
         )
