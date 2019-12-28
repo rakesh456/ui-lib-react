@@ -281,7 +281,7 @@ export const getMonths = function (year, showWeeks, disabledList) {
 	}
 	else {
 		for (i = 0; i < 12; i++) {
-			monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthWeeks(i + 1, year, disabledList) }
+			monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "weeks": getMonthWeeks(i + 1, year, disabledList) }
 			months.push(monthObj);
 		}
 		return months;
