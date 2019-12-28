@@ -236,22 +236,55 @@ export const getChildren = function (year, showWeeks) {
 	}
 	return quarterArray;
 }
+export const getMonths = function (year, showWeeks, disabledList) {
+	let months = [];
+	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	if (showWeeks === false) {
+		for (var i = 0; i < 12; i++) {
+			var monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthDays(i + 1, year, disabledList) }
+			months.push(monthObj);
+		}
+		return months;
+	}
+	else {
+		for ( i = 0; i < 12; i++) {
+			 monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthWeeks(i + 1, year, disabledList) }
+			months.push(monthObj);
+		}
+		return months;
+	}
+}
 
-export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, disabledList) {
+export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		let initial = lowerLimit;
 		let final = upperLimit;
 		let years = [];
+		if(showQuarters === true){
 		while (lowerLimit <= upperLimit) {
 			var year = {
 				"year": parseInt(lowerLimit),
 				"showChild": false,
 				"state": 0,
-				"quarters": getChildren(lowerLimit, showWeeks)
+				"quarters": getChildren(lowerLimit, showWeeks, disabledList )
 			}
 			years.push(year);
 			lowerLimit++;
 		}
+	}
+	if(showQuarters === false){
+		while (lowerLimit <= upperLimit) {
+			year = {
+				"year": parseInt(lowerLimit),
+				"showChild": false,
+				"state": 0,
+				"months": getMonths(lowerLimit, showWeeks, disabledList)
+			}
+			years.push(year);
+			lowerLimit++;
+		}
+
+	}
 		if (disabledList) {
 			for (var i = 0; i < disabledList.length; i++) {
 				if (disabledList[i] >= initial && disabledList[i] <= final)
