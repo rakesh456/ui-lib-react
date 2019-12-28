@@ -278,7 +278,7 @@ class TagSelector extends React.PureComponent {
         let key;
         let results = [];
         if(showHierarchy === true){
-            let results1 = [];
+            let results1 = [];updateFil
             listItems.forEach((element, index) => {
                 for (key in element) {
                     const _item = element[key];
@@ -448,10 +448,8 @@ class TagSelector extends React.PureComponent {
             </ul>
         );
     }
-    // 
-    getListValues() {
-        return this.state.listItems;
-    }
+    
+
     render() {
         const { shouldListOpen, listItems, filteredlistItems, noDataFound, selectedItems, currentItemIndex, currentHierarchyItemIndex, hierarchySelectedItem } = this.state;
         const { options } = this.props;
