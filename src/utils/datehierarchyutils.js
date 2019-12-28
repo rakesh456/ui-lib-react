@@ -1,4 +1,4 @@
-export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1, "showQuaters": true, 'showWeeks': false };
+export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1, "showQuarters": true, 'showWeeks': false };
 
 export const MONTH_NAMES = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
@@ -33,17 +33,20 @@ export const getChildren = function (year, showWeeks) {
 	if (showWeeks === false) {
 		var quarterArray = [{
 			"quarter": "Q1",
+			"searchString": "q1",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
 					"month": "Jan",
+					"searchString": "january",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(1, year),
 				},
 				{
 					"month": "Feb",
+					"searchString": "february",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(2, year),
@@ -51,6 +54,7 @@ export const getChildren = function (year, showWeeks) {
 				},
 				{
 					"month": "Mar",
+					"searchString": "march",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(3, year)
@@ -59,23 +63,27 @@ export const getChildren = function (year, showWeeks) {
 		},
 		{
 			"quarter": "Q2",
+			"searchString": "q2",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
 					"month": "Apr",
+					"searchString": "april",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(4, year)
 				},
 				{
 					"month": "May",
+					"searchString": "may",
 					"showChild": false,
 					"state": false,
 					"days": getMonthDays(5, year)
 				},
 				{
 					"month": "Jun",
+					"searchString": "june",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(6, year)
@@ -84,23 +92,27 @@ export const getChildren = function (year, showWeeks) {
 		},
 		{
 			"quarter": "Q3",
+			"searchString": "q3",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
 					"month": "Jul",
+					"searchString": "july",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(7, year)
 				},
 				{
 					"month": "Aug",
+					"searchString": "august",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(8, year)
 				},
 				{
 					"month": "Sep",
+					"searchString": "september",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(9, year)
@@ -109,23 +121,27 @@ export const getChildren = function (year, showWeeks) {
 		},
 		{
 			"quarter": "Q4",
+			"searchString": "q4",
 			"showChild": false,
 			"state": 0,
 			"months": [
 				{
 					"month": "Oct",
+					"searchString": "october",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(10, year)
 				},
 				{
 					"month": "Nov",
+					"searchString": "november",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(11, year)
 				},
 				{
 					"month": "Dec",
+					"searchString": "december",
 					"showChild": false,
 					"state": 0,
 					"days": getMonthDays(12, year)
@@ -137,16 +153,19 @@ export const getChildren = function (year, showWeeks) {
 		quarterArray = [
 			{
 				"quarter": "Q1",
+				"searchString": "q1",
 				"showChild": false,
 				"state": 0,
 				"months": [{
 					"month": "Jan",
+					"searchString": "january",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(1, year)
 				},
 				{
 					"month": "Feb",
+					"searchString": "february",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(2, year),
@@ -154,6 +173,7 @@ export const getChildren = function (year, showWeeks) {
 				},
 				{
 					"month": "Mar",
+					"searchString": "march",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(3, year)
@@ -162,22 +182,26 @@ export const getChildren = function (year, showWeeks) {
 			},
 			{
 				"quarter": "Q2",
+				"searchString": "q2",
 				"showChild": false,
 				"state": 0,
 				"months": [{
 					"month": "Apr",
+					"searchString": "april",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(4, year)
 				},
 				{
 					"month": "May",
+					"searchString": "may",
 					"showChild": false,
 					"state": false,
 					"weeks": getMonthWeeks(5, year)
 				},
 				{
 					"month": "Jun",
+					"searchString": "june",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(6, year)
@@ -186,22 +210,26 @@ export const getChildren = function (year, showWeeks) {
 			},
 			{
 				"quarter": "Q3",
+				"searchString": "q3",
 				"showChild": false,
 				"state": 0,
 				"months": [{
 					"month": "Jul",
+					"searchString": "july",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(7, year)
 				},
 				{
 					"month": "Aug",
+					"searchString": "august",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(8, year)
 				},
 				{
 					"month": "Sep",
+					"searchString": "september",
 					"showChild": false,
 					"state": 0,
 					"weeks": getMonthWeeks(9, year)
@@ -210,26 +238,31 @@ export const getChildren = function (year, showWeeks) {
 			},
 			{
 				"quarter": "Q4",
+				"searchString": "q4",
 				"showChild": false,
 				"state": 0,
-				"months": [{
-					"month": "Oct",
-					"showChild": false,
-					"state": 0,
-					"weeks": getMonthWeeks(10, year)
-				},
-				{
-					"month": "Nov",
-					"showChild": false,
-					"state": 0,
-					"weeks": getMonthWeeks(11, year)
-				},
-				{
-					"month": "Dec",
-					"showChild": false,
-					"state": 0,
-					"weeks": getMonthWeeks(12, year)
-				}
+				"months": [
+					{
+						"month": "Oct",
+						"searchString": "october",
+						"showChild": false,
+						"state": 0,
+						"weeks": getMonthWeeks(10, year)
+					},
+					{
+						"month": "Nov",
+						"searchString": "november",
+						"showChild": false,
+						"state": 0,
+						"weeks": getMonthWeeks(11, year)
+					},
+					{
+						"month": "Dec",
+						"searchString": "december",
+						"showChild": false,
+						"state": 0,
+						"weeks": getMonthWeeks(12, year)
+					}
 				]
 			}
 		]
@@ -247,8 +280,8 @@ export const getMonths = function (year, showWeeks, disabledList) {
 		return months;
 	}
 	else {
-		for ( i = 0; i < 12; i++) {
-			 monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthWeeks(i + 1, year, disabledList) }
+		for (i = 0; i < 12; i++) {
+			monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthWeeks(i + 1, year, disabledList) }
 			months.push(monthObj);
 		}
 		return months;
@@ -256,35 +289,39 @@ export const getMonths = function (year, showWeeks, disabledList) {
 }
 
 export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
+
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		let initial = lowerLimit;
+		lowerLimit = parseInt(lowerLimit);
 		let final = upperLimit;
 		let years = [];
-		if(showQuarters === true){
-		while (lowerLimit <= upperLimit) {
-			var year = {
-				"year": parseInt(lowerLimit),
-				"showChild": false,
-				"state": 0,
-				"quarters": getChildren(lowerLimit, showWeeks, disabledList )
+		if (showQuarters === true) {
+			while (lowerLimit <= upperLimit) {
+				var year = {
+					"year": lowerLimit,
+					"searchString": lowerLimit.toString().toLowerCase(),
+					"showChild": false,
+					"state": 0,
+					"quarters": getChildren(lowerLimit, showWeeks, disabledList)
+				}
+				years.push(year);
+				lowerLimit++;
 			}
-			years.push(year);
-			lowerLimit++;
 		}
-	}
-	if(showQuarters === false){
-		while (lowerLimit <= upperLimit) {
-			year = {
-				"year": parseInt(lowerLimit),
-				"showChild": false,
-				"state": 0,
-				"months": getMonths(lowerLimit, showWeeks, disabledList)
+		if (showQuarters === false) {
+			while (lowerLimit <= upperLimit) {
+				year = {
+					"year": lowerLimit,
+					"searchString": lowerLimit.toString().toLowerCase(),
+					"showChild": false,
+					"state": 0,
+					"months": getMonths(lowerLimit, showWeeks, disabledList)
+				}
+				years.push(year);
+				lowerLimit++;
 			}
-			years.push(year);
-			lowerLimit++;
-		}
 
-	}
+		}
 		if (disabledList) {
 			for (var i = 0; i < disabledList.length; i++) {
 				if (disabledList[i] >= initial && disabledList[i] <= final)
@@ -302,6 +339,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 		while (lowerLimit <= upperLimit) {
 			year = {
 				"year": lowerLimit,
+				"searchString": lowerLimit.toString().toLowerCase(),
 				"showChild": false,
 				"state": 0,
 				"quarters": getChildren(lowerLimit)
@@ -328,10 +366,10 @@ export const getMonthWeeks = function (month_number, year) {
 	weekdays[5] = "Fri";
 	weekdays[6] = "Sat";
 	for (let weekNo = 1; weekNo <= Math.ceil(used / 7); weekNo++) {
-		var weekobj = { week: "Week " + weekNo, state: 0, showChild: false, days: [] }
+		var weekobj = { week: "Week " + weekNo, searchString: "week " + weekNo, state: 0, showChild: false, days: [] }
 		for (var i = start; i < (lastOfMonth).getDate() + 1; i++) {
 			var monthDate = new Date(year, month_number - 1, i);
-			var dayObj = { date: i, day: weekdays[monthDate.getDay()], state: 0 };
+			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
 			weekobj.days.push(dayObj);
 			if (monthDate.getDay() === 6) {
 				start = i + 1;
@@ -343,11 +381,10 @@ export const getMonthWeeks = function (month_number, year) {
 	return weeks;
 }
 
-
 // Function to check string is quater value
 export const isQuaterVal = (val) => {
-    let _val = (val)? val.toString() : '';
-    return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val === 'Q1' || _val === 'Q2' || _val === 'Q3' || _val === 'Q4' || _val === 'Q' || _val === 'q1' || _val === 'q2' || _val === 'q3' || _val === 'q4' || _val === 'q');
+	let _val = (val) ? val.toString() : '';
+	return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val === 'Q1' || _val === 'Q2' || _val === 'Q3' || _val === 'Q4' || _val === 'Q' || _val === 'q1' || _val === 'q2' || _val === 'q3' || _val === 'q4' || _val === 'q');
 }
 
 // Function to check string is month value

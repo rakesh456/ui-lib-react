@@ -50,7 +50,6 @@ class WeekDaysView extends React.PureComponent {
             isCheck: true
         }
         this.props.onChangeWeekDays(weekDaysObj);
-
     }
 
     onUnCheckWeekDay(days, weeks, mnth, qt, row) {
@@ -63,7 +62,6 @@ class WeekDaysView extends React.PureComponent {
             isCheck: false
         }
         this.props.onChangeWeekDays(weekDaysObj);
-
     }
 
     getWeekCheckBoxClass = (weeks) => {
@@ -90,7 +88,6 @@ class WeekDaysView extends React.PureComponent {
         )
     }
 
-
     renderWeeks = (weeks, mnth, qt, row, windex) => {
         return (
             <div className="VS-WeekRow" key={'week' + windex}>
@@ -112,7 +109,7 @@ class WeekDaysView extends React.PureComponent {
                 </label>
                 {
                     (weeks.showChild && weeks.days) ?
-                        weeks.days.map((days, wdindex) => this.renderWeekDays(days ,weeks, mnth, qt, row, wdindex)) : ''
+                        weeks.days.map((days, wdindex) => this.renderWeekDays(days, weeks, mnth, qt, row, wdindex)) : ''
                 }
             </div>
         )
@@ -123,19 +120,18 @@ class WeekDaysView extends React.PureComponent {
         let row = this.props.row;
         let qt = this.props.qt;
         let mnth = this.props.mnth;
-        if(this.props.options.showQuarters === true){
-        return (
-            <div options={options}>
-                {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, qt, row, windex))}
-            </div>
-        )
-        }
-        else{
+        if (this.props.options && this.props.options.showQuarters === true) {
+            return (
+                <div options={options}>
+                    {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, qt, row, windex))}
+                </div>
+            )
+        } else {
             return (
                 <div options={options}>
                     {mnth.days.map((weeks, windex) => this.renderWeeks(weeks, mnth, -1, row, windex))}
                 </div>
-            ) 
+            )
         }
     }
 }

@@ -1,8 +1,8 @@
 import React from "react";
 
 class DaysView extends React.PureComponent {
-    
-    onCheckDay(days, mnth, qt, row){
+
+    onCheckDay(days, mnth, qt, row) {
         let daysObj = {
             days: days,
             mnth: mnth,
@@ -10,10 +10,10 @@ class DaysView extends React.PureComponent {
             row: row,
             isCheck: true
         }
-        this.props.onChangeDays(daysObj);
+        this.props.onChangeDay(daysObj);
     }
 
-    onUnCheckDay(days, mnth, qt, row ){
+    onUnCheckDay(days, mnth, qt, row) {
         let daysObj = {
             days: days,
             mnth: mnth,
@@ -21,37 +21,36 @@ class DaysView extends React.PureComponent {
             row: row,
             isCheck: false
         }
-        this.props.onChangeDays(daysObj);
+        this.props.onChangeDay(daysObj);
     }
 
-    renderDays = (days, mnth, qt, row, dindex ) =>{
-           
-            return (
-            <div className="VS-DayRow" key={'day' +dindex}>
-               
-            <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{days.day}<span className="VS-Tooltiptext">{days.day}-{mnth.month}-{row.year}</span></div>
+    renderDays = (days, mnth, qt, row, dindex) => {
+        return (
+            <div className="VS-DayRow" key={'day' + dindex}>
 
-                {
-                     (days.state) ? 
-                    <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={ () => this.onUnCheckDay(days, mnth, qt, row )}></input>:
-                    <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={ () => this.onCheckDay(days, mnth, qt, row )}></input>
-                }
-                
-                <span className="VS-Check-Checkmark"></span>
+                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{days.day}<span className="VS-Tooltiptext">{days.day}-{mnth.month}-{row.year}</span></div>
+
+                    {
+                        (days.state) ?
+                            <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={() => this.onUnCheckDay(days, mnth, qt, row)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={() => this.onCheckDay(days, mnth, qt, row)}></input>
+                    }
+
+                    <span className="VS-Check-Checkmark"></span>
+                    <span className="VS-Check-Checkmark1">{days.state}</span>
                 </label>
             </div>
         )
-           
     }
-    
+
     render() {
-    const {options} = this.props;
-      let row = this.props.row;
-      let qt = this.props.qt;
-      let mnth = this.props.mnth;
+        const { options } = this.props;
+        let row = this.props.row;
+        let qt = this.props.qt;
+        let mnth = this.props.mnth;
         return (
-            <div options = {options} >
-               { mnth.days.map((days, dindex) => this.renderDays(days, mnth, qt, row, dindex))}
+            <div options={options} >
+                {mnth.days.map((days, dindex) => this.renderDays(days, mnth, qt, row, dindex))}
             </div>
         )
     }

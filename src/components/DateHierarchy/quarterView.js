@@ -45,12 +45,12 @@ class QuarterView extends React.PureComponent {
 
     }
 
-    onChangeMonth = (monthObj) => {
+    onChangeMonthHandler = (monthObj) => {
         this.props.onChangeMonth(monthObj);
     }
 
-    onChangeDays = (daysObj) => {
-        this.props.onChangeDays(daysObj);
+    onChangeDayHandler = (daysObj) => {
+        this.props.onChangeDay(daysObj);
     }
 
     onChangeWeeks = (weeksObj) => {
@@ -63,7 +63,6 @@ class QuarterView extends React.PureComponent {
 
     renderQuarter = (qt, row, qindex) => {
         let { options } = this.props;
-        console.log()
         return (
             <div className="VS-QuarterRow" key={'quarter' +qindex }>
                 {
@@ -81,7 +80,7 @@ class QuarterView extends React.PureComponent {
                 </label>
                 {
                     (qt.showChild && qt.months) ?
-                        <MonthView options={options} years={this.props.years} qt={qt} row={row}onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonth} onChangeDays={this.onChangeDays} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView>
+                        <MonthView options={options} years={this.props.years} qt={qt} row={row}onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView>
                         : ''
                 }
 
