@@ -104,7 +104,7 @@ class MonthView extends React.PureComponent {
         else {
             return (
                 <div>
-                    {row.months.map((mnth, mindex) => this.renderMonths(mnth, -1, row))}
+                    {row.months.map((mnth, mindex) => this.renderMonths(mnth, -1, row, mindex))}
                 </div>
             )
         }
