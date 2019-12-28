@@ -108,10 +108,7 @@ $font-family: 'Roboto', sans-serif;
     display: block;
 }
 
-// .VS-Checkbox-Container .VS-Check-Checkmark:before {
-
-// }
-
+// .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial,
 .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
     left: 5px;
     top: 5px;
@@ -119,6 +116,9 @@ $font-family: 'Roboto', sans-serif;
     height: 0px;
     border: solid #2196F3;
     border-width: 3px;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .VS-Checkbox-Container .VS-Check-Checkmark:after {
@@ -131,12 +131,6 @@ $font-family: 'Roboto', sans-serif;
     -webkit-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     transform: rotate(45deg);
-}
-
-.VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
-    -webkit-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
 }
 
 .VS-week-Plus-Minus,
