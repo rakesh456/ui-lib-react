@@ -2,84 +2,84 @@ import React from "react";
 
 class WeekDaysView extends React.PureComponent {
 
-    expandWeek(weeks) {
+    expandWeek(week) {
         let years = [...this.props.years];
-        weeks['showChild'] = true;
+        week['showChild'] = true;
         this.setState({
             years: [...years]
         })
     }
 
-    collapseWeek(weeks) {
+    collapseWeek(week) {
         let years = [...this.props.years];
-        weeks['showChild'] = false;
+        week['showChild'] = false;
         this.setState({
             years: [...years]
         })
     }
 
-    onCheckWeek(weeks, mnth, qt, row) {
-        let weeksObj = {
-            weeks: weeks,
-            mnth: mnth,
-            qt: qt,
-            row: row,
+    onCheckWeek(week, month, quarter, year) {
+        let weekObj = {
+            week: week,
+            month: month,
+            quarter: quarter,
+            year: year,
             isCheck: true
         }
-        this.props.onChangeWeeks(weeksObj);
+        this.props.onChangeWeek(weekObj);
     }
 
-    onUnCheckWeek(weeks, mnth, qt, row) {
-        let weeksObj = {
-            weeks: weeks,
-            mnth: mnth,
-            qt: qt,
-            row: row,
+    onUnCheckWeek(week, month, quarter, year) {
+        let weekObj = {
+            week: week,
+            month: month,
+            quarter: quarter,
+            year: year,
             isCheck: false
         }
-        this.props.onChangeWeeks(weeksObj);
+        this.props.onChangeWeek(weekObj);
     }
 
-    onCheckWeekDay(days, weeks, mnth, qt, row) {
-        let weekDaysObj = {
-            days: days,
-            weeks: weeks,
-            mnth: mnth,
-            qt: qt,
-            row: row,
+    onCheckWeekDay(day, week, month, quarter, year) {
+        let weekDayObj = {
+            day: day,
+            week: week,
+            month: month,
+            quarter: quarter,
+            year: year,
             isCheck: true
         }
-        this.props.onChangeWeekDays(weekDaysObj);
+        this.props.onChangeWeekDay(weekDayObj);
     }
 
-    onUnCheckWeekDay(days, weeks, mnth, qt, row) {
-        let weekDaysObj = {
-            days: days,
-            weeks: weeks,
-            mnth: mnth,
-            qt: qt,
-            row: row,
+    onUnCheckWeekDay(day, week, month, quarter, year) {
+        let weekDayObj = {
+            day: day,
+            week: week,
+            month: month,
+            quarter: quarter,
+            year: year,
             isCheck: false
         }
-        this.props.onChangeWeekDays(weekDaysObj);
+        this.props.onChangeWeekDay(weekDayObj);
     }
 
-    getWeekCheckBoxClass = (weeks) => {
+    getWeekCheckBoxClass = (week) => {
         let flag = false;
-        flag = weeks['state'] === -1 ? true : false;
+        flag = week['state'] === -1 ? true : false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
-    renderWeekDays = (days, weeks, mnth, qt, row, wdindex) => {
+    renderWeekDays = (day, week, month, quarter, year, weekDayIndex) => {
         return (
-            <div className="VS-WeekDayRow" key={'day' + wdindex}>
+            <div className="VS-WeekDayRow" key={'day' + weekDayIndex}>
 
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{days.date + " " + days.day}<span className="VS-Tooltiptext">{days.date}-{mnth.month}-{row.year}</span></div>
+                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.date + " " + day.day}<span className="VS-Tooltiptext">{day.date}-{month.month}-{year.year}</span></div>
 
                     {
-                        (days.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={() => this.onUnCheckWeekDay(days, weeks, mnth, qt, row)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={days.state} onChange={() => this.onCheckWeekDay(days, weeks, mnth, qt, row)}></input>
+                        (day.state) ?
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onUnCheckWeekDay(day, week, month, quarter, year)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onCheckWeekDay(day, week, month, quarter, year)}></input>
                     }
 
                     <span className="VS-Check-Checkmark"></span>
@@ -88,28 +88,28 @@ class WeekDaysView extends React.PureComponent {
         )
     }
 
-    renderWeeks = (weeks, mnth, qt, row, windex) => {
+    renderWeeks = (week, month, quarter, year, weekIndex) => {
         return (
-            <div className="VS-WeekRow" key={'week' + windex}>
+            <div className="VS-WeekRow" key={'week' + weekIndex}>
                 {
-                    (weeks.showChild) ?
-                        <span className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(weeks)}>-</span> :
-                        <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(weeks)} >+</span>
+                    (week.showChild) ?
+                        <span className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(week)}>-</span> :
+                        <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(week)} >+</span>
                 }
 
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{weeks.week}<span className="VS-Tooltiptext">{weeks.week}-{mnth.month}-{row.year}</span></div>
+                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{week.week}<span className="VS-Tooltiptext">{week.week}-{month.month}-{year.year}</span></div>
 
                     {
-                        (weeks.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={weeks.state} onChange={() => this.onUnCheckWeek(weeks, mnth, qt, row)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={weeks.state} onChange={() => this.onCheckWeek(weeks, mnth, qt, row)}></input>
+                        (week.state) ?
+                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.onUnCheckWeek(week, month, quarter, year)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.onCheckWeek(week, month, quarter, year)}></input>
                     }
 
-                    <span className={this.getWeekCheckBoxClass(weeks)}></span>
+                    <span className={this.getWeekCheckBoxClass(week)}></span>
                 </label>
                 {
-                    (weeks.showChild && weeks.days) ?
-                        weeks.days.map((days, wdindex) => this.renderWeekDays(days, weeks, mnth, qt, row, wdindex)) : ''
+                    (week.showChild && week.days) ?
+                        week.days.map((day, weekDayIndex) => this.renderWeekDays(day, week, month, quarter, year, weekDayIndex)) : ''
                 }
             </div>
         )
@@ -117,19 +117,19 @@ class WeekDaysView extends React.PureComponent {
 
     render() {
         const { options } = this.props;
-        let row = this.props.row;
-        let qt = this.props.qt;
-        let mnth = this.props.mnth;
+        let year = this.props.year;
+        let quarter = this.props.quarter;
+        let month = this.props.month;
         if (this.props.options && this.props.options.showQuarters === true) {
             return (
                 <div options={options}>
-                    {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, qt, row, windex))}
+                    {month.weeks.map((week, weekIndex) => this.renderWeeks(week, month, quarter, year, weekIndex))}
                 </div>
             )
         } else {
             return (
                 <div options={options}>
-                    {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, -1, row, windex))}
+                    {month.weeks.map((week, weekIndex) => this.renderWeeks(week, month, -1, year, weekIndex))}
                 </div>
             )
         }

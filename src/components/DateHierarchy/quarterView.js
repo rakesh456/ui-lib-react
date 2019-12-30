@@ -3,44 +3,26 @@ import MonthView from "./monthView";
 
 class QuarterView extends React.PureComponent {
 
-    expandQuarter(qt) {
+    toggleQuarterChild(quarter, showChild) {
         let years = [...this.props.years];
-        qt['showChild'] = true;
+        quarter['showChild'] = showChild;
         this.setState({
             years: [...years]
         })
     }
 
-    collapseQuarter(qt) {
-        let years = [...this.props.years];
-        qt['showChild'] = false;
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    onCheckQuarter(qt, row) {
+    toggleQuarterCheck(quarter, year, isCheck) {
         let quarterObj = {
-            qt: qt,
-            row: row,
-            isCheck: true
+            year: year,
+            quarter:quarter,            
+            isCheck: isCheck
         }
         this.props.onChangeQuarter(quarterObj);
     }
 
-
-    onUnCheckQuarter(qt, row) {
-        let quarterObj = {
-            qt: qt,
-            row: row,
-            isCheck: false
-        }
-        this.props.onChangeQuarter(quarterObj);
-    }
-
-    getQuarterCheckBoxClass = (qt) => {
+    getQuarterCheckBoxClass = (quarter) => {
         let flag = false;
-        flag = (qt.state === -1) ? true: false;
+        flag = (quarter.state === -1) ? true: false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
 
     }
@@ -49,38 +31,38 @@ class QuarterView extends React.PureComponent {
         this.props.onChangeMonth(monthObj);
     }
 
-    onChangeDayHandler = (daysObj) => {
-        this.props.onChangeDay(daysObj);
+    onChangeDayHandler = (dayObj) => {
+        this.props.onChangeDay(dayObj);
     }
 
-    onChangeWeeks = (weeksObj) => {
-        this.props.onChangeWeeks(weeksObj);
+    onChangeWeek = (weekObj) => {
+        this.props.onChangeWeek(weekObj);
     }
 
-    onChangeWeekDays = (weekDaysObj) => {
-        this.props.onChangeWeekDays(weekDaysObj);
+    onChangeWeekDay = (weekDayObj) => {
+        this.props.onChangeWeekDay(weekDayObj);
     }
 
-    renderQuarter = (qt, row, qindex) => {
+    renderQuarter = (quarter, year, quarterIndex) => {
         let { options } = this.props;
         return (
-            <div className="VS-QuarterRow" key={'quarter' +qindex }>
+            <div className="VS-QuarterRow" key={'quarter' +quarterIndex }>
                 {
-                    (qt.showChild) ?
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt)}>-</span> :
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt)}>+</span>
+                    (quarter.showChild) ?
+                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
+                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, true)}>+</span>
                 }
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{qt.quarter}<span className="VS-Tooltiptext">{qt.quarter}-{row.year}</span></div>
+                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{quarter.quarter}<span className="VS-Tooltiptext">{quarter.quarter}-{year.year}</span></div>
                     {
-                        (qt.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={() => this.onUnCheckQuarter(qt, row)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={() => this.onCheckQuarter(qt, row)}></input>
+                        (quarter.state) ?
+                            <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, true)}></input>
                     }
-                    <span className={this.getQuarterCheckBoxClass(qt)}></span>
+                    <span className={this.getQuarterCheckBoxClass(quarter)}></span>
                 </label>
                 {
-                    (qt.showChild && qt.months) ?
-                        <MonthView options={options} years={this.props.years} qt={qt} row={row}onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView>
+                    (quarter.showChild && quarter.months) ?
+                        <MonthView options={options} years={this.props.years} quarter={quarter} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView>
                         : ''
                 }
 
@@ -91,11 +73,11 @@ class QuarterView extends React.PureComponent {
 
     render() {
         const { options } = this.props;
-        let row = this.props.row;
+        let year = this.props.year;
         return (
             <div options={options} onChange={this.props.onChangeHandler}>
                 {
-                    row.quarters.map((qt, qindex) => this.renderQuarter(qt, row, qindex ))
+                    year.quarters.map((quarter, quarterIndex) => this.renderQuarter(quarter, year, quarterIndex ))
                 }
             </div>
         )
