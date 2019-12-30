@@ -1,12 +1,10 @@
 import React from "react";
-import { getListOfYears } from "../../utils/datehierarchyutils";
 import YearView from "./yearView";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
-        super(props);
-        let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
+        super(props);              
+        let yearList = [];
         this.state = { years: yearList};
     }
     
@@ -14,11 +12,10 @@ class DateHierarchy extends React.PureComponent {
         
     }
 
-    render() {
-        const {options} = this.props;
+    render() {        
         return (
-            <div options = {options}>
-                <YearView options={options} ></YearView>
+            <div>
+                <YearView options={this.props.options} ></YearView>
             </div>
         )    
     }

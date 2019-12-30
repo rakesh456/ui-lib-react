@@ -244,8 +244,7 @@ class YearView extends React.PureComponent {
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showWeeks === true) {
-                let weeks = month.weeks;
-                console.log('month', month);
+                let weeks = month.weeks;                
                 weeks.forEach((element, index) => {
                     weeks[index]['state'] = 1;
                     if (weeks[index]['days']) {
@@ -327,17 +326,17 @@ class YearView extends React.PureComponent {
         }
     }
 
-    onChangeDayHandler = (daysObj) => {
+    onChangeDayHandler = (dayObj) => {
         let years = [...this.getYears()];
         
-        let { day, month, quarter, year, isCheck } = daysObj;
-        console.log(day);
-
+        let { day, month, quarter, year, isCheck } = dayObj;
+        
         let { showQuarters } = this.props.options;
+        let dstateSum = 0;
+        let qstateSum = 0;
+        let mstateSum = 0;
+            
         if (isCheck === true) {
-            let dstateSum = 0;
-            let qstateSum = 0;
-            let mstateSum = 0;
             day['state'] = 1;
             for (var j = 0; j < month.days.length; j++) {
                 dstateSum += month.days[j]["state"];
@@ -364,13 +363,9 @@ class YearView extends React.PureComponent {
                 years: [...years]
             });
 
-            this.forceUpdate();
-            // this.updateSelectAllCheckbox();
+            this.forceUpdate();            
         }
         else {
-            let dstateSum = 0;
-            let qstateSum = 0;
-            let mstateSum = 0;
             day.state = 0;
             for (j = 0; j < month.days.length; j++) {
                 dstateSum += month.days[j]["state"];
@@ -403,24 +398,22 @@ class YearView extends React.PureComponent {
             }
             this.setState({
                 years: [...years]
-            });
-
-            // this.updateSelectAllCheckbox();
+            });            
         }
     }
 
-    onChangeWeeks = (weeksObj) => {
+    onChangeWeek = (weekObj) => {
         let years = [...this.getYears()];
         let { showQuarters } = this.props.options;
-        let { weeks, month, quarter, year, isCheck } = weeksObj;
+        let { week, month, quarter, year, isCheck } = weekObj;
         if (isCheck === true) {
             let wstateSum = 0;
             let qstateSum = 0;
             let mstateSum = 0;
-            weeks.state = 1;
-            if (weeks.days) {
-                weeks.days.forEach((element, index) => {
-                    weeks.days[index]['state'] = 1;
+            week.state = 1;
+            if (week.days) {
+                week.days.forEach((element, index) => {
+                    week.days[index]['state'] = 1;
                 });
             }
             for (var j = 0; j < month.weeks.length; j++) {
@@ -453,10 +446,10 @@ class YearView extends React.PureComponent {
             let wstateSum = 0;
             let qstateSum = 0;
             let mstateSum = 0;
-            weeks.state = 0;
-            if (weeks.days) {
-                weeks.days.forEach((element, index) => {
-                    weeks.days[index]['state'] = 0;
+            week.state = 0;
+            if (week.days) {
+                week.days.forEach((element, index) => {
+                    week.days[index]['state'] = 0;
                 });
             }
             for (j = 0; j < month.weeks.length; j++) {
@@ -564,7 +557,7 @@ class YearView extends React.PureComponent {
                 }
                 year.state = (qstateSum < year.quarters.length) ? (qstateSum === 0) ? 0 : -1 : 1;
             }
-            if(showQuarters === false){
+            if (showQuarters === false) {
                 for (i = 0; i < year.months.length; i++) {
                     if (year.months[i]['state'] === -1) {
                         qstateSum = -1;
@@ -613,8 +606,8 @@ class YearView extends React.PureComponent {
                 </label>
                 {
                     (year.showChild && year.quarters) ?
-                        <QuarterView options={options} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeeks={this.onChangeWeeks} onChangeWeekDay={this.onChangeWeekDay}></QuarterView> : (year.showChild && year.months) ?
-                            <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeeks={this.onChangeWeeks} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
+                        <QuarterView options={options} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></QuarterView> : (year.showChild && year.months) ?
+                        <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
                 }
             </div>
         )

@@ -26,7 +26,7 @@ class WeekDaysView extends React.PureComponent {
             year: year,
             isCheck: true
         }
-        this.props.onChangeWeeks(weekObj);
+        this.props.onChangeWeek(weekObj);
     }
 
     onUnCheckWeek(week, month, quarter, year) {
@@ -88,9 +88,9 @@ class WeekDaysView extends React.PureComponent {
         )
     }
 
-    renderWeeks = (week, month, quarter, year, windex) => {
+    renderWeeks = (week, month, quarter, year, weekIndex) => {
         return (
-            <div className="VS-WeekRow" key={'week' + windex}>
+            <div className="VS-WeekRow" key={'week' + weekIndex}>
                 {
                     (week.showChild) ?
                         <span className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(week)}>-</span> :
@@ -123,13 +123,13 @@ class WeekDaysView extends React.PureComponent {
         if (this.props.options && this.props.options.showQuarters === true) {
             return (
                 <div options={options}>
-                    {month.weeks.map((week, windex) => this.renderWeeks(week, month, quarter, year, windex))}
+                    {month.weeks.map((week, weekIndex) => this.renderWeeks(week, month, quarter, year, weekIndex))}
                 </div>
             )
         } else {
             return (
                 <div options={options}>
-                    {month.week.map((week, windex) => this.renderWeeks(week, month, -1, year, windex))}
+                    {month.weeks.map((week, weekIndex) => this.renderWeeks(week, month, -1, year, weekIndex))}
                 </div>
             )
         }
