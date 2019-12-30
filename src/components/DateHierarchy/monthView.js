@@ -3,49 +3,31 @@ import WeekDaysView from "./weekDaysView";
 
 class MonthView extends React.PureComponent {
 
-    expandMonth(month) {
+    toggleMonthChild(month, showChild) {
         let years = [...this.props.years];
-        month['showChild'] = true;
+        month['showChild'] = showChild;
         this.setState({
             years: [...years]
         })
     }
 
-    collapseMonth(month) {
-        let years = [...this.props.years];
-        month['showChild'] = false;
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    onCheckMonth(month, quarter, year) {
+    toggleMonthCheck(month, quarter, year, isCheck) {
         let monthObj = {
             year: year,
             quarter:quarter,
             month: month,
-            isCheck: true
+            isCheck: isCheck
         }
         this.props.onChangeMonth(monthObj);
     }
 
-    onUnCheckMonth(month, quarter, year) {
-        let monthObj = {
-            year: year,
-            quarter:quarter,
-            month: month,
-            isCheck:false
-        }
-        this.props.onChangeMonth(monthObj);
-    }
-
-    onToggleDay(day, month, quarter, year, isCheck) {
+    toggleDayCheck(day, month, quarter, year, isCheck) {
         let dayObj = {
             day: day,
             month: month,
             quarter: quarter,
             year: year,
-            isCheck: true
+            isCheck: isCheck
         }
         this.props.onChangeDay(dayObj);
     }
@@ -64,16 +46,16 @@ class MonthView extends React.PureComponent {
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
-    renderDays = (day, month, quarter, year, dayIndex) => {
+    renderDay = (day, month, quarter, year, dayIndex) => {
         return (
-            <div className="VS-Dayyear" key={'day' + dayIndex}>
+            <div className="VS-DayRow" key={'day' + dayIndex}>
 
                 <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
 
                     {
                         (day.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onToggleDay(day, month, quarter, year, false)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onToggleDay(day, month, quarter, year, true)}></input>
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, true)}></input>
                     }
 
                     <span className="VS-Check-Checkmark"></span>
@@ -82,27 +64,27 @@ class MonthView extends React.PureComponent {
         )
     }
 
-    renderMonths = (month, quarter, year, mindex) => {
+    renderMonth = (month, quarter, year, monthIndex) => {
         let { options } = this.props;
             return (
-                <div className="VS-Monthyear" key={'month' + mindex}>
+                <div className="VS-MonthRow" key={'month' + monthIndex}>
                     {
                         (month.showChild) ?
-                            <span className="VS-Month-Plus-Minus" onClick={() => this.collapseMonth(month)}>-</span> :
-                            <span className="VS-Month-Plus-Minus" onClick={() => this.expandMonth(month)} >+</span>
+                            <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
+                            <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
                     }
                     <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month}-{year.year}</span></div>
                         {
                             (month.state) ?
-                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.onUnCheckMonth(month, quarter, year)}></input> :
-                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.onCheckMonth(month, quarter, year)}></input>
+                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, false)}></input> :
+                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, true)}></input>
                         }
                         <span className={this.getMonthCheckBoxClass(month)}></span>
                     </label>
                     {(month.showChild && (month.weeks || month.days)) ?
                         options.showWeeks ?
                             <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> : 
-                            <div options={options}>{month.days.map((days, dayIndex) => this.renderDays(days, month, quarter, year, dayIndex))}</div> : ''
+                            <div options={options}>{month.days.map((days, dayIndex) => this.renderDay(days, month, quarter, year, dayIndex))}</div> : ''
                     }
 
                 </div>
@@ -110,20 +92,20 @@ class MonthView extends React.PureComponent {
         }
 
     render() {
-        const { options } = this.props;
+        const { options } = this.props;        
         let year = this.props.year;
         if (options.showQuarters === true) {
             let quarter = this.props.quarter;
             return (
                 <div options={options}>
-                    {quarter.months.map((month, mindex) => this.renderMonths(month, quarter, year, mindex))}
+                    {quarter.months.map((month, monthIndex) => this.renderMonth(month, quarter, year, monthIndex))}
                 </div>
             )
         }
         else {
             return (
                 <div>
-                    {year.months.map((month, mindex) => this.renderMonths(month, -1, year, mindex))}
+                    {year.months.map((month, monthIndex) => this.renderMonth(month, -1, year, monthIndex))}
                 </div>
             )
         }

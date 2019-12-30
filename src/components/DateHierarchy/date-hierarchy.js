@@ -9,6 +9,7 @@ class DateHierarchy extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
         this.state = { years: yearList};
     }
+    
     updateDimensions() { 
         
     }
