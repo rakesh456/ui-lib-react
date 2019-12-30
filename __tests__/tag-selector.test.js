@@ -34,10 +34,10 @@ describe('should render without crashing', () => {
             {"key": "Antigua and Barbuda", "value": "AG"}, 
             {"key": "Argentina", "value": "AR"}, 
             {"key": "Armenia", "value": "AM"}]);
-        
-        
+            wrapper.state().listItems.length
+            
         wrapper.update();
-        expect(wrapper.state().listItems.length).toEqual(12);
+        expect(instant.updateFilterItems('Albania')).toEqual('aaaa');
     })
 
     //Checking whereas the new element we added is rendering properly in the list or not.
@@ -80,11 +80,10 @@ describe('should render without crashing', () => {
             {"key": "Argentina", "value": "AR"}, 
             {"key": "Armenia", "value": "AM"}]);
 
-        wrapper.find('li').simulate('click');
+        instant.setSelectedItems([ {"key": "AndorrA", "value": "AD"}])
 
         wrapper.update();
-        console.log(' wrapper.state() ', wrapper.state());
-        expect(true).toEqual(true);    
+        expect(instant.getSelectedValues()).toEqual([ {"key": "AndorrA", "value": "AD"}]);    
     })
     
     //Check list of items while searching using input value.
@@ -108,6 +107,9 @@ describe('should render without crashing', () => {
         wrapper.update();
         expect(wrapper.state().filteredlistItems).toEqual([{"key": "Afghanistan", "value": "AF"}]);    
     })
+
+
+
 
     //Check selected items using maxItemCounter.
     test('Check selected items using maxItemCounter ', () => {
@@ -143,4 +145,121 @@ describe('should render without crashing', () => {
         const classNames = removeButtonWrapper.prop('className');
         expect(classNames).toMatch(/VS-Disabled/);    
     })
+})
+
+// check getting selected item 
+describe('Checking for getting selected items',()=>{
+
+    test('getting selected items, when passing selected items and it is not present in listItems',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+        
+        instant.setJsonData([{'key':'Australia',value:'AL'}])
+        wrapper.update()
+        expect(instant.getSelectedValues()).toEqual([])
+    })
+
+    test('getting selected items, when passing some seleted item which is present in listItems',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Armenia", "value": "AM"},
+            {'key':'Australia', 'value':'AL'}
+        ])
+        instant.setSelectedItems([{'key':'Australia',value:'AL'}])
+        
+        wrapper.update()
+        expect(instant.getSelectedValues()).toEqual([{'key':'Australia',value:'AL'}])
+    })
+})
+
+
+//Append new element and get newly added element
+describe('get newly added element',()=>{
+
+    test('By appending a new element ,then checking it is in newlyAddedElements',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+
+        instant.appendNewElement({'key':'Australia',value:'AL'})
+
+        wrapper.update()
+        expect(instant.getNewlyAdded()).toEqual([{'key':'Australia',value:'AL'}])
+    })
+
+    test('By appending nothing, then checking it is in newlyAddedElements',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+
+        wrapper.update()
+        expect(instant.getNewlyAdded()).toEqual([])
+    })
+})
+
+// Checking selected items after refresh method
+
+describe('Checking selected items after refresh method',()=>{
+
+    test('Checking selected items after refresh method, when passing some selected items',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Armenia", "value": "AM"},
+            {'key':'Australia', 'value':'AL'}
+        ])
+        instant.setSelectedItems([{'key':'Australia',value:'AL'}])
+
+        instant.refresh()
+        
+        wrapper.update()
+        expect(instant.getSelectedValues()).toEqual([])
+    })
+
+    test('Checking selected items after refresh method, when passing empyt array selected items',()=>{
+
+        const options = DEFAULT_OPTIONS;
+        let wrapper = shallow(<TagSelector options = {options}/>);
+        const instant = wrapper.instance();
+        instant.setJsonData([ 
+            {"key": "Albania", "value": "AL"}, 
+            {"key": "Armenia", "value": "AM"},
+            {'key':'Australia', 'value':'AL'}
+        ])
+        instant.setSelectedItems([])
+
+        instant.refresh()
+        
+        wrapper.update()
+        expect(instant.getSelectedValues()).toEqual([])
+    })
+})
+
+// Check remove item from list
+describe('Check remove item from list',()=>{
+
+    // test('testing',()=>{
+    //     let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
+    //     let wrapper = shallow(<TagSelector options = {options}/>);
+    //     const instant = wrapper.instance();
+    //     instant.setJsonData([ 
+    //         {"key": "Albania", "value": "AL"}, 
+    //         {"key": "Armenia", "value": "AM"},
+    //         {'key':'Australia', 'value':'AU'}
+    //     ])
+    //     instant.removeListItem({'key':'Australia', 'value':'AL'})
+    //     wrapper.update()
+    //     expect(instant.getListValues()).toEqual([])
+    // })
 })

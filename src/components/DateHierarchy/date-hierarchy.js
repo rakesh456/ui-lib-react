@@ -1,14 +1,12 @@
 import React from "react";
-import { Input } from 'reactstrap';
-import ReactDOM from 'react-dom';
-import { getListOfYears } from "../../utils/datehierarchy";
+import { getListOfYears } from "../../utils/datehierarchyutils";
 import YearView from "./yearView";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
         super(props);
         let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks);
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
         this.state = { years: yearList};
     }
     updateDimensions() { 
@@ -17,11 +15,8 @@ class DateHierarchy extends React.PureComponent {
 
     render() {
         const {options} = this.props;
-        
         return (
             <div options = {options}>
-                <input className= "VS-SearchBox" type="text" placeholder="Search..">
-                </input>
                 <YearView options={options} ></YearView>
             </div>
         )    

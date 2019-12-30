@@ -13,6 +13,10 @@ import {
     resetTagSelectorOptions
 } from "../src/utils/tagselectorutils";
 
+import {
+    resetDateHierarchyOptions
+} from "./utils/datehierarchyutils";
+
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
@@ -41,6 +45,7 @@ Array.prototype.forEach.call(
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
+     // eslint-disable-next-line
     let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
@@ -53,20 +58,21 @@ Array.prototype.forEach.call(
 
 function tagSelectorRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-    options = (isUndefinedOrNull(options))? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
+
+    options = (isUndefinedOrNull(options)) ? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
 
     function callOnSelectedEvent(selectedItem, el) {
-        let ev = new CustomEvent("change",  {'detail':  { 'item': selectedItem }});
+        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
         trigger(el, 'onSelect', ev);
         el.dispatchEvent(ev);
     }
-    
+
     function callOnDeSelectedEvent(selectedItem, el) {
-        let ev = new CustomEvent("change",  {'detail':  { 'item': selectedItem }});
+        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
         trigger(el, 'onDeSelect', ev);
         el.dispatchEvent(ev);
     }
-    
+
     function callOnNotFoundEvent(el) {
         let ev = new CustomEvent("change");
         trigger(el, 'onNotFound', ev);
@@ -82,7 +88,7 @@ function tagSelectorRender(el) {
         let ev = new CustomEvent('blur');
         el.dispatchEvent(ev);
     }
-    
+
     function onKeyDownHandler() {
         let ev = new CustomEvent('keydown');
         el.dispatchEvent(ev);
@@ -91,11 +97,11 @@ function tagSelectorRender(el) {
     function onSelectHandler(selectedItem) {
         callOnSelectedEvent(selectedItem, el);
     }
-    
+
     function onDeSelectHandler(selectedItem) {
         callOnDeSelectedEvent(selectedItem, el);
     }
-    
+
     function onNotFoundHandler(selectedItem) {
         callOnNotFoundEvent(el);
     }
@@ -103,11 +109,11 @@ function tagSelectorRender(el) {
     el.getNewlyAdded = function () {
         return tagComponentInstance.getNewlyAdded();
     }
-    
+
     el.getSelectedValues = function () {
         return tagComponentInstance.getSelectedValues();
     }
-    
+
     el.getSelectedCounter = function () {
         return tagComponentInstance.getSelectedCounter();
     }
@@ -119,15 +125,15 @@ function tagSelectorRender(el) {
     el.remove = function (item) {
         tagComponentInstance.removeListItem(item);
     }
-    
+
     el.setJsonData = function (json) {
         tagComponentInstance.setJsonData(json);
     }
-    
+
     el.setSelectedItems = function (json) {
         tagComponentInstance.setSelectedItems(json);
     }
-    
+
     el.refresh = function () {
         tagComponentInstance.refresh();
     }
@@ -139,7 +145,7 @@ function tagSelectorRender(el) {
         el
     )
 
-    
+
 }
 
 Array.prototype.forEach.call(
@@ -148,13 +154,15 @@ Array.prototype.forEach.call(
         dateHierarchyRender(el);
     })
 
-function dateHierarchyRender(el) { 
+function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-      var HierarchyComponentElement = <DateHierarchy options={options} />
+    options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
-        var HierarchyComponentInstance = ReactDOM.render(
-            HierarchyComponentElement,
-            el
-        )
+    var HierarchyComponentElement = <DateHierarchy options={options} />
+ // eslint-disable-next-line
+    var HierarchyComponentInstance = ReactDOM.render(
+        HierarchyComponentElement,
+        el
+    )
 }
 serviceWorker.unregister();

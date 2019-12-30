@@ -129,7 +129,7 @@ class ItemsList extends React.PureComponent {
     }
 
     renderULItems() {
-        const { allowNewValue, showHierarchy, showHelper } = this.props.options;
+        const { allowNewValue, showHierarchy } = this.props.options;
         const { filteredlistItems, listItems } = this.props;
         return (
             <ul className={this.getUlListClass()}>

@@ -69,8 +69,8 @@ $font-family: 'Roboto', sans-serif;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    color: $secondary-two-dark
 }
-
 
 .VS-Checkbox-Container input {
     position: absolute;
@@ -80,7 +80,6 @@ $font-family: 'Roboto', sans-serif;
     width: 0;
 }
   
-
 .VS-Check-Checkmark {
     position: absolute;
     top: 0;
@@ -88,7 +87,7 @@ $font-family: 'Roboto', sans-serif;
     height: 16px;
     width: 16px;
     background-color: #fff;
-    border: 1px solid #eee;
+    border: 1px solid #ddd;
 }
   
 .VS-Checkbox-Container:hover input ~ .VS-Check-Checkmark {
@@ -100,7 +99,7 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS-Check-Checkmark:after {
-content: "";
+    content: "";
     position: absolute;
     display: none;
 }
@@ -109,10 +108,7 @@ content: "";
     display: block;
 }
 
-// .VS-Checkbox-Container .VS-Check-Checkmark:before {
-
-// }
-
+// .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial,
 .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
     left: 5px;
     top: 5px;
@@ -120,6 +116,9 @@ content: "";
     height: 0px;
     border: solid #2196F3;
     border-width: 3px;
+    -webkit-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    transform: rotate(90deg);
 }
 
 .VS-Checkbox-Container .VS-Check-Checkmark:after {
@@ -134,7 +133,6 @@ content: "";
     transform: rotate(45deg);
 }
 
-
 .VS-week-Plus-Minus,
 .VS-Plus-Minus,
 .VS-Month-Plus-Minus,
@@ -144,10 +142,11 @@ content: "";
     font-size: 22px;
     padding: 5px;
     font-weight: bold;
-    color: #80a5c3;
+    color: #555;
     cursor: pointer;
     top: 2px;
 }
+
 .VS-ExpandCollapseSign{
     padding: 5px;
 }
@@ -188,16 +187,64 @@ content: "";
 }
 .VS-Hierarchy{
   position: relative;
-  background: #F8F8F7;
+  background: #fff;
   width: 300px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
   padding-left: 0px;
   margin: 5px 20px;
-  border : ridge;
+  border: 1px solid #ddd;
 }
 
+.VS-Hierarchy #VS-Scrollbar{
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.VS-Hierarchy-Searchbox{
+    border: 1px solid #ddd;
+    width: 300px;
+    margin: -1px 0px 0px -1px;
+}
+
+.VS-Hierarchy-Searchbox input:focus{
+    outline: none;
+}
+
+.VS-Hierarchy-Searchbox .VS-SearchBox{
+    border: 0px;
+    height: 24px;
+    width: 228px;
+    padding: 5px;
+    margin-top: 1px;
+}
+
+.VS-Hierarchy-Searchbox .VS-FilterIcon.VS-DisabledIcon{
+    color: #ddd;
+}
+
+.VS-Hierarchy-Searchbox .VS-FilterIcon{
+    color: $primary-one-dark;
+}
+
+.VS-Hierarchy-Searchbox .VS-SeachIcon svg{
+    height: 18px;
+    width: 20px;
+    margin-top: 8px;
+    color: #ddd;
+}
+
+.VS-Hierarchy-Searchbox .VS-IsSearching{
+    width: 192px;
+}
+
+.VS-Hierarchy-Filter-List .VS-Checkbox-Container{
+    list-style: none;
+    margin: 5px 22px;
+    border: grey;
+}
 
 .VS-Checkbox{
     display: inline-block;
@@ -223,4 +270,56 @@ content: "";
     margin-right: -3px;
     margin-top: -1px;
     margin-left: -1px;
+}
+
+#VS-Scrollbar::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+#VS-Scrollbar::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#VS-Scrollbar::-webkit-scrollbar-thumb {
+	background-color: #000000;
+}
+
+.VS-Tooltip {
+    position: relative;
+    display: inline-block;
+}
+  
+.VS-Tooltip .VS-Tooltiptext {
+    visibility: hidden;
+    width: 92px;
+    font-size: medium;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 12px;
+    padding: 2px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 135%;
+    text-size-adjust:2px ;
+}
+  
+.VS-Tooltip .VS-Tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent black transparent transparent;
+}
+
+.VS-Tooltip:hover .VS-Tooltiptext {
+    visibility: visible;
 }
