@@ -4,7 +4,7 @@ export const MONTH_NAMES = ["january", "february", "march", "april", "may", "jun
 
 export const MONTH_SHORT_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 
-export const MONTH_SHORT_NAMES_TITLE_CASE = ["Jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+export const MONTH_SHORT_NAMES_TITLE_CASE = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 export const WEEK_NAMES = ["week 1", "week 2", "week 3", "week 4", "week 5"];
 
@@ -51,7 +51,6 @@ export const getChildren = function (year, showWeeks) {
 		}		
 		quarterArray.push(quarter);
 	}
-	console.log(quarterArray);
 
 	if (showWeeks === false) {
 		quarterArray.forEach((quarter, qIndex) => {
@@ -66,7 +65,6 @@ export const getChildren = function (year, showWeeks) {
 			})
 		})
 	}
-	console.log(quarterArray);
 	return quarterArray;
 }
 export const getMonths = function (year, showWeeks, disabledList) {

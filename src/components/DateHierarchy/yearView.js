@@ -41,28 +41,28 @@ class YearView extends React.PureComponent {
         })
     }
 
-    onCheckYear(year) {
+    toggleYearCheck(year, isCheck) {
         let years = [...this.getYears()];
         let { showWeeks, showQuarters } = this.props.options;
-        year["state"] = 1;
+        year["state"] = isCheck;
         if (showQuarters === true) {
             let quarters = year['quarters'];
             quarters.forEach((element, index) => {
-                quarters[index]['state'] = 1;
+                quarters[index]['state'] = isCheck;
                 quarters[index]['months'].forEach((element, index1) => {
-                    quarters[index]['months'][index1]['state'] = 1;
+                    quarters[index]['months'][index1]['state'] = isCheck;
                     if (showWeeks === true) {
                         quarters[index]['months'][index1]['weeks'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['weeks'][index2]['state'] = 1;
+                            quarters[index]['months'][index1]['weeks'][index2]['state'] = isCheck;
                             if (quarters[index]['months'][index1]['weeks'][index2]['days']) {
                                 quarters[index]['months'][index1]['weeks'][index2]['days'].forEach((element, index3) => {
-                                    quarters[index]['months'][index1]['weeks'][index2]['days'][index3]['state'] = 1;
+                                    quarters[index]['months'][index1]['weeks'][index2]['days'][index3]['state'] = isCheck;
                                 });
                             }
                         });
                     } else {
                         quarters[index]['months'][index1]['days'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['days'][index2]['state'] = 1;
+                            quarters[index]['months'][index1]['days'][index2]['state'] = isCheck;
                         });
                     }
                 });
@@ -71,74 +71,19 @@ class YearView extends React.PureComponent {
         else {
             let months = year['months'];
             months.forEach((element, index) => {
-                months[index]['state'] = 1;
+                months[index]['state'] = isCheck;
                 if (showWeeks === true) {
                     months[index]['weeks'].forEach((element, index1) => {
-                        months[index]['weeks'][index1]['state'] = 1;
+                        months[index]['weeks'][index1]['state'] = isCheck;
                         if (months[index]['weeks'][index1]['days']) {
                             months[index]['weeks'][index1]['days'].forEach((element, index2) => {
-                                months[index]['weeks'][index1]['days'][index2]['state'] = 1;
+                                months[index]['weeks'][index1]['days'][index2]['state'] = isCheck;
                             });
                         }
                     });
                 } else {
                     months[index]['days'].forEach((element, index1) => {
-                        months[index]['days'][index1]['state'] = 1;
-                    });
-                }
-            });
-
-        }
-        this.setState({
-            years: [...years]
-        })
-
-        this.updateSelectAllCheckbox();
-    }
-
-    onUnCheckYear(year) {
-        let years = [...this.getYears()];
-        let { showWeeks, showQuarters } = this.props.options;
-        year['state'] = 0
-        if (showQuarters === true) {
-            let quarters = year['quarters'];
-            quarters.forEach((element, index) => {
-                quarters[index]['state'] = 0;
-                quarters[index]['months'].forEach((element, index1) => {
-                    quarters[index]['months'][index1]['state'] = 0;
-                    if (showWeeks === true) {
-                        quarters[index]['months'][index1]['weeks'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['weeks'][index2]['state'] = 0;
-                            if (quarters[index]['months'][index1]['weeks'][index2]['days']) {
-                                quarters[index]['months'][index1]['weeks'][index2]['days'].forEach((element, index3) => {
-                                    quarters[index]['months'][index1]['weeks'][index2]['days'][index3]['state'] = 0;
-                                });
-                            }
-                        });
-                    } else {
-                        quarters[index]['months'][index1]['days'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['days'][index2]['state'] = 0;
-                        });
-                    }
-                });
-            });
-        }
-        else {
-            let months = year['months'];
-            months.forEach((element, index) => {
-                months[index]['state'] = 0;
-                if (showWeeks === true) {
-                    months[index]['weeks'].forEach((element, index1) => {
-                        months[index]['weeks'][index1]['state'] = 0;
-                        if (months[index]['weeks'][index1]['days']) {
-                            months[index]['weeks'][index1]['days'].forEach((element, index2) => {
-                                months[index]['weeks'][index1]['days'][index2]['state'] = 0;
-                            });
-                        }
-                    });
-                } else {
-                    months[index]['days'].forEach((element, index1) => {
-                        months[index]['days'][index1]['state'] = 0;
+                        months[index]['days'][index1]['state'] = isCheck;
                     });
                 }
             });
@@ -146,82 +91,52 @@ class YearView extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-
+    
         this.updateSelectAllCheckbox();
     }
 
     onChangeQuarterHandler = (quarterObj) => {
         let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
-        let { quarter, year } = quarterObj;
+        let { quarter, year, isCheck } = quarterObj;
         let stateSum = 0;
+        console.log(' quarterObj ', quarterObj);
 
+        quarter.state = (quarterObj.isCheck === true)? 1 : 0;
+        for (var i = 0; i < year.quarters.length; i++) {
+            stateSum += year.quarters[i]["state"];
+        }
         if (quarterObj.isCheck === true) {
-            quarter.state = 1;
-            for (var i = 0; i < year.quarters.length; i++) {
-                stateSum += year.quarters[i]["state"];
-            }
             year.state = (stateSum < year.quarters.length) ? -1 : 1;
-            quarter.months.forEach((element, qindex1) => {
-                quarter.months[qindex1]['state'] = 1;
-                if (showWeeks === true) {
-                    quarter.months[qindex1]['weeks'].forEach((element, qindex2) => {
-                        quarter.months[qindex1]['weeks'][qindex2]['state'] = 1;
-                        if (quarter.months[qindex1]['weeks'][qindex2]['days']) {
-                            quarter.months[qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
-                                quarter.months[qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = 1;
-                            })
-                        }
-                    })
-                }
-                else {
-                    if (quarter.months[qindex1]['days']) {
-                        quarter.months[qindex1]['days'].forEach((element, qindex2) => {
-                            quarter.months[qindex1]['days'][qindex2]['state'] = 1;
-                        })
-                    }
-                }
-            })
-
-            this.setState({
-                years: [...years]
-            })
-
-            this.updateSelectAllCheckbox();
-        }
-        else {
-            quarter.state = 0;
-            for (i = 0; i < year.quarters.length; i++) {
-                stateSum += year.quarters[i]["state"];
-            }
+        } else {
             year.state = (stateSum < year.quarters.length) ? (stateSum === 0) ? 0 : -1 : 1;
-            quarter.months.forEach((element, qindex1) => {
-                quarter.months[qindex1]['state'] = 0;
-                if (showWeeks === true) {
-                    quarter.months[qindex1]['weeks'].forEach((element, qindex2) => {
-                        quarter.months[qindex1]['weeks'][qindex2]['state'] = 0;
-                        if (quarter.months[qindex1]['weeks'][qindex2]['days']) {
-                            quarter.months[qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
-                                quarter.months[qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = 0;
-                            })
-                        }
-                    })
-                }
-                else {
-                    if (quarter.months[qindex1]['days']) {
-                        quarter.months[qindex1]['days'].forEach((element, qindex2) => {
-                            quarter.months[qindex1]['days'][qindex2]['state'] = 0;
+        }
+        quarter.months.forEach((element, qindex1) => {
+            quarter.months[qindex1]['state'] = quarter.state;
+            if (showWeeks === true) {
+                quarter.months[qindex1]['weeks'].forEach((element, qindex2) => {
+                    quarter.months[qindex1]['weeks'][qindex2]['state'] = quarter.state;
+                    if (quarter.months[qindex1]['weeks'][qindex2]['days']) {
+                        quarter.months[qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
+                            quarter.months[qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = quarter.state;
                         })
                     }
+                })
+            }
+            else {
+                if (quarter.months[qindex1]['days']) {
+                    quarter.months[qindex1]['days'].forEach((element, qindex2) => {
+                        quarter.months[qindex1]['days'][qindex2]['state'] = quarter.state;
+                    })
                 }
-            })
+            }
+        })
 
-            this.setState({
-                years: [...years]
-            })
+        this.setState({
+            years: [...years]
+        })
 
-            this.updateSelectAllCheckbox();
-        }
+        this.updateSelectAllCheckbox();
     }
 
     onChangeMonthHandler = (monthObj) => {
@@ -230,6 +145,7 @@ class YearView extends React.PureComponent {
         let { month, quarter, year } = monthObj;
         let mstateSum = 0;
         let qstateSum = 0;
+
         if (monthObj.isCheck === true) {
             month.state = 1;
             if (showQuarters === true) {
@@ -490,11 +406,11 @@ class YearView extends React.PureComponent {
         let { showQuarters } = this.props.options;
         let { day, week, month, quarter, year, isCheck } = weekDaysObj;
 
+        let wstateSum = 0;
+        let qstateSum = 0;
+        let mstateSum = 0;
+        let wdstateSum = 0;
         if (isCheck === true) {
-            let wstateSum = 0;
-            let qstateSum = 0;
-            let mstateSum = 0;
-            let wdstateSum = 0;
             day.state = 1;
             for (var n = 0; n < week.days.length; n++) {
                 wdstateSum += week.days[n]["state"];
@@ -528,10 +444,6 @@ class YearView extends React.PureComponent {
             this.updateSelectAllCheckbox();
         }
         else {
-            let wstateSum = 0;
-            let qstateSum = 0;
-            let mstateSum = 0;
-            let wdstateSum = 0;
             day.state = 0;
 
             for (n = 0; n < week.days.length; n++) {
@@ -571,16 +483,15 @@ class YearView extends React.PureComponent {
                 years: [...years]
             });
             this.updateSelectAllCheckbox();
-
         }
     }
+
     getYearCheckBoxClass = (year, index) => {
         let flag = false;
         const _years = [...this.getYears()];
         flag = (_years[index]["state"] === -1) ? true : false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
-
 
     renderYear = (year, index) => {
         let { options } = this.props;
@@ -598,8 +509,8 @@ class YearView extends React.PureComponent {
                 <label className="VS-Checkbox-Container" key={'year' + index}>{year.year}
                     {
                         (year.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.onUnCheckYear(year, index)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.onCheckYear(year, index)}></input>
+                            <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
                     }
                     <span className={this.getYearCheckBoxClass(year, index)} ></span>
 
@@ -622,105 +533,211 @@ class YearView extends React.PureComponent {
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
     }
 
-    filterYears = (val, years) => {
-        let _years = [];
-        let { showWeeks } = this.props.options;
-        years.forEach((yr) => {
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((quarter) => {
+    subFilterQuaters = (val, yr, quaters, filteredData, callback) => {
+        let { showWeeks, showQuarters } = this.props.options;
+        let yearState = 0;
+        let _quaters = [];
+        quaters.forEach((quarter) => {
+            var quarterName = quarter['quarter'].toString();
+            var _camel = toCamelCase(val.toString());
+            var isFound = quarterName.includes(_camel.toString());
+            if (isFound === true) {
+                yearState++;
                 let _months = [];
-                let months = [...quarter['months']];
+                var months = [...quarter['months']];
+                filteredData.push(quarter.quarter + yr.year);
                 months.forEach((mn) => {
-                    let _weeks = [];
-                    let weeks = [...mn['weeks']];
                     if (showWeeks === true) {
+                        let _weeks = [];
+                        var weeks = [...mn['weeks']];
                         weeks.forEach((wk) => {
                             let _days = [];
-                            let days = [...wk['days']];
+                            var days = [...wk['days']];
                             days.forEach((dy) => {
                                 _days.push(this.getDayObject(dy.date, dy.day, 1));
                             });
 
                             _weeks.push(this.getWeekObject(wk.week, false, 1, [..._days]));
                         });
-                        _months.push(this.getMonthObject(mn.month, true, 1, [..._weeks], true));
+
+                        _months.push(this.getMonthObject(mn.month, false, 1, [..._weeks], true));
                     } else {
-                        _months.push(this.getMonthObject(mn.month, true, 1, [...mn.days], false));
+                        let _days = [];
+                        var days = [...mn['days']];
+                        days.forEach((dy) => {
+                            _days.push(this.getDayObject(dy.date, dy.day, 1));
+                        });
+                        
+                        _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
                     }
                 });
-                _quaters.push(this.getQuaterObject(quarter.quarter, true, 1, [..._months]));
-            });
-            _years.push(this.getYearObject(yr.year, true, 1, [..._quaters]));
+
+                _quaters.push(this.getQuaterObject(quarterName, true, 1, [..._months]));
+            }
         });
-        this.setState({
-            filteredYears: _years
+        callback(yearState, _quaters, filteredData);
+    }
+
+    subFilterMonths = (months, callback) => {
+        let _months = [];
+        let { showWeeks, showQuarters } = this.props.options;
+        months.forEach((mn) => {
+            if (showWeeks === true) {
+                let _weeks = [];
+                let weeks = [...mn['weeks']];
+                weeks.forEach((wk) => {
+                    let _days = [];
+                    let days = [...wk['days']];
+                    days.forEach((dy) => {
+                        _days.push(this.getDayObject(dy.date, dy.day, 1));
+                    });
+
+                    _weeks.push(this.getWeekObject(wk.week, false, 1, [..._days]));
+                });
+                _months.push(this.getMonthObject(mn.month, false, 1, [..._weeks], true));
+            } else {
+                let _days = [];
+                var days = [...mn['days']];
+                days.forEach((dy) => {
+                    _days.push(this.getDayObject(dy.date, dy.day, 1));
+                });
+                
+                _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
+            }
         });
+        callback(_months);
+    }
+
+    filterYears = (val, searchedYears, years) => {
+        let _years = [];
+        let _filteredData = [];
+        let { showQuarters } = this.props.options;
+        years.forEach((yr) => {
+            var year = yr['searchString'];
+            var isFound = year.includes(val.toString());
+            if (isFound === false) {
+                if (showQuarters === true) {
+                    let quaters = [...yr['quarters']];
+
+                    this.subFilterQuaters(val, yr, quaters, _filteredData, (_yearState, _quaters, filteredData) => {
+                        if (_yearState === 4) {
+                            filteredData.push(yr.year);
+                        }
+                        _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
+        
+                        this.setState({
+                            filteredYears: _years,
+                            filteredData: filteredData
+                        });
+                        
+                        this.setState({
+                            filteredYears: _years
+                        });
+                    });
+                } else {
+                    let months = [...yr['months']];
+                    this.subFilterMonths(months, (_months) => {
+                        _years.push(this.getYearObject(yr.year, true, 1, [..._months], showQuarters));
+                    });
+                }
+            } else {
+                if (showQuarters === true) {
+                    let _quaters = [];
+                    let quaters = [...yr['quarters']];
+                    quaters.forEach((quarter) => {
+                        let months = [...quarter['months']];
+                        this.subFilterMonths(months, (_months) => {
+                            _quaters.push(this.getQuaterObject(quarter.quarter, true, 1, [..._months]));
+                        });
+                    });
+                    _years.push(this.getYearObject(yr.year, true, 1, [..._quaters], showQuarters));
+                } else {
+                    let months = [...yr['months']];
+                    this.subFilterMonths(months, (_months) => {
+                        _years.push(this.getYearObject(yr.year, true, 1, [..._months], showQuarters));
+                    });
+                }
+                this.setState({
+                    filteredYears: _years
+                });
+            }
+        });
+
+
+        // this.setState({
+        //     filteredYears: _years
+        // });
     }
 
     filterQuaters = (val) => {
         let _filteredData = [];
         let _years = [];
         let { years } = this.state;
-        let { showWeeks } = this.props.options;
+        let { showWeeks, showQuarters } = this.props.options;
         years.forEach((yr) => {
-            let yearState = 0;
-            let _quaters = [];
+
             let quaters = [...yr['quarters']];
-            quaters.forEach((quarter) => {
-                var quarter = quarter['quarter'].toString();
-                var _camel = toCamelCase(val.toString());
-                var n = quarter.includes(_camel.toString());
-                if (n === true) {
-                    yearState++;
-                    let _months = [];
-                    var months = [...quarter['months']];
-                    _filteredData.push(quarter.quarter + yr.year);
-                    months.forEach((mn) => {
-                        if (showWeeks === true) {
-                            let _weeks = [];
-                            var weeks = [...mn['weeks']];
-                            weeks.forEach((wk) => {
-                                let _days = [];
-                                var days = [...wk['days']];
-                                days.forEach((dy) => {
-                                    _days.push(this.getDayObject(dy.date, dy.day, 1));
-                                });
+            // let yearState = 0;
+            // let _quaters = [];
+            // quaters.forEach((quarter) => {
+            //     var quarterName = quarter['quarter'].toString();
+            //     var _camel = toCamelCase(val.toString());
+            //     var isFound = quarterName.includes(_camel.toString());
+            //     if (isFound === true) {
+            //         yearState++;
+            //         let _months = [];
+            //         var months = [...quarter['months']];
+            //         _filteredData.push(quarter.quarter + yr.year);
+            //         months.forEach((mn) => {
+            //             if (showWeeks === true) {
+            //                 let _weeks = [];
+            //                 var weeks = [...mn['weeks']];
+            //                 weeks.forEach((wk) => {
+            //                     let _days = [];
+            //                     var days = [...wk['days']];
+            //                     days.forEach((dy) => {
+            //                         _days.push(this.getDayObject(dy.date, dy.day, 1));
+            //                     });
 
-                                _weeks.push(this.getWeekObject(wk.week, false, 1, [..._days]));
-                            });
+            //                     _weeks.push(this.getWeekObject(wk.week, false, 1, [..._days]));
+            //                 });
 
-                            _months.push(this.getMonthObject(mn.month, false, 1, [..._weeks], true));
-                        } else {
-                            let _days = [];
-                            var days = [...mn['days']];
-                            days.forEach((dy) => {
-                                _days.push(this.getDayObject(dy.date, dy.day, 1));
-                            });
+            //                 _months.push(this.getMonthObject(mn.month, false, 1, [..._weeks], true));
+            //             } else {
+            //                 let _days = [];
+            //                 var days = [...mn['days']];
+            //                 days.forEach((dy) => {
+            //                     _days.push(this.getDayObject(dy.date, dy.day, 1));
+            //                 });
+                            
+            //                 _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
+            //             }
+            //         });
 
-                            _months.push(this.getMonthObject(mn.month, false, 1, [..._days], true));
-                        }
-                    });
+            //         _quaters.push(this.getQuaterObject(quarterName, true, 1, [..._months]));
+            //     }
+            // });
 
-                    _quaters.push(this.getQuaterObject(quarter, true, 1, [..._months]));
+            this.subFilterQuaters(val, yr, quaters, _filteredData, (_yearState, _quaters, filteredData) => {
+                if (_yearState === 4) {
+                    filteredData.push(yr.year);
                 }
+                _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
+
+                this.setState({
+                    filteredYears: _years,
+                    filteredData: filteredData
+                });
             });
-            if (yearState === 4) {
-                _filteredData.push(yr.year);
-            }
-            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters]));
         });
-        this.setState({
-            filteredYears: _years,
-            filteredData: _filteredData
-        });
+
     }
 
     filterMonths = (val) => {
         let _filteredData = [];
         let _years = [];
         let { years } = this.state;
-        let { showWeeks } = this.props.options;
+        let { showWeeks, showQuarters } = this.props.options;
         let existsInMonth = false;
         years.forEach((yr) => {
             let yearState = 0;
@@ -734,8 +751,8 @@ class YearView extends React.PureComponent {
                 months.forEach((mn) => {
                     var month = mn['month'].toString();
                     var _camel = toCamelCase(val.toString());
-                    var n = month.includes(_camel);
-                    if (n === true) {
+                    var isFound = month.includes(_camel);
+                    if (isFound === true) {
                         quaterState++;
                         existsInMonth = true;
                         _filteredData.push(month + yr.year);
@@ -772,7 +789,7 @@ class YearView extends React.PureComponent {
                     yearState = (quaterState === 3) ? yearState + 1 : yearState;
                 }
             });
-            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters]));
+            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
         });
         this.setState({
             filteredYears: _years,
@@ -783,6 +800,7 @@ class YearView extends React.PureComponent {
     filterWeeks = (val) => {
         let _years = [];
         let { years } = this.state;
+        let { showQuarters } = this.props.options;
         let existsInWeek = false;
         years.forEach((yr) => {
             let yearState = 0;
@@ -802,8 +820,8 @@ class YearView extends React.PureComponent {
                         week = week.replace(/ +(?= )/g, '');
                         week = toCamelCase(week.toString())
                         var _camel = toCamelCase(val.toString());
-                        var n = week.includes(_camel.toString());
-                        if (n === true) {
+                        var isFound = week.includes(_camel.toString());
+                        if (isFound === true) {
                             monthState++;
                             existsInWeek = true;
 
@@ -824,7 +842,7 @@ class YearView extends React.PureComponent {
                 _quaters.push(this.getQuaterObject(quarter.quarter, true, (quaterState === 3) ? 1 : -1, [..._months]));
                 yearState = (quaterState === 3) ? yearState + 1 : yearState;
             });
-            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters]));
+            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
         });
         this.setState({
             filteredYears: _years
@@ -834,7 +852,7 @@ class YearView extends React.PureComponent {
     filterDays = (val) => {
         let _years = [];
         let { years } = this.state;
-        let { showWeeks } = this.props.options;
+        let { showWeeks, showQuarters } = this.props.options;
         let existsInDay = false;
         years.forEach((yr) => {
             let _quaters = [];
@@ -853,8 +871,8 @@ class YearView extends React.PureComponent {
                             existsInDay = false;
                             days.forEach((dy) => {
                                 var date = dy['date'].toString();
-                                var n = date.includes(val.toString());
-                                if (n === true) {
+                                var isFound = date.includes(val.toString());
+                                if (isFound === true) {
                                     existsInDay = true;
                                     _days.push(this.getDayObject(dy.date, dy.day, 1));
                                 }
@@ -872,8 +890,8 @@ class YearView extends React.PureComponent {
                         existsInDay = false;
                         days.forEach((dy) => {
                             var day = dy['day'].toString();
-                            var n = day.includes(val.toString());
-                            if (n === true) {
+                            var isFound = day.includes(val.toString());
+                            if (isFound === true) {
                                 existsInDay = true;
                                 _days.push(this.getDayObject(dy.date, dy.day, 1));
                             }
@@ -885,20 +903,29 @@ class YearView extends React.PureComponent {
                 });
                 _quaters.push(this.getQuaterObject(quarter.quarter, true, 1, [..._months]));
             });
-            _years.push(this.getYearObject(yr.year, true, 1, [..._quaters]));
+            _years.push(this.getYearObject(yr.year, true, 1, [..._quaters], showQuarters));
         });
         this.setState({
             filteredYears: _years
         });
     }
 
-    getYearObject = (year, showChild, state, quarters) => {
-        return {
-            "year": year,
-            "showChild": showChild,
-            "state": state,
-            "quarters": [...quarters]
-        };
+    getYearObject = (year, showChild, state, children, showQuarters) => {
+        if (showQuarters === true) {
+            return {
+                "year": year,
+                "showChild": showChild,
+                "state": state,
+                "quarters": [...children]
+            };
+        } else {
+            return {
+                "year": year,
+                "showChild": showChild,
+                "state": state,
+                "months": [...children]
+            };
+        }
     }
 
     getQuaterObject = (quarter, showChild, state, months) => {
@@ -948,8 +975,9 @@ class YearView extends React.PureComponent {
         });
 
         let val = e.target.value;
-        val = (val) ? val.toLowerCase() : '';
+        val = (val)? val.toLowerCase() : '';
         let { years } = this.state;
+        let { showWeeks, showQuarters } = this.props.options;
 
         if (!isUndefinedOrNull(val)) {
             if (!isNaN(val)) {
@@ -957,28 +985,28 @@ class YearView extends React.PureComponent {
                 let _years = [];
                 years.forEach((ele) => {
                     var year = ele['searchString'];
-                    var n = year.includes(val.toString());
-                    if (n === true) {
+                    var isFound = year.includes(val.toString());
+                    if (isFound === true) {
                         existsInYear = true;
                         _years.push(ele);
                     }
                 });
 
                 if (existsInYear) {
-                    this.filterYears(val, _years);
-                } else if (isQuaterVal(val)) {
+                    this.filterYears(val, _years, years);
+                } else if (isQuaterVal(val) && showQuarters === true) {
                     this.filterQuaters(val);
-                } else if (isWeekVal(val)) {
+                } else if (isWeekVal(val) && showWeeks === true) {
                     this.filterWeeks(val);
                 } else if (isDayVal(val)) {
                     this.filterDays(val);
                 }
             } else {
-                if (isQuaterVal(val)) {
+                if (isQuaterVal(val)  && showQuarters === true) {
                     this.filterQuaters(val);
                 } else if (isMonthVal(val)) {
                     this.filterMonths(val);
-                } else if (isWeekVal(val)) {
+                } else if (isWeekVal(val) && showWeeks === true) {
                     this.filterWeeks(val);
                 } else {
                     this.setState({
@@ -1022,11 +1050,7 @@ class YearView extends React.PureComponent {
     onSelectAllChange = ({ target }) => {
         let { years } = this.state;
         years.forEach((yr, index) => {
-            if (target.checked === true) {
-                this.onCheckYear(yr, index);
-            } else {
-                this.onUnCheckYear(yr, index);
-            }
+            this.toggleYearCheck(yr, target.checked);
         });
         this.setState({
             isSelectAll: target.checked
@@ -1039,9 +1063,7 @@ class YearView extends React.PureComponent {
             years.forEach((yr, yindex) => {
                 let _val = '' + yr.year;
                 if (filteredData.indexOf(_val) !== -1) {
-                    this.onCheckYear({
-                        year: yr
-                    });
+                    this.toggleYearCheck(yr, true);
                 } else {
                     yr.quarters.forEach((quarter, qindex) => {
                         let _val = '' + quarter.quarter + yr.year;
