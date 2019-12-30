@@ -129,7 +129,7 @@ class WeekDaysView extends React.PureComponent {
         } else {
             return (
                 <div options={options}>
-                    {mnth.days.map((weeks, windex) => this.renderWeeks(weeks, mnth, -1, row, windex))}
+                    {mnth.weeks.map((weeks, windex) => this.renderWeeks(weeks, mnth, -1, row, windex))}
                 </div>
             )
         }
