@@ -571,24 +571,25 @@ describe("Check remove item from list", () => {
 
 });
 
-// checking that when "showHelper": true, "allowNewValue": true and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
-// describe("Testing for searching if value not found.", () => {
-//   test('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-//     let options = {
-//       showHelper: true,
-//       allowNewValue: false,
-//       showHierarchy: false
-//     };
-//     let wrapper = shallow(<TagSelector options={options} />);
-//     let instant = wrapper.instance();
-//     let inputNoData = wrapper.find("Input");
-//     inputNoData.simulate("change");
-//     console.log(instant.getFilteredList());
+// checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
+describe("Testing for searching if value not found.", () => {
+  test('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+    let options = {
+      showHelper: true,
+      allowNewValue: false,
+      showHierarchy: false
+    };
+    let wrapper = shallow(<TagSelector options={options} />);
+    let instant = wrapper.instance();
+    let inputNoData = wrapper.find("Input").value();
+    console.log(inputNoData)
+    inputNoData.simulate("change");
+    // console.log(instant.getFilteredList());
 
-//     wrapper.update();
+    wrapper.update();
 
-//     instant.getFilteredList()
-//       ? expect(true).toEqual("tru")
-//       : expect().toEqual("no data found");
-//   });
-// });
+    instant.getFilteredList()
+      ? expect().toEqual()
+      : expect().toEqual("no data found");
+  });
+});
