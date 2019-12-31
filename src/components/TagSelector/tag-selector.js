@@ -20,6 +20,7 @@ class TagSelector extends React.PureComponent {
         const {maxItemCounter} = this.props.options;
         this.state = { shouldListOpen: false, listItems: [], filteredlistItems: [], noDataFound: false, selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [], currentItemIndex: 0, currentHierarchyItemIndex: 0, hierarchyParentKey: '', hierarchySelectedItem: null, hierarchyParentLength: 0};
         this.countryservice = new CountryService();
+    
     }
 
     updateDimensions() {}
@@ -264,6 +265,7 @@ class TagSelector extends React.PureComponent {
 
     filterItemsList = (e) => {
         setTimeout(() => {
+            
             let _val = (this.inputEl && this.inputEl.value)? this.inputEl.value : '';
             this.updateFilterItems(_val);
             if(_val && this.state.filteredlistItems.length <= 0){
@@ -313,6 +315,10 @@ class TagSelector extends React.PureComponent {
         }
 
         this.setState({ filteredlistItems: [...sortedList], noDataFound: (results.length <= 0), currentItemIndex: -1, currentHierarchyItemIndex: 0, hierarchyParentKey: _key, hierarchyParentLength: _len });
+    }
+    // myfun
+    getFilteredList(){
+        return this.state.filteredlistItems;
     }
 
     checkStringSearchInListByType = (item, _val) => {
