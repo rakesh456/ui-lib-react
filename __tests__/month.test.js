@@ -175,10 +175,10 @@ describe('Testing on function dateToQQYYYY',()=>{
   let d = new Date()
   let currentMonth = d.getMonth() + 1
   let _val = (currentMonth <= 12 && currentMonth >= 10)? 4 : (currentMonth <= 9 && currentMonth >= 7)? 3 : (currentMonth <= 6 && currentMonth >= 4)? 2 : 1;
-  let quater = 'Q' + _val;
+  let quarter = 'Q' + _val;
   let dateTestValuesInputArray = ['3/4/1987','18/01/2019','2015/02/03',null,undefined]
-  let dateTestValuesOutputArray = ['Q1/1987',quater+'/'+d.getFullYear(),'Q1/2015',quater+'/'+d.getFullYear(),quater+'/'+d.getFullYear()]
-  let messageDisplayForEachTestCase = ["If we pass date to function it return Quater with its full year",'If we pass invalid date function returns current month Quater and its full year ',"If we pass date in different format then also it gives it's current quater and full year","For null value function will return current month quater and fully year","For udefined value function will return current month quater and  fully year"]
+  let dateTestValuesOutputArray = ['Q1/1987',quarter+'/'+d.getFullYear(),'Q1/2015',quarter+'/'+d.getFullYear(),quarter+'/'+d.getFullYear()]
+  let messageDisplayForEachTestCase = ["If we pass date to function it return Quarter with its full year",'If we pass invalid date function returns current month Quarter and its full year ',"If we pass date in different format then also it gives it's current quarter and full year","For null value function will return current month quarter and fully year","For udefined value function will return current month quarter and  fully year"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
       expect(dateToQQYYYY(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
@@ -189,11 +189,11 @@ describe('Testing on function dateToQQYYYY',()=>{
 //Test of function getQQFromMonth
 describe('Testing of function getQQFromMonth',()=>{
     let d = 5
-    test('Testing a function that it return the quater of the date ',()=>{
+    test('Testing a function that it return the quarter of the date ',()=>{
       expect(getQQFromMonth(d)).toEqual('Q2')
     })
     let month = 15
-    test('Testing a function that it return the quater of the date ',()=>{
+    test('Testing a function that it return the quarter of the date ',()=>{
       expect(getQQFromMonth(month)).toEqual('Q1')
     })
 })

@@ -37,7 +37,7 @@ export const CLASSES = {
     VS_CALENDAR_WEEK: 'VS-CalendarWeek',
     VS_CALENDAR_MONTH: 'VS-CalendarMonth',
     VS_MONTH_NAME: 'VS-MonthName',
-    VS_MONTH_QUATER: 'VS-MonthQuater',
+    VS_MONTH_QUARTER: 'VS-MonthQuarter',
     VS_DAY: 'VS-Day',
     VS_DAY_START: 'VS-DayStart',
     VS_NEXT_PREV_DAY: 'VS-NextPrevDay',

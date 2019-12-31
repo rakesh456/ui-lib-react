@@ -100,8 +100,8 @@ class MonthsView extends React.PureComponent {
             <Fragment key={guid()}>
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
-                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:
-                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER}`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER}`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
                 }
             </Fragment>
         );
