@@ -25,17 +25,9 @@ class YearView extends React.PureComponent {
         this.setState({ years: [...years] });
     }
 
-    expandYear(year) {
+    toggleYearChild(year, showChild) {
         let years = [...this.getYears()];
-        year['showChild'] = true;
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    collapseYear(year) {
-        let years = [...this.getYears()];
-        year['showChild'] = false;
+        year['showChild'] = showChild;
         this.setState({
             years: [...years]
         })
@@ -102,7 +94,8 @@ class YearView extends React.PureComponent {
         let stateSum = 0;
 
         quarter.state = (quarterObj.isCheck === true)? 1 : 0;
-        for (var i = 0; i < year.quarters.length; i++) {
+
+      for (var i = 0; i < year.quarters.length; i++) {
             stateSum += year.quarters[i]["state"];
         }
         if (quarterObj.isCheck === true) {
@@ -502,8 +495,8 @@ class YearView extends React.PureComponent {
             <div className="VS-YearRow" key={'year' + index} >
                 {
                     (year.showChild) ?
-                        <span className="VS-Plus-Minus" onClick={() => this.collapseYear(year, index)}><span className="VS-ExpandCollapseSign">-</span></span> :
-                        <span className="VS-Plus-Minus" onClick={() => this.expandYear(year, index)}><span className="VS-ExpandCollapse">+</span></span>
+                        <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, false)}><span className="VS-ExpandCollapseSign">-</span></span> :
+                        <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, true)}><span className="VS-ExpandCollapse">+</span></span>
                 }
                 <label className="VS-Checkbox-Container" key={'year' + index}>{year.year}
                     {
