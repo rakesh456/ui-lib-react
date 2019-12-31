@@ -144,8 +144,6 @@ function tagSelectorRender(el) {
         tagComponentElement,
         el
     )
-
-
 }
 
 Array.prototype.forEach.call(
