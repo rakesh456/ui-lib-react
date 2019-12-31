@@ -146,7 +146,7 @@ date-picker{
         margin: 3px auto;
         padding: 5px 10px;
     }
-    .VS-Year, .VS-MonthQuater{
+    .VS-Year, .VS-MonthQuarter{
         min-width: 30px;
     }
     .VS-Active{
@@ -162,7 +162,7 @@ date-picker{
         margin: 3px auto;
         padding: 5px 10px;
     }
-    .VS-Year, .VS-MonthQuater{
+    .VS-Year, .VS-MonthQuarter{
         min-width: 65px;
         text-align: center;
     }
@@ -193,7 +193,7 @@ date-picker{
     color: $complementary-five;
 }
 
-.VS-Year, .VS-MonthQuater{
+.VS-Year, .VS-MonthQuarter{
     color: $secondary-two-dark;
     border: solid 1px $grey-one;
     padding: 5px;
@@ -201,7 +201,7 @@ date-picker{
     cursor: pointer;
 }
 
-.VS-MonthQuater{
+.VS-MonthQuarter{
     margin: 0px 10px;
     padding: 5px 6px;
 }
