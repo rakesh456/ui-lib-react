@@ -13,7 +13,7 @@ export const resetDateHierarchyOptions = (options) => {
 	return { ...DEFAULT_OPTIONS, ...options };
 }
 
-export const getMonthDays = (month, year) => {
+export const getMonthDays = (month, year, disabledList) => {
 	const months30 = [4, 6, 9, 11];
 	const leapYear = year % 4 === 0;
 	let day = month === 2
@@ -27,41 +27,48 @@ export const getMonthDays = (month, year) => {
 	for (let i = 1; i <= day; i++) {
 		var dayObj = { day: i, state: 0 }
 		days.push(dayObj);
+		if (disabledList.includes(month+'/'+dayObj.day +'/'+year))
+			days.pop();
 	}
 	return days;
 }
 
-export const getChildren = function (year, showWeeks) {
+export const getChildren = function (year, showWeeks, disabledList) {
 	let quarterArray = [];
-	for (let i=0; i<4; i++) {
-		let quarter = { "quarter": "Q" + (i+1),
-						"searchString": "q"+ (i+1),
-						"showChild": false,
-						"state": 0,
-						"months": []
-						};
-		for (let j=0; j<3; j++) {
+	for (let i = 0; i < 4; i++) {
+		let quarter = {
+			"quarter": "Q" + (i + 1),
+			"searchString": "q" + (i + 1),
+			"showChild": false,
+			"state": 0,
+			"months": []
+		};
+		for (let j = 0; j < 3; j++) {
 			var month = {
-						"month": MONTH_SHORT_NAMES_TITLE_CASE[3*i + j],
-						"searchString": MONTH_NAMES[3*i + j],
-						"showChild": false,
-						"state": 0			
-						};
+				"month": MONTH_SHORT_NAMES_TITLE_CASE[3 * i + j],
+				"searchString": MONTH_NAMES[3 * i + j],
+				"showChild": false,
+				"state": 0
+			};
 			quarter["months"].push(month);
-		}		
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month) + 1 + '/' + year))
+				quarter["months"].pop();
+		}
 		quarterArray.push(quarter);
+		if (disabledList.includes(quarter.quarter + '/' + year))
+			quarterArray.pop();
 	}
 
 	if (showWeeks === false) {
 		quarterArray.forEach((quarter, qIndex) => {
 			quarter.months.forEach((month, mIndex) => {
-				month["days"] = getMonthDays(3*qIndex+mIndex+1, year);
+				month["days"] = getMonthDays(3 * qIndex + mIndex + 1, year, disabledList);
 			})
-		})		
+		})
 	} else {
 		quarterArray.forEach((quarter, qIndex) => {
 			quarter.months.forEach((month, mIndex) => {
-				month["weeks"] = getMonthWeeks(3*qIndex+mIndex+1, year);
+				month["weeks"] = getMonthWeeks(3 * qIndex + mIndex + 1, year, disabledList);
 			})
 		})
 	}
@@ -69,18 +76,21 @@ export const getChildren = function (year, showWeeks) {
 }
 export const getMonths = function (year, showWeeks, disabledList) {
 	let months = [];
-	const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	if (showWeeks === false) {
 		for (var i = 0; i < 12; i++) {
-			var monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "days": getMonthDays(i + 1, year, disabledList) }
+			var monthObj = { "month": MONTH_SHORT_NAMES_TITLE_CASE[i], "showChild": false, "state": 0, "days": getMonthDays(i + 1, year, disabledList) }
 			months.push(monthObj);
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year))
+			months.pop();
 		}
 		return months;
 	}
 	else {
 		for (i = 0; i < 12; i++) {
-			monthObj = { "month": monthNames[i], "showChild": false, "state": 0, "weeks": getMonthWeeks(i + 1, year, disabledList) }
+			monthObj = { "month": MONTH_SHORT_NAMES_TITLE_CASE[i], "showChild": false, "state": 0, "weeks": getMonthWeeks(i + 1, year, disabledList) }
 			months.push(monthObj);
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year))
+			months.pop();
 		}
 		return months;
 	}
@@ -104,7 +114,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 				}
 				years.push(year);
 				lowerLimit++;
-			}			
+			}
 		}
 		if (showQuarters === false) {
 			while (lowerLimit <= upperLimit) {
@@ -120,7 +130,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 			}
 
 		}
-		
+
 		if (disabledList) {
 			for (var i = 0; i < disabledList.length; i++) {
 				if (disabledList[i] >= initial && disabledList[i] <= final)
@@ -150,7 +160,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 	}
 }
 
-export const getMonthWeeks = function (month_number, year) {
+export const getMonthWeeks = function (month_number, year, disabledList) {
 	var firstOfMonth = new Date(year, month_number - 1, 1);
 	var lastOfMonth = new Date(year, month_number, 0);
 	var used = firstOfMonth.getDay() + lastOfMonth.getDate();
@@ -165,17 +175,21 @@ export const getMonthWeeks = function (month_number, year) {
 	weekdays[5] = "Fri";
 	weekdays[6] = "Sat";
 	for (let weekNo = 1; weekNo <= Math.ceil(used / 7); weekNo++) {
-		var weekobj = { week: "Week " + weekNo, searchString: "week " + weekNo, state: 0, showChild: false, days: [] }
+		var weekObj = { week: "Week " + weekNo, searchString: "week " + weekNo, state: 0, showChild: false, days: [] }
 		for (var i = start; i < (lastOfMonth).getDate() + 1; i++) {
 			var monthDate = new Date(year, month_number - 1, i);
 			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
-			weekobj.days.push(dayObj);
+			weekObj.days.push(dayObj);
+			if (disabledList.includes(month_number+'/'+dayObj.date +'/'+year))
+			weekObj.days.pop();
 			if (monthDate.getDay() === 6) {
 				start = i + 1;
 				break;
 			}
 		}
-		weeks.push(weekobj);
+		weeks.push(weekObj);
+		if (disabledList.includes((weekObj.week).charAt(0).toUpperCase()+(weekObj.week).charAt(5) + '/' + year))
+		weeks.pop();
 	}
 	return weeks;
 }
