@@ -1,5 +1,5 @@
 import React from "react";
-import { getListOfYears, isQuaterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
+import { getListOfYears, isQuarterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull, toCamelCase } from "../../utils/utils";
 import QuarterView from "./quarterView";
 import MonthView from "./monthView";
@@ -90,10 +90,17 @@ class YearView extends React.PureComponent {
     onChangeQuarterHandler = (quarterObj) => {
         let years = [...this.getYears()];
         let { showWeeks } = this.props.options;
-        let { quarter, year, isCheck } = quarterObj;
+        let { quarter, year } = quarterObj;
         let stateSum = 0;
+<<<<<<< HEAD
         quarter.state = (isCheck === true) ? 1 : 0;
         for (var i = 0; i < year.quarters.length; i++) {
+=======
+
+        quarter.state = (quarterObj.isCheck === true)? 1 : 0;
+
+      for (var i = 0; i < year.quarters.length; i++) {
+>>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
             stateSum += year.quarters[i]["state"];
         }
         if (quarterObj.isCheck === true) {
@@ -532,11 +539,11 @@ class YearView extends React.PureComponent {
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
     }
 
-    subFilterQuaters = (val, yr, quaters, filteredData, callback) => {
-        let { showWeeks, showQuarters } = this.props.options;
+    subFilterQuarters = (val, yr, quarters, filteredData, callback) => {
+        let { showWeeks } = this.props.options;
         let yearState = 0;
-        let _quaters = [];
-        quaters.forEach((quarter) => {
+        let _quarters = [];
+        quarters.forEach((quarter) => {
             var quarterName = quarter['quarter'].toString();
             var _camel = toCamelCase(val.toString());
             var isFound = quarterName.includes(_camel.toString());
@@ -571,15 +578,15 @@ class YearView extends React.PureComponent {
                     }
                 });
 
-                _quaters.push(this.getQuaterObject(quarterName, true, 1, [..._months]));
+                _quarters.push(this.getQuarterObject(quarterName, true, 1, [..._months]));
             }
         });
-        callback(yearState, _quaters, filteredData);
+        callback(yearState, _quarters, filteredData);
     }
 
     subFilterMonths = (months, callback) => {
         let _months = [];
-        let { showWeeks, showQuarters } = this.props.options;
+        let { showWeeks } = this.props.options;
         months.forEach((mn) => {
             if (showWeeks === true) {
                 let _weeks = [];
@@ -616,14 +623,19 @@ class YearView extends React.PureComponent {
             var isFound = year.includes(val.toString());
             if (isFound === false) {
                 if (showQuarters === true) {
-                    let quaters = [...yr['quarters']];
+                    let quarters = [...yr['quarters']];
 
-                    this.subFilterQuaters(val, yr, quaters, _filteredData, (_yearState, _quaters, filteredData) => {
+                    this.subFilterQuarters(val, yr, quarters, _filteredData, (_yearState, _quarters, filteredData) => {
                         if (_yearState === 4) {
                             filteredData.push(yr.year);
                         }
+<<<<<<< HEAD
                         _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
 
+=======
+                        _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quarters], showQuarters));
+        
+>>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
                         this.setState({
                             filteredYears: _years,
                             filteredData: filteredData
@@ -641,15 +653,15 @@ class YearView extends React.PureComponent {
                 }
             } else {
                 if (showQuarters === true) {
-                    let _quaters = [];
-                    let quaters = [...yr['quarters']];
-                    quaters.forEach((quarter) => {
+                    let _quarters = [];
+                    let quarters = [...yr['quarters']];
+                    quarters.forEach((quarter) => {
                         let months = [...quarter['months']];
                         this.subFilterMonths(months, (_months) => {
-                            _quaters.push(this.getQuaterObject(quarter.quarter, true, 1, [..._months]));
+                            _quarters.push(this.getQuarterObject(quarter.quarter, true, 1, [..._months]));
                         });
                     });
-                    _years.push(this.getYearObject(yr.year, true, 1, [..._quaters], showQuarters));
+                    _years.push(this.getYearObject(yr.year, true, 1, [..._quarters], showQuarters));
                 } else {
                     let months = [...yr['months']];
                     this.subFilterMonths(months, (_months) => {
@@ -662,23 +674,22 @@ class YearView extends React.PureComponent {
             }
         });
 
-
         // this.setState({
         //     filteredYears: _years
         // });
     }
 
-    filterQuaters = (val) => {
+    filterQuarters = (val) => {
         let _filteredData = [];
         let _years = [];
         let { years } = this.state;
-        let { showWeeks, showQuarters } = this.props.options;
+        let { showQuarters } = this.props.options;
         years.forEach((yr) => {
 
-            let quaters = [...yr['quarters']];
+            let quarters = [...yr['quarters']];
             // let yearState = 0;
-            // let _quaters = [];
-            // quaters.forEach((quarter) => {
+            // let _quarters = [];
+            // quarters.forEach((quarter) => {
             //     var quarterName = quarter['quarter'].toString();
             //     var _camel = toCamelCase(val.toString());
             //     var isFound = quarterName.includes(_camel.toString());
@@ -713,15 +724,15 @@ class YearView extends React.PureComponent {
             //             }
             //         });
 
-            //         _quaters.push(this.getQuaterObject(quarterName, true, 1, [..._months]));
+            //         _quarters.push(this.getQuarterObject(quarterName, true, 1, [..._months]));
             //     }
             // });
 
-            this.subFilterQuaters(val, yr, quaters, _filteredData, (_yearState, _quaters, filteredData) => {
+            this.subFilterQuarters(val, yr, quarters, _filteredData, (_yearState, _quarters, filteredData) => {
                 if (_yearState === 4) {
                     filteredData.push(yr.year);
                 }
-                _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
+                _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quarters], showQuarters));
 
                 this.setState({
                     filteredYears: _years,
@@ -740,10 +751,10 @@ class YearView extends React.PureComponent {
         let existsInMonth = false;
         years.forEach((yr) => {
             let yearState = 0;
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((quarter) => {
-                let quaterState = 0;
+            let _quarters = [];
+            let quarters = [...yr['quarters']];
+            quarters.forEach((quarter) => {
+                let quarterState = 0;
                 let _months = [];
                 var months = [...quarter['months']];
                 existsInMonth = false;
@@ -752,7 +763,7 @@ class YearView extends React.PureComponent {
                     var _camel = toCamelCase(val.toString());
                     var isFound = month.includes(_camel);
                     if (isFound === true) {
-                        quaterState++;
+                        quarterState++;
                         existsInMonth = true;
                         _filteredData.push(month + yr.year);
                         if (showWeeks === true) {
@@ -781,14 +792,14 @@ class YearView extends React.PureComponent {
                     }
                 });
                 if (existsInMonth === true) {
-                    if (quaterState === 3) {
+                    if (quarterState === 3) {
                         _filteredData.push(quarter.quarter + yr.year);
                     }
-                    _quaters.push(this.getQuaterObject(quarter.quarter, true, (quaterState === 3) ? 1 : -1, [..._months]));
-                    yearState = (quaterState === 3) ? yearState + 1 : yearState;
+                    _quarters.push(this.getQuarterObject(quarter.quarter, true, (quarterState === 3) ? 1 : -1, [..._months]));
+                    yearState = (quarterState === 3) ? yearState + 1 : yearState;
                 }
             });
-            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
+            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quarters], showQuarters));
         });
         this.setState({
             filteredYears: _years,
@@ -803,10 +814,10 @@ class YearView extends React.PureComponent {
         let existsInWeek = false;
         years.forEach((yr) => {
             let yearState = 0;
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((quarter) => {
-                let quaterState = 0;
+            let _quarters = [];
+            let quarters = [...yr['quarters']];
+            quarters.forEach((quarter) => {
+                let quarterState = 0;
                 let _months = [];
                 var months = [...quarter['months']];
                 months.forEach((mn) => {
@@ -835,13 +846,13 @@ class YearView extends React.PureComponent {
                     });
                     if (existsInWeek === true) {
                         _months.push(this.getMonthObject(mn.month, true, (monthState === weeks.length) ? 1 : -1, [..._weeks], true));
-                        quaterState = (monthState === weeks.length) ? quaterState + 1 : quaterState;
+                        quarterState = (monthState === weeks.length) ? quarterState + 1 : quarterState;
                     }
                 });
-                _quaters.push(this.getQuaterObject(quarter.quarter, true, (quaterState === 3) ? 1 : -1, [..._months]));
-                yearState = (quaterState === 3) ? yearState + 1 : yearState;
+                _quarters.push(this.getQuarterObject(quarter.quarter, true, (quarterState === 3) ? 1 : -1, [..._months]));
+                yearState = (quarterState === 3) ? yearState + 1 : yearState;
             });
-            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
+            _years.push(this.getYearObject(yr.year, true, (yearState === 4) ? 1 : -1, [..._quarters], showQuarters));
         });
         this.setState({
             filteredYears: _years
@@ -854,9 +865,9 @@ class YearView extends React.PureComponent {
         let { showWeeks, showQuarters } = this.props.options;
         let existsInDay = false;
         years.forEach((yr) => {
-            let _quaters = [];
-            let quaters = [...yr['quarters']];
-            quaters.forEach((quarter) => {
+            let _quarters = [];
+            let quarters = [...yr['quarters']];
+            quarters.forEach((quarter) => {
                 let _months = [];
                 var months = [...quarter['months']];
                 months.forEach((mn) => {
@@ -900,9 +911,9 @@ class YearView extends React.PureComponent {
                         }
                     }
                 });
-                _quaters.push(this.getQuaterObject(quarter.quarter, true, 1, [..._months]));
+                _quarters.push(this.getQuarterObject(quarter.quarter, true, 1, [..._months]));
             });
-            _years.push(this.getYearObject(yr.year, true, 1, [..._quaters], showQuarters));
+            _years.push(this.getYearObject(yr.year, true, 1, [..._quarters], showQuarters));
         });
         this.setState({
             filteredYears: _years
@@ -927,7 +938,7 @@ class YearView extends React.PureComponent {
         }
     }
 
-    getQuaterObject = (quarter, showChild, state, months) => {
+    getQuarterObject = (quarter, showChild, state, months) => {
         return {
             "quarter": quarter,
             "showChild": showChild,
@@ -993,16 +1004,21 @@ class YearView extends React.PureComponent {
 
                 if (existsInYear) {
                     this.filterYears(val, _years, years);
-                } else if (isQuaterVal(val) && showQuarters === true) {
-                    this.filterQuaters(val);
+                } else if (isQuarterVal(val) && showQuarters === true) {
+                    this.filterQuarters(val);
                 } else if (isWeekVal(val) && showWeeks === true) {
                     this.filterWeeks(val);
                 } else if (isDayVal(val)) {
                     this.filterDays(val);
                 }
             } else {
+<<<<<<< HEAD
                 if (isQuaterVal(val) && showQuarters === true) {
                     this.filterQuaters(val);
+=======
+                if (isQuarterVal(val)  && showQuarters === true) {
+                    this.filterQuarters(val);
+>>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
                 } else if (isMonthVal(val)) {
                     this.filterMonths(val);
                 } else if (isWeekVal(val) && showWeeks === true) {

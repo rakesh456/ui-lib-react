@@ -122,20 +122,20 @@ class Year extends React.PureComponent {
         }
     }
 
-    renderQuarterValue = (quater, index) => {
-        const activeClass = (isEqual(this.state.currentDateMonth, quater)) ? 'VS-Active' : '';
+    renderQuarterValue = (quarter, index) => {
+        const activeClass = (isEqual(this.state.currentDateMonth, quarter)) ? 'VS-Active' : '';
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const _l = (lowerMonthLimit)? parseInt(lowerMonthLimit.charAt(1)) : 1;
         const _u = (upperMonthLimit)? parseInt(upperMonthLimit.charAt(1)) : 4;
-        const _q = parseInt(quater.charAt(1));
-        const isEnabled = this.checkQQMMIsEnabled(quater, year);
+        const _q = parseInt(quarter.charAt(1));
+        const isEnabled = this.checkQQMMIsEnabled(quarter, year);
         
         return (
             <Fragment key={guid()}>
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && _q < _l) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && _q > _u) || (!isEnabled)) ?
-                        <span className={`${CONSTANTS.CLASSES.VS_MONTH_QUATER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{quater}</span>:
-                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUATER}`} onClick={() => this.onSelectQuarterHandler(quater)}>{quater}</span>
+                        <span className={`${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{quarter}</span>:
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER}`} onClick={() => this.onSelectQuarterHandler(quarter)}>{quarter}</span>
                 }
             </Fragment>
         );

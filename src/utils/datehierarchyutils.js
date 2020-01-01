@@ -229,8 +229,8 @@ export const getMonthWeeks = function (month_number, year, disabledList) {
 	return weeks;
 }
 
-// Function to check string is quater value
-export const isQuaterVal = (val) => {
+// Function to check string is quarter value
+export const isQuarterVal = (val) => {
 	let _val = (val) ? val.toString() : '';
 	return (_val === '1' || _val === '2' || _val === '3' || _val === '4' || _val === 'Q1' || _val === 'Q2' || _val === 'Q3' || _val === 'Q4' || _val === 'Q' || _val === 'q1' || _val === 'q2' || _val === 'q3' || _val === 'q4' || _val === 'q');
 }
