@@ -448,6 +448,7 @@ describe('Testing on function getIsoDate',()=>{
     let date1 = new Date('8/26/2019')
     let d = '09/24/2019'
     let input = [date,date1,undefined,null,d]
+    // add prefix 0 before month and date if less than 10.
     let output = [date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),'2019-08-26',date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),null,null]
     let messages = ['Passing current date the function will return date n format YYYY-MM-DD',
                     'Passing any date then function still returns date in format YYYY-MM-DD',
@@ -869,8 +870,12 @@ describe('Testing on function getNewUpdateDateByArrow',()=>{
 
         disabledList:['02/03/2019']
     }
-    test('testing',()=>{
-        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',39,true,true)).toEqual()
+    test('should return next valid date on up arrow key press',()=>{
+        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',39,true,true)).toEqual('02/04/2019');
+    })
+
+    test('should return previous valid date on left arrow key press',()=>{
+        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',37,true,true)).toEqual('');
     })
 })
 
