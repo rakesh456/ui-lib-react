@@ -92,15 +92,10 @@ class YearView extends React.PureComponent {
         let { showWeeks } = this.props.options;
         let { quarter, year } = quarterObj;
         let stateSum = 0;
-<<<<<<< HEAD
-        quarter.state = (isCheck === true) ? 1 : 0;
-        for (var i = 0; i < year.quarters.length; i++) {
-=======
 
         quarter.state = (quarterObj.isCheck === true)? 1 : 0;
 
       for (var i = 0; i < year.quarters.length; i++) {
->>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
             stateSum += year.quarters[i]["state"];
         }
         if (quarterObj.isCheck === true) {
@@ -629,13 +624,8 @@ class YearView extends React.PureComponent {
                         if (_yearState === 4) {
                             filteredData.push(yr.year);
                         }
-<<<<<<< HEAD
-                        _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
-
-=======
                         _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quarters], showQuarters));
         
->>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
                         this.setState({
                             filteredYears: _years,
                             filteredData: filteredData
@@ -1012,13 +1002,8 @@ class YearView extends React.PureComponent {
                     this.filterDays(val);
                 }
             } else {
-<<<<<<< HEAD
-                if (isQuaterVal(val) && showQuarters === true) {
-                    this.filterQuaters(val);
-=======
                 if (isQuarterVal(val)  && showQuarters === true) {
                     this.filterQuarters(val);
->>>>>>> f86051ea1a2a9b04a6deff5e01986db0c42c9a78
                 } else if (isMonthVal(val)) {
                     this.filterMonths(val);
                 } else if (isWeekVal(val) && showWeeks === true) {
