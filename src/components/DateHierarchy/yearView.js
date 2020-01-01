@@ -1,5 +1,5 @@
 import React from "react";
-import { getListOfYears, isQuarterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
+import { getListOfYears, getSearchObj, fullListOfYears, isQuarterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull, toCamelCase } from "../../utils/utils";
 import QuarterView from "./quarterView";
 import MonthView from "./monthView";
@@ -12,6 +12,12 @@ class YearView extends React.PureComponent {
         let { options } = this.props;
 
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        console.log(yearList);
+        let searchObj = getSearchObj(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        //console.log( ' \nsearchObj\n ', searchObj);
+        // years[0]["level2String"][index]
+        const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
+        console.log(result);
         this.state = { years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isSelectAll: false, lastFilterData: { 'value': '', 'list': [] } };
     }
 
