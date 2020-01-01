@@ -22,6 +22,7 @@ import {
 
 
 function trigger(elem, name, e) {
+     // eslint-disable-next-line
     let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
