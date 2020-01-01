@@ -27,8 +27,10 @@ export const getMonthDays = (month, year, disabledList) => {
 	for (let i = 1; i <= day; i++) {
 		var dayObj = { day: i, state: 0 }
 		days.push(dayObj);
-		if (disabledList.includes(month+'/'+dayObj.day +'/'+year))
+		if (disabledList.includes(month + '/' + dayObj.day + '/' + year)){
 			days.pop();
+			days['hasDisabled'] = true;
+		}
 	}
 	return days;
 }
@@ -41,6 +43,7 @@ export const getChildren = function (year, showWeeks, disabledList) {
 			"searchString": "q" + (i + 1),
 			"showChild": false,
 			"state": 0,
+			"hasDisabled": false,
 			"months": []
 		};
 		for (let j = 0; j < 3; j++) {
@@ -48,15 +51,20 @@ export const getChildren = function (year, showWeeks, disabledList) {
 				"month": MONTH_SHORT_NAMES_TITLE_CASE[3 * i + j],
 				"searchString": MONTH_NAMES[3 * i + j],
 				"showChild": false,
-				"state": 0
+				"state": 0,
+				"hasDisabled": false
 			};
 			quarter["months"].push(month);
-			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month) + 1 + '/' + year))
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month) + 1 + '/' + year)) {
 				quarter["months"].pop();
+				quarter.hasDisabled= true;
+			}
 		}
 		quarterArray.push(quarter);
-		if (disabledList.includes(quarter.quarter + '/' + year))
+		if (disabledList.includes(quarter.quarter + '/' + year)){
 			quarterArray.pop();
+			quarterArray['hasDisabled'] = true;
+		}
 	}
 
 	if (showWeeks === false) {
@@ -80,17 +88,27 @@ export const getMonths = function (year, showWeeks, disabledList) {
 		for (var i = 0; i < 12; i++) {
 			var monthObj = { "month": MONTH_SHORT_NAMES_TITLE_CASE[i], "showChild": false, "state": 0, "days": getMonthDays(i + 1, year, disabledList) }
 			months.push(monthObj);
-			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year))
-			months.pop();
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
+				months.pop();
+				months.hasDisabled = true;
+			}
 		}
 		return months;
 	}
 	else {
 		for (i = 0; i < 12; i++) {
-			monthObj = { "month": MONTH_SHORT_NAMES_TITLE_CASE[i], "showChild": false, "state": 0, "weeks": getMonthWeeks(i + 1, year, disabledList) }
+			monthObj = {
+				"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
+				"showChild": false,
+				"state": 0,
+				"hasDisabled": false,
+				"weeks": getMonthWeeks(i + 1, year, disabledList)
+			}
 			months.push(monthObj);
-			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year))
-			months.pop();
+			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
+				months.pop();
+				months.hasDisabled =true
+			}
 		}
 		return months;
 	}
@@ -99,9 +117,7 @@ export const getMonths = function (year, showWeeks, disabledList) {
 export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
-		let initial = lowerLimit;
 		lowerLimit = parseInt(lowerLimit);
-		let final = upperLimit;
 		let years = [];
 		if (showQuarters === true) {
 			while (lowerLimit <= upperLimit) {
@@ -110,9 +126,15 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					"searchString": lowerLimit.toString().toLowerCase(),
 					"showChild": false,
 					"state": 0,
+					"hasDisabled": false,
 					"quarters": getChildren(lowerLimit, showWeeks, disabledList)
 				}
 				years.push(year);
+				if (disabledList.includes("'"+ year.year +"'")){
+					console.log('inside');
+					years.pop();
+					years.hasDisabled = true;
+				}
 				lowerLimit++;
 			}
 		}
@@ -123,6 +145,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					"searchString": lowerLimit.toString().toLowerCase(),
 					"showChild": false,
 					"state": 0,
+					"hasDisabled": false,
 					"months": getMonths(lowerLimit, showWeeks, disabledList)
 				}
 				years.push(year);
@@ -131,12 +154,12 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 
 		}
 
-		if (disabledList) {
-			for (var i = 0; i < disabledList.length; i++) {
-				if (disabledList[i] >= initial && disabledList[i] <= final)
-					years.splice(disabledList[i] - lowerLimit, 1);
-			}
-		}
+		// if (disabledList) {
+		// 	for (var i = 0; i < disabledList.length; i++) {
+		// 		if (disabledList[i] >= initial && disabledList[i] <= final)
+		// 			years.splice(disabledList[i] - lowerLimit, 1);
+		// 	}
+		// }
 
 		return years;
 	}
@@ -151,6 +174,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 				"searchString": lowerLimit.toString().toLowerCase(),
 				"showChild": false,
 				"state": 0,
+				"hasDisabled": false,
 				"quarters": getChildren(lowerLimit)
 			}
 			years.push(year);
@@ -175,21 +199,32 @@ export const getMonthWeeks = function (month_number, year, disabledList) {
 	weekdays[5] = "Fri";
 	weekdays[6] = "Sat";
 	for (let weekNo = 1; weekNo <= Math.ceil(used / 7); weekNo++) {
-		var weekObj = { week: "Week " + weekNo, searchString: "week " + weekNo, state: 0, showChild: false, days: [] }
+		var weekObj = {
+			'week': "Week " + weekNo,
+			'searchString': "week " + weekNo,
+			'state': 0,
+			'hasDisabled': false,
+			'showChild': false,
+			'days': []
+		}
 		for (var i = start; i < (lastOfMonth).getDate() + 1; i++) {
 			var monthDate = new Date(year, month_number - 1, i);
 			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
 			weekObj.days.push(dayObj);
-			if (disabledList.includes(month_number+'/'+dayObj.date +'/'+year))
-			weekObj.days.pop();
+			if (disabledList.includes(month_number + '/' + dayObj.date + '/' + year)){
+				weekObj.days.pop();
+				weekObj['hasDisabled'] = true;
+			}
 			if (monthDate.getDay() === 6) {
 				start = i + 1;
 				break;
 			}
 		}
 		weeks.push(weekObj);
-		if (disabledList.includes((weekObj.week).charAt(0).toUpperCase()+(weekObj.week).charAt(5) + '/' + year))
-		weeks.pop();
+		if (disabledList.includes((weekObj.week).charAt(0).toUpperCase() + (weekObj.week).charAt(5) + '/' + year)){
+			weeks.pop();
+			weeks.hasDisabled = true;
+		}
 	}
 	return weeks;
 }

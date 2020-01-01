@@ -83,7 +83,7 @@ class YearView extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-    
+
         this.updateSelectAllCheckbox();
     }
 
@@ -92,7 +92,7 @@ class YearView extends React.PureComponent {
         let { showWeeks } = this.props.options;
         let { quarter, year, isCheck } = quarterObj;
         let stateSum = 0;
-        quarter.state = (isCheck === true)? 1 : 0;
+        quarter.state = (isCheck === true) ? 1 : 0;
         for (var i = 0; i < year.quarters.length; i++) {
             stateSum += year.quarters[i]["state"];
         }
@@ -150,7 +150,7 @@ class YearView extends React.PureComponent {
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showWeeks === true) {
-                let weeks = month.weeks;                
+                let weeks = month.weeks;
                 weeks.forEach((element, index) => {
                     weeks[index]['state'] = 1;
                     if (weeks[index]['days']) {
@@ -234,14 +234,14 @@ class YearView extends React.PureComponent {
 
     onChangeDayHandler = (dayObj) => {
         let years = [...this.getYears()];
-        
+
         let { day, month, quarter, year, isCheck } = dayObj;
-        
+
         let { showQuarters } = this.props.options;
         let dstateSum = 0;
         let qstateSum = 0;
         let mstateSum = 0;
-            
+
         if (isCheck === true) {
             day['state'] = 1;
             for (var j = 0; j < month.days.length; j++) {
@@ -269,7 +269,7 @@ class YearView extends React.PureComponent {
                 years: [...years]
             });
 
-            this.forceUpdate();            
+            this.forceUpdate();
         }
         else {
             day.state = 0;
@@ -304,7 +304,7 @@ class YearView extends React.PureComponent {
             }
             this.setState({
                 years: [...years]
-            });            
+            });
         }
     }
 
@@ -467,7 +467,7 @@ class YearView extends React.PureComponent {
                     }
                     qstateSum += year.months[i]["state"];
                 }
-                year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1; 
+                year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1;
             }
             this.setState({
                 years: [...years]
@@ -487,7 +487,6 @@ class YearView extends React.PureComponent {
         let { options } = this.props;
         const { isSearching, years, filteredYears } = this.state;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
-
         return (
 
             <div className="VS-YearRow" key={'year' + index} >
@@ -503,12 +502,22 @@ class YearView extends React.PureComponent {
                             <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
                     }
                     <span className={this.getYearCheckBoxClass(year, index)} ></span>
+                    {
+                        (year.hasDisabled) ?
+                            <span className="VS-HasDisabledDot">
+                            </span> : ""
+                    }
+                     {
+                        (year.hasDisabled)?
+                    <span className="VS-HasDisabledDot">
+                    </span>:""
+                    }
 
                 </label>
                 {
                     (year.showChild && year.quarters) ?
                         <QuarterView options={options} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></QuarterView> : (year.showChild && year.months) ?
-                        <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
+                            <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
                 }
             </div>
         )
@@ -557,7 +566,7 @@ class YearView extends React.PureComponent {
                         days.forEach((dy) => {
                             _days.push(this.getDayObject(dy.date, dy.day, 1));
                         });
-                        
+
                         _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
                     }
                 });
@@ -591,7 +600,7 @@ class YearView extends React.PureComponent {
                 days.forEach((dy) => {
                     _days.push(this.getDayObject(dy.date, dy.day, 1));
                 });
-                
+
                 _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
             }
         });
@@ -614,12 +623,12 @@ class YearView extends React.PureComponent {
                             filteredData.push(yr.year);
                         }
                         _years.push(this.getYearObject(yr.year, true, (_yearState === 4) ? 1 : -1, [..._quaters], showQuarters));
-        
+
                         this.setState({
                             filteredYears: _years,
                             filteredData: filteredData
                         });
-                        
+
                         this.setState({
                             filteredYears: _years
                         });
@@ -699,7 +708,7 @@ class YearView extends React.PureComponent {
             //                 days.forEach((dy) => {
             //                     _days.push(this.getDayObject(dy.date, dy.day, 1));
             //                 });
-                            
+
             //                 _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
             //             }
             //         });
@@ -965,7 +974,7 @@ class YearView extends React.PureComponent {
         });
 
         let val = e.target.value;
-        val = (val)? val.toLowerCase() : '';
+        val = (val) ? val.toLowerCase() : '';
         let { years } = this.state;
         let { showWeeks, showQuarters } = this.props.options;
 
@@ -992,7 +1001,7 @@ class YearView extends React.PureComponent {
                     this.filterDays(val);
                 }
             } else {
-                if (isQuaterVal(val)  && showQuarters === true) {
+                if (isQuaterVal(val) && showQuarters === true) {
                     this.filterQuaters(val);
                 } else if (isMonthVal(val)) {
                     this.filterMonths(val);
