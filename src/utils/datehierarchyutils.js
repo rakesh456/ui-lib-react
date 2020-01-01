@@ -96,38 +96,43 @@ export const getMonths = function (year, showWeeks, disabledList) {
 	}
 }
 
-export let searchStrings = [];
-
-export const updateFilterData = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
+export const getSearchObj = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		lowerLimit = parseInt(lowerLimit);
-		let years = [];
-		searchStrings = [];
+		let searchObj = [];		
 		let index = 0;
+		let monthLevel = 2;
+		let weekLevel = 3;
+		let dayLevel  = 3;
 		while (lowerLimit <= upperLimit) {
-			searchStrings.push(""+lowerLimit);
-			years.push({searchString: ""+lowerLimit, level: 1, index: ""+index});
+			searchObj.push({searchKey: ""+lowerLimit, level: 1, index: index});
 			lowerLimit++;
 			index++;
 		}			
 		if (showQuarters === true) {
-			searchStrings.push("q1");
-			searchStrings.push("q2");
-			searchStrings.push("q3");
-			searchStrings.push("q4");
-		}
-		MONTH_NAMES.forEach((month) => {
-			searchStrings.push(month);
+			searchObj.push({searchKey: "q1", level: 2, index: 0});
+			searchObj.push({searchKey: "q2", level: 2, index: 1});
+			searchObj.push({searchKey: "q3", level: 2, index: 2});
+			searchObj.push({searchKey: "q4", level: 2, index: 3});
+			monthLevel = 3;
+			weekLevel  = 4;
+			dayLevel++;
+		} 
+
+		MONTH_NAMES.forEach((month, index) => {
+			searchObj.push({searchKey: month, level: monthLevel, index: index});
 		});
-		if (showWeeks === true) {
-			WEEK_NAMES.forEach((week) => {
-				searchStrings.push(week);
+
+		if (showWeeks === true) {			
+			WEEK_NAMES.forEach((week, index) => {
+				searchObj.push({searchKey: week, level: weekLevel, index: index});
 			});
+			dayLevel++;
 		}
 		for (let day = 1; day <= 31; day++) {
-			searchStrings.push(""+day);
+			searchObj.push({searchKey: ""+day, level: dayLevel, index: day-1});
 		}
-		return years;
+		return searchObj;
 	}
 }
 
