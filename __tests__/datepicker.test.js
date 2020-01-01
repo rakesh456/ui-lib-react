@@ -4,6 +4,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import CalendarDate from '../src/components/Datepicker/calendar-date';
+import desktop from 'react-icons/lib/fa/desktop';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');
@@ -11,4 +12,5 @@ it('renders without crashing', () => {
   ReactDOM.render(<DatePicker options={options} />, div);
 });
 
-
+// Buttons rendering default options without crashing
+// describe('Buttons rendering default options without crashing')
