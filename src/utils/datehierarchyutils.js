@@ -6,7 +6,7 @@ export const MONTH_SHORT_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul
 
 export const MONTH_SHORT_NAMES_TITLE_CASE = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const WEEK_NAMES = ["week 1", "week 2", "week 3", "week 4", "week 5"];
+export const WEEK_NAMES = ["week 1", "week 2", "week 3", "week 4", "week 5", "week 6"];
 
 // Function to reset options with default options
 export const resetDateHierarchyOptions = (options) => {
@@ -96,8 +96,102 @@ export const getMonths = function (year, showWeeks, disabledList) {
 	}
 }
 
-export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
+export let searchStrings = [];
 
+export const updateFilterData = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
+	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
+		lowerLimit = parseInt(lowerLimit);
+		let years = [];
+		searchStrings = [];
+		let index = 0;
+		while (lowerLimit <= upperLimit) {
+			searchStrings.push(""+lowerLimit);
+			years.push({searchString: ""+lowerLimit, level: 1, index: ""+index});
+			lowerLimit++;
+			index++;
+		}			
+		if (showQuarters === true) {
+			searchStrings.push("q1");
+			searchStrings.push("q2");
+			searchStrings.push("q3");
+			searchStrings.push("q4");
+		}
+		MONTH_NAMES.forEach((month) => {
+			searchStrings.push(month);
+		});
+		if (showWeeks === true) {
+			WEEK_NAMES.forEach((week) => {
+				searchStrings.push(week);
+			});
+		}
+		for (let day = 1; day <= 31; day++) {
+			searchStrings.push(""+day);
+		}
+		return years;
+	}
+}
+
+
+export let fullListOfYears = [];
+
+export const getFilterListOfYears = (_years, showWeeks, showQuarters, disabledList) => {
+	let newYears = _years.map(a => ({...a}));
+
+	newYears.forEach((year, yearIndex) => {
+		if(showQuarters === true){
+			let quarters = (newYears[yearIndex] && newYears[yearIndex]['quarters'])? newYears[yearIndex]['quarters'] : [];
+			newYears[yearIndex]['state'] = 1;
+			quarters.forEach((quarter, quarterIndex) => {
+				let months = (quarters && quarters[quarterIndex] && quarters[quarterIndex]['months'])? quarters[quarterIndex]['months'] : [];
+				newYears[yearIndex]['quarters'][quarterIndex]['state'] = 1;
+				months.forEach((month, monthIndex) => {
+					newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = 1;
+					if(showWeeks === true){
+						let weeks = newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'];
+						newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = 1;
+						weeks.forEach((week, weekIndex) => {
+							let days = newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+							newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = 1;
+							days.forEach((day, dayIndex) => {
+								newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = 1;
+							});
+						});
+					} else {
+						let days = newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'];
+						days.forEach((day, dayIndex) => {
+							newYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
+						});
+					}
+				});
+			});
+		} else if(showQuarters === false){
+			let months = (newYears[yearIndex] && newYears[yearIndex]['months'])? newYears[yearIndex]['months'] : [];
+			newYears[yearIndex]['state'] = 1;
+			months.forEach((month, monthIndex) => {
+				newYears[yearIndex]['months'][monthIndex]['state'] = 1;
+				if(showWeeks === true){
+					let weeks = newYears[yearIndex]['months'][monthIndex]['weeks'];
+					newYears[yearIndex]['months'][monthIndex]['state'] = 1;
+					weeks.forEach((week, weekIndex) => {
+						let days = newYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+						newYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = 1;
+						days.forEach((day, dayIndex) => {
+							newYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = 1;
+						});
+					});
+				} else {
+					let days = newYears[yearIndex]['months'][monthIndex]['days'];
+					days.forEach((day, dayIndex) => {
+						newYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
+					});
+				}
+			});
+		}
+	});
+	fullListOfYears = [...newYears];
+}
+
+export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		let initial = lowerLimit;
 		lowerLimit = parseInt(lowerLimit);
@@ -128,7 +222,6 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 				years.push(year);
 				lowerLimit++;
 			}
-
 		}
 
 		if (disabledList) {
@@ -137,7 +230,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					years.splice(disabledList[i] - lowerLimit, 1);
 			}
 		}
-
+		//getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
 	}
 
@@ -156,6 +249,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 			years.push(year);
 			lowerLimit++;
 		}
+		//getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
 	}
 }
