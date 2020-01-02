@@ -107,7 +107,6 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
 				months.pop();
-				months.hasDisabled =true
 			}
 		}
 		return months;
@@ -229,10 +228,8 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					"quarters": getChildren(lowerLimit, showWeeks, disabledList)
 				}
 				years.push(year);
-				if (disabledList.includes("'"+ year.year +"'")){
-					console.log('inside');
+				if (disabledList.includes(year.year.toString())){
 					years.pop();
-					years.hasDisabled = true;
 				}
 				lowerLimit++;
 			}
@@ -248,27 +245,12 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					"months": getMonths(lowerLimit, showWeeks, disabledList)
 				}
 				years.push(year);
+				if (disabledList.includes(year.year.toString())){
+					years.pop();
+				}
 				lowerLimit++;
 			}
 		}
-
-<<<<<<< HEAD
-		// if (disabledList) {
-		// 	for (var i = 0; i < disabledList.length; i++) {
-		// 		if (disabledList[i] >= initial && disabledList[i] <= final)
-		// 			years.splice(disabledList[i] - lowerLimit, 1);
-		// 	}
-		// }
-
-=======
-		if (disabledList) {
-			for (var i = 0; i < disabledList.length; i++) {
-				if (disabledList[i] >= initial && disabledList[i] <= final)
-					years.splice(disabledList[i] - lowerLimit, 1);
-			}
-		}
-		//getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
->>>>>>> girish
 		return years;
 	}
 
@@ -330,7 +312,7 @@ export const getMonthWeeks = function (month_number, year, disabledList) {
 			}
 		}
 		weeks.push(weekObj);
-		if (disabledList.includes((weekObj.week).charAt(0).toUpperCase() + (weekObj.week).charAt(5) + '/' + year)){
+		if (disabledList.includes((weekObj.week).charAt(0) + (weekObj.week).charAt(5) + '/' + month_number+'/'+year || disabledList.includes((weekObj.week).charAt(0).toLowerCase() + (weekObj.week).charAt(5) + '/' + month_number+'/'+year))){
 			weeks.pop();
 			weeks.hasDisabled = true;
 		}
