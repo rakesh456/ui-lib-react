@@ -1,5 +1,5 @@
 import React from "react";
-import { getListOfYears, getSearchObj, fullListOfYears, isQuarterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
+import { getListOfYears, getSearchObj, isQuarterVal, isMonthVal, isWeekVal, isDayVal } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull, toCamelCase } from "../../utils/utils";
 import QuarterView from "./quarterView";
 import MonthView from "./monthView";
@@ -12,12 +12,10 @@ class YearView extends React.PureComponent {
         let { options } = this.props;
 
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-        console.log(yearList);
         let searchObj = getSearchObj(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         //console.log( ' \nsearchObj\n ', searchObj);
         // years[0]["level2String"][index]
-        const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        console.log(result);
+        // const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
         this.state = { years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isSelectAll: false, lastFilterData: { 'value': '', 'list': [] } };
     }
 
@@ -89,7 +87,7 @@ class YearView extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-    
+
         this.updateSelectAllCheckbox();
     }
 
@@ -158,7 +156,7 @@ class YearView extends React.PureComponent {
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showWeeks === true) {
-                let weeks = month.weeks;                
+                let weeks = month.weeks;
                 weeks.forEach((element, index) => {
                     weeks[index]['state'] = 1;
                     if (weeks[index]['days']) {
@@ -242,14 +240,14 @@ class YearView extends React.PureComponent {
 
     onChangeDayHandler = (dayObj) => {
         let years = [...this.getYears()];
-        
+
         let { day, month, quarter, year, isCheck } = dayObj;
-        
+
         let { showQuarters } = this.props.options;
         let dstateSum = 0;
         let qstateSum = 0;
         let mstateSum = 0;
-            
+
         if (isCheck === true) {
             day['state'] = 1;
             for (var j = 0; j < month.days.length; j++) {
@@ -277,7 +275,7 @@ class YearView extends React.PureComponent {
                 years: [...years]
             });
 
-            this.forceUpdate();            
+            this.forceUpdate();
         }
         else {
             day.state = 0;
@@ -312,7 +310,7 @@ class YearView extends React.PureComponent {
             }
             this.setState({
                 years: [...years]
-            });            
+            });
         }
     }
 
@@ -475,7 +473,7 @@ class YearView extends React.PureComponent {
                     }
                     qstateSum += year.months[i]["state"];
                 }
-                year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1; 
+                year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1;
             }
             this.setState({
                 years: [...years]
@@ -495,7 +493,6 @@ class YearView extends React.PureComponent {
         let { options } = this.props;
         const { isSearching, years, filteredYears } = this.state;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
-
         return (
 
             <div className="VS-YearRow" key={'year' + index} >
@@ -511,12 +508,22 @@ class YearView extends React.PureComponent {
                             <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
                     }
                     <span className={this.getYearCheckBoxClass(year, index)} ></span>
+                    {
+                        (year.hasDisabled) ?
+                            <span className="VS-HasDisabledDot">
+                            </span> : ""
+                    }
+                     {
+                        (year.hasDisabled)?
+                    <span className="VS-HasDisabledDot">
+                    </span>:""
+                    }
 
                 </label>
                 {
                     (year.showChild && year.quarters) ?
                         <QuarterView options={options} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></QuarterView> : (year.showChild && year.months) ?
-                        <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
+                            <MonthView options={options} years={this.state.years} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView> : ''
                 }
             </div>
         )
@@ -565,7 +572,7 @@ class YearView extends React.PureComponent {
                         days.forEach((dy) => {
                             _days.push(this.getDayObject(dy.date, dy.day, 1));
                         });
-                        
+
                         _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
                     }
                 });
@@ -599,7 +606,7 @@ class YearView extends React.PureComponent {
                 days.forEach((dy) => {
                     _days.push(this.getDayObject(dy.date, dy.day, 1));
                 });
-                
+
                 _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
             }
         });
@@ -627,7 +634,7 @@ class YearView extends React.PureComponent {
                             filteredYears: _years,
                             filteredData: filteredData
                         });
-                        
+
                         this.setState({
                             filteredYears: _years
                         });
@@ -706,7 +713,7 @@ class YearView extends React.PureComponent {
             //                 days.forEach((dy) => {
             //                     _days.push(this.getDayObject(dy.date, dy.day, 1));
             //                 });
-                            
+
             //                 _months.push(this.getMonthObject(mn.month, false, 1, [..._days], false));
             //             }
             //         });
@@ -972,7 +979,7 @@ class YearView extends React.PureComponent {
         });
 
         let val = e.target.value;
-        val = (val)? val.toLowerCase() : '';
+        val = (val) ? val.toLowerCase() : '';
         let { years } = this.state;
         let { showWeeks, showQuarters } = this.props.options;
 

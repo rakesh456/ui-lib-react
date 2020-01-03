@@ -75,6 +75,13 @@ class WeekDaysView extends React.PureComponent {
                     }
 
                     <span className={this.getWeekCheckBoxClass(week)}></span>
+                    {
+                        (week.hasDisabled)?
+                        <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                        </span><span className="VS-Tooltiptext">Few days in this week are disabled</span></div>
+                        :""
+                        
+                    }
                 </label>
                 {
                     (week.showChild && week.days) ?
