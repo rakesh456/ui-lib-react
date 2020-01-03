@@ -563,7 +563,7 @@ describe("Check remove item from list", () => {
       ])
       instant.removeListItem({'key':'Australia', 'value':'Au'})
       wrapper.update()
-      expect(instant.getSelectedValues()).toEqual([
+      expect(instant.getListItem()).toEqual([
         {"key": "Albania", "value": "AL"},
         {"key": "Armenia", "value": "AM"}
     ])
@@ -581,8 +581,8 @@ describe("Testing for searching if value not found.", () => {
     };
     let wrapper = shallow(<TagSelector options={options} />);
     let instant = wrapper.instance();
-    let inputNoData = wrapper.find("Input").value();
-    console.log(inputNoData)
+    let inputNoData = wrapper.find("Input");
+    console.log(inputNoData);
     inputNoData.simulate("change");
     // console.log(instant.getFilteredList());
 

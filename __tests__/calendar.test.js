@@ -875,7 +875,7 @@ describe('Testing on function getNewUpdateDateByArrow',()=>{
     })
 
     test('should return previous valid date on left arrow key press',()=>{
-        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',37,true,true)).toEqual('');
+        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',37,true,true)).toEqual('02/02/2019');
     })
 })
 
