@@ -211,6 +211,36 @@ export const getDayObject = (date, day, state) => {
 	};
 }
 
+const subFilterMonths = (months, callback) => {
+	let _months = [];
+	let { showWeeks } = this.props.options;
+	months.forEach((mn) => {
+		if (showWeeks === true) {
+			let _weeks = [];
+			let weeks = [...mn['weeks']];
+			weeks.forEach((wk) => {
+				let _days = [];
+				let days = [...wk['days']];
+				days.forEach((dy) => {
+					_days.push(getDayObject(dy.date, dy.day, 1));
+				});
+
+				_weeks.push(getWeekObject(wk.week, false, 1, [..._days]));
+			});
+			_months.push(getMonthObject(mn.month, false, 1, [..._weeks], true));
+		} else {
+			let _days = [];
+			var days = [...mn['days']];
+			days.forEach((dy) => {
+				_days.push(getDayObject(dy.date, dy.day, 1));
+			});
+
+			_months.push(getMonthObject(mn.month, false, 1, [..._days], false));
+		}
+	});
+	callback(_months);
+}
+
 const subFilterQuarters = (year, quarters, showWeeks, showQuarters, callback) => {
 	let yearState = 0;
 	let _quarters = [];
@@ -263,7 +293,7 @@ export const getFilterListOfYears = (years, showWeeks, showQuarters, disabledLis
 			});
 		} else {
 			let months = [...yr['months']];
-			this.subFilterMonths(months, (_months) => {
+			subFilterMonths(months, (_months) => {
 				_years.push(getYearObject(yr.year, true, 1, [..._months], showQuarters));
 			});
 		}
