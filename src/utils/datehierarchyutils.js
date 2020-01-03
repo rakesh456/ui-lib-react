@@ -90,12 +90,13 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
 				months.pop();
-				months.hasDisabled = true;
+				// months.hasDisabled = true;
 			}
 		}
 		return months;
 	}
 	else {
+		let hasDisabled = false;
 		for (i = 0; i < 12; i++) {
 			monthObj = {
 				"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
@@ -106,7 +107,8 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			}
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
-				months.pop();
+				 hasDisabled = true;
+				
 			}
 		}
 		return months;
@@ -303,6 +305,7 @@ export const getMonthWeeks = function (month_number, year, disabledList) {
 			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
 			weekObj.days.push(dayObj);
 			if (disabledList.includes(month_number + '/' + dayObj.date + '/' + year)){
+				console.log('day',month_number + '/' + dayObj.date + '/' + year);
 				weekObj.days.pop();
 				weekObj['hasDisabled'] = true;
 			}
