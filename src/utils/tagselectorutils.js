@@ -1,3 +1,7 @@
+import {
+    sortBy
+} from "./utils";
+
 export const DEFAULT_OPTIONS = { 'placeholder': 'Search', 'listItems': [], 'allowNewValue': false, 'maxItemCounter': 0, 'showHelper': false, 'canRemoveAll': true, 'readOnly': false, 'showHierarchy': false };
 
 // Function to reset options with default options
@@ -27,12 +31,6 @@ export const isValidJsonFormat = (showHierarchy, json) => {
         }
     }
     return isValidFormat;
-}
-
-const sortBy = fn => (a, b) => {
-    const fa = fn(a)
-    const fb = fn(b)
-    return -(fa < fb) || +(fa > fb)
 }
 
 const getField = o => o.value

@@ -216,3 +216,9 @@ export const toCamelCase = (str) => {
         return index === 0 ? match.toUpperCase() : match.toLowerCase();
     });
 }
+
+export const sortBy = fn => (a, b) => {
+    const fa = fn(a)
+    const fb = fn(b)
+    return -(fa < fb) || +(fa > fb)
+}

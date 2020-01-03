@@ -212,9 +212,8 @@ export const getDayObject = (date, day, state) => {
 	};
 }
 
-const subFilterMonths = (months, callback) => {
+const subFilterMonths = (months, showWeeks, callback) => {
 	let _months = [];
-	let { showWeeks } = this.props.options;
 	months.forEach((mn) => {
 		if (showWeeks === true) {
 			let _weeks = [];
@@ -294,7 +293,7 @@ export const getFilterListOfYears = (years, showWeeks, showQuarters, disabledLis
 			});
 		} else {
 			let months = [...yr['months']];
-			subFilterMonths(months, (_months) => {
+			subFilterMonths(months, showWeeks, (_months) => {
 				_years.push(getYearObject(yr.year, true, 1, [..._months], showQuarters));
 			});
 		}
