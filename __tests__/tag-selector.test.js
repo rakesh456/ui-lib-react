@@ -437,7 +437,8 @@ describe("Checking for getting selected items", () => {
     const instant = wrapper.instance();
     instant.setJsonData(ITEM_LIST);
     // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    wrapper.find("Input").simulate("change", { target: { value: "z" } });
+    wrapper.find("Input").simulate("Change", { target: { value: "z" } });
+    console.log('Filtered List = ', instant.getFilteredList());
     wrapper.update();
     expect(instant.getFilteredList()).toEqual([]);
   });
@@ -583,7 +584,7 @@ describe("Testing for searching if value not found.", () => {
     let instant = wrapper.instance();
     let inputNoData = wrapper.find("Input");
     console.log(inputNoData);
-    inputNoData.simulate("change");
+    inputNoData.simulate("change", {target: {value: "abc"}});
     // console.log(instant.getFilteredList());
 
     wrapper.update();
