@@ -96,7 +96,8 @@ export const getMonths = function (year, showWeeks, disabledList) {
 	}
 }
 
-export const getSearchObj = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
+export const getSearchObj = function (options) {
+	let {lowerLimit, upperLimit, showWeeks, showQuarters, disabledList} = options;
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		lowerLimit = parseInt(lowerLimit);
 		let searchObj = [];		
@@ -136,10 +137,124 @@ export const getSearchObj = function (lowerLimit, upperLimit, showWeeks, showQua
 	}
 }
 
+export const getQuarterObject = (quarter, showChild, state, months) => {
+	return {
+		"quarter": quarter,
+		"showChild": showChild,
+		"state": state,
+		"months": [...months]
+	};
+}
+
+export const getYearObject = (year, showChild, state, children, showQuarters) => {
+	if (showQuarters === true) {
+		return {
+			"year": year,
+			"showChild": showChild,
+			"state": state,
+			"quarters": [...children]
+		};
+	} else {
+		return {
+			"year": year,
+			"showChild": showChild,
+			"state": state,
+			"months": [...children]
+		};
+	}
+}
+
+export const getMonthObject = (month, showChild, state, daysWeeks, showWeeks) => {
+	return (showWeeks === true) ? {
+		"month": month,
+		"showChild": showChild,
+		"state": state,
+		"weeks": [...daysWeeks]
+	} : {
+			"month": month,
+			"showChild": showChild,
+			"state": state,
+			"days": [...daysWeeks]
+		};
+}
+
+export const getWeekObject = (week, showChild, state, days) => {
+	return {
+		"week": week,
+		"showChild": showChild,
+		"state": state,
+		"days": [...days]
+	};
+}
+
+export const getDayObject = (date, day, state) => {
+	return {
+		"date": date,
+		"day": day,
+		"state": state
+	};
+}
+
+const subFilterQuarters = (year, quarters, showWeeks, showQuarters, callback) => {
+	let yearState = 0;
+	let _quarters = [];
+	quarters.forEach((quarter) => {
+		var quarterName = quarter['quarter'].toString();
+		let _months = [];
+		var months = [...quarter['months']];
+		months.forEach((month) => {
+			if (showWeeks === true) {
+				let _weeks = [];
+				var weeks = [...month['weeks']];
+				weeks.forEach((week) => {
+					let _days = [];
+					var days = [...week['days']];
+					days.forEach((day) => {
+						_days.push(getDayObject(day.date, day.day, 1));
+					});
+
+					_weeks.push(getWeekObject(week.week, false, 1, [..._days]));
+				});
+
+				_months.push(getMonthObject(month.month, false, 1, [..._weeks], true));
+			} else {
+				let _days = [];
+				var days = [...month['days']];
+				days.forEach((day) => {
+					_days.push(getDayObject(day.date, day.day, 1));
+				});
+				
+				_months.push(getMonthObject(month.month, false, 1, [..._days], false));
+			}
+		});
+		_quarters.push(getQuarterObject(quarterName, true, 1, [..._months]));
+	});
+	callback(yearState, _quarters);
+}
 
 export let fullListOfYears = [];
 
-export const getFilterListOfYears = (_years, showWeeks, showQuarters, disabledList) => {
+export const getFilterListOfYears = (years, showWeeks, showQuarters, disabledList) => {
+	let _years = [];
+	years.forEach((yr) => {
+		if (showQuarters === true) {
+			let quarters = [...yr['quarters']];
+
+			subFilterQuarters(yr, quarters, showWeeks, showQuarters, (_yearState, _quarters) => {
+				_years.push(getYearObject(yr.year, true, 1, [..._quarters], showQuarters));
+
+				fullListOfYears = [..._years];
+			});
+		} else {
+			let months = [...yr['months']];
+			this.subFilterMonths(months, (_months) => {
+				_years.push(getYearObject(yr.year, true, 1, [..._months], showQuarters));
+			});
+		}
+	});
+}
+
+export const getFilterListOfYears1 = (_years, showWeeks, showQuarters, disabledList) => {
 	let newYears = _years.map(a => ({...a}));
 
 	newYears.forEach((year, yearIndex) => {
@@ -235,7 +350,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					years.splice(disabledList[i] - lowerLimit, 1);
 			}
 		}
-		//getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
+		getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
 	}
 
@@ -254,7 +369,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 			years.push(year);
 			lowerLimit++;
 		}
-		//getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
+		getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
 	}
 }
