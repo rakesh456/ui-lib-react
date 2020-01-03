@@ -65,35 +65,39 @@ class MonthView extends React.PureComponent {
     }
 
     renderMonth = (month, quarter, year, monthIndex) => {
-        let { options } = this.props;
-        return (
-            <div className="VS-MonthRow" key={'month' + monthIndex}>
-                {
-                    (month.showChild) ?
-                        <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
-                        <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
-                }
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month}-{year.year}</span></div>
+        let { options, isFilterView } = this.props;
+        if(isFilterView === true && month.state === 0){
+            return ("")
+        } else { 
+            return (
+                <div className="VS-MonthRow" key={'month' + monthIndex}>
                     {
-                        (month.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, false)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, true)}></input>
+                        (month.showChild) ?
+                            <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
+                            <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
                     }
-                    <span className={this.getMonthCheckBoxClass(month)}></span>
-                    {
-                        (month.hasDisabled) ?
-                            <span className="VS-HasDisabledDot">
-                            </span> : ""
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month}-{year.year}</span></div>
+                        {
+                            (month.state) ?
+                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, false)}></input> :
+                                <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, true)}></input>
+                        }
+                        <span className={this.getMonthCheckBoxClass(month)}></span>
+                        {
+                            (month.hasDisabled) ?
+                                <span className="VS-HasDisabledDot">
+                                </span> : ""
+                        }
+                    </label>
+                    {(month.showChild && (month.weeks || month.days)) ?
+                        options.showWeeks ?
+                            <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> :
+                            <div options={options}>{month.days.map((days, dayIndex) => this.renderDay(days, month, quarter, year, dayIndex))}</div> : ''
                     }
-                </label>
-                {(month.showChild && (month.weeks || month.days)) ?
-                    options.showWeeks ?
-                        <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> :
-                        <div options={options}>{month.days.map((days, dayIndex) => this.renderDay(days, month, quarter, year, dayIndex))}</div> : ''
-                }
 
-            </div>
-        )
+                </div>
+            )
+        }
     }
 
     render() {

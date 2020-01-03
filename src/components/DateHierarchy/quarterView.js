@@ -44,39 +44,42 @@ class QuarterView extends React.PureComponent {
     }
 
     renderQuarter = (quarter, year, quarterIndex) => {
-        let { options } = this.props;
+        let { options, isFilterView } = this.props;
         let quarterName = (quarter && quarter.quarter) ? quarter.quarter : '';
-        return (
-            <div className="VS-QuarterRow" key={'quarter' + quarterIndex}>
-                {
-                    (quarter.showChild) ?
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, true)}>+</span>
-                }
-                <label className="VS-Checkbox-Container">
-
-                    <div className="VS-Tooltip">{quarterName}<span className="VS-Tooltiptext">{quarterName}-{year.year}</span></div>
+        if(isFilterView === true && quarter.state === 0){
+            return ("")
+        } else {
+            return (
+                <div className="VS-QuarterRow" key={'quarter' + quarterIndex}>
                     {
-                        (quarter.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, false)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, true)}></input>
+                        (quarter.showChild) ?
+                            <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
+                            <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, true)}>+</span>
                     }
-                    <span className={this.getQuarterCheckBoxClass(quarter)}></span>
+                    <label className="VS-Checkbox-Container">
+    
+                        <div className="VS-Tooltip">{quarterName}<span className="VS-Tooltiptext">{quarterName}-{year.year}</span></div>
+                        {
+                            (quarter.state) ?
+                                <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, false)}></input> :
+                                <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, true)}></input>
+                        }
+                        <span className={this.getQuarterCheckBoxClass(quarter)}></span>
+                        {
+                            (quarter.hasDisabled) ?
+                            <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                            </span><span className="VS-Tooltiptext">Few months in this quarter are disabled</span></div> : ""
+                        }
+                    </label>
                     {
-                        (quarter.hasDisabled) ?
-                        <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                        </span><span className="VS-Tooltiptext">Few months in this quarter are disabled</span></div> : ""
+                        (quarter.showChild && quarter.months) ?
+                            <MonthView options={options} isFilterView={isFilterView} years={this.props.years} quarter={quarter} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView>
+                            : ''
                     }
-                </label>
-                {
-                    (quarter.showChild && quarter.months) ?
-                        <MonthView options={options} years={this.props.years} quarter={quarter} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView>
-                        : ''
-                }
-
-            </div>
-
-        )
+    
+                </div>
+            )
+        }
     }
 
     render() {

@@ -86,7 +86,14 @@ export const getMonths = function (year, showWeeks, disabledList) {
 	let months = [];
 	if (showWeeks === false) {
 		for (var i = 0; i < 12; i++) {
-			var monthObj = { "month": MONTH_SHORT_NAMES_TITLE_CASE[i], "showChild": false, "state": 0, "days": getMonthDays(i + 1, year, disabledList) }
+			var monthObj = { 
+				"month": MONTH_SHORT_NAMES_TITLE_CASE[i], 
+				"searchString": MONTH_NAMES[i],
+				"showChild": false, 
+				"state": 0, 
+				"days": getMonthDays(i + 1, year, disabledList) 
+			}
+
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
 				months.pop();
@@ -94,11 +101,11 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			}
 		}
 		return months;
-	}
-	else {
+	} else {
 		for (i = 0; i < 12; i++) {
 			monthObj = {
 				"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
+				"searchString": MONTH_NAMES[i],
 				"showChild": false,
 				"state": 0,
 				"hasDisabled": false,
@@ -114,7 +121,7 @@ export const getMonths = function (year, showWeeks, disabledList) {
 }
 
 export const getSearchObj = function (options) {
-	let {lowerLimit, upperLimit, showWeeks, showQuarters, disabledList} = options;
+	let {lowerLimit, upperLimit, showWeeks, showQuarters} = options;
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		lowerLimit = parseInt(lowerLimit);
 		let searchObj = [];		

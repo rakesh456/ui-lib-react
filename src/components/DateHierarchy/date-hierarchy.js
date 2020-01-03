@@ -1,5 +1,5 @@
 import React from "react";
-import YearView from "./yearView";
+import DatehierarchyView from "./datehierarchyView";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
@@ -15,7 +15,7 @@ class DateHierarchy extends React.PureComponent {
     render() {        
         return (
             <div>
-                <YearView options={this.props.options} ></YearView>
+                <DatehierarchyView options={this.props.options} ></DatehierarchyView>
             </div>
         )    
     }
