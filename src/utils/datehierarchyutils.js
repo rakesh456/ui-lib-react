@@ -90,13 +90,11 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
 				months.pop();
-				// months.hasDisabled = true;
 			}
 		}
 		return months;
 	}
 	else {
-		let hasDisabled = false;
 		for (i = 0; i < 12; i++) {
 			monthObj = {
 				"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
@@ -107,8 +105,7 @@ export const getMonths = function (year, showWeeks, disabledList) {
 			}
 			months.push(monthObj);
 			if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1 + '/' + year)){
-				 hasDisabled = true;
-				
+				months.pop();
 			}
 		}
 		return months;
@@ -369,12 +366,12 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 			}
 		}
 
-		if (disabledList) {
-			for (var i = 0; i < disabledList.length; i++) {
-				if (disabledList[i] >= initial && disabledList[i] <= final)
-					years.splice(disabledList[i] - lowerLimit, 1);
-			}
-		}
+		// if (disabledList) {
+		// 	for (var i = 0; i < disabledList.length; i++) {
+		// 		if (disabledList[i] >= initial && disabledList[i] <= final)
+		// 			years.splice(disabledList[i] - lowerLimit, 1);
+		// 	}
+		// }
 		getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
 	}
