@@ -1,4 +1,5 @@
-import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual,valueIsInDisabledList,checkIsInValidLowerUpper,isLeft,isRight,checkFullMonthOrYearDisabled,getInvalidDateMessage,getNewUpdateDateByArrow} from '../src/utils/calendar';
+import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual,valueIsInDisabledList,checkIsInValidLowerUpper,isLeft,isRight,checkFullMonthOrYearDisabled,getInvalidDateMessage,getNewUpdateDateByArrow, formatOptions} from '../src/utils/calendar';
+import { getDateByFormat } from '../src/utils/utils';
 
 //Test for isCalendarFormat
 describe('Testing on function isCalendarFormat',()=>{
@@ -447,8 +448,25 @@ describe('Testing on function getIsoDate',()=>{
     let date = new Date()
     let date1 = new Date('8/26/2019')
     let d = '09/24/2019'
+
+    let outputDate1 = dateFormat(date)
+
+    function dateFormat( date){
+        let month = '' +(1+ date.getMonth())
+        if (month.length < 2) month = '0' + month;
+        let day = ''+ date.getDate()
+        if (day.length < 2) day = '0' + day;
+
+        let year = ''+date.getFullYear();
+
+        date = [year,month,day].join('-')
+        return date
+    }
+    
+
+    
     let input = [date,date1,undefined,null,d]
-    let output = [date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),'2019-08-26',date.getFullYear()+'-'+(date.getMonth()+1)+'-'+date.getDate(),null,null]
+    let output = [outputDate1,'2019-08-26',outputDate1,null,null]
     let messages = ['Passing current date the function will return date n format YYYY-MM-DD',
                     'Passing any date then function still returns date in format YYYY-MM-DD',
                     'Passing undefined then function retruns current date in format YYYY-MM-DD',

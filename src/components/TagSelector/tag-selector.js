@@ -282,6 +282,7 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
+    console.log('in filtered list')
     setTimeout(() => {
       console.log('in filter')
       let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
@@ -293,6 +294,7 @@ class TagSelector extends React.PureComponent {
   };
 
   updateFilterItems = _val => {
+    console.log('in update list')
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
