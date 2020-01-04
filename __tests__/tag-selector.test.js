@@ -2,11 +2,12 @@
 import TagSelector from "../src/components/TagSelector/tag-selector";
 import ItemsList from "../src/components/TagSelector/tag-items-list";
 import React from "react";
-import renderer from "react-test-renderer";
+//import renderer from "react-test.skip-renderer";
 import ReactDOM from "react-dom";
 // ../../src/utils/tagselectorutils
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
+import sinon from "sinon";
 import { placeholder } from "@babel/types";
 
 const ITEM_LIST = [
@@ -266,7 +267,7 @@ it("Tag selector renders without crashing", () => {
 describe("should render without crashing", () => {
   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.
 
-  test("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
+  test.skip("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
     let options = {
       showHelper: true,
       allowNewValue: true,
@@ -280,7 +281,7 @@ describe("should render without crashing", () => {
   });
 
   //Checking whereas the new element we added is rendering properly in the list or not.
-  test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
+  test.skip("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -309,7 +310,7 @@ describe("should render without crashing", () => {
   });
 
   //add selected item.
-  test("add selected item ", () => {
+  test.skip("add selected item ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -340,7 +341,7 @@ describe("should render without crashing", () => {
   });
 
   //Check list of items while searching using input value.
-  test("Check list of items while searching using input value ", () => {
+  test.skip("Check list of items while searching using input value ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -371,7 +372,7 @@ describe("should render without crashing", () => {
   });
 
   //Check selected items using maxItemCounter.
-  test("Check selected items using maxItemCounter ", () => {
+  test.skip("Check selected items using maxItemCounter ", () => {
     let options = { showHelper: false, maxItemCounter: 2 };
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -395,7 +396,7 @@ describe("should render without crashing", () => {
   });
 
   //Check remove button enabled or not when canRemoveAll is true.
-  test("Check remove button enabled or not when canRemoveAll is true ", () => {
+  test.skip("Check remove button enabled or not when canRemoveAll is true ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -422,36 +423,45 @@ describe("should render without crashing", () => {
 
 // check getting selected item
 describe("Checking for getting selected items", () => {
-  test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+  test.skip("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
 
     instant.setJsonData(ITEM_LIST);
     // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+    // we have to set the search string
+    /*
+    WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
+    */
     wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([]);
+    expect(instant.getSelectedValues()).toEqual([]);    
   });
 
   test("getting selected items, when passing some seleted item which is present in listItems", () => {
     const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
+    options.showHelper = true;
+    
+    let wrapper = mount(<TagSelector options={options}/>);
     const instant = wrapper.instance();
     instant.setJsonData(ITEM_LIST);
-    // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    // wrapper.find("Input").simulate("change", { target: { value: "z" } });
-    console.log(instant. renderSelectedItems())
-    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').simulate('focus').find('Input').simulate('change'))
-    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').instance.value = 'aa')
+
+    console.log(wrapper.debug());
+    
+    //wrapper.find('Input')._valueTracker.setValue("kw");
+    //wrapper.find('Input').instance.value = "kw";
+    wrapper.find('Input').simulate('change', {target: {value: "kw"}});
+    //console.log(wrapper.find('Input').instance);
+    
+
     wrapper.update();
-    instant.updateFilterItems('aa')
-    expect(instant.getFilteredList()).toEqual([]);
+    expect(instant.getFilteredList()).toEqual([{ value: "Kuwait", key: "KW" }]);
   });
 });
 
 //Append new element and get newly added element
 describe("get newly added element", () => {
-  test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+  test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -464,7 +474,7 @@ describe("get newly added element", () => {
     ]);
   });
 
-  test("By appending nothing, then checking it is in newlyAddedElements", () => {
+  test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -478,7 +488,7 @@ describe("get newly added element", () => {
 // Default set selected items
 describe('Default set selected items',()=>{
   
-  test("testing",()=>{
+  test.skip("testing",()=>{
     
   })
 })
@@ -486,7 +496,7 @@ describe('Default set selected items',()=>{
 // Checking selected items after refresh method
 
 describe("Checking selected items after refresh method", () => {
-  test("Checking selected items after refresh method, when passing some selected items", () => {
+  test.skip("Checking selected items after refresh method, when passing some selected items", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -503,7 +513,7 @@ describe("Checking selected items after refresh method", () => {
     expect(instant.getSelectedValues()).toEqual([]);
   });
 
-  test("Checking selected items after refresh method, when passing empyt array selected items", () => {
+  test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -523,7 +533,7 @@ describe("Checking selected items after refresh method", () => {
 
 // Check remove item from list
 describe("Check remove item from list", () => {
-  test(' removeListItem() if object is passed to the function then that object got removed from the ListItem array ',()=>{
+  test.skip(' removeListItem() if object is passed to the function then that object got removed from the ListItem array ',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -540,7 +550,7 @@ describe("Check remove item from list", () => {
     ])
   })
 
-  test('If object is passed i.e not in the list then listItem got unchanged',()=>{
+  test.skip('If object is passed i.e not in the list then listItem got unchanged',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -558,7 +568,7 @@ describe("Check remove item from list", () => {
     ])
   })
 
-    test('removeListItem() if object is passed to the function then that object got removed from the selected Items array',()=>{
+    test.skip('removeListItem() if object is passed to the function then that object got removed from the selected Items array',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -579,19 +589,19 @@ describe("Check remove item from list", () => {
 
 // checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
 describe("Testing for searching if value not found.", () => {
-  test('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+  test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
     let options = {
       showHelper: true,
       allowNewValue: false,
       showHierarchy: false
-    };
+    };    
     let wrapper = shallow(<TagSelector options={options} ><ItemsList options={options}/></TagSelector>);
     let instant = wrapper.instance();
     let childInstant = wrapper.find('ItemsList')
     let inputNoData = wrapper.find("Input");
     console.log(childInstant.props())
     inputNoData.simulate("change",{target:{value:'aaa'}});
-    let inputNoData = wrapper.find("Input");
+    inputNoData = wrapper.find("Input");
     console.log(inputNoData);
     inputNoData.simulate("change", {target: {value: "abc"}});
     // console.log(instant.getFilteredList());

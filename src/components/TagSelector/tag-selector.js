@@ -282,11 +282,10 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
-    console.log('in filter list')
-    setTimeout(() => {
-      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
-      console.log(this.inputEl)
-      console.log(this.inputEl.value)
+    console.log('in filter list', e);
+    console.log(this.inputEl);    
+    setTimeout(() => {      
+      let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
       this.updateFilterItems(_val);
       if (_val && this.state.filteredlistItems.length <= 0) {
         this.props.onNotFound();
@@ -527,7 +526,7 @@ class TagSelector extends React.PureComponent {
             onClick={this.onFocus}
             onBlur={this.onBlur}
             onChange={this.filterItemsList}
-            readOnly={readOnly}
+            readOnly={readOnly}            
           />
         </li>
       </ul>
