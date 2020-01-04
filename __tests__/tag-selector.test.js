@@ -1,8 +1,10 @@
+
 import TagSelector from "../src/components/TagSelector/tag-selector";
-import ItemsList from "../src/components/TagSelector/tag-items-list.js";
+import ItemsList from "../src/components/TagSelector/tag-items-list";
 import React from "react";
 import renderer from "react-test-renderer";
 import ReactDOM from "react-dom";
+// ../../src/utils/tagselectorutils
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow } from "enzyme";
 import { placeholder } from "@babel/types";
@@ -437,8 +439,12 @@ describe("Checking for getting selected items", () => {
     const instant = wrapper.instance();
     instant.setJsonData(ITEM_LIST);
     // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    wrapper.find("Input").simulate("change", { target: { value: "z" } });
+    // wrapper.find("Input").simulate("change", { target: { value: "z" } });
+    console.log(instant. renderSelectedItems())
+    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').simulate('focus').find('Input').simulate('change'))
+    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').instance.value = 'aa')
     wrapper.update();
+    instant.updateFilterItems('aa')
     expect(instant.getFilteredList()).toEqual([]);
   });
 });
@@ -563,7 +569,7 @@ describe("Check remove item from list", () => {
       ])
       instant.removeListItem({'key':'Australia', 'value':'Au'})
       wrapper.update()
-      expect(instant.getSelectedValues()).toEqual([
+      expect(instant.getListItem()).toEqual([
         {"key": "Albania", "value": "AL"},
         {"key": "Armenia", "value": "AM"}
     ])
@@ -579,17 +585,16 @@ describe("Testing for searching if value not found.", () => {
       allowNewValue: false,
       showHierarchy: false
     };
-    let wrapper = shallow(<TagSelector options={options} />);
+    let wrapper = shallow(<TagSelector options={options} ><ItemsList options={options}/></TagSelector>);
     let instant = wrapper.instance();
-    let inputNoData = wrapper.find("Input").value();
-    console.log(inputNoData)
-    inputNoData.simulate("change");
-    // console.log(instant.getFilteredList());
-
+    let childInstant = wrapper.find('ItemsList')
+    let inputNoData = wrapper.find("Input");
+    console.log(childInstant.props())
+    inputNoData.simulate("change",{target:{value:'aaa'}});
+    
     wrapper.update();
 
-    instant.getFilteredList()
-      ? expect().toEqual()
-      : expect().toEqual("no data found");
+  
+      
   });
 });
