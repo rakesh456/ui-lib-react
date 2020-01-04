@@ -591,7 +591,10 @@ describe("Testing for searching if value not found.", () => {
     let inputNoData = wrapper.find("Input");
     console.log(childInstant.props())
     inputNoData.simulate("change",{target:{value:'aaa'}});
-    
+    let inputNoData = wrapper.find("Input");
+    console.log(inputNoData);
+    inputNoData.simulate("change");
+    // console.log(instant.getFilteredList());
     wrapper.update();
 
   
