@@ -1,8 +1,10 @@
+
 import TagSelector from "../src/components/TagSelector/tag-selector";
-import ItemsList from "../src/components/TagSelector/tag-items-list.js";
+import ItemsList from "../src/components/TagSelector/tag-items-list";
 import React from "react";
 import renderer from "react-test-renderer";
 import ReactDOM from "react-dom";
+// ../../src/utils/tagselectorutils
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow } from "enzyme";
 import { placeholder } from "@babel/types";
@@ -437,9 +439,12 @@ describe("Checking for getting selected items", () => {
     const instant = wrapper.instance();
     instant.setJsonData(ITEM_LIST);
     // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    wrapper.find("Input").simulate("Change", { target: { value: "z" } });
-    console.log('Filtered List = ', instant.getFilteredList());
+    // wrapper.find("Input").simulate("change", { target: { value: "z" } });
+    console.log(instant. renderSelectedItems())
+    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').simulate('focus').find('Input').simulate('change'))
+    console.log(wrapper.find('.VS-Tag-Input-Border ul li Input').instance.value = 'aa')
     wrapper.update();
+    instant.updateFilterItems('aa')
     expect(instant.getFilteredList()).toEqual([]);
   });
 });
@@ -580,17 +585,19 @@ describe("Testing for searching if value not found.", () => {
       allowNewValue: false,
       showHierarchy: false
     };
-    let wrapper = shallow(<TagSelector options={options} />);
+    let wrapper = shallow(<TagSelector options={options} ><ItemsList options={options}/></TagSelector>);
     let instant = wrapper.instance();
+    let childInstant = wrapper.find('ItemsList')
+    let inputNoData = wrapper.find("Input");
+    console.log(childInstant.props())
+    inputNoData.simulate("change",{target:{value:'aaa'}});
     let inputNoData = wrapper.find("Input");
     console.log(inputNoData);
     inputNoData.simulate("change", {target: {value: "abc"}});
     // console.log(instant.getFilteredList());
-
     wrapper.update();
 
-    instant.getFilteredList()
-      ? expect().toEqual()
-      : expect().toEqual("no data found");
+  
+      
   });
 });

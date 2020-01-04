@@ -282,19 +282,20 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
+    console.log('in filter list')
     setTimeout(() => {
       let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
-      console.log(_val)
+      console.log(this.inputEl)
+      console.log(this.inputEl.value)
       this.updateFilterItems(_val);
       if (_val && this.state.filteredlistItems.length <= 0) {
-        console.log('mu')
         this.props.onNotFound();
       }
     }, 250);
   };
 
   updateFilterItems = _val => {
-    console.log(_val)
+
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
@@ -518,8 +519,7 @@ class TagSelector extends React.PureComponent {
         <li>
           <Input
             ref={el => {(this.inputEl = ReactDOM.findDOMNode(el))
-                            // console.log(this.inputEl)
-                        }}
+              }}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
             placeholder={this.getPlaceholder()}
