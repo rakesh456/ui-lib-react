@@ -3,44 +3,26 @@ import MonthView from "./monthView";
 
 class QuarterView extends React.PureComponent {
 
-    expandQuarter(qt) {
+    toggleQuarterChild(quarter, showChild) {
         let years = [...this.props.years];
-        qt['showChild'] = true;
+        quarter['showChild'] = showChild;
         this.setState({
             years: [...years]
         })
     }
 
-    collapseQuarter(qt) {
-        let years = [...this.props.years];
-        qt['showChild'] = false;
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    onCheckQuarter(qt, row) {
+    toggleQuarterCheck(quarter, year, isCheck) {
         let quarterObj = {
-            qt: qt,
-            row: row,
-            isCheck: true
+            year: year,
+            quarter: quarter,
+            isCheck: isCheck
         }
         this.props.onChangeQuarter(quarterObj);
     }
 
-
-    onUnCheckQuarter(qt, row) {
-        let quarterObj = {
-            qt: qt,
-            row: row,
-            isCheck: false
-        }
-        this.props.onChangeQuarter(quarterObj);
-    }
-
-    getQuarterCheckBoxClass = (qt) => {
+    getQuarterCheckBoxClass = (quarter) => {
         let flag = false;
-        flag = (qt.state === -1) ? true: false;
+        flag = (quarter.state === -1) ? true : false;
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
 
     }
@@ -49,53 +31,64 @@ class QuarterView extends React.PureComponent {
         this.props.onChangeMonth(monthObj);
     }
 
-    onChangeDayHandler = (daysObj) => {
-        this.props.onChangeDay(daysObj);
+    onChangeDayHandler = (dayObj) => {
+        this.props.onChangeDay(dayObj);
     }
 
-    onChangeWeeks = (weeksObj) => {
-        this.props.onChangeWeeks(weeksObj);
+    onChangeWeek = (weekObj) => {
+        this.props.onChangeWeek(weekObj);
     }
 
-    onChangeWeekDays = (weekDaysObj) => {
-        this.props.onChangeWeekDays(weekDaysObj);
+    onChangeWeekDay = (weekDayObj) => {
+        this.props.onChangeWeekDay(weekDayObj);
     }
 
-    renderQuarter = (qt, row, qindex) => {
-        let { options } = this.props;
-        return (
-            <div className="VS-QuarterRow" key={'quarter' +qindex }>
-                {
-                    (qt.showChild) ?
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.collapseQuarter(qt)}>-</span> :
-                        <span className="VS-Quarter-Plus-Minus" onClick={() => this.expandQuarter(qt)}>+</span>
-                }
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{qt.quarter}<span className="VS-Tooltiptext">{qt.quarter}-{row.year}</span></div>
+    renderQuarter = (quarter, year, quarterIndex) => {
+        let { options, isFilterView } = this.props;
+        let quarterName = (quarter && quarter.quarter) ? quarter.quarter : '';
+        if(isFilterView === true && quarter.state === 0){
+            return ("")
+        } else {
+            return (
+                <div className="VS-QuarterRow" key={'quarter' + quarterIndex}>
                     {
-                        (qt.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={() => this.onUnCheckQuarter(qt, row)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={qt.state} onChange={() => this.onCheckQuarter(qt, row)}></input>
+                        (quarter.showChild) ?
+                            <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
+                            <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, true)}>+</span>
                     }
-                    <span className={this.getQuarterCheckBoxClass(qt)}></span>
-                </label>
-                {
-                    (qt.showChild && qt.months) ?
-                        <MonthView options={options} years={this.props.years} qt={qt} row={row}onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeeks={this.onChangeWeeks} onChangeWeekDays={this.onChangeWeekDays}></MonthView>
-                        : ''
-                }
-
-            </div>
-
-        )
+                    <label className="VS-Checkbox-Container">
+    
+                        <div className="VS-Tooltip">{quarterName}<span className="VS-Tooltiptext">{quarterName}-{year.year}</span></div>
+                        {
+                            (quarter.state) ?
+                                <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, false)}></input> :
+                                <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, true)}></input>
+                        }
+                        <span className={this.getQuarterCheckBoxClass(quarter)}></span>
+                        {
+                            (quarter.hasDisabled) ?
+                            <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                            </span><span className="VS-Tooltiptext">Few months in this quarter are disabled</span></div> : ""
+                        }
+                    </label>
+                    {
+                        (quarter.showChild && quarter.months) ?
+                            <MonthView options={options} isFilterView={isFilterView} years={this.props.years} quarter={quarter} year={year} onChange={this.onChangeHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></MonthView>
+                            : ''
+                    }
+    
+                </div>
+            )
+        }
     }
 
     render() {
         const { options } = this.props;
-        let row = this.props.row;
+        let year = this.props.year;
         return (
             <div options={options} onChange={this.props.onChangeHandler}>
                 {
-                    row.quarters.map((qt, qindex) => this.renderQuarter(qt, row, qindex ))
+                    year.quarters.map((quarter, quarterIndex) => this.renderQuarter(quarter, year, quarterIndex))
                 }
             </div>
         )

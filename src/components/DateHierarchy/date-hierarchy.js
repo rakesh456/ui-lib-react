@@ -1,23 +1,21 @@
 import React from "react";
-import { getListOfYears } from "../../utils/datehierarchyutils";
-import YearView from "./yearView";
+import DatehierarchyView from "./datehierarchyView";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
-        super(props);
-        let {options} = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.disabledYear);
+        super(props);              
+        let yearList = [];
         this.state = { years: yearList};
     }
+    
     updateDimensions() { 
         
     }
 
-    render() {
-        const {options} = this.props;
+    render() {        
         return (
-            <div options = {options}>
-                <YearView options={options} ></YearView>
+            <div>
+                <DatehierarchyView options={this.props.options} ></DatehierarchyView>
             </div>
         )    
     }

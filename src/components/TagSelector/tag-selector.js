@@ -162,6 +162,7 @@ class TagSelector extends React.PureComponent {
     });
 
     this.props.onFocus();
+    console.log(this.inputEl.value)
     this.updateFilterItems(this.inputEl.value);
   };
 
@@ -172,7 +173,6 @@ class TagSelector extends React.PureComponent {
 
   onKeyDownHandler = evt => {
     if (evt) {
-        
       evt = evt ? evt : window.event;
       const charCode = evt.which ? evt.which : evt.keyCode;
       const _val = this.state.currentItemIndex;
@@ -287,6 +287,10 @@ class TagSelector extends React.PureComponent {
     setTimeout(() => {      
       let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
       console.log(this.el.ul);
+    console.log('in filtered list')
+    setTimeout(() => {
+      console.log('in filter')
+      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
       this.updateFilterItems(_val);
       if (_val && this.state.filteredlistItems.length <= 0) {
         this.props.onNotFound();
@@ -295,7 +299,7 @@ class TagSelector extends React.PureComponent {
   };
 
   updateFilterItems = _val => {
-
+    console.log('in update list')
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
@@ -320,6 +324,7 @@ class TagSelector extends React.PureComponent {
           }
         }
     
+
       });
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
     } else {
@@ -520,6 +525,7 @@ class TagSelector extends React.PureComponent {
           <Input
             ref={el => {(this.inputEl = ReactDOM.findDOMNode(el))
               }}
+            ref={el => (this.inputEl = ReactDOM.findDOMNode(el))}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
             placeholder={this.getPlaceholder()}
@@ -528,12 +534,12 @@ class TagSelector extends React.PureComponent {
             onBlur={this.onBlur}
             onChange={this.filterItemsList}
             readOnly={readOnly}            
+            readOnly={readOnly}
           />
         </li>
       </ul>
     );
   }
-
   render() {
     const {
       shouldListOpen,

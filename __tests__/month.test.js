@@ -160,8 +160,16 @@ describe('Testing on function dateToYear',()=>{
 // Test of function dateToMMYYYY
 describe('Testing on function dateToMMYYYY',()=>{
   let d = new Date()
+  let outputDate = dateFormat(d)
+  function dateFormat( date){
+    let month = '' +(1+ date.getMonth())
+    if (month.length < 2) month = '0' + month;
+    let year = ''+date.getFullYear();
+    date = [month,year].join('/')
+    return date
+}
   let dateTestValuesInputArray = ['3/4/1987','18/01/2019','2015/02/03',null,undefined]
-  let dateTestValuesOutputArray = ['03/1987',d.getMonth()+1+'/'+d.getFullYear(),'02/2015',d.getMonth()+1+'/'+d.getFullYear(),d.getMonth()+1+'/'+d.getFullYear()]
+  let dateTestValuesOutputArray = ['03/1987',outputDate,'02/2015',outputDate,outputDate]
   let messageDisplayForEachTestCase = ["If we pass date to function it return it's months and full year of the date in MM/YYYY format",'If we pass invalid date function returns current date month and full year in MM/YYYY format',"If we pass date in different format then also it gives it's month and full year date in MM/YYYY format","For null value function will return current date month and fully year in MM/YYYY format","For udefined value function will return current date month and fully year in MM/YYYY format"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
@@ -175,10 +183,10 @@ describe('Testing on function dateToQQYYYY',()=>{
   let d = new Date()
   let currentMonth = d.getMonth() + 1
   let _val = (currentMonth <= 12 && currentMonth >= 10)? 4 : (currentMonth <= 9 && currentMonth >= 7)? 3 : (currentMonth <= 6 && currentMonth >= 4)? 2 : 1;
-  let quater = 'Q' + _val;
+  let quarter = 'Q' + _val;
   let dateTestValuesInputArray = ['3/4/1987','18/01/2019','2015/02/03',null,undefined]
-  let dateTestValuesOutputArray = ['Q1/1987',quater+'/'+d.getFullYear(),'Q1/2015',quater+'/'+d.getFullYear(),quater+'/'+d.getFullYear()]
-  let messageDisplayForEachTestCase = ["If we pass date to function it return Quater with its full year",'If we pass invalid date function returns current month Quater and its full year ',"If we pass date in different format then also it gives it's current quater and full year","For null value function will return current month quater and fully year","For udefined value function will return current month quater and  fully year"]
+  let dateTestValuesOutputArray = ['Q1/1987',quarter+'/'+d.getFullYear(),'Q1/2015',quarter+'/'+d.getFullYear(),quarter+'/'+d.getFullYear()]
+  let messageDisplayForEachTestCase = ["If we pass date to function it return Quarter with its full year",'If we pass invalid date function returns current month Quarter and its full year ',"If we pass date in different format then also it gives it's current quarter and full year","For null value function will return current month quarter and fully year","For udefined value function will return current month quarter and  fully year"]
   for (let i = 0; i < dateTestValuesInputArray.length; i++) {
     test(`${messageDisplayForEachTestCase[i]}`,()=>{
       expect(dateToQQYYYY(dateTestValuesInputArray[i],)).toEqual(dateTestValuesOutputArray[i])
@@ -189,11 +197,11 @@ describe('Testing on function dateToQQYYYY',()=>{
 //Test of function getQQFromMonth
 describe('Testing of function getQQFromMonth',()=>{
     let d = 5
-    test('Testing a function that it return the quater of the date ',()=>{
+    test('Testing a function that it return the quarter of the date ',()=>{
       expect(getQQFromMonth(d)).toEqual('Q2')
     })
     let month = 15
-    test('Testing a function that it return the quater of the date ',()=>{
+    test('Testing a function that it return the quarter of the date ',()=>{
       expect(getQQFromMonth(month)).toEqual('Q1')
     })
 })
@@ -268,16 +276,24 @@ describe('Should render without crashing', () => {
   })
   
    test('checking the default Year in MM/YYYY format', () =>{
-     let options = {"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/2018", "upperLimit": "03/2025", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/2019", "10/2024"]};
-     var wrapper = shallow(<DatePicker options={options} />);
-     let html = wrapper.find('.VS-Calendar-Input').props().value;
-     expect(html).toEqual(new Date().getMonth()+1+'/'+new Date().getFullYear());
+    let options = {"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "08/2018", "upperLimit": "03/2025", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["09/2019", "10/2024"]};
+    var wrapper = shallow(<DatePicker options={options} />);
+    let html = wrapper.find('.VS-Calendar-Input').props().value;
+    let date = new Date();
+    let month = '' +(1+ date.getMonth())
+    if (month.length < 2) month = '0' + month;
+    let year = ''+date.getFullYear();
+    date = [month,year].join('/')
+      
+  
+    expect(html).toEqual(date);
   })
   
   test('checking the default Year in QQ/YYYY format', () =>{
     let options = {"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2018", "upperLimit": "Q3/2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2020", "Q3/2025"]};
     var wrapper = shallow(<DatePicker options={options} />);
     let html = wrapper.find('.VS-Calendar-Input').props().value;
+    console.log(html)
     expect(html).toEqual('Q4/2019');
   })
 

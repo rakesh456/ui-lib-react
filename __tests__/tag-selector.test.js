@@ -9,6 +9,15 @@ import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow, mount } from "enzyme";
 
 import { placeholder } from "@babel/types";
+import TagSelector from "../src/components/TagSelector/tag-selector";
+import ItemsList from "../src/components/TagSelector/tag-items-list.js";
+import React from "react";
+import renderer from "react-test-renderer";
+import ReactDOM from "react-dom";
+import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
+import { shallow } from "enzyme";
+import { placeholder } from "@babel/types";
+import desktop from "react-icons/lib/fa/desktop";
 
 const ITEM_LIST = [
   { value: 'Aa People"S Democratic Republic', key: "zLA" },
@@ -268,6 +277,7 @@ describe("should render without crashing", () => {
   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.
 
   test.skip("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
+  test("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
     let options = {
       showHelper: true,
       allowNewValue: true,
@@ -282,6 +292,7 @@ describe("should render without crashing", () => {
 
   //Checking whereas the new element we added is rendering properly in the list or not.
   test.skip("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
+  test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -309,8 +320,9 @@ describe("should render without crashing", () => {
     ]);
   });
 
-  //add selected item.
+  //add selected item
   test.skip("add selected item ", () => {
+  test("add selected item ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -342,6 +354,7 @@ describe("should render without crashing", () => {
 
   //Check list of items while searching using input value.
   test.skip("Check list of items while searching using input value ", () => {
+  test("Check list of items while searching using input value ", () => {
     let options = {
       showHelper: false,
       allowNewValue: true,
@@ -459,6 +472,107 @@ describe("Checking for getting selected items", () => {
 //Append new element and get newly added element
 describe("get newly added element", () => {
   test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
+    
+    // let optionsHierarchy = {
+    //   showHelper: false,
+    //   allowNewValue: true,
+    //   showHierarchy: true
+    // };
+    // tagselector2.setJsonData([{
+    //   "Bihar": [
+    //       {"key": "Arwal", "value": "Arwal"},
+    //       {"key": "Nawada", "value": "Nawada"},
+    //       {"key": "Gopalganj", "value": "Gopalganj"}
+    //   ]},
+    //   {"Andhra Pradesh": [
+    //       {"key": "Adoni", "value": "Adoni"}, 
+    //       {"key": "Bapatla", "value": "Bapatla"},
+    //       {"key": "Anantapur", "value": "Anantapur"}
+    //   ]}
+    // ])
+
+  });
+  // Check 
+
+  //Check selected items using maxItemCounter.
+  test("Check selected items using maxItemCounter ", () => {
+    let options = { showHelper: false, maxItemCounter: 2 };
+    let wrapper = shallow(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData([
+      { key: "Albania", value: "AL" },
+      { key: "Armenia", value: "AM" },
+      { key: "Angola", value: "AO" },
+      { key: "Anguilla", value: "AI" }
+    ]);
+
+    instant.setSelectedItems([
+      { key: "Albania", value: "AL" },
+      { key: "Angola", value: "AO" },
+      { key: "Anguilla", value: "AI" }
+    ]);
+    wrapper.update();
+    const selectedWrapper = wrapper.find(
+      ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+    );
+    expect(selectedWrapper.text()).toEqual("3 SELECTED");
+  });
+
+  //Check remove button enabled or not when canRemoveAll is true.
+  test("Check remove button enabled or not when canRemoveAll is true ", () => {
+    let options = {
+      showHelper: false,
+      allowNewValue: true,
+      showHierarchy: false,
+      canRemoveAll: true,
+      maxItemCounter: 2
+    };
+    let wrapper = shallow(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData([
+      { key: "Albania", value: "AL" },
+      { key: "Armenia", value: "AM" }
+    ]);
+
+    instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+    wrapper.update();
+    const removeButtonWrapper = wrapper.find(
+      ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+    );
+    const classNames = removeButtonWrapper.prop("className");
+    expect(classNames).toMatch(/VS-Disabled/);
+  });
+});
+
+// check getting selected item
+describe("Checking for getting selected items", () => {
+  test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+    const options = DEFAULT_OPTIONS;
+    let wrapper = shallow(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+
+    instant.setJsonData(ITEM_LIST);
+    // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+    wrapper.update();
+    expect(instant.getSelectedValues()).toEqual([]);
+  });
+
+  test("getting selected items, when passing some seleted item which is present in listItems", () => {
+    const options = DEFAULT_OPTIONS;
+    let wrapper = shallow(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData(ITEM_LIST);
+    // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
+    wrapper.find("Input").simulate("change", { target: { value: "z" } });
+    wrapper.update();
+    expect(instant.getFilteredList()).toEqual([]);
+  });
+});
+
+//Append new element and get newly added element
+describe("get newly added element", () => {
+  test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -472,6 +586,7 @@ describe("get newly added element", () => {
   });
 
   test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
+  test("By appending nothing, then checking it is in newlyAddedElements", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -486,6 +601,7 @@ describe("get newly added element", () => {
 describe('Default set selected items',()=>{
   
   test.skip("testing",()=>{
+  test("testing",()=>{
     
   })
 })
@@ -494,6 +610,7 @@ describe('Default set selected items',()=>{
 
 describe("Checking selected items after refresh method", () => {
   test.skip("Checking selected items after refresh method, when passing some selected items", () => {
+  test("Checking selected items after refresh method, when passing some selected items", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -503,6 +620,9 @@ describe("Checking selected items after refresh method", () => {
       { key: "Australia", value: "AL" }
     ]);
     instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
+    
+    instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
+
 
     instant.refresh();
 
@@ -510,7 +630,9 @@ describe("Checking selected items after refresh method", () => {
     expect(instant.getSelectedValues()).toEqual([]);
   });
 
+
   test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
+  test("Checking selected items after refresh method, when passing empyt array selected items", () => {
     const options = DEFAULT_OPTIONS;
     let wrapper = shallow(<TagSelector options={options} />);
     const instant = wrapper.instance();
@@ -531,6 +653,7 @@ describe("Checking selected items after refresh method", () => {
 // Check remove item from list
 describe("Check remove item from list", () => {
   test.skip(' removeListItem() if object is passed to the function then that object got removed from the ListItem array ',()=>{
+  test(' removeListItem() if object is passed to the function then that object got removed from the ListItem array ',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -548,6 +671,7 @@ describe("Check remove item from list", () => {
   })
 
   test.skip('If object is passed i.e not in the list then listItem got unchanged',()=>{
+  test('If object is passed i.e not in the list then listItem got unchanged',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -566,6 +690,7 @@ describe("Check remove item from list", () => {
   })
 
     test.skip('removeListItem() if object is passed to the function then that object got removed from the selected Items array',()=>{
+    test('removeListItem() if object is passed to the function then that object got removed from the selected Items array',()=>{
       let options ={"showHelper": true, "allowNewValue": true, "showHierarchy": false}
       let wrapper = shallow(<TagSelector options = {options}/>);
       const instant = wrapper.instance();
@@ -577,6 +702,9 @@ describe("Check remove item from list", () => {
       instant.removeListItem({'key':'Australia', 'value':'Au'})
       wrapper.update()
       expect(instant.getListItem()).toEqual([
+      instant.removeListItem({'key':'Australia', 'value':'AU'})
+      wrapper.update()
+      expect(instant.getSelectedValues()).toEqual([
         {"key": "Albania", "value": "AL"},
         {"key": "Armenia", "value": "AM"}
     ])
@@ -608,3 +736,36 @@ describe("Testing for searching if value not found.", () => {
       
   });
 });
+  test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+    let options = {
+      showHelper: true,
+      allowNewValue:false,
+      showHierarchy: false
+    };
+    // let wrapper = shallow(<TagSelector options={options} />);
+    // let instant = wrapper.instance();
+    // // let inputNoData = wrapper.find("Input");
+    // // console.log(inputNoData)
+    // wrapper.find("Input").simulate("change",{target:{value:'a'}});
+    // // console.log(instant.getFilteredList())
+
+    let wrapper = shallow(<TagSelector options={options} />)
+    let get = wrapper.instance()
+    
+    // .simulate('change',{target:{value:'nepal'}})
+    wrapper.update()
+    const a = wrapper.find('Input')
+    console.log(a.simulate('change',{target:{value:'nepal'}}))
+    console.log(a.props().className)
+    console.log(wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').length)
+
+    console.log()
+    
+
+
+    // wrapper.update();
+    expect('aman').toEqual('aman');
+  });
+});
+
+
