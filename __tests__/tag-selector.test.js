@@ -449,16 +449,8 @@ describe("Checking for getting selected items", () => {
     instant.setJsonData(ITEM_LIST);
 
     console.log(wrapper.debug());
-    
-    //wrapper.find('Input')._valueTracker.setValue("kw");
-    //wrapper.find('Input').instance.value = "kw";
-    wrapper.find('Input').simulate('change',)
-   
-    wrapper.find('Input').simulate('change');
+    wrapper.find('Input').simulate('change',{target:{value:'kw'}})
     console.log(wrapper.find('Input').props())
-    //console.log(wrapper.find('Input').instance);
-    
-
     wrapper.update();
     expect(instant.getFilteredList()).toEqual([{ value: "Kuwait", key: "KW" }]);
   });
