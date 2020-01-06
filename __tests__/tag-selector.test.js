@@ -1,17 +1,11 @@
 
-import TagSelector from "../src/components/TagSelector/tag-selector";
-import ItemsList from "../src/components/TagSelector/tag-items-list";
 import React from "react";
-//import renderer from "react-test.skip-renderer";
 import ReactDOM from "react-dom";
-// ../../src/utils/tagselectorutils
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow, mount } from "enzyme";
-
 import { placeholder } from "@babel/types";
 import TagSelector from "../src/components/TagSelector/tag-selector";
 import ItemsList from "../src/components/TagSelector/tag-items-list.js";
-import React from "react";
 import renderer from "react-test-renderer";
 import ReactDOM from "react-dom";
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
@@ -749,9 +743,9 @@ describe("Testing for searching if value not found.", () => {
     // wrapper.find("Input").simulate("change",{target:{value:'a'}});
     // // console.log(instant.getFilteredList())
 
-    let wrapper = shallow(<TagSelector options={options} />)
+    let wrapper = mount(<TagSelector options={options} />)
     let get = wrapper.instance()
-    
+    console.log(wrapper.debug())
     // .simulate('change',{target:{value:'nepal'}})
     wrapper.update()
     const a = wrapper.find('Input')
