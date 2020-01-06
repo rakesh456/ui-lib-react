@@ -7,7 +7,7 @@ import ReactDOM from "react-dom";
 // ../../src/utils/tagselectorutils
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow, mount } from "enzyme";
-import sinon from "sinon";
+
 import { placeholder } from "@babel/types";
 
 const ITEM_LIST = [
@@ -434,6 +434,7 @@ describe("Checking for getting selected items", () => {
     /*
     WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
     */
+    
     wrapper.update();
     expect(instant.getSelectedValues()).toEqual([]);    
   });
@@ -442,15 +443,19 @@ describe("Checking for getting selected items", () => {
     const options = DEFAULT_OPTIONS;
     options.showHelper = true;
     
-    let wrapper = mount(<TagSelector options={options}/>);
+    let wrapper = shallow(<TagSelector options={options}/>);
     const instant = wrapper.instance();
+    console.log(wrapper.instance())
     instant.setJsonData(ITEM_LIST);
 
     console.log(wrapper.debug());
     
     //wrapper.find('Input')._valueTracker.setValue("kw");
     //wrapper.find('Input').instance.value = "kw";
-    wrapper.find('Input').simulate('change', {target: {value: "kw"}});
+    wrapper.find('Input').simulate('change',)
+   
+    wrapper.find('Input').simulate('change');
+    console.log(wrapper.find('Input').props())
     //console.log(wrapper.find('Input').instance);
     
 

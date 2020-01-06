@@ -286,6 +286,7 @@ class TagSelector extends React.PureComponent {
     console.log(this.inputEl);    
     setTimeout(() => {      
       let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
+      console.log(this.el.ul);
       this.updateFilterItems(_val);
       if (_val && this.state.filteredlistItems.length <= 0) {
         this.props.onNotFound();
