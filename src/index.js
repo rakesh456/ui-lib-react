@@ -45,7 +45,7 @@ Array.prototype.forEach.call(
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
-     // eslint-disable-next-line
+    // eslint-disable-next-line
     let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
@@ -144,8 +144,6 @@ function tagSelectorRender(el) {
         tagComponentElement,
         el
     )
-
-
 }
 
 Array.prototype.forEach.call(
@@ -159,7 +157,7 @@ function dateHierarchyRender(el) {
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
     var HierarchyComponentElement = <DateHierarchy options={options} />
- // eslint-disable-next-line
+    // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
         el

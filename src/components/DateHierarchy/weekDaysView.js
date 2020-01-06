@@ -2,64 +2,33 @@ import React from "react";
 
 class WeekDaysView extends React.PureComponent {
 
-    expandWeek(week) {
+    toggleWeekChild(week, showChild) {
         let years = [...this.props.years];
-        week['showChild'] = true;
+        week['showChild'] = showChild;
         this.setState({
             years: [...years]
         })
     }
 
-    collapseWeek(week) {
-        let years = [...this.props.years];
-        week['showChild'] = false;
-        this.setState({
-            years: [...years]
-        })
-    }
-
-    onCheckWeek(week, month, quarter, year) {
+    toggleWeekCheck(week, month, quarter, year, isCheck) {
         let weekObj = {
-            week: week,
-            month: month,
-            quarter: quarter,
             year: year,
-            isCheck: true
+            quarter:quarter,
+            month: month,
+            week: week,
+            isCheck: isCheck
         }
         this.props.onChangeWeek(weekObj);
     }
 
-    onUnCheckWeek(week, month, quarter, year) {
-        let weekObj = {
-            week: week,
-            month: month,
-            quarter: quarter,
-            year: year,
-            isCheck: false
-        }
-        this.props.onChangeWeek(weekObj);
-    }
-
-    onCheckWeekDay(day, week, month, quarter, year) {
+    toggleWeekDayCheck(day, week, month, quarter, year, isCheck) {
         let weekDayObj = {
-            day: day,
-            week: week,
-            month: month,
-            quarter: quarter,
             year: year,
-            isCheck: true
-        }
-        this.props.onChangeWeekDay(weekDayObj);
-    }
-
-    onUnCheckWeekDay(day, week, month, quarter, year) {
-        let weekDayObj = {
-            day: day,
-            week: week,
+            quarter:quarter,
             month: month,
-            quarter: quarter,
-            year: year,
-            isCheck: false
+            week: week,
+            day: day,
+            isCheck: isCheck
         }
         this.props.onChangeWeekDay(weekDayObj);
     }
@@ -78,8 +47,8 @@ class WeekDaysView extends React.PureComponent {
 
                     {
                         (day.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onUnCheckWeekDay(day, week, month, quarter, year)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.onCheckWeekDay(day, week, month, quarter, year)}></input>
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleWeekDayCheck(day, week, month, quarter, year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleWeekDayCheck(day, week, month, quarter, year, true)}></input>
                     }
 
                     <span className="VS-Check-Checkmark"></span>
@@ -93,19 +62,26 @@ class WeekDaysView extends React.PureComponent {
             <div className="VS-WeekRow" key={'week' + weekIndex}>
                 {
                     (week.showChild) ?
-                        <span className="VS-week-Plus-Minus" onClick={() => this.collapseWeek(week)}>-</span> :
-                        <span className="VS-week-Plus-Minus" onClick={() => this.expandWeek(week)} >+</span>
+                        <span className="VS-week-Plus-Minus" onClick={() => this.toggleWeekChild(week, false)}>-</span> :
+                        <span className="VS-week-Plus-Minus" onClick={() => this.toggleWeekChild(week, true)} >+</span>
                 }
 
                 <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{week.week}<span className="VS-Tooltiptext">{week.week}-{month.month}-{year.year}</span></div>
 
                     {
                         (week.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.onUnCheckWeek(week, month, quarter, year)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.onCheckWeek(week, month, quarter, year)}></input>
+                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.toggleWeekCheck(week, month, quarter, year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={week.state} onChange={() => this.toggleWeekCheck(week, month, quarter, year, true)}></input>
                     }
 
                     <span className={this.getWeekCheckBoxClass(week)}></span>
+                    {
+                        (week.hasDisabled)?
+                        <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                        </span><span className="VS-Tooltiptext">Few days in this week are disabled</span></div>
+                        :""
+                        
+                    }
                 </label>
                 {
                     (week.showChild && week.days) ?

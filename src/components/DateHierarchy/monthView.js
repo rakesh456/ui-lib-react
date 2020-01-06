@@ -14,7 +14,7 @@ class MonthView extends React.PureComponent {
     toggleMonthCheck(month, quarter, year, isCheck) {
         let monthObj = {
             year: year,
-            quarter:quarter,
+            quarter: quarter,
             month: month,
             isCheck: isCheck
         }
@@ -65,7 +65,10 @@ class MonthView extends React.PureComponent {
     }
 
     renderMonth = (month, quarter, year, monthIndex) => {
-        let { options } = this.props;
+        let { options, isFilterView } = this.props;
+        if(isFilterView === true && month.state === 0){
+            return ("")
+        } else { 
             return (
                 <div className="VS-MonthRow" key={'month' + monthIndex}>
                     {
@@ -80,19 +83,25 @@ class MonthView extends React.PureComponent {
                                 <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, true)}></input>
                         }
                         <span className={this.getMonthCheckBoxClass(month)}></span>
+                        {
+                            (month.hasDisabled) ?
+                                <span className="VS-HasDisabledDot">
+                                </span> : ""
+                        }
                     </label>
                     {(month.showChild && (month.weeks || month.days)) ?
                         options.showWeeks ?
-                            <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> : 
+                            <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> :
                             <div options={options}>{month.days.map((days, dayIndex) => this.renderDay(days, month, quarter, year, dayIndex))}</div> : ''
                     }
 
                 </div>
             )
         }
+    }
 
     render() {
-        const { options } = this.props;        
+        const { options } = this.props;
         let year = this.props.year;
         if (options.showQuarters === true) {
             let quarter = this.props.quarter;
