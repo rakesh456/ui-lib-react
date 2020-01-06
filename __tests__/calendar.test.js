@@ -1,6 +1,4 @@
-import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual,valueIsInDisabledList,checkIsInValidLowerUpper,isLeft,isRight,checkFullMonthOrYearDisabled,getInvalidDateMessage,getNewUpdateDateByArrow} from '../../src/utils/calendar';
 import {isCalendarFormat,isYearFormat,isValidQQYYYYValue,isValidDDMMYYYYValue,isValidMMYYYYValue,isValidYYYYValue,isDDMMYYYYFormat,isMMDDYYYYFormat,isQQYYYYFormat,isMMYYYYFormat,isYYYFormat,getConvertedDateYYYYMMDDD,getUpperLimitFromOptions,getLowerLimitFromOptions,getSelectedMonthFromDate,DEFAULT_OPTIONS,getSelectedYearFromDate,getMonthShortNameByIndex,getMonthNameByIndex,getMonthIndex,zeroPad, getMonthDays,getPreviousMonth,getNextMonth,isDate,isSameDay,getIsoDate,checkDateInBetween, dateIsInDisabledList,isValidOutsideRangeDateQQYear,isValidOutsideRangeDateYear,isValidOutsideRangeDateMonthYear,isValidOutsideRangeDate,resetOptions,getYYYYForLowerLimit,getYYYYForUpperLimit,isEqual,valueIsInDisabledList,checkIsInValidLowerUpper,isLeft,isRight,checkFullMonthOrYearDisabled,getInvalidDateMessage,getNewUpdateDateByArrow, formatOptions} from '../src/utils/calendar';
-import { getDateByFormat } from '../src/utils/utils';
 
 //Test for isCalendarFormat
 describe('Testing on function isCalendarFormat',()=>{
@@ -883,13 +881,12 @@ describe('Testing on function getInvalidDateMessage',()=>{
 
 // Test for getNewUpdateDateByArrow
 describe('Testing on function getNewUpdateDateByArrow',()=>{
-
     let options = {
-
         disabledList:['02/03/2019']
     }
+
     test('testing',()=>{
-        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',39,true,true)).toEqual()
+        expect(getNewUpdateDateByArrow('02/03/2019',true,options,'MM/DD/YYYY','02/01/2000','01/01/2020',39,true,true)).toEqual("02/04/2019")
     })
 })
 
