@@ -31,7 +31,7 @@ class TagSelector extends React.PureComponent {
     this.countryservice = new CountryService();
   }
 
-  updateDimensions() {}
+  updateDimensions() { }
 
   componentDidMount() {
     document.addEventListener("click", this.closeTagSelector);
@@ -182,8 +182,8 @@ class TagSelector extends React.PureComponent {
         charCode === 38 && _val >= 0
           ? -1
           : charCode === 40 && _val < this.state.filteredlistItems.length
-          ? 1
-          : 0;
+            ? 1
+            : 0;
 
       let _indexChanged = false;
       let _itemIndex = this.state.currentItemIndex;
@@ -283,20 +283,21 @@ class TagSelector extends React.PureComponent {
 
   filterItemsList = e => {
     console.log('in filter list', e);
-    console.log(this.inputEl);    
-    setTimeout(() => {      
+    console.log(this.inputEl);
+    setTimeout(() => {
       let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
       console.log(this.el.ul);
-    console.log('in filtered list')
-    setTimeout(() => {
-      console.log('in filter')
-      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
-      this.updateFilterItems(_val);
-      if (_val && this.state.filteredlistItems.length <= 0) {
-        this.props.onNotFound();
-      }
-    }, 250);
-  };
+      console.log('in filtered list')
+      setTimeout(() => {
+        console.log('in filter')
+        let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
+        this.updateFilterItems(_val);
+        if (_val && this.state.filteredlistItems.length <= 0) {
+          this.props.onNotFound();
+        }
+      }, 250);
+    });
+  }
 
   updateFilterItems = _val => {
     console.log('in update list')
@@ -323,15 +324,15 @@ class TagSelector extends React.PureComponent {
             results1[index][_key] = [];
           }
         }
-    
+
 
       });
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
     } else {
       results = _val
         ? this.state.listItems.filter((item, index) =>
-            this.checkStringSearchInListByType(item, _val)
-          )
+          this.checkStringSearchInListByType(item, _val)
+        )
         : [...this.state.listItems];
     }
 
@@ -358,7 +359,7 @@ class TagSelector extends React.PureComponent {
   getFilteredList() {
     return this.state.filteredlistItems;
   }
-  getListItem(){
+  getListItem() {
     return this.state.listItems;
   }
 
@@ -483,10 +484,10 @@ class TagSelector extends React.PureComponent {
         X
       </span>
     ) : (
-      <span className="VS-AutoCompleteItem-Icon VS-Disabled pi pi-fw pi-times">
-        X
+        <span className="VS-AutoCompleteItem-Icon VS-Disabled pi pi-fw pi-times">
+          X
       </span>
-    );
+      );
   }
 
   renderSelectedItems() {
@@ -509,22 +510,23 @@ class TagSelector extends React.PureComponent {
               );
             })
           ) : (
-            <li>
-              <span className="VS-AutoCompleteItem VS-ExtraWidth">
-                <span className="VS-AutoCompleteItem-Span">
-                  {selectedItems.length} SELECTED
+              <li>
+                <span className="VS-AutoCompleteItem VS-ExtraWidth">
+                  <span className="VS-AutoCompleteItem-Span">
+                    {selectedItems.length} SELECTED
                 </span>
-                {this.renderRemoveIcon(null, -1)}
-              </span>
-            </li>
-          )
+                  {this.renderRemoveIcon(null, -1)}
+                </span>
+              </li>
+            )
         ) : (
-          ""
-        )}
+            ""
+          )}
         <li>
           <Input
-            ref={el => {(this.inputEl = ReactDOM.findDOMNode(el))
-              }}
+            ref={el => {
+              (this.inputEl = ReactDOM.findDOMNode(el))
+            }}
             ref={el => (this.inputEl = ReactDOM.findDOMNode(el))}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
@@ -533,7 +535,7 @@ class TagSelector extends React.PureComponent {
             onClick={this.onFocus}
             onBlur={this.onBlur}
             onChange={this.filterItemsList}
-            readOnly={readOnly}            
+            readOnly={readOnly}
             readOnly={readOnly}
           />
         </li>
@@ -592,8 +594,8 @@ class TagSelector extends React.PureComponent {
                 </ItemsList>
               </TagSelectorPortal>
             ) : (
-              ""
-            )}
+                ""
+              )}
           </div>
         </header>
       </div>
