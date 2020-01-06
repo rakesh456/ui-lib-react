@@ -31,7 +31,7 @@ class ItemsList extends React.PureComponent {
     getUlListClass = () => {
         const { allowNewValue } = this.props.options;
         const { filteredlistItems, noDataFound } = this.props;
-
+        console.log('nodata')
         return "VS-AutocompleteItems " + ((noDataFound && (!filteredlistItems || filteredlistItems.length <= 0)) ? ((allowNewValue === true) ? 'VS-AddNewItem' : 'VS-NoData') : '');
     }
 
