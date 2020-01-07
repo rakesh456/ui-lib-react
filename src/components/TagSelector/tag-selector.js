@@ -46,6 +46,7 @@ class TagSelector extends React.PureComponent {
     }
   }
 
+
   setJsonData(listItems) {
     const { showHierarchy } = this.props.options;
     if (isValidJsonFormat(showHierarchy, listItems)) {
@@ -160,7 +161,7 @@ class TagSelector extends React.PureComponent {
     this.setState({
       shouldListOpen: true
     });
-
+    console.log(this.state.shouldListOpen)
     this.props.onFocus();
     console.log(this.inputEl.value)
     this.updateFilterItems(this.inputEl.value);
@@ -367,7 +368,7 @@ class TagSelector extends React.PureComponent {
 
   closeTagSelector = e => {
     let shouldListOpen = true;
-
+    console.log("in close tag")
     if (
       e.target &&
       e.target.classList &&
@@ -391,6 +392,7 @@ class TagSelector extends React.PureComponent {
   };
 
   onSelectHandler = item => {
+    console.log('in select handle')
     this.setState({ shouldListOpen: true });
     if (!objectIncludesInArray(this.state.selectedItems, "key", item.key)) {
       let selectedItems = [...this.state.selectedItems];
@@ -517,9 +519,7 @@ class TagSelector extends React.PureComponent {
           )}
         <li>
           <Input
-            ref={el => {
-              (this.inputEl = ReactDOM.findDOMNode(el))
-            }}
+            ref={el => (this.inputEl = ReactDOM.findDOMNode(el))}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
             placeholder={this.getPlaceholder()}
