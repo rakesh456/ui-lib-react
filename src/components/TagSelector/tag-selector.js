@@ -283,20 +283,13 @@ class TagSelector extends React.PureComponent {
 
   filterItemsList = e => {
     console.log('in filter list', e);
-    console.log(this.inputEl);
-    setTimeout(() => {
-      let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
-      console.log(this.el.ul);
-      console.log('in filtered list')
-      setTimeout(() => {
-        console.log('in filter')
-        let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
-        this.updateFilterItems(_val);
-        if (_val && this.state.filteredlistItems.length <= 0) {
-          this.props.onNotFound();
-        }
-      }, 250);
-    });
+    let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : e.target.value;
+    // setTimeout(() => {
+    this.updateFilterItems(_val);
+    if (_val && this.state.filteredlistItems.length <= 0) {
+      this.props.onNotFound();
+    }
+    // }, 250);
   }
 
   updateFilterItems = _val => {
@@ -527,7 +520,6 @@ class TagSelector extends React.PureComponent {
             ref={el => {
               (this.inputEl = ReactDOM.findDOMNode(el))
             }}
-            ref={el => (this.inputEl = ReactDOM.findDOMNode(el))}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
             placeholder={this.getPlaceholder()}
@@ -535,7 +527,6 @@ class TagSelector extends React.PureComponent {
             onClick={this.onFocus}
             onBlur={this.onBlur}
             onChange={this.filterItemsList}
-            readOnly={readOnly}
             readOnly={readOnly}
           />
         </li>
