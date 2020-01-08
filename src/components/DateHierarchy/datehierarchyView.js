@@ -484,6 +484,13 @@ class DatehierarchyView extends React.PureComponent {
         }
     }
 
+    onFilteredDataChangeHandler = (data) => {
+        console.log(' data ', data);
+        this.setState({
+            filteredData: data
+        });
+    }
+
     getYearCheckBoxClass = (year, index) => {
         let flag = false;
         const _years = [...this.getYears()];
@@ -573,6 +580,12 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     mergeFilterData = (filteredData, callback) => {
+        this.setState({
+            years: filteredData
+        })
+    }
+
+    mergeFilterData1 = (filteredData, callback) => {
         let { years } = this.state;
         setTimeout(() => {
             years.forEach((yr, yindex) => {
@@ -702,7 +715,7 @@ class DatehierarchyView extends React.PureComponent {
                 <div id="VS-Scrollbar">
                     {
                         (isSearching === true) ?
-                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></FilterView> :
+                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler}></FilterView> :
 
                             <YearDisplay options={options} isFilterView={false} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></YearDisplay>
                     }

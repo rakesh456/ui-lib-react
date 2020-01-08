@@ -47,25 +47,31 @@ class MonthView extends React.PureComponent {
     }
 
     renderDay = (day, month, quarter, year, dayIndex) => {
-        return (
-            <div className="VS-DayRow" key={'day' + dayIndex}>
-
-                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
-
-                    {
-                        (day.state) ?
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
-                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, true)}></input>
-                    }
-
-                    <span className="VS-Check-Checkmark"></span>
-                </label>
-            </div>
-        )
+        let { isFilterView } = this.props;
+        // if (isFilterView === true && day.state === 0) {
+        //     return ("")
+        // } else {
+            return (
+                <div className="VS-DayRow" key={'day' + dayIndex}>
+    
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
+    
+                        {
+                            (day.state) ?
+                                <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
+                                <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, true)}></input>
+                        }
+    
+                        <span className="VS-Check-Checkmark"></span>
+                    </label>
+                </div>
+            )
+        // }
     }
 
     renderMonth = (month, quarter, year, monthIndex) => {
         let { options, isFilterView } = this.props;
+        
         if(isFilterView === true && month.state === 0){
             return ("")
         } else { 
@@ -91,7 +97,7 @@ class MonthView extends React.PureComponent {
                     </label>
                     {(month.showChild && (month.weeks || month.days)) ?
                         options.showWeeks ?
-                            <WeekDaysView options={options} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> :
+                            <WeekDaysView options={options} isFilterView={isFilterView} years={this.props.years} year={year} quarter={quarter} month={month} onChangeWeek={this.onChangeWeek} onChangeWeekDay={this.onChangeWeekDay}></WeekDaysView> :
                             <div options={options}>{month.days.map((days, dayIndex) => this.renderDay(days, month, quarter, year, dayIndex))}</div> : ''
                     }
 

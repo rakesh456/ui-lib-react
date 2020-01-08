@@ -145,7 +145,7 @@ export const getSearchObj = function (options) {
 		} 
 
 		MONTH_NAMES.forEach((month, index) => {
-			searchObj.push({searchKey: month, level: monthLevel, index: index});
+			searchObj.push({searchKey: month, level: monthLevel, index: (showQuarters === false)? index : (index % 3)});
 		});
 
 		if (showWeeks === true) {			
