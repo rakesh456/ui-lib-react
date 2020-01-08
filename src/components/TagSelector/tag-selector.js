@@ -26,7 +26,8 @@ class TagSelector extends React.PureComponent {
       currentHierarchyItemIndex: 0,
       hierarchyParentKey: "",
       hierarchySelectedItem: null,
-      hierarchyParentLength: 0
+      hierarchyParentLength: 0,
+      searchValue:''
     };
     this.countryservice = new CountryService();
   }
@@ -45,6 +46,7 @@ class TagSelector extends React.PureComponent {
       this.setState({ style: style });
     }
   }
+
 
   setJsonData(listItems) {
     const { showHierarchy } = this.props.options;
@@ -127,7 +129,7 @@ class TagSelector extends React.PureComponent {
     const { showHierarchy } = this.props.options;
     if (showHierarchy === false) {
       this.addItemAndUpdateList(obj);
-      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
+      let _val = this.state.searchValue  ? this.state.searchValue : "";
       this.updateFilterItems(_val);
     }
   }
@@ -160,10 +162,10 @@ class TagSelector extends React.PureComponent {
     this.setState({
       shouldListOpen: true
     });
-
+    console.log(this.state.shouldListOpen)
     this.props.onFocus();
-    console.log(this.inputEl.value)
-    this.updateFilterItems(this.inputEl.value);
+    console.log(this.state.searchValue)
+    this.updateFilterItems(this.state.searchValue);
   };
 
   onBlur = () => {
@@ -282,25 +284,20 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
-    console.log('in filter list', e);
-    console.log(this.inputEl);
-    setTimeout(() => {
-      let _val = this.inputE && this.inputEl.value ? this.inputEl.value : "";
-      console.log(this.el.ul);
-      console.log('in filtered list')
-      setTimeout(() => {
-        console.log('in filter')
-        let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
-        this.updateFilterItems(_val);
-        if (_val && this.state.filteredlistItems.length <= 0) {
-          this.props.onNotFound();
-        }
-      }, 250);
-    });
+    let _val = (e && e.target) ?  e.target.value : "";
+    // setTimeout(() =>{
+    this.updateFilterItems(_val);
+    if (_val && this.state.filteredlistItems.length <= 0) {
+      // this.props.onNotFound();
+
+    }
+    // }, 250);
+    this.setState({
+      searchValue:e.target.value
+    })
   }
 
   updateFilterItems = _val => {
-    console.log('in update list')
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
@@ -374,7 +371,7 @@ class TagSelector extends React.PureComponent {
 
   closeTagSelector = e => {
     let shouldListOpen = true;
-
+    console.log("in close tag")
     if (
       e.target &&
       e.target.classList &&
@@ -398,6 +395,7 @@ class TagSelector extends React.PureComponent {
   };
 
   onSelectHandler = item => {
+    console.log('in select handle')
     this.setState({ shouldListOpen: true });
     if (!objectIncludesInArray(this.state.selectedItems, "key", item.key)) {
       let selectedItems = [...this.state.selectedItems];
@@ -411,10 +409,10 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
     }
 
-    this.inputEl.value = "";
+    this.state.searchValue = "";
     this.inputEl.focus();
     this.updateFilterItems("");
-    this.props.onSelect(item);
+    // this.props.onSelect(item);
   };
 
   removeListItem(item) {
@@ -524,9 +522,6 @@ class TagSelector extends React.PureComponent {
           )}
         <li>
           <Input
-            ref={el => {
-              (this.inputEl = ReactDOM.findDOMNode(el))
-            }}
             ref={el => (this.inputEl = ReactDOM.findDOMNode(el))}
             type="text"
             className={`VS-Regular-UPPER-Case VS-TagSelector-Input`}
@@ -535,7 +530,6 @@ class TagSelector extends React.PureComponent {
             onClick={this.onFocus}
             onBlur={this.onBlur}
             onChange={this.filterItemsList}
-            readOnly={readOnly}
             readOnly={readOnly}
           />
         </li>
@@ -577,8 +571,8 @@ class TagSelector extends React.PureComponent {
               >
                 <ItemsList
                   style={this.state.style}
-                  inputEl={this.inputEl}
-                  selectedItems={selectedItems}
+                  searchValue={this.state.searchValue}
+                  selectedItems={this.state.selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}
                   options={options}
@@ -590,7 +584,7 @@ class TagSelector extends React.PureComponent {
                   updateHierarchyIndex={this.updateHierarchyIndexHandler}
                   hierarchySelectedItem={hierarchySelectedItem}
                 >
-                  {" "}
+
                 </ItemsList>
               </TagSelectorPortal>
             ) : (
