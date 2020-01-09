@@ -361,13 +361,13 @@ describe("Testing for searching if value not found.", () => {
 //   expect(instant.getFilteredList()).toEqual("aman");
 // });
 //Checking whereas the new element we added is rendering properly in the list or not.
+
 	test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
-	  let options = {
-		showHelper: false,
-		allowNewValue: true,
-		showHierarchy: false
-	  };
-	  let wrapper = shallow(<TagSelector options={options} />);
+	  const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.allowNewValue = true;
+	  let wrapper = mount(<TagSelector options={options} />);
 	  const instant = wrapper.instance();
 	  instant.setJsonData([
 		{ key: "Afghanistan", value: "AF" },
@@ -382,25 +382,27 @@ describe("Testing for searching if value not found.", () => {
 		{ key: "Argentina", value: "AR" },
 		{ key: "Armenia", value: "AM" }
     ]);
-    
-	  instant.appendNewElement({ key: "Pakistan", value: "PK" });
-	  wrapper.update();
+    wrapper.find('Input').simulate('change',{ target: { value: 'aaa' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    wrapper.find('.VS-AddButton').at(1).simulate('click')   
 	  expect(wrapper.state().newlyAddedElements).toEqual([
-		{ key: "Pakistan", value: "PK" }
+		{ key: "aaa", value: "aaa" }
 	  ]);
 	});
 
+
+
+
   //Check list of items while searching using input value.
-test.skip("Check list of items while searching using input value ", () => {
-	test("Check list of items while searching using input value ", () => {
+test("Check list of items while searching using input value ", () => {
 	  let options = {
-		showHelper: false,
+		showHelper: true,
 		allowNewValue: true,
 		showHierarchy: false
 	  };
-	  let wrapper = shallow(<TagSelector options={options} />);
-  
-	  const instant = wrapper.instance();
+	  let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
 	  instant.setJsonData([
 		{ key: "Afghanistan", value: "AF" },
 		{ key: "Albania", value: "AL" },
@@ -414,33 +416,47 @@ test.skip("Check list of items while searching using input value ", () => {
 		{ key: "Argentina", value: "AR" },
 		{ key: "Armenia", value: "AM" },
 		{ key: "Australia", value: "AL" }
-	  ]);
-	  instant.updateFilterItems("af");
-	  wrapper.update();
-	  expect(wrapper.state().filteredlistItems).toEqual([
+    ]);
+    
+    wrapper.find('Input').simulate('change',{ target: { value: 'af' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true});
+	  // instant.updateFilterItems("af");
+	  // wrapper.update();
+	  expect(instant.getFilteredList()).toEqual([
 		{ key: "Afghanistan", value: "AF" }
 	  ]);
-	});
-  });
+});
 
-  //Check selected items using maxItemCounter.
-test.skip("Check selected items using maxItemCounter ", () => {
-	let options = { showHelper: false, maxItemCounter: 2 };
-	let wrapper = shallow(<TagSelector options={options} />);
+
+//Check selected items using maxItemCounter.
+test("Check selected items using maxItemCounter ", () => {
+  // let options = { showHelper: false, maxItemCounter: 2 };
+  let options = {
+		showHelper: true,
+		allowNewValue: true,
+    showHierarchy: false,
+    maxItemCounter: 2 
+	  };
+    
+	let wrapper = mount(<TagSelector options={options} />);
 	const instant = wrapper.instance();
-	instant.setJsonData([
-	  { key: "Albania", value: "AL" },
-	  { key: "Armenia", value: "AM" },
-	  { key: "Angola", value: "AO" },
-	  { key: "Anguilla", value: "AI" }
-	]);
-  
-	instant.setSelectedItems([
-	  { key: "Albania", value: "AL" },
-	  { key: "Angola", value: "AO" },
-	  { key: "Anguilla", value: "AI" }
-	]);
-	wrapper.update();
+	instant.setJsonData(ITEM_LIST)
+	// instant.setSelectedItems([
+	//   { key: "Albania", value: "AL" },
+	//   { key: "Angola", value: "AO" },
+	//   { key: "Anguilla", value: "AI" }
+  // ]);
+  wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+  wrapper.update();
+  wrapper.setState({shouldListOpen: true})
+  console.log(wrapper.debug())
+  // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+
+  wrapper.find('.VS-LiItems').at(0).simulate('click')
+  wrapper.find('.VS-LiItems').at(1).simulate('click')
+  wrapper.find('.VS-LiItems').at(2).simulate('click')
+
 	const selectedWrapper = wrapper.find(
 	  ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
 	);
@@ -448,7 +464,7 @@ test.skip("Check selected items using maxItemCounter ", () => {
   });
   
   //Check remove button enabled or not when canRemoveAll is true.
-test.skip("Check remove button enabled or not when canRemoveAll is true ", () => {
+test("Check remove button enabled or not when canRemoveAll is true ", () => {
 	let options = {
 	  showHelper: false,
 	  allowNewValue: true,
@@ -501,7 +517,7 @@ describe("Checking for getting selected items", () => {
 	test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
 	  const options = DEFAULT_OPTIONS;
 	  options.showHelper = true;
-  
+    options.allowNewValue = false;
     let wrapper = mount(<TagSelector options={options} />);
     const instant = wrapper.instance()
     instant.setJsonData(ITEM_LIST);
