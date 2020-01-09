@@ -26,7 +26,8 @@ class TagSelector extends React.PureComponent {
       currentHierarchyItemIndex: 0,
       hierarchyParentKey: "",
       hierarchySelectedItem: null,
-      hierarchyParentLength: 0
+      hierarchyParentLength: 0,
+      searchValue:''
     };
     this.countryservice = new CountryService();
   }
@@ -128,7 +129,7 @@ class TagSelector extends React.PureComponent {
     const { showHierarchy } = this.props.options;
     if (showHierarchy === false) {
       this.addItemAndUpdateList(obj);
-      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
+      let _val = (this.state.searchValue) ? this.state.searchValue : "";
       this.updateFilterItems(_val);
     }
   }
@@ -163,8 +164,8 @@ class TagSelector extends React.PureComponent {
     });
     console.log(this.state.shouldListOpen)
     this.props.onFocus();
-    console.log(this.inputEl.value)
-    this.updateFilterItems(this.inputEl.value);
+    console.log(e.target.value)
+    this.updateFilterItems(e.target.value);
   };
 
   onBlur = () => {
@@ -283,13 +284,15 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
-    console.log('in filter list', e);
-    let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : e.target.value;
+    let _val = (e && e.target) ? e.target.value : '';
     // setTimeout(() => {
     this.updateFilterItems(_val);
     if (_val && this.state.filteredlistItems.length <= 0) {
-      this.props.onNotFound();
+      // this.props.onNotFound();
     }
+    this.setState({
+      searchValue: _val
+    })
     // }, 250);
   }
 
@@ -406,10 +409,10 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
     }
 
-    this.inputEl.value = "";
+    this.state.value = "";
     this.inputEl.focus();
     this.updateFilterItems("");
-    this.props.onSelect(item);
+    // this.props.onSelect(item);
   };
 
   removeListItem(item) {
@@ -568,7 +571,7 @@ class TagSelector extends React.PureComponent {
               >
                 <ItemsList
                   style={this.state.style}
-                  inputEl={this.inputEl}
+                  searchValue={this.state.searchValue}
                   selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}

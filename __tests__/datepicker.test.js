@@ -14,4 +14,4 @@ it('renders without crashing', () => {
 
 // Buttons rendering default options without crashing
 
-describe('Buttons rendering default options without crashing')
+// describe('Buttons rendering default options without crashing')
