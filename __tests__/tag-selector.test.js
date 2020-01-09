@@ -361,7 +361,6 @@ describe("Testing for searching if value not found.", () => {
 //   expect(instant.getFilteredList()).toEqual("aman");
 // });
 //Checking whereas the new element we added is rendering properly in the list or not.
-test.skip("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
 	test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
 	  let options = {
 		showHelper: false,
@@ -382,16 +381,14 @@ test.skip("checking that the new element added is rendering properly after addin
 		{ key: "Antigua and Barbuda", value: "AG" },
 		{ key: "Argentina", value: "AR" },
 		{ key: "Armenia", value: "AM" }
-	  ]);
+    ]);
+    
 	  instant.appendNewElement({ key: "Pakistan", value: "PK" });
 	  wrapper.update();
 	  expect(wrapper.state().newlyAddedElements).toEqual([
 		{ key: "Pakistan", value: "PK" }
 	  ]);
 	});
-  });
-
-
 
   //Check list of items while searching using input value.
 test.skip("Check list of items while searching using input value ", () => {
@@ -576,7 +573,28 @@ describe("get newly added element", () => {
 // Default set selected items
 describe("Default set selected items",()=>{
 
-  // test('')
+  test('testing',()=>{
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+	  let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		  { key: "Australia", value: "AU" }
+		]);
+    instant.setSelectedItems([
+      { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		])
+    
+    expect(instant.getSelectedValues()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		])
+
+  })
 })
 
 // Checking selected items after refresh method
@@ -607,32 +625,42 @@ describe("Checking selected items after refresh method", () => {
 });
 
 
-// 12.Check remove item from list
+// Check remove Selecteditem from list
 describe("Check remove item from list", () => {
-	test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
-	  test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
-		let options = {
-		  showHelper: true,
-		  allowNewValue: true,
-		  showHierarchy: false
-		};
-		let wrapper = shallow(<TagSelector options={options} />);
+
+	  test("", () => {
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+		let wrapper = mount(<TagSelector options={options} />);
 		const instant = wrapper.instance();
 		instant.setJsonData([
 		  { key: "Albania", value: "AL" },
 		  { key: "Armenia", value: "AM" },
-		  { key: "Australia", value: "AU" }
-		]);
-		instant.removeListItem({ key: "Australia", value: "AU" });
+      { key: "Australia", value: "AU" }
+      
+    ]);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    console.log(wrapper.debug())
+    console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
+		// instant.removeListItem({ key: "Australia", value: "AU" });
 		wrapper.update();
-		expect(instant.getListItem()).toEqual([
-		  { key: "Albania", value: "AL" },
+		expect(instant.getSelectedValues()).toEqual([
 		  { key: "Armenia", value: "AM" }
 		]);
 	  });
-	});
-  
-	test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
+	
+})
+
+// Check remove item from list
+describe('Check remove item from list',()=>{
+
 	  test("If object is passed i.e not in the list then listItem got unchanged", () => {
 		let options = {
 		  showHelper: true,
@@ -654,9 +682,30 @@ describe("Check remove item from list", () => {
 		  { key: "Australia", value: "AU" }
 		]);
 	  });
-	});
+
+    test("If object is passed,And it is in the list then listItem got changed", () => {
+      let options = {
+        showHelper: true,
+        allowNewValue: true,
+        showHierarchy: false
+      };
+      let wrapper = shallow(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData([
+        { key: "Albania", value: "AL" },
+        { key: "Armenia", value: "AM" },
+        { key: "Australia", value: "AU" }
+      ]);
+      instant.removeListItem({ key: "Australia", value: "AU" });
+      wrapper.update();
+      expect(instant.getListItem()).toEqual([
+        { key: "Albania", value: "AL" },
+        { key: "Armenia", value: "AM" }
+        
+      ]);
+      });
   
-	test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+
 	  test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
 		let options = {
 		  showHelper: true,
@@ -669,19 +718,24 @@ describe("Check remove item from list", () => {
 		  { key: "Albania", value: "AL" },
 		  { key: "Armenia", value: "AM" },
 		  { key: "Australia", value: "AU" }
-		]);
-		instant.removeListItem({ key: "Australia", value: "Au" });
-		wrapper.update();
-  
+    ]);
+    
+    instant.setSelectedItems([{ key: "Albania", value: "AL" },
+    { key: "Armenia", value: "AM" },
+    { key: "Australia", value: "AU" }])
 		instant.removeListItem({ key: "Australia", value: "AU" });
 		wrapper.update();
-		expect(instant.getSelectedValues()).toEqual([
-		  { key: "Albania", value: "AL" },{ value: "Antarctica", key: "AQ" },
+    
+		expect(instant.getListItem()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" }
+    ]);
+    expect(instant.getSelectedValues()).toEqual([
+		  { key: "Albania", value: "AL" },
 		  { key: "Armenia", value: "AM" }
 		]);
 	  });
-	});
-  });
+});
   
 // describe("should render without crashing", () => {
 //   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.

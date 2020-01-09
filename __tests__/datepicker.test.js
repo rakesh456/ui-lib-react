@@ -13,5 +13,10 @@ it('renders without crashing', () => {
 });
 
 // Buttons rendering default options without crashing
-
-// describe('Buttons rendering default options without crashing')
+describe('Buttons rendering default options without crashing',()=>{
+  test('renders without crashing', () => {
+    const div = document.createElement('div');
+    const options = DEFAULT_OPTIONS;
+    ReactDOM.render(<DatePicker options={options} />, div);
+  });
+})

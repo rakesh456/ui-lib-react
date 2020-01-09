@@ -164,8 +164,8 @@ class TagSelector extends React.PureComponent {
     });
     console.log(this.state.shouldListOpen)
     this.props.onFocus();
-    console.log(e.target.value)
-    this.updateFilterItems(e.target.value);
+    console.log(this.state.searchValue)
+    this.updateFilterItems(this.state.searchValue);
   };
 
   onBlur = () => {
@@ -456,7 +456,7 @@ class TagSelector extends React.PureComponent {
       let selectedItems = [...this.state.selectedItems];
       selectedItems.splice(index, 1);
       this.setState({ selectedItems: selectedItems });
-      this.props.onDeSelect(item);
+      // this.props.onDeSelect(item);
     } else {
       this.props.onDeSelect(this.state.selectedItems);
       this.setState({ selectedItems: [] });

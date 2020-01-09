@@ -12,7 +12,7 @@ class TagSelectorPortal extends React.PureComponent {
     componentDidMount() {
         const uuid = this.props.uuid;
         tagSelectorModal = document.getElementById(uuid);
-        if(!(this.el && uuid)){
+        if(this.el && tagSelectorModal){
         tagSelectorModal.appendChild(this.el);
         }
     }
