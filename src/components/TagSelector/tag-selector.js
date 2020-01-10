@@ -286,6 +286,7 @@ class TagSelector extends React.PureComponent {
   filterItemsList = e => {
     let _val = (e && e.target) ? e.target.value : '';
     // setTimeout(() => {
+      console.log(_val)
     this.updateFilterItems(_val);
     if (_val && this.state.filteredlistItems.length <= 0) {
       // this.props.onNotFound();
@@ -297,7 +298,8 @@ class TagSelector extends React.PureComponent {
   }
 
   updateFilterItems = _val => {
-    console.log('in update list')
+    console.log('in update list',_val)
+
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
@@ -309,12 +311,14 @@ class TagSelector extends React.PureComponent {
           const _item = element[key];
           const _key = key;
           let obj = _item.filter(o => isStringExists(o.value, _val));
+          console.log(obj)
           if (obj && obj.length > 0) {
             if (!results1[_key]) {
               results1.push({ [_key]: [] });
             }
             if (results1[index]) {
               results1[index][_key] = [...obj];
+              console.log(results1)
             }
           } else {
             results1[index] = {};
@@ -324,7 +328,9 @@ class TagSelector extends React.PureComponent {
 
 
       });
+      console.log(_val)
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
+      console.log(results)
     } else {
       results = _val
         ? this.state.listItems.filter((item, index) =>

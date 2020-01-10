@@ -254,12 +254,36 @@ const ITEM_LIST = [
   { value: "Yemen", key: "YE" },
   { value: "Zambia", key: "ZM" }
 ];
+
+const ITEM_LIST_HIERARCHY = [{
+  "Bihar": [
+      { "key": "Arwal", "value": "Arwal" },
+      { "key": "Nawada", "value": "Nawada" },
+      { "key": "Gopalganj", "value": "Gopalganj" }
+  ]
+},
+{
+  "Andhra Pradesh": [
+      { "key": "Adoni", "value": "Adoni" },
+      { "key": "Bapatla", "value": "Bapatla" },
+      { "key": "Anantapur", "value": "Anantapur" }
+  ]
+},
+{
+  "Gujarat": [
+      { "key": "Adalaj", "value": "Adalaj" },
+      { "key": "Surat", "value": "Surat" },
+      { "key": "Amreli", "value": "Amreli" }
+  ]
+}
+];
 //Checking whereas all the default options are rendering properly or not.
 it("Tag selector renders without crashing", () => {
   const div = document.createElement("div");
   const options = DEFAULT_OPTIONS;
   ReactDOM.render(<TagSelector options={options} />, div);
 });
+
 
 //  checking that when "searchWithHelper": true, "allowNewValue": false and allowHierarchy": false then, it will show no Data Found if user gives an input which is not in the list 
 describe("Testing for searching if value not found.", () => {
@@ -276,7 +300,7 @@ describe("Testing for searching if value not found.", () => {
     wrapper.find('Input').simulate('change',{ target: { value: 'kwp' } })
     wrapper.update();
     wrapper.setState({shouldListOpen: true})
-    console.log(wrapper.debug())
+    // console.log(wrapper.debug())
     let ulListItems = wrapper.find('.VS-AutocompleteItems.VS-NoData')
 
     
@@ -391,8 +415,39 @@ describe("Testing for searching if value not found.", () => {
 	  ]);
 	});
 
+//Select new item on click -
+describe('Select new item on click -',()=>{
+  test('Check when click event happen item should be selected in selectItemsValue ',()=>{
 
+    let options = {
+      showHelper: true,
+      allowNewValue: true,
+      showHierarchy: false,
+      maxItemCounter: 2 
+      };
+    let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData(ITEM_LIST)
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+  
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+  
+    const selectedWrapper = wrapper.find(
+      ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+    );
+    expect(instant.getSelectedValues()).toEqual([ { value: 'Aa People"S Democratic Republic', key: "zLA" },
+    { value: "Afghanistan", key: "AF", selected: true },
+    { value: "Albania", key: "AL" }]);
+  
 
+  })
+})
 
   //Check list of items while searching using input value.
 test("Check list of items while searching using input value ", () => {
@@ -450,7 +505,7 @@ test("Check selected items using maxItemCounter ", () => {
   wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
   wrapper.update();
   wrapper.setState({shouldListOpen: true})
-  console.log(wrapper.debug())
+  // console.log(wrapper.debug())
   // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
 
   wrapper.find('.VS-LiItems').at(0).simulate('click')
@@ -488,7 +543,6 @@ test("Check remove button enabled or not when canRemoveAll is true ", () => {
 	expect(classNames).toMatch(/VS-Disabled/);
   });
 
-  // getting selected items, when passing some seleted item which is present in listItems
 
   // check get selected item
 describe("Checking for getting selected items", () => {
@@ -642,9 +696,9 @@ describe("Checking selected items after refresh method", () => {
 
 
 // Check remove Selecteditem from list
-describe("Check remove item from list", () => {
+describe("Check remove Selecteditem from list", () => {
 
-	  test("", () => {
+	  test("Check When X is clicked then selected should remove", () => {
     const options = DEFAULT_OPTIONS;
     options.showHelper = true;
     options.readOnly = false;
@@ -656,14 +710,14 @@ describe("Check remove item from list", () => {
       { key: "Australia", value: "AU" }
       
     ]);
-    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.find('Input').simulate('change',{ target: { value: 'b' } })
     wrapper.update();
     wrapper.setState({shouldListOpen: true})
     // console.log(wrapper.debug())
     // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
     wrapper.find('.VS-LiItems').at(0).simulate('click')
     wrapper.find('.VS-LiItems').at(1).simulate('click')
-    console.log(wrapper.debug())
+    // console.log(wrapper.debug())
     console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
 		// instant.removeListItem({ key: "Australia", value: "AU" });
 		wrapper.update();
@@ -752,7 +806,41 @@ describe('Check remove item from list',()=>{
 		]);
 	  });
 });
+
+
+// Select new item on click - for hierarchyItems
+// describe('Select new item on click - for hierarchyItems',()=>{
+//   test('Check when click event happen then item got selected',()=>{
+//     const options = DEFAULT_OPTIONS
+//     options.showHierarchy =  true
+//     options.allowNewValue = true
+//       // showHelper: false,
+//       // allowNewValue: true,
+//       // showHierarchy: true,
+//       // };
+//     let wrapper = mount(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData(ITEM_LIST_HIERARCHY)
+//     wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
+//     wrapper.update();
+//     wrapper.setState({shouldListOpen: true})
+//     console.log(instant.getFilteredList())
+//     // console.log(wrapper.debug())
+//     // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
   
+//     wrapper.find('.VS-LiItems').at(0).simulate('click')
+//     // wrapper.find('.VS-LiItems').at(1).simulate('click')
+//     // wrapper.find('.VS-LiItems').at(1).simulate('click')
+//     // console.log(wrapper.debug())
+//     // const selectedWrapper = wrapper.find(
+//     //   ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//     // );
+//     expect(instant.getSelectedValues()).toEqual();
+  
+
+//   })
+// }) 
+// ------------------------------------end
 // describe("should render without crashing", () => {
 //   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.
 
