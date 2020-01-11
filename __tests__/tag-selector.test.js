@@ -327,63 +327,6 @@ describe("Testing for searching if value not found.", () => {
   
 });
 
-//  testing start
-// describe('getting selected items, when passing some seleted', () => {
-// 	test("getting selected items, when passing some seleted item which is present in listItems", () => {
-// 		const options = {...DEFAULT_OPTIONS};
-// 		options.showHelper = true;
-
-// 		let wrapper = shallow(<TagSelector options={options} />);
-// 		const instant = wrapper.instance();
-// 		// console.log(wrapper.instance())
-// 		instant.setJsonData(ITEM_LIST);
-
-// 		wrapper.find('Input').simulate('change', { target: { value: 'kw' } })
-// 		wrapper.update();
-// 		console.log(instant.getFilteredList());
-// 		expect(instant.getFilteredList()).toEqual([{ value: "Kuwait", key: "KW" }]);
-// 	});
-// });
-// testing end 
-
-
-// test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-//   let options = {
-//     showHelper: true,
-//     allowNewValue: false,
-//     showHierarchy: false
-//   };
-//   // let wrapper = shallow(<TagSelector options={options} />);
-//   // let instant = wrapper.instance();
-//   // // let inputNoData = wrapper.find("Input");
-//   // // console.log(inputNoData)
-//   // wrapper.find("Input").simulate("change",{target:{value:'a'}});
-//   // // console.log(instant.getFilteredList())
-
-//   let wrapper = mount(
-//     <TagSelector options={options}>
-//       <ItemsList />
-//     </TagSelector>
-//   );
-//   let instant = wrapper.instance();
-//   instant.onFocus();
-
-//   console.log(wrapper.debug());
-//   // .simulate('change',{target:{value:'nepal'}})
-//   wrapper.update();
-//   wrapper.find("Input").simulate("focus");
-
-//   const a = wrapper.find("Input");
-//   console.log(a.simulate("change", { target: { value: "nepal" } }));
-//   console.log(a.props().className);
-//   console.log(
-//     wrapper.find(".VS-Regular-UPPER-Case VS-TagSelector-Input").length
-//   );
-
-//   console.log();
-//   // wrapper.update();
-//   expect(instant.getFilteredList()).toEqual("aman");
-// });
 //Checking whereas the new element we added is rendering properly in the list or not.
 
 	test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
@@ -450,100 +393,140 @@ describe('Select new item on click -',()=>{
 })
 
   //Check list of items while searching using input value.
-test("Check list of items while searching using input value ", () => {
-	  let options = {
-		showHelper: true,
-		allowNewValue: true,
-		showHierarchy: false
-	  };
-	  let wrapper = mount(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-	  instant.setJsonData([
-		{ key: "Afghanistan", value: "AF" },
-		{ key: "Albania", value: "AL" },
-		{ key: "Algeria", value: "DZ" },
-		{ key: "American Samoa", value: "AS" },
-		{ key: "AndorrA", value: "AD" },
-		{ key: "Angola", value: "AO" },
-		{ key: "Anguilla", value: "AI" },
-		{ key: "Antarctica", value: "AQ" },
-		{ key: "Antigua and Barbuda", value: "AG" },
-		{ key: "Argentina", value: "AR" },
-		{ key: "Armenia", value: "AM" },
-		{ key: "Australia", value: "AL" }
-    ]);
-    
-    wrapper.find('Input').simulate('change',{ target: { value: 'af' } })
-    wrapper.update();
-    wrapper.setState({shouldListOpen: true});
-	  // instant.updateFilterItems("af");
-	  // wrapper.update();
-	  expect(instant.getFilteredList()).toEqual([
-		{ key: "Afghanistan", value: "AF" }
-	  ]);
-});
+describe('Check list of items while searching using input value.',()=>{
+    test("Check list of items while searching using input value in non hierarchy data", () => {
+      let options = {
+      showHelper: true,
+      allowNewValue: true,
+      showHierarchy: false
+      };
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData([
+      { key: "Afghanistan", value: "AF" },
+      { key: "Albania", value: "AL" },
+      { key: "Algeria", value: "DZ" },
+      { key: "American Samoa", value: "AS" },
+      { key: "AndorrA", value: "AD" },
+      { key: "Angola", value: "AO" },
+      { key: "Anguilla", value: "AI" },
+      { key: "Antarctica", value: "AQ" },
+      { key: "Antigua and Barbuda", value: "AG" },
+      { key: "Argentina", value: "AR" },
+      { key: "Armenia", value: "AM" },
+      { key: "Australia", value: "AL" }
+      ]);
+      
+      wrapper.find('Input').simulate('change',{ target: { value: 'af' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true});
+      // instant.updateFilterItems("af");
+      // wrapper.update();
+      expect(instant.getFilteredList()).toEqual([
+      { key: "Afghanistan", value: "AF" }
+      ]);
+    });
 
+    test("Check list of items while searching using input value in hierarchy data", () => {
+      let options = {
+        showHelper: true,
+        showHierarchy: true
+        };
+
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST_HIERARCHY)
+      wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true});
+
+      expect(instant.getFilteredList()).toEqual([
+        {"Andhra Pradesh":[{ "key": "Anantapur", "value": "Anantapur" }]}, { "Bihar":[{ "key": "Gopalganj", "value": "Gopalganj" }]},{"Gujarat":[]}
+        ]);
+
+    })
+    
+})
 
 //Check selected items using maxItemCounter.
-test("Check selected items using maxItemCounter ", () => {
-  // let options = { showHelper: false, maxItemCounter: 2 };
-  let options = {
-		showHelper: true,
-		allowNewValue: true,
-    showHierarchy: false,
-    maxItemCounter: 2 
-	  };
-    
-	let wrapper = mount(<TagSelector options={options} />);
-	const instant = wrapper.instance();
-	instant.setJsonData(ITEM_LIST)
-	// instant.setSelectedItems([
-	//   { key: "Albania", value: "AL" },
-	//   { key: "Angola", value: "AO" },
-	//   { key: "Anguilla", value: "AI" }
-  // ]);
-  wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
-  wrapper.update();
-  wrapper.setState({shouldListOpen: true})
-  // console.log(wrapper.debug())
-  // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+describe('Check selected items using maxItemCounter',()=>{
+    test("Check selected items using maxItemCounter in non-hierarchial data ", () => {
+      // let options = { showHelper: false, maxItemCounter: 2 };
+      let options = {
+        showHelper: true,
+        allowNewValue: true,
+        showHierarchy: false,
+        maxItemCounter: 2 
+        };
+        
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST)
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      // console.log(wrapper.debug())
+      // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
 
-  wrapper.find('.VS-LiItems').at(0).simulate('click')
-  wrapper.find('.VS-LiItems').at(1).simulate('click')
-  wrapper.find('.VS-LiItems').at(2).simulate('click')
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
 
-	const selectedWrapper = wrapper.find(
-	  ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
-	);
-	expect(selectedWrapper.text()).toEqual("3 SELECTED");
-  });
-  
+      const selectedWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+      );
+      expect(selectedWrapper.text()).toEqual("3 SELECTED");
+      });
+
+    test('Check selected items using maxItemCounter in hierarchial data',()=>{
+      let options = {
+        showHelper: true,
+        showHierarchy: true,
+        maxItemCounter: 2 
+        };
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST_HIERARCHY)
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
+
+      const selectedWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+      );
+      expect(selectedWrapper.text()).toEqual("3 SELECTED");
+    })
+})
+
   //Check remove button enabled or not when canRemoveAll is true.
-test("Check remove button enabled or not when canRemoveAll is true ", () => {
-	let options = {
-	  showHelper: false,
-	  allowNewValue: true,
-	  showHierarchy: false,
-	  canRemoveAll: true,
-	  maxItemCounter: 2
-	};
-	let wrapper = shallow(<TagSelector options={options} />);
-	const instant = wrapper.instance();
-	instant.setJsonData([
-	  { key: "Albania", value: "AL" },
-	  { key: "Armenia", value: "AM" }
-	]);
-  
-	instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
-	wrapper.update();
-	const removeButtonWrapper = wrapper.find(
-	  ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
-	);
-	const classNames = removeButtonWrapper.prop("className");
-	expect(classNames).toMatch(/VS-Disabled/);
-  });
-
-
+describe('Check remove button enabled or not when canRemoveAll is true.',()=>{
+    test("Check remove button enabled or not when canRemoveAll is true", () => {
+      let options = {
+        showHelper: false,
+        allowNewValue: true,
+        showHierarchy: false,
+        canRemoveAll: true,
+        maxItemCounter: 2
+      };
+      let wrapper = shallow(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData([
+        { key: "Albania", value: "AL" },
+        { key: "Armenia", value: "AM" }
+      ]);
+      
+      instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+      wrapper.update();
+      const removeButtonWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+      );
+      const classNames = removeButtonWrapper.prop("className");
+      expect(classNames).toMatch(/VS-Disabled/);
+      });
+})
   // check get selected item
 describe("Checking for getting selected items", () => {
 	test("getting selected items, when passing some seleted item which is present in listItems ", () => {
@@ -581,8 +564,10 @@ describe("Checking for getting selected items", () => {
     // console.log(wrapper.debug())
     let ulListItems = wrapper.find('.VS-AutocompleteItems.VS-NoData')
 	  expect(ulListItems.text()).toEqual('No Data Found');
-	});
   });
+  
+  // test('getting selected items, when passing some seleted item which is present in listItems in')
+});
 
 
 //   Get selected items counter
@@ -610,13 +595,36 @@ describe('Get selected items counter',()=>{
 
   })
 
+  test('checking, function correct selected items counting, in hierarchial data',()=>{
+
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.showHierarchy = true;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+    
+    instant.setJsonData(ITEM_LIST_HIERARCHY);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    wrapper.find('.VS-LiItems').at(3).simulate('click')
+    expect(instant.getSelectedCounter()).toEqual(4);
+
+  })
 })
 
 
 // Append new element and get newly added element
 describe("get newly added element", () => {
 	test("By appending a new element ,then checking it is in newlyAddedElements", () => {
-	  const options = DEFAULT_OPTIONS;
+    const options = DEFAULT_OPTIONS;
+    options.showHierarchy = false;
 	  let wrapper = shallow(<TagSelector options={options} />);
 	  const instant = wrapper.instance();
   
@@ -647,6 +655,7 @@ describe("Default set selected items",()=>{
     const options = DEFAULT_OPTIONS;
     options.showHelper = true;
     options.readOnly = false;
+    options.showHierarchy = false;
 	  let wrapper = mount(<TagSelector options={options} />);
     const instant = wrapper.instance();
     instant.setJsonData([
@@ -669,7 +678,7 @@ describe("Default set selected items",()=>{
 
 // Checking selected items after refresh method
 describe("Checking selected items after refresh method", () => {
-	test.skip("Checking selected items after refresh method, when passing some selected items", () => {
+	
 	  test("Checking selected items after refresh method, when passing some selected items", () => {  
     const options = DEFAULT_OPTIONS;
     options.showHelper = true;
@@ -690,18 +699,40 @@ describe("Checking selected items after refresh method", () => {
 		instant.refresh();
 		wrapper.update();
 		expect(instant.getSelectedValues()).toEqual([]);
-	  });
-	});
+    });
+    
+    test("Checking selected items after refresh method, when passing some selected items, in hierarchial data", () => { 
+      const options = DEFAULT_OPTIONS;
+      options.showHelper = true;
+      options.readOnly = false;
+      options.showHierarchy = true;
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      
+      instant.setJsonData(ITEM_LIST_HIERARCHY);
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
+      wrapper.find('.VS-LiItems').at(3).simulate('click')
+      instant.refresh();
+      wrapper.update();
+      expect(instant.getSelectedValues()).toEqual([]);
+    })
+
 });
 
 
 // Check remove Selecteditem from list
 describe("Check remove Selecteditem from list", () => {
 
-	  test("Check When X is clicked then selected should remove", () => {
+	  test("Check When X is clicked then selected item should remove", () => {
     const options = DEFAULT_OPTIONS;
     options.showHelper = true;
     options.readOnly = false;
+    options.showHierarchy = false;
 		let wrapper = mount(<TagSelector options={options} />);
 		const instant = wrapper.instance();
 		instant.setJsonData([
@@ -710,22 +741,46 @@ describe("Check remove Selecteditem from list", () => {
       { key: "Australia", value: "AU" }
       
     ]);
-    wrapper.find('Input').simulate('change',{ target: { value: 'b' } })
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
     wrapper.update();
     wrapper.setState({shouldListOpen: true})
     // console.log(wrapper.debug())
     // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    console.log(wrapper.debug())
     wrapper.find('.VS-LiItems').at(0).simulate('click')
     wrapper.find('.VS-LiItems').at(1).simulate('click')
-    // console.log(wrapper.debug())
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    
     console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
 		// instant.removeListItem({ key: "Australia", value: "AU" });
-		wrapper.update();
 		expect(instant.getSelectedValues()).toEqual([
-		  { key: "Armenia", value: "AM" }
+		  { key: "Armenia", value: "AM" },{ key: "Australia", value: "AU" }
 		]);
 	  });
-	
+    
+    test("Check When X is clicked then selected item should remove, in hierarchial data.", () => {
+      const options = DEFAULT_OPTIONS;
+      options.showHelper = true;
+      options.readOnly = false;
+      options.showHierarchy = true;
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST_HIERARCHY);
+      wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      // console.log(wrapper.debug())
+      // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+      console.log(wrapper.debug())
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      
+      console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
+      // instant.removeListItem({ key: "Australia", value: "AU" });
+      expect(instant.getSelectedValues()).toEqual([
+        { "key": "Gopalganj", "value": "Gopalganj" }
+      ]);
+    })
 })
 
 // Check remove item from list
@@ -809,37 +864,30 @@ describe('Check remove item from list',()=>{
 
 
 // Select new item on click - for hierarchyItems
-// describe('Select new item on click - for hierarchyItems',()=>{
-//   test('Check when click event happen then item got selected',()=>{
-//     const options = DEFAULT_OPTIONS
-//     options.showHierarchy =  true
-//     options.allowNewValue = true
-//       // showHelper: false,
-//       // allowNewValue: true,
-//       // showHierarchy: true,
-//       // };
-//     let wrapper = mount(<TagSelector options={options} />);
-//     const instant = wrapper.instance();
-//     instant.setJsonData(ITEM_LIST_HIERARCHY)
-//     wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
-//     wrapper.update();
-//     wrapper.setState({shouldListOpen: true})
-//     console.log(instant.getFilteredList())
-//     // console.log(wrapper.debug())
-//     // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+describe('Select new item on click - for hierarchyItems',()=>{
+  test('Check when click event happen then item got selected',()=>{
+    const options = DEFAULT_OPTIONS
+    options.showHierarchy =  true
+    options.allowNewValue = true
+    let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData(ITEM_LIST_HIERARCHY)
+    wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    console.log(wrapper.debug())
+    console.log(instant.getFilteredList())
+    
   
-//     wrapper.find('.VS-LiItems').at(0).simulate('click')
-//     // wrapper.find('.VS-LiItems').at(1).simulate('click')
-//     // wrapper.find('.VS-LiItems').at(1).simulate('click')
-//     // console.log(wrapper.debug())
-//     // const selectedWrapper = wrapper.find(
-//     //   ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
-//     // );
-//     expect(instant.getSelectedValues()).toEqual();
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+
+    console.log(wrapper.find('.VS-AutocompleteItems').text())
+    expect(instant.getSelectedValues()).toEqual([ { "key": "Anantapur", "value": "Anantapur" },{ "key": "Gopalganj", "value": "Gopalganj" }]);
   
 
-//   })
-// }) 
+  })
+}) 
 // ------------------------------------end
 // describe("should render without crashing", () => {
 //   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.

@@ -13,29 +13,29 @@ it('renders without crashing', () => {
 });
 
 // Buttons rendering default options without crashing
-describe('Buttons rendering default options without crashing',()=>{
-  test('Button renders without crashing', () => {
-    const options = DEFAULT_OPTIONS;
+// describe('Buttons rendering default options without crashing',()=>{
+//   test('Button renders without crashing', () => {
+//     const options = DEFAULT_OPTIONS;
   
-    // options.shouldCalendarOpen = true;
-    // options.isDisabled = false;
-    // options.showMonthSelection = false;
-    // options.showYearSelection = false;
-    const wrapper = mount(<DatePicker options={options}/>)
-    wrapper.setState({
-      shouldCalendarOpen:true,
-      isDisabled :false,
-      showMonthSelection :false,
-      showYearSelection :false,
-      isCalendar:true
+//     // options.shouldCalendarOpen = true;
+//     // options.isDisabled = false;
+//     // options.showMonthSelection = false;
+//     // options.showYearSelection = false;
+//     const wrapper = mount(<DatePicker options={options}/>)
+//     wrapper.setState({
+//       shouldCalendarOpen:true,
+//       isDisabled :false,
+//       showMonthSelection :false,
+//       showYearSelection :false,
+//       isCalendar:true
 
-    })
+//     })
 
-    console.log(wrapper.debug())
-    const div = document.createElement('div');
-    ReactDOM.render(<Buttons options={options} />, div);
-  });
-})
+//     console.log(wrapper.debug())
+//     const div = document.createElement('div');
+//     ReactDOM.render(<Buttons options={options} />, div);
+//   });
+// })
 
 // describe('Buttons rendering default options without crashing',()=>{
 //   test('Button renders without crashing', () => {
