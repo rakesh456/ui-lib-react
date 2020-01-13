@@ -1,9 +1,9 @@
+import TagSelector from "../src/components/TagSelector/tag-selector";
+import ItemsList from "../src/components/TagSelector/tag-items-list.js";
 import React from "react";
 import ReactDOM from "react-dom";
 import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
 import { shallow, mount } from "enzyme";
-import TagSelector from "../src/components/TagSelector/tag-selector";
-import ItemsList from "../src/components/TagSelector/tag-items-list.js";
 import renderer from "react-test-renderer";
 import { placeholder } from "@babel/types";
 import desktop from "react-icons/lib/fa/desktop";
@@ -254,691 +254,561 @@ const ITEM_LIST = [
   { value: "Yemen", key: "YE" },
   { value: "Zambia", key: "ZM" }
 ];
-//Checking whereas all the default options are rendering properly or not.
 
+const ITEM_LIST_HIERARCHY = [{
+  "Bihar": [
+      { "key": "Arwal", "value": "Arwal" },
+      { "key": "Nawada", "value": "Nawada" },
+      { "key": "Gopalganj", "value": "Gopalganj" }
+  ]
+},
+{
+  "Andhra Pradesh": [
+      { "key": "Adoni", "value": "Adoni" },
+      { "key": "Bapatla", "value": "Bapatla" },
+      { "key": "Anantapur", "value": "Anantapur" }
+  ]
+},
+{
+  "Gujarat": [
+      { "key": "Adalaj", "value": "Adalaj" },
+      { "key": "Surat", "value": "Surat" },
+      { "key": "Amreli", "value": "Amreli" }
+  ]
+}
+];
+//Checking whereas all the default options are rendering properly or not.
 it("Tag selector renders without crashing", () => {
   const div = document.createElement("div");
   const options = DEFAULT_OPTIONS;
   ReactDOM.render(<TagSelector options={options} />, div);
 });
 
-describe("should render without crashing", () => {
-  //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.
 
-  test.skip("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
-    test("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
-      let options = {
-        showHelper: true,
-        allowNewValue: true,
-        showHierarchy: false
-      };
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData(ITEM_LIST);
-      wrapper.update();
-      expect(wrapper.state().listItems.length).toEqual(244);
-    });
-  });
-});
-//Checking whereas the new element we added is rendering properly in the list or not.
-test.skip("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
-  test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
-    let options = {
-      showHelper: false,
-      allowNewValue: true,
-      showHierarchy: false
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Afghanistan", value: "AF" },
-      { key: "Albania", value: "AL" },
-      { key: "Algeria", value: "DZ" },
-      { key: "American Samoa", value: "AS" },
-      { key: "AndorrA", value: "AD" },
-      { key: "Angola", value: "AO" },
-      { key: "Anguilla", value: "AI" },
-      { key: "Antarctica", value: "AQ" },
-      { key: "Antigua and Barbuda", value: "AG" },
-      { key: "Argentina", value: "AR" },
-      { key: "Armenia", value: "AM" }
-    ]);
-    instant.appendNewElement({ key: "Pakistan", value: "PK" });
-    wrapper.update();
-    expect(wrapper.state().newlyAddedElements).toEqual([
-      { key: "Pakistan", value: "PK" }
-    ]);
-  });
-});
-
-//add selected item
-test.skip("add selected item ", () => {
-  test("add selected item ", () => {
-    let options = {
-      showHelper: false,
-      allowNewValue: true,
-      showHierarchy: false
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Afghanistan", value: "AF" },
-      { key: "Albania", value: "AL" },
-      { key: "Algeria", value: "DZ" },
-      { key: "American Samoa", value: "AS" },
-      { key: "AndorrA", value: "AD" },
-      { key: "Angola", value: "AO" },
-      { key: "Anguilla", value: "AI" },
-      { key: "Antarctica", value: "AQ" },
-      { key: "Antigua and Barbuda", value: "AG" },
-      { key: "Argentina", value: "AR" },
-      { key: "Armenia", value: "AM" }
-    ]);
-
-    instant.setSelectedItems([{ key: "AndorrA", value: "AD" }]);
-
-    wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([
-      { key: "AndorrA", value: "AD" }
-    ]);
-  });
-});
-//Check list of items while searching using input value.
-test.skip("Check list of items while searching using input value ", () => {
-  test("Check list of items while searching using input value ", () => {
-    let options = {
-      showHelper: false,
-      allowNewValue: true,
-      showHierarchy: false
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Afghanistan", value: "AF" },
-      { key: "Albania", value: "AL" },
-      { key: "Algeria", value: "DZ" },
-      { key: "American Samoa", value: "AS" },
-      { key: "AndorrA", value: "AD" },
-      { key: "Angola", value: "AO" },
-      { key: "Anguilla", value: "AI" },
-      { key: "Antarctica", value: "AQ" },
-      { key: "Antigua and Barbuda", value: "AG" },
-      { key: "Argentina", value: "AR" },
-      { key: "Armenia", value: "AM" },
-      { key: "Australia", value: "AL" }
-    ]);
-    instant.updateFilterItems("af");
-    wrapper.update();
-    expect(wrapper.state().filteredlistItems).toEqual([
-      { key: "Afghanistan", value: "AF" }
-    ]);
-  });
-});
-
-//Check selected items using maxItemCounter.
-test.skip("Check selected items using maxItemCounter ", () => {
-  let options = { showHelper: false, maxItemCounter: 2 };
-  let wrapper = shallow(<TagSelector options={options} />);
-  const instant = wrapper.instance();
-  instant.setJsonData([
-    { key: "Albania", value: "AL" },
-    { key: "Armenia", value: "AM" },
-    { key: "Angola", value: "AO" },
-    { key: "Anguilla", value: "AI" }
-  ]);
-
-  instant.setSelectedItems([
-    { key: "Albania", value: "AL" },
-    { key: "Angola", value: "AO" },
-    { key: "Anguilla", value: "AI" }
-  ]);
-  wrapper.update();
-  const selectedWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
-  );
-  expect(selectedWrapper.text()).toEqual("3 SELECTED");
-});
-
-//Check remove button enabled or not when canRemoveAll is true.
-test.skip("Check remove button enabled or not when canRemoveAll is true ", () => {
-  let options = {
-    showHelper: false,
-    allowNewValue: true,
-    showHierarchy: false,
-    canRemoveAll: true,
-    maxItemCounter: 2
-  };
-  let wrapper = shallow(<TagSelector options={options} />);
-  const instant = wrapper.instance();
-  instant.setJsonData([
-    { key: "Albania", value: "AL" },
-    { key: "Armenia", value: "AM" }
-  ]);
-
-  instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
-  wrapper.update();
-  const removeButtonWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
-  );
-  const classNames = removeButtonWrapper.prop("className");
-  expect(classNames).toMatch(/VS-Disabled/);
-});
-
-// check getting selected item
-describe("Checking for getting selected items", () => {
-  test.skip("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//  checking that when "searchWithHelper": true, "allowNewValue": false and allowHierarchy": false then, it will show no Data Found if user gives an input which is not in the list 
+describe("Testing for searching if value not found.", () => {
+  test('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
     const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
+    options.showHelper = true;
+    options.readOnly = false;
 
+    let wrapper = mount(<TagSelector options={options}/>);
+    let instant = wrapper.instance();
+    
     instant.setJsonData(ITEM_LIST);
-    // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
-    // we have to set the search string
-    /*
-						WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
-						*/
-
+    
+    wrapper.find('Input').simulate('change',{ target: { value: 'kwp' } })
     wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([]);
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    let ulListItems = wrapper.find('.VS-AutocompleteItems.VS-NoData')
+
+    
+    expect(ulListItems.text()).toEqual('No Data Found')
+	   
   });
 
   test("getting selected items, when passing some seleted item which is present in listItems", () => {
-    const options = DEFAULT_OPTIONS;
-    options.showHelper = true;
-
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData(ITEM_LIST);
-
-    console.log(wrapper.debug());
-    wrapper.find("Input").simulate("change", { target: { value: "kw" } });
-    wrapper.update();
-    expect(instant.getFilteredList()).toEqual([{ value: "Kuwait", key: "KW" }]);
-  });
+                const options = DEFAULT_OPTIONS;
+                options.showHelper = true;
+    
+                let wrapper = mount(<TagSelector options={options} />);
+                const instant = wrapper.instance();
+                instant.setJsonData(ITEM_LIST);
+                wrapper
+                  .find("Input") 
+                  .simulate("change", { target: { value: "kw" } });
+                wrapper.update();
+                wrapper.setState({shouldListOpen: true})
+                expect(instant.getFilteredList()).toEqual([
+                  { value: "Kuwait", key: "KW" }
+                ]);
+              });
+  
 });
 
-//Append new element and get newly added element
-describe("get newly added element", () => {
-  test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
-    // let optionsHierarchy = {
-    //   showHelper: false,
-    //   allowNewValue: true,
-    //   showHierarchy: true
-    // };
-    // tagselector2.setJsonData([{
-    //   "Bihar": [
-    //       {"key": "Arwal", "value": "Arwal"},
-    //       {"key": "Nawada", "value": "Nawada"},
-    //       {"key": "Gopalganj", "value": "Gopalganj"}
-    //   ]},
-    //   {"Andhra Pradesh": [
-    //       {"key": "Adoni", "value": "Adoni"},
-    //       {"key": "Bapatla", "value": "Bapatla"},
-    //       {"key": "Anantapur", "value": "Anantapur"}
-    //   ]}
-    // ])
-  });
-  // Check
+//Checking whereas the new element we added is rendering properly in the list or not.
 
-  //Check selected items using maxItemCounter.
-  test("Check selected items using maxItemCounter ", () => {
-    let options = { showHelper: false, maxItemCounter: 2 };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" },
-      { key: "Angola", value: "AO" },
-      { key: "Anguilla", value: "AI" }
+	test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
+	  const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.allowNewValue = true;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+	  instant.setJsonData([
+		{ key: "Afghanistan", value: "AF" },
+		{ key: "Albania", value: "AL" },
+		{ key: "Algeria", value: "DZ" },
+		{ key: "American Samoa", value: "AS" },
+		{ key: "AndorrA", value: "AD" },
+		{ key: "Angola", value: "AO" },
+		{ key: "Anguilla", value: "AI" },
+		{ key: "Antarctica", value: "AQ" },
+		{ key: "Antigua and Barbuda", value: "AG" },
+		{ key: "Argentina", value: "AR" },
+		{ key: "Armenia", value: "AM" }
     ]);
-
-    instant.setSelectedItems([
-      { key: "Albania", value: "AL" },
-      { key: "Angola", value: "AO" },
-      { key: "Anguilla", value: "AI" }
-    ]);
+    wrapper.find('Input').simulate('change',{ target: { value: 'aaa' } })
     wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    wrapper.find('.VS-AddButton').at(1).simulate('click')   
+	  expect(wrapper.state().newlyAddedElements).toEqual([
+		{ key: "aaa", value: "aaa" }
+	  ]);
+	});
+
+//Select new item on click -
+describe('Select new item on click -',()=>{
+  test('Check when click event happen item should be selected in selectItemsValue ',()=>{
+
+    let options = {
+      showHelper: true,
+      allowNewValue: true,
+      showHierarchy: false,
+      maxItemCounter: 2 
+      };
+    let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData(ITEM_LIST)
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+  
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+  
     const selectedWrapper = wrapper.find(
       ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
     );
-    expect(selectedWrapper.text()).toEqual("3 SELECTED");
-  });
+    expect(instant.getSelectedValues()).toEqual([ { value: 'Aa People"S Democratic Republic', key: "zLA" },
+    { value: "Afghanistan", key: "AF", selected: true },
+    { value: "Albania", key: "AL" }]);
+  
 
-  //Check remove button enabled or not when canRemoveAll is true.
-  test("Check remove button enabled or not when canRemoveAll is true ", () => {
-    let options = {
-      showHelper: false,
+  })
+})
+
+  //Check list of items while searching using input value.
+describe('Check list of items while searching using input value.',()=>{
+    test("Check list of items while searching using input value in non hierarchy data", () => {
+      let options = {
+      showHelper: true,
       allowNewValue: true,
-      showHierarchy: false,
-      canRemoveAll: true,
-      maxItemCounter: 2
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
+      showHierarchy: false
+      };
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData([
+      { key: "Afghanistan", value: "AF" },
       { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" }
-    ]);
-
-    instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
-    wrapper.update();
-    const removeButtonWrapper = wrapper.find(
-      ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
-    );
-    const classNames = removeButtonWrapper.prop("className");
-    expect(classNames).toMatch(/VS-Disabled/);
-  });
-});
-
-// check getting selected item
-describe("Checking for getting selected items", () => {
-  test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-
-    instant.setJsonData(ITEM_LIST);
-    // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
-    wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([]);
-  });
-
-  test("getting selected items, when passing some seleted item which is present in listItems", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData(ITEM_LIST);
-    // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    wrapper.find("Input").simulate("change", { target: { value: "z" } });
-    wrapper.update();
-    expect(instant.getFilteredList()).toEqual([]);
-  });
-});
-
-//Append new element and get newly added element
-describe("get newly added element", () => {
-  test("By appending a new element ,then checking it is in newlyAddedElements", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-
-    instant.appendNewElement({ key: "Australia", value: "AL" });
-
-    wrapper.update();
-    expect(instant.getNewlyAdded()).toEqual([
+      { key: "Algeria", value: "DZ" },
+      { key: "American Samoa", value: "AS" },
+      { key: "AndorrA", value: "AD" },
+      { key: "Angola", value: "AO" },
+      { key: "Anguilla", value: "AI" },
+      { key: "Antarctica", value: "AQ" },
+      { key: "Antigua and Barbuda", value: "AG" },
+      { key: "Argentina", value: "AR" },
+      { key: "Armenia", value: "AM" },
       { key: "Australia", value: "AL" }
-    ]);
-  });
-
-  test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
-    test("By appending nothing, then checking it is in newlyAddedElements", () => {
-      const options = DEFAULT_OPTIONS;
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-
-      wrapper.update();
-      expect(instant.getNewlyAdded()).toEqual([]);
-    });
-  });
-});
-
-// Default set selected items
-// describe('Default set selected items', () => {})
-
-// Checking selected items after refresh method
-
-describe("Checking selected items after refresh method", () => {
-  test.skip("Checking selected items after refresh method, when passing some selected items", () => {
-    test("Checking selected items after refresh method, when passing some selected items", () => {
-      const options = DEFAULT_OPTIONS;
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AL" }
       ]);
-      instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
-
-      instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
-
-      instant.refresh();
-
+      
+      wrapper.find('Input').simulate('change',{ target: { value: 'af' } })
       wrapper.update();
-      expect(instant.getSelectedValues()).toEqual([]);
-    });
-  });
-
-  test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
-    test("Checking selected items after refresh method, when passing empyt array selected items", () => {
-      const options = DEFAULT_OPTIONS;
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AL" }
+      wrapper.setState({shouldListOpen: true});
+      // instant.updateFilterItems("af");
+      // wrapper.update();
+      expect(instant.getFilteredList()).toEqual([
+      { key: "Afghanistan", value: "AF" }
       ]);
-      instant.setSelectedItems([]);
-
-      instant.refresh();
-
-      wrapper.update();
-      expect(instant.getSelectedValues()).toEqual([]);
     });
-  });
-});
-// Check remove item from list
-describe("Check remove item from list", () => {
-  test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
-    test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+
+    test("Check list of items while searching using input value in hierarchy data", () => {
       let options = {
         showHelper: true,
-        allowNewValue: true,
-        showHierarchy: false
-      };
-      let wrapper = shallow(<TagSelector options={options} />);
+        showHierarchy: true
+        };
+
+      let wrapper = mount(<TagSelector options={options} />);
       const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AU" }
-      ]);
-      instant.removeListItem({ key: "Australia", value: "AU" });
+      instant.setJsonData(ITEM_LIST_HIERARCHY)
+      wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
       wrapper.update();
-      expect(instant.getListItem()).toEqual([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" }
-      ]);
-    });
-  });
-});
+      wrapper.setState({shouldListOpen: true});
 
-test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
-  test("If object is passed i.e not in the list then listItem got unchanged", () => {
-    let options = {
-      showHelper: true,
-      allowNewValue: true,
-      showHierarchy: false
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" },
-      { key: "Australia", value: "AU" }
-    ]);
-    instant.removeListItem({ key: "Austria", value: "AS" });
-    wrapper.update();
-    expect(instant.getListItem()).toEqual([
-      { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" },
-      { key: "Australia", value: "AU" }
-    ]);
-  });
-});
+      expect(instant.getFilteredList()).toEqual([
+        {"Andhra Pradesh":[{ "key": "Anantapur", "value": "Anantapur" }]}, { "Bihar":[{ "key": "Gopalganj", "value": "Gopalganj" }]},{"Gujarat":[]}
+        ]);
 
-test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
-  test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
-    let options = {
-      showHelper: true,
-      allowNewValue: true,
-      showHierarchy: false
-    };
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData([
-      { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" },
-      { key: "Australia", value: "AU" }
-    ]);
-    instant.removeListItem({ key: "Australia", value: "Au" });
-    wrapper.update();
-    expect(instant.getListItem()).toEqual([
-      instant.removeListItem({ key: "Australia", value: "AU" })
-    ]);
-    wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([
-      { key: "Albania", value: "AL" },
-      { key: "Armenia", value: "AM" }
-    ]);
-  });
-});
-
-// checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
-describe("Testing for searching if value not found.", () => {
-  test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-    let options = {
-      showHelper: true,
-      allowNewValue: false,
-      showHierarchy: false
-    };
-    let wrapper = shallow(
-      <TagSelector options={options}>
-        <ItemsList options={options} />
-      </TagSelector>
-    );
-    let instant = wrapper.instance();
-    let childInstant = wrapper.find("ItemsList");
-    let inputNoData = wrapper.find("Input");
-    console.log(childInstant.props());
-    inputNoData.simulate("change", { target: { value: "aaa" } });
-    inputNoData = wrapper.find("Input");
-    console.log(inputNoData);
-    inputNoData.simulate("change", { target: { value: "abc" } });
-    // console.log(instant.getFilteredList());
-    wrapper.update();
-  });
-});
-
-test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-  let options = {
-    showHelper: true,
-    allowNewValue: false,
-    showHierarchy: false
-  };
-  // let wrapper = shallow(<TagSelector options={options} />);
-  // let instant = wrapper.instance();
-  // // let inputNoData = wrapper.find("Input");
-  // // console.log(inputNoData)
-  // wrapper.find("Input").simulate("change",{target:{value:'a'}});
-  // // console.log(instant.getFilteredList())
-
-  let wrapper = shallow(<TagSelector options={options} />);
-  let get = wrapper.instance();
-
-  // .simulate('change',{target:{value:'nepal'}})
-  wrapper.update();
-  const a = wrapper.find("Input");
-  console.log(
-    wrapper.find(".VS-Regular-UPPER-Case VS-TagSelector-Input").length
-  );
-
-  // wrapper.update();
-  expect("aman").toEqual("aman");
-});
-
-//Append new element and get newly added element
-describe("get newly added element", () => {
-  test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
-    // let optionsHierarchy = {
-    //   showHelper: false,
-    //   allowNewValue: true,
-    //   showHierarchy: true
-    // };
-    // tagselector2.setJsonData([{
-    //   "Bihar": [
-    //       {"key": "Arwal", "value": "Arwal"},
-    //       {"key": "Nawada", "value": "Nawada"},
-    //       {"key": "Gopalganj", "value": "Gopalganj"}
-    //   ]},
-    //   {"Andhra Pradesh": [
-    //       {"key": "Adoni", "value": "Adoni"},
-    //       {"key": "Bapatla", "value": "Bapatla"},
-    //       {"key": "Anantapur", "value": "Anantapur"}
-    //   ]}
-    // ])
-  });
-});
-// Check
+    })
+    
+})
 
 //Check selected items using maxItemCounter.
-test("Check selected items using maxItemCounter ", () => {
-  let options = { showHelper: false, maxItemCounter: 2 };
-  let wrapper = shallow(<TagSelector options={options} />);
-  const instant = wrapper.instance();
-  instant.setJsonData([
-    { key: "Albania", value: "AL" },
-    { key: "Armenia", value: "AM" },
-    { key: "Angola", value: "AO" },
-    { key: "Anguilla", value: "AI" }
-  ]);
+describe('Check selected items using maxItemCounter',()=>{
+    test("Check selected items using maxItemCounter in non-hierarchial data ", () => {
+      // let options = { showHelper: false, maxItemCounter: 2 };
+      let options = {
+        showHelper: true,
+        allowNewValue: true,
+        showHierarchy: false,
+        maxItemCounter: 2 
+        };
+        
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST)
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      // console.log(wrapper.debug())
+      // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
 
-  instant.setSelectedItems([
-    { key: "Albania", value: "AL" },
-    { key: "Angola", value: "AO" },
-    { key: "Anguilla", value: "AI" }
-  ]);
-  wrapper.update();
-  const selectedWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
-  );
-  expect(selectedWrapper.text()).toEqual("3 SELECTED");
-});
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
 
-//Check remove button enabled or not when canRemoveAll is true.
-test("Check remove button enabled or not when canRemoveAll is true ", () => {
-  let options = {
-    showHelper: false,
-    allowNewValue: true,
-    showHierarchy: false,
-    canRemoveAll: true,
-    maxItemCounter: 2
-  };
-  let wrapper = shallow(<TagSelector options={options} />);
-  const instant = wrapper.instance();
-  instant.setJsonData([
-    { key: "Albania", value: "AL" },
-    { key: "Armenia", value: "AM" }
-  ]);
+      const selectedWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+      );
+      expect(selectedWrapper.text()).toEqual("3 SELECTED");
+      });
 
-  instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
-  wrapper.update();
-  const removeButtonWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
-  );
-  const classNames = removeButtonWrapper.prop("className");
-  expect(classNames).toMatch(/VS-Disabled/);
-});
+    test('Check selected items using maxItemCounter in hierarchial data',()=>{
+      let options = {
+        showHelper: true,
+        showHierarchy: true,
+        maxItemCounter: 2 
+        };
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST_HIERARCHY)
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
 
-// check getting selected item
-describe("Checking for getting selected items", () => {
-  test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
+      const selectedWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+      );
+      expect(selectedWrapper.text()).toEqual("3 SELECTED");
+    })
+})
 
-    instant.setJsonData(ITEM_LIST);
-    // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
-    wrapper.update();
-    expect(instant.getSelectedValues()).toEqual([]);
-  });
-
-  test("getting selected items, when passing some seleted item which is present in listItems", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-    instant.setJsonData(ITEM_LIST);
-    // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
-    wrapper.find("Input").simulate("change", { target: { value: "z" } });
-    wrapper.update();
-    expect(instant.getFilteredList()).toEqual([]);
-  });
-});
-
-//Append new element and get newly added element
-describe("get newly added element", () => {
-  test("By appending a new element ,then checking it is in newlyAddedElements", () => {
-    const options = DEFAULT_OPTIONS;
-    let wrapper = shallow(<TagSelector options={options} />);
-    const instant = wrapper.instance();
-
-    instant.appendNewElement({ key: "Australia", value: "AL" });
-
-    wrapper.update();
-    expect(instant.getNewlyAdded()).toEqual([
-      { key: "Australia", value: "AL" }
-    ]);
-  });
-
-  test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
-    test("By appending nothing, then checking it is in newlyAddedElements", () => {
-      const options = DEFAULT_OPTIONS;
+  //Check remove button enabled or not when canRemoveAll is true.
+describe('Check remove button enabled or not when canRemoveAll is true.',()=>{
+    test("Check remove button enabled or not when canRemoveAll is true", () => {
+      let options = {
+        showHelper: false,
+        allowNewValue: true,
+        showHierarchy: false,
+        canRemoveAll: true,
+        maxItemCounter: 2
+      };
       let wrapper = shallow(<TagSelector options={options} />);
       const instant = wrapper.instance();
-
+      instant.setJsonData([
+        { key: "Albania", value: "AL" },
+        { key: "Armenia", value: "AM" }
+      ]);
+      
+      instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
       wrapper.update();
-      expect(instant.getNewlyAdded()).toEqual([]);
-    });
+      const removeButtonWrapper = wrapper.find(
+        ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+      );
+      const classNames = removeButtonWrapper.prop("className");
+      expect(classNames).toMatch(/VS-Disabled/);
+      });
+})
+  // check get selected item
+describe("Checking for getting selected items", () => {
+	test("getting selected items, when passing some seleted item which is present in listItems ", () => {
+	  const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+    
+    instant.setJsonData(ITEM_LIST);
+    wrapper.find('Input').simulate('change',{ target: { value: 'aq' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+	  // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+	  // we have to set the search string
+	  /*
+						  WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
+						  */
+    expect(instant.getSelectedValues()).toEqual([{ value: "Antarctica", key: "AQ" }]);
+	});
+  
+	test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+	  const options = DEFAULT_OPTIONS;
+	  options.showHelper = true;
+    options.allowNewValue = false;
+    let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance()
+    instant.setJsonData(ITEM_LIST);
+	  wrapper.find('Input').simulate('change',{ target: { value: 'zz' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    let ulListItems = wrapper.find('.VS-AutocompleteItems.VS-NoData')
+	  expect(ulListItems.text()).toEqual('No Data Found');
   });
+  
+  // test('getting selected items, when passing some seleted item which is present in listItems in')
 });
 
-// Default set selected items
-describe("Default set selected items", () => {
-  test.skip("testing", () => {
-    test("testing", () => {});
+
+//   Get selected items counter
+describe('Get selected items counter',()=>{
+
+  test('checking, function correct selected items counting',()=>{
+
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+    
+    instant.setJsonData(ITEM_LIST);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    wrapper.find('.VS-LiItems').at(3).simulate('click')
+    expect(instant.getSelectedCounter()).toEqual(4);
+
+  })
+
+  test('checking, function correct selected items counting, in hierarchial data',()=>{
+
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.showHierarchy = true;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+    
+    instant.setJsonData(ITEM_LIST_HIERARCHY);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    wrapper.find('.VS-LiItems').at(3).simulate('click')
+    expect(instant.getSelectedCounter()).toEqual(4);
+
+  })
+})
+
+
+// Append new element and get newly added element
+describe("get newly added element", () => {
+	test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+    const options = DEFAULT_OPTIONS;
+    options.showHierarchy = false;
+	  let wrapper = shallow(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+  
+	  instant.appendNewElement({ key: "Australia", value: "AL" });
+  
+	  wrapper.update();
+	  expect(instant.getNewlyAdded()).toEqual([
+		{ key: "Australia", value: "AL" }
+	  ]);
+	});
+  
+	test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
+	  test("By appending nothing, then checking it is in newlyAddedElements", () => {
+		const options = DEFAULT_OPTIONS;
+		let wrapper = shallow(<TagSelector options={options} />);
+		const instant = wrapper.instance();
+  
+		wrapper.update();
+		expect(instant.getNewlyAdded()).toEqual([]);
+	  });
+	});
   });
-});
+  
+// Default set selected items
+describe("Default set selected items",()=>{
+
+  test('testing',()=>{
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.showHierarchy = false;
+	  let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		  { key: "Australia", value: "AU" }
+		]);
+    instant.setSelectedItems([
+      { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		])
+    
+    expect(instant.getSelectedValues()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		])
+
+  })
+})
 
 // Checking selected items after refresh method
-
 describe("Checking selected items after refresh method", () => {
-  test.skip("Checking selected items after refresh method, when passing some selected items", () => {
-    test("Checking selected items after refresh method, when passing some selected items", () => {
+	
+	  test("Checking selected items after refresh method, when passing some selected items", () => {  
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+	  let wrapper = mount(<TagSelector options={options} />);
+	  const instant = wrapper.instance();
+    
+    instant.setJsonData(ITEM_LIST);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    wrapper.find('.VS-LiItems').at(3).simulate('click')
+		instant.refresh();
+		wrapper.update();
+		expect(instant.getSelectedValues()).toEqual([]);
+    });
+    
+    test("Checking selected items after refresh method, when passing some selected items, in hierarchial data", () => { 
       const options = DEFAULT_OPTIONS;
-      let wrapper = shallow(<TagSelector options={options} />);
+      options.showHelper = true;
+      options.readOnly = false;
+      options.showHierarchy = true;
+      let wrapper = mount(<TagSelector options={options} />);
       const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AL" }
-      ]);
-      instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
-
-      instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
-
+      
+      instant.setJsonData(ITEM_LIST_HIERARCHY);
+      wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      wrapper.find('.VS-LiItems').at(2).simulate('click')
+      wrapper.find('.VS-LiItems').at(3).simulate('click')
       instant.refresh();
-
       wrapper.update();
       expect(instant.getSelectedValues()).toEqual([]);
-    });
-  });
+    })
 
-  test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
-    test("Checking selected items after refresh method, when passing empyt array selected items", () => {
-      const options = DEFAULT_OPTIONS;
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AL" }
-      ]);
-      instant.setSelectedItems([]);
-
-      instant.refresh();
-
-      wrapper.update();
-      expect(instant.getSelectedValues()).toEqual([]);
-    });
-  });
 });
+
+
+// Check remove Selecteditem from list
+describe("Check remove Selecteditem from list", () => {
+
+	  test("Check When X is clicked then selected item should remove", () => {
+    const options = DEFAULT_OPTIONS;
+    options.showHelper = true;
+    options.readOnly = false;
+    options.showHierarchy = false;
+		let wrapper = mount(<TagSelector options={options} />);
+		const instant = wrapper.instance();
+		instant.setJsonData([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+      { key: "Australia", value: "AU" }
+      
+    ]);
+    wrapper.find('Input').simulate('change',{ target: { value: 'a' } })
+    wrapper.update();
+    wrapper.setState({shouldListOpen: true})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+    console.log(wrapper.debug())
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
+    wrapper.find('.VS-LiItems').at(2).simulate('click')
+    
+    console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
+		// instant.removeListItem({ key: "Australia", value: "AU" });
+		expect(instant.getSelectedValues()).toEqual([
+		  { key: "Armenia", value: "AM" },{ key: "Australia", value: "AU" }
+		]);
+	  });
+    
+    test("Check When X is clicked then selected item should remove, in hierarchial data.", () => {
+      const options = DEFAULT_OPTIONS;
+      options.showHelper = true;
+      options.readOnly = false;
+      options.showHierarchy = true;
+      let wrapper = mount(<TagSelector options={options} />);
+      const instant = wrapper.instance();
+      instant.setJsonData(ITEM_LIST_HIERARCHY);
+      wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
+      wrapper.update();
+      wrapper.setState({shouldListOpen: true})
+      // console.log(wrapper.debug())
+      // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
+      console.log(wrapper.debug())
+      wrapper.find('.VS-LiItems').at(0).simulate('click')
+      wrapper.find('.VS-LiItems').at(1).simulate('click')
+      
+      console.log(wrapper.find('.VS-AutoCompleteItem-Icon.pi.pi-fw.pi-times').at(0).simulate('click'))
+      // instant.removeListItem({ key: "Australia", value: "AU" });
+      expect(instant.getSelectedValues()).toEqual([
+        { "key": "Gopalganj", "value": "Gopalganj" }
+      ]);
+    })
+})
 
 // Check remove item from list
-describe("Check remove item from list", () => {
-  test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
-    test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+describe('Check remove item from list',()=>{
+
+	  test("If object is passed i.e not in the list then listItem got unchanged", () => {
+		let options = {
+		  showHelper: true,
+		  allowNewValue: true,
+		  showHierarchy: false
+		};
+		let wrapper = shallow(<TagSelector options={options} />);
+		const instant = wrapper.instance();
+		instant.setJsonData([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		  { key: "Australia", value: "AU" }
+		]);
+		instant.removeListItem({ key: "Austria", value: "AS" });
+		wrapper.update();
+		expect(instant.getListItem()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		  { key: "Australia", value: "AU" }
+		]);
+	  });
+
+    test("If object is passed,And it is in the list then listItem got changed", () => {
       let options = {
         showHelper: true,
         allowNewValue: true,
@@ -956,121 +826,1363 @@ describe("Check remove item from list", () => {
       expect(instant.getListItem()).toEqual([
         { key: "Albania", value: "AL" },
         { key: "Armenia", value: "AM" }
+        
       ]);
-    });
-  });
+      });
+  
 
-  test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
-    test("If object is passed i.e not in the list then listItem got unchanged", () => {
-      let options = {
-        showHelper: true,
-        allowNewValue: true,
-        showHierarchy: false
-      };
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AU" }
-      ]);
-      instant.removeListItem({ key: "Austria", value: "AS" });
-      wrapper.update();
-      expect(instant.getListItem()).toEqual([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AU" }
-      ]);
-    });
-  });
-
-  test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
-    test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
-      let options = {
-        showHelper: true,
-        allowNewValue: true,
-        showHierarchy: false
-      };
-      let wrapper = shallow(<TagSelector options={options} />);
-      const instant = wrapper.instance();
-      instant.setJsonData([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" },
-        { key: "Australia", value: "AU" }
-      ]);
-      instant.removeListItem({ key: "Australia", value: "Au" });
-      wrapper.update();
-
-      instant.removeListItem({ key: "Australia", value: "AU" });
-      wrapper.update();
-      expect(instant.getSelectedValues()).toEqual([
-        { key: "Albania", value: "AL" },
-        { key: "Armenia", value: "AM" }
-      ]);
-    });
-  });
+	  test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+		let options = {
+		  showHelper: true,
+		  allowNewValue: true,
+		  showHierarchy: false
+		};
+		let wrapper = shallow(<TagSelector options={options} />);
+		const instant = wrapper.instance();
+		instant.setJsonData([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" },
+		  { key: "Australia", value: "AU" }
+    ]);
+    
+    instant.setSelectedItems([{ key: "Albania", value: "AL" },
+    { key: "Armenia", value: "AM" },
+    { key: "Australia", value: "AU" }])
+		instant.removeListItem({ key: "Australia", value: "AU" });
+		wrapper.update();
+    
+		expect(instant.getListItem()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" }
+    ]);
+    expect(instant.getSelectedValues()).toEqual([
+		  { key: "Albania", value: "AL" },
+		  { key: "Armenia", value: "AM" }
+		]);
+	  });
 });
 
-// checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
-describe("Testing for searching if value not found.", () => {
-  test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-    let options = {
-      showHelper: true,
-      allowNewValue: false,
-      showHierarchy: false
-    };
-    let wrapper = shallow(
-      <TagSelector options={options}>
-        <ItemsList options={options} />
-      </TagSelector>
-    );
-    let instant = wrapper.instance();
-    let childInstant = wrapper.find("ItemsList");
-    let inputNoData = wrapper.find("Input");
-    console.log(childInstant.props());
-    inputNoData.simulate("change", { target: { value: "aaa" } });
-    inputNoData = wrapper.find("Input");
-    console.log(inputNoData);
-    inputNoData.simulate("change", { target: { value: "abc" } });
-    // console.log(instant.getFilteredList());
+
+// Select new item on click - for hierarchyItems
+describe('Select new item on click - for hierarchyItems',()=>{
+  test('Check when click event happen then item got selected',()=>{
+    const options = DEFAULT_OPTIONS
+    options.showHierarchy =  true
+    options.allowNewValue = true
+    let wrapper = mount(<TagSelector options={options} />);
+    const instant = wrapper.instance();
+    instant.setJsonData(ITEM_LIST_HIERARCHY)
+    wrapper.find('Input').simulate('change',{ target: { value: 'an' } })
     wrapper.update();
-  });
-});
+    wrapper.setState({shouldListOpen: true})
+    console.log(wrapper.debug())
+    console.log(instant.getFilteredList())
+    
+  
+    wrapper.find('.VS-LiItems').at(0).simulate('click')
+    wrapper.find('.VS-LiItems').at(1).simulate('click')
 
-test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
-  let options = {
-    showHelper: true,
-    allowNewValue: false,
-    showHierarchy: false
-  };
-  // let wrapper = shallow(<TagSelector options={options} />);
-  // let instant = wrapper.instance();
-  // // let inputNoData = wrapper.find("Input");
-  // // console.log(inputNoData)
-  // wrapper.find("Input").simulate("change",{target:{value:'a'}});
-  // // console.log(instant.getFilteredList())
+    console.log(wrapper.find('.VS-AutocompleteItems').text())
+    expect(instant.getSelectedValues()).toEqual([ { "key": "Anantapur", "value": "Anantapur" },{ "key": "Gopalganj", "value": "Gopalganj" }]);
+  
 
-  let wrapper = mount(
-    <TagSelector options={options}>
-      <ItemsList />
-    </TagSelector>
-  );
-  let instant = wrapper.instance();
-  instant.onFocus();
+  })
+}) 
+// ------------------------------------end
+// describe("should render without crashing", () => {
+//   //Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.
 
-  console.log(wrapper.debug());
-  // .simulate('change',{target:{value:'nepal'}})
-  wrapper.update();
-  wrapper.find("Input").simulate("focus");
+//   test.skip("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
+//     test("Checking that when we adding a new element then whereas it is adding in the list or not so we are checking the length of the list after adding the list.", () => {
+//       let options = {
+//         showHelper: true,
+//         allowNewValue: true,
+//         showHierarchy: false
+//       };
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData(ITEM_LIST);
+//       wrapper.update();
+//       expect(wrapper.state().listItems.length).toEqual(244);
+//     });
 
-  const a = wrapper.find("Input");
-  console.log(a.simulate("change", { target: { value: "nepal" } }));
-  console.log(a.props().className);
-  console.log(
-    wrapper.find(".VS-Regular-UPPER-Case VS-TagSelector-Input").length
-  );
 
-  console.log();
-  // wrapper.update();
-  expect(instant.getFilteredList()).toEqual("aman");
-});
+//     //Checking whereas the new element we added is rendering properly in the list or not.
+//     test.skip("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
+//       test("checking that the new element added is rendering properly after adding a new object in the object array ", () => {
+//         let options = {
+//           showHelper: false,
+//           allowNewValue: true,
+//           showHierarchy: false
+//         };
+//         let wrapper = shallow(<TagSelector options={options} />);
+//         const instant = wrapper.instance();
+//         instant.setJsonData([
+//           { key: "Afghanistan", value: "AF" },
+//           { key: "Albania", value: "AL" },
+//           { key: "Algeria", value: "DZ" },
+//           { key: "American Samoa", value: "AS" },
+//           { key: "AndorrA", value: "AD" },
+//           { key: "Angola", value: "AO" },
+//           { key: "Anguilla", value: "AI" },
+//           { key: "Antarctica", value: "AQ" },
+//           { key: "Antigua and Barbuda", value: "AG" },
+//           { key: "Argentina", value: "AR" },
+//           { key: "Armenia", value: "AM" }
+//         ]);
+//         instant.appendNewElement({ key: "Pakistan", value: "PK" });
+//         wrapper.update();
+//         expect(wrapper.state().newlyAddedElements).toEqual([
+//           { key: "Pakistan", value: "PK" }
+//         ]);
+// });
+
+//       //add selected item
+//       test.skip("add selected item ", () => {
+//         test("add selected item ", () => {
+//           let options = {
+//             showHelper: false,
+//             allowNewValue: true,
+//             showHierarchy: false
+//           };
+//           let wrapper = shallow(<TagSelector options={options} />);
+//           const instant = wrapper.instance();
+//           instant.setJsonData([
+//             { key: "Afghanistan", value: "AF" },
+//             { key: "Albania", value: "AL" },
+//             { key: "Algeria", value: "DZ" },
+//             { key: "American Samoa", value: "AS" },
+//             { key: "AndorrA", value: "AD" },
+//             { key: "Angola", value: "AO" },
+//             { key: "Anguilla", value: "AI" },
+//             { key: "Antarctica", value: "AQ" },
+//             { key: "Antigua and Barbuda", value: "AG" },
+//             { key: "Argentina", value: "AR" },
+//             { key: "Armenia", value: "AM" }
+//           ]);
+
+//           instant.setSelectedItems([{ key: "AndorrA", value: "AD" }]);
+
+//           wrapper.update();
+//           expect(instant.getSelectedValues()).toEqual([
+//             { key: "AndorrA", value: "AD" }
+//           ]);
+//         });
+
+//         //Check list of items while searching using input value.
+//         test.skip("Check list of items while searching using input value ", () => {
+//           test("Check list of items while searching using input value ", () => {
+//             let options = {
+//               showHelper: false,
+//               allowNewValue: true,
+//               showHierarchy: false
+//             };
+//             let wrapper = shallow(<TagSelector options={options} />);
+
+//             const instant = wrapper.instance();
+//             instant.setJsonData([
+//               { key: "Afghanistan", value: "AF" },
+//               { key: "Albania", value: "AL" },
+//               { key: "Algeria", value: "DZ" },
+//               { key: "American Samoa", value: "AS" },
+//               { key: "AndorrA", value: "AD" },
+//               { key: "Angola", value: "AO" },
+//               { key: "Anguilla", value: "AI" },
+//               { key: "Antarctica", value: "AQ" },
+//               { key: "Antigua and Barbuda", value: "AG" },
+//               { key: "Argentina", value: "AR" },
+//               { key: "Armenia", value: "AM" },
+//               { key: "Australia", value: "AL" }
+//             ]);
+//             instant.updateFilterItems("af");
+//             wrapper.update();
+//             expect(wrapper.state().filteredlistItems).toEqual([
+//               { key: "Afghanistan", value: "AF" }
+//             ]);
+//           });
+
+//           //Check selected items using maxItemCounter.
+//           test.skip("Check selected items using maxItemCounter ", () => {
+//             let options = { showHelper: false, maxItemCounter: 2 };
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             instant.setJsonData([
+//               { key: "Albania", value: "AL" },
+//               { key: "Armenia", value: "AM" },
+//               { key: "Angola", value: "AO" },
+//               { key: "Anguilla", value: "AI" }
+//             ]);
+
+//             instant.setSelectedItems([
+//               { key: "Albania", value: "AL" },
+//               { key: "Angola", value: "AO" },
+//               { key: "Anguilla", value: "AI" }
+//             ]);
+//             wrapper.update();
+//             const selectedWrapper = wrapper.find(
+//               ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//             );
+//             expect(selectedWrapper.text()).toEqual("3 SELECTED");
+//           });
+
+//           //Check remove button enabled or not when canRemoveAll is true.
+//           test.skip("Check remove button enabled or not when canRemoveAll is true ", () => {
+//             let options = {
+//               showHelper: false,
+//               allowNewValue: true,
+//               showHierarchy: false,
+//               canRemoveAll: true,
+//               maxItemCounter: 2
+//             };
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             instant.setJsonData([
+//               { key: "Albania", value: "AL" },
+//               { key: "Armenia", value: "AM" }
+//             ]);
+
+//             instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+//             wrapper.update();
+//             const removeButtonWrapper = wrapper.find(
+//               ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+//             );
+//             const classNames = removeButtonWrapper.prop("className");
+//             expect(classNames).toMatch(/VS-Disabled/);
+//           });
+//         });
+
+//         // check getting selected item
+//         describe("Checking for getting selected items", () => {
+//           test.skip("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//             const options = DEFAULT_OPTIONS;
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+
+//             instant.setJsonData(ITEM_LIST);
+//             // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+//             // we have to set the search string
+//             /*
+// 						WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
+// 						*/
+
+//             wrapper.update();
+//             expect(instant.getSelectedValues()).toEqual([]);
+//           });
+
+//           test("getting selected items, when passing some seleted item which is present in listItems", () => {
+//             const options = DEFAULT_OPTIONS;
+//             options.showHelper = true;
+
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             console.log(wrapper.instance());
+//             instant.setJsonData(ITEM_LIST);
+
+//             console.log(wrapper.debug());
+//             wrapper
+//               .find("Input")
+//               .simulate("change", { target: { value: "kw" } });
+//             console.log(wrapper.find("Input").props());
+//             wrapper.update();
+//             expect(instant.getFilteredList()).toEqual([
+//               { value: "Kuwait", key: "KW" }
+//             ]);
+//           });
+//         });
+
+//         //Append new element and get newly added element
+//         describe("get newly added element", () => {
+//           test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//             // let optionsHierarchy = {
+//             //   showHelper: false,
+//             //   allowNewValue: true,
+//             //   showHierarchy: true
+//             // };
+//             // tagselector2.setJsonData([{
+//             //   "Bihar": [
+//             //       {"key": "Arwal", "value": "Arwal"},
+//             //       {"key": "Nawada", "value": "Nawada"},
+//             //       {"key": "Gopalganj", "value": "Gopalganj"}
+//             //   ]},
+//             //   {"Andhra Pradesh": [
+//             //       {"key": "Adoni", "value": "Adoni"},
+//             //       {"key": "Bapatla", "value": "Bapatla"},
+//             //       {"key": "Anantapur", "value": "Anantapur"}
+//             //   ]}
+//             // ])
+//           });
+//           // Check
+
+//           //Check selected items using maxItemCounter.
+//           test("Check selected items using maxItemCounter ", () => {
+//             let options = { showHelper: false, maxItemCounter: 2 };
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             instant.setJsonData([
+//               { key: "Albania", value: "AL" },
+//               { key: "Armenia", value: "AM" },
+//               { key: "Angola", value: "AO" },
+//               { key: "Anguilla", value: "AI" }
+//             ]);
+
+//             instant.setSelectedItems([
+//               { key: "Albania", value: "AL" },
+//               { key: "Angola", value: "AO" },
+//               { key: "Anguilla", value: "AI" }
+//             ]);
+//             wrapper.update();
+//             const selectedWrapper = wrapper.find(
+//               ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//             );
+//             expect(selectedWrapper.text()).toEqual("3 SELECTED");
+//           });
+
+//           //Check remove button enabled or not when canRemoveAll is true.
+//           test("Check remove button enabled or not when canRemoveAll is true ", () => {
+//             let options = {
+//               showHelper: false,
+//               allowNewValue: true,
+//               showHierarchy: false,
+//               canRemoveAll: true,
+//               maxItemCounter: 2
+//             };
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             instant.setJsonData([
+//               { key: "Albania", value: "AL" },
+//               { key: "Armenia", value: "AM" }
+//             ]);
+
+//             instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+//             wrapper.update();
+//             const removeButtonWrapper = wrapper.find(
+//               ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+//             );
+//             const classNames = removeButtonWrapper.prop("className");
+//             expect(classNames).toMatch(/VS-Disabled/);
+//           });
+//         });
+
+//         // check getting selected item
+//         describe("Checking for getting selected items", () => {
+//           test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//             const options = DEFAULT_OPTIONS;
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+
+//             instant.setJsonData(ITEM_LIST);
+//             // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+//             wrapper.update();
+//             expect(instant.getSelectedValues()).toEqual([]);
+//           });
+
+//           test("getting selected items, when passing some seleted item which is present in listItems", () => {
+//             const options = DEFAULT_OPTIONS;
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+//             instant.setJsonData(ITEM_LIST);
+//             // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
+//             wrapper
+//               .find("Input")
+//               .simulate("change", { target: { value: "z" } });
+//             wrapper.update();
+//             expect(instant.getFilteredList()).toEqual([]);
+//           });
+//         });
+
+//         //Append new element and get newly added element
+//         describe("get newly added element", () => {
+//           test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//             const options = DEFAULT_OPTIONS;
+//             let wrapper = shallow(<TagSelector options={options} />);
+//             const instant = wrapper.instance();
+
+//             instant.appendNewElement({ key: "Australia", value: "AL" });
+
+//             wrapper.update();
+//             expect(instant.getNewlyAdded()).toEqual([
+//               { key: "Australia", value: "AL" }
+//             ]);
+//           });
+
+//           test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
+//             test("By appending nothing, then checking it is in newlyAddedElements", () => {
+//               const options = DEFAULT_OPTIONS;
+//               let wrapper = shallow(<TagSelector options={options} />);
+//               const instant = wrapper.instance();
+
+//               wrapper.update();
+//               expect(instant.getNewlyAdded()).toEqual([]);
+//             });
+//           });
+
+//           // Default set selected items
+//           describe("Default set selected items", () => {
+//             // Checking selected items after refresh method
+
+//             describe("Checking selected items after refresh method", () => {
+//               test.skip("Checking selected items after refresh method, when passing some selected items", () => {
+//                 test("Checking selected items after refresh method, when passing some selected items", () => {
+//                   const options = DEFAULT_OPTIONS;
+//                   let wrapper = shallow(<TagSelector options={options} />);
+//                   const instant = wrapper.instance();
+//                   instant.setJsonData([
+//                     { key: "Albania", value: "AL" },
+//                     { key: "Armenia", value: "AM" },
+//                     { key: "Australia", value: "AL" }
+//                   ]);
+//                   instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
+
+//                   instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
+
+//                   instant.refresh();
+
+//                   wrapper.update();
+//                   expect(instant.getSelectedValues()).toEqual([]);
+//                 });
+
+//                 test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//                   test("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//                     const options = DEFAULT_OPTIONS;
+//                     let wrapper = shallow(<TagSelector options={options} />);
+//                     const instant = wrapper.instance();
+//                     instant.setJsonData([
+//                       { key: "Albania", value: "AL" },
+//                       { key: "Armenia", value: "AM" },
+//                       { key: "Australia", value: "AL" }
+//                     ]);
+//                     instant.setSelectedItems([]);
+
+//                     instant.refresh();
+
+//                     wrapper.update();
+//                     expect(instant.getSelectedValues()).toEqual([]);
+//                   });
+//                 });
+
+//                 // Check remove item from list
+//                 describe("Check remove item from list", () => {
+//                   test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//                     test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//                       let options = {
+//                         showHelper: true,
+//                         allowNewValue: true,
+//                         showHierarchy: false
+//                       };
+//                       let wrapper = shallow(<TagSelector options={options} />);
+//                       const instant = wrapper.instance();
+//                       instant.setJsonData([
+//                         { key: "Albania", value: "AL" },
+//                         { key: "Armenia", value: "AM" },
+//                         { key: "Australia", value: "AU" }
+//                       ]);
+//                       instant.removeListItem({ key: "Australia", value: "AU" });
+//                       wrapper.update();
+//                       expect(instant.getListItem()).toEqual([
+//                         { key: "Albania", value: "AL" },
+//                         { key: "Armenia", value: "AM" }
+//                       ]);
+//                     });
+
+//                     test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
+//                       test("If object is passed i.e not in the list then listItem got unchanged", () => {
+//                         let options = {
+//                           showHelper: true,
+//                           allowNewValue: true,
+//                           showHierarchy: false
+//                         };
+//                         let wrapper = shallow(
+//                           <TagSelector options={options} />
+//                         );
+//                         const instant = wrapper.instance();
+//                         instant.setJsonData([
+//                           { key: "Albania", value: "AL" },
+//                           { key: "Armenia", value: "AM" },
+//                           { key: "Australia", value: "AU" }
+//                         ]);
+//                         instant.removeListItem({ key: "Austria", value: "AS" });
+//                         wrapper.update();
+//                         expect(instant.getListItem()).toEqual([
+//                           { key: "Albania", value: "AL" },
+//                           { key: "Armenia", value: "AM" },
+//                           { key: "Australia", value: "AU" }
+//                         ]);
+//                       });
+
+//                       test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//                         test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//                           let options = {
+//                             showHelper: true,
+//                             allowNewValue: true,
+//                             showHierarchy: false
+//                           };
+//                           let wrapper = shallow(
+//                             <TagSelector options={options} />
+//                           );
+//                           const instant = wrapper.instance();
+//                           instant.setJsonData([
+//                             { key: "Albania", value: "AL" },
+//                             { key: "Armenia", value: "AM" },
+//                             { key: "Australia", value: "AU" }
+//                           ]);
+//                           instant.removeListItem({
+//                             key: "Australia",
+//                             value: "Au"
+//                           });
+//                           wrapper.update();
+//                           expect(instant.getListItem()).toEqual([
+//                             instant.removeListItem({
+//                               key: "Australia",
+//                               value: "AU"
+//                             })
+//                           ]);
+//                           wrapper.update();
+//                           expect(instant.getSelectedValues()).toEqual([
+//                             { key: "Albania", value: "AL" },
+//                             { key: "Armenia", value: "AM" }
+//                           ]);
+//                         });
+//                       });
+
+//                       // checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
+//                       describe("Testing for searching if value not found.", () => {
+//                         test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//                           let options = {
+//                             showHelper: true,
+//                             allowNewValue: false,
+//                             showHierarchy: false
+//                           };
+//                           let wrapper = shallow(
+//                             <TagSelector options={options}>
+//                               <ItemsList options={options} />
+//                             </TagSelector>
+//                           );
+//                           let instant = wrapper.instance();
+//                           let childInstant = wrapper.find("ItemsList");
+//                           let inputNoData = wrapper.find("Input");
+//                           console.log(childInstant.props());
+//                           inputNoData.simulate("change", {
+//                             target: { value: "aaa" }
+//                           });
+//                           inputNoData = wrapper.find("Input");
+//                           console.log(inputNoData);
+//                           inputNoData.simulate("change", {
+//                             target: { value: "abc" }
+//                           });
+//                           // console.log(instant.getFilteredList());
+//                           wrapper.update();
+//                         });
+//                       });
+
+//                       test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//                         let options = {
+//                           showHelper: true,
+//                           allowNewValue: false,
+//                           showHierarchy: false
+//                         };
+//                         // let wrapper = shallow(<TagSelector options={options} />);
+//                         // let instant = wrapper.instance();
+//                         // // let inputNoData = wrapper.find("Input");
+//                         // // console.log(inputNoData)
+//                         // wrapper.find("Input").simulate("change",{target:{value:'a'}});
+//                         // // console.log(instant.getFilteredList())
+
+//                         let wrapper = shallow(
+//                           <TagSelector options={options} />
+//                         );
+//                         let get = wrapper.instance();
+
+//                         // .simulate('change',{target:{value:'nepal'}})
+//                         wrapper.update();
+//                         const a = wrapper.find("Input");
+//                         console.log(
+//                           a.simulate("change", { target: { value: "nepal" } })
+//                         );
+//                         console.log(a.props().className);
+//                         console.log(
+//                           wrapper.find(
+//                             ".VS-Regular-UPPER-Case VS-TagSelector-Input"
+//                           ).length
+//                         );
+
+//                         // wrapper.update();
+//                         expect("aman").toEqual("aman");
+//                       });
+//                     });
+//                   });
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+//   });
+// });
+
+
+
+//add selected item
+// test.skip("add selected item ", () => {
+//   test("add selected item ", () => {
+//     let options = {
+//       showHelper: false,
+//       allowNewValue: true,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Afghanistan", value: "AF" },
+//       { key: "Albania", value: "AL" },
+//       { key: "Algeria", value: "DZ" },
+//       { key: "American Samoa", value: "AS" },
+//       { key: "AndorrA", value: "AD" },
+//       { key: "Angola", value: "AO" },
+//       { key: "Anguilla", value: "AI" },
+//       { key: "Antarctica", value: "AQ" },
+//       { key: "Antigua and Barbuda", value: "AG" },
+//       { key: "Argentina", value: "AR" },
+//       { key: "Armenia", value: "AM" }
+//     ]);
+
+//     instant.setSelectedItems([{ key: "AndorrA", value: "AD" }]);
+
+//     wrapper.update();
+//     expect(instant.getSelectedValues()).toEqual([
+//       { key: "AndorrA", value: "AD" }
+//     ]);
+//   });
+// });
+// //Check list of items while searching using input value.
+// test.skip("Check list of items while searching using input value ", () => {
+//   test("Check list of items while searching using input value ", () => {
+//     let options = {
+//       showHelper: false,
+//       allowNewValue: true,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(<TagSelector options={options} />);
+
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Afghanistan", value: "AF" },
+//       { key: "Albania", value: "AL" },
+//       { key: "Algeria", value: "DZ" },
+//       { key: "American Samoa", value: "AS" },
+//       { key: "AndorrA", value: "AD" },
+//       { key: "Angola", value: "AO" },
+//       { key: "Anguilla", value: "AI" },
+//       { key: "Antarctica", value: "AQ" },
+//       { key: "Antigua and Barbuda", value: "AG" },
+//       { key: "Argentina", value: "AR" },
+//       { key: "Armenia", value: "AM" },
+//       { key: "Australia", value: "AL" }
+//     ]);
+//     instant.updateFilterItems("af");
+//     wrapper.update();
+//     expect(wrapper.state().filteredlistItems).toEqual([
+//       { key: "Afghanistan", value: "AF" }
+//     ]);
+//   });
+// });
+
+// //Check selected items using maxItemCounter.
+// test.skip("Check selected items using maxItemCounter ", () => {
+//   let options = { showHelper: false, maxItemCounter: 2 };
+//   let wrapper = shallow(<TagSelector options={options} />);
+//   const instant = wrapper.instance();
+//   instant.setJsonData([
+//     { key: "Albania", value: "AL" },
+//     { key: "Armenia", value: "AM" },
+//     { key: "Angola", value: "AO" },
+//     { key: "Anguilla", value: "AI" }
+//   ]);
+
+//   instant.setSelectedItems([
+//     { key: "Albania", value: "AL" },
+//     { key: "Angola", value: "AO" },
+//     { key: "Anguilla", value: "AI" }
+//   ]);
+//   wrapper.update();
+//   const selectedWrapper = wrapper.find(
+//     ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//   );
+//   expect(selectedWrapper.text()).toEqual("3 SELECTED");
+// });
+
+// //Check remove button enabled or not when canRemoveAll is true.
+// test.skip("Check remove button enabled or not when canRemoveAll is true ", () => {
+//   let options = {
+//     showHelper: false,
+//     allowNewValue: true,
+//     showHierarchy: false,
+//     canRemoveAll: true,
+//     maxItemCounter: 2
+//   };
+//   let wrapper = shallow(<TagSelector options={options} />);
+//   const instant = wrapper.instance();
+//   instant.setJsonData([
+//     { key: "Albania", value: "AL" },
+//     { key: "Armenia", value: "AM" }
+//   ]);
+
+//   instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+//   wrapper.update();
+//   const removeButtonWrapper = wrapper.find(
+//     ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+//   );
+//   const classNames = removeButtonWrapper.prop("className");
+//   expect(classNames).toMatch(/VS-Disabled/);
+// });
+
+// // check getting selected item
+// describe("Checking for getting selected items", () => {
+//   test.skip("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+
+//     instant.setJsonData(ITEM_LIST);
+//     // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+//     // we have to set the search string
+//     /*
+// 						WRITE SOME CODE HERE TO SET SEARCH STRING WHICH DOES NOT MATCH ANY ITEM IN THE LIST OF ITEMS
+// 						*/
+
+//     wrapper.update();
+//     expect(instant.getSelectedValues()).toEqual([]);
+//   });
+
+//   test("getting selected items, when passing some seleted item which is present in listItems", () => {
+//     const options = DEFAULT_OPTIONS;
+//     options.showHelper = true;
+
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData(ITEM_LIST);
+
+//     console.log(wrapper.debug());
+//     wrapper.find("Input").simulate("change", { target: { value: "kw" } });
+//     wrapper.update();
+//     expect(instant.getFilteredList()).toEqual([{ value: "Kuwait", key: "KW" }]);
+//   });
+// });
+
+// //Append new element and get newly added element
+// describe("get newly added element", () => {
+//   test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//     // let optionsHierarchy = {
+//     //   showHelper: false,
+//     //   allowNewValue: true,
+//     //   showHierarchy: true
+//     // };
+//     // tagselector2.setJsonData([{
+//     //   "Bihar": [
+//     //       {"key": "Arwal", "value": "Arwal"},
+//     //       {"key": "Nawada", "value": "Nawada"},
+//     //       {"key": "Gopalganj", "value": "Gopalganj"}
+//     //   ]},
+//     //   {"Andhra Pradesh": [
+//     //       {"key": "Adoni", "value": "Adoni"},
+//     //       {"key": "Bapatla", "value": "Bapatla"},
+//     //       {"key": "Anantapur", "value": "Anantapur"}
+//     //   ]}
+//     // ])
+//   });
+//   // Check
+
+//   //Check selected items using maxItemCounter.
+//   test("Check selected items using maxItemCounter ", () => {
+//     let options = { showHelper: false, maxItemCounter: 2 };
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" },
+//       { key: "Angola", value: "AO" },
+//       { key: "Anguilla", value: "AI" }
+//     ]);
+
+//     instant.setSelectedItems([
+//       { key: "Albania", value: "AL" },
+//       { key: "Angola", value: "AO" },
+//       { key: "Anguilla", value: "AI" }
+//     ]);
+//     wrapper.update();
+//     const selectedWrapper = wrapper.find(
+//       ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//     );
+//     expect(selectedWrapper.text()).toEqual("3 SELECTED");
+//   });
+
+//   //Check remove button enabled or not when canRemoveAll is true.
+//   test("Check remove button enabled or not when canRemoveAll is true ", () => {
+//     let options = {
+//       showHelper: false,
+//       allowNewValue: true,
+//       showHierarchy: false,
+//       canRemoveAll: true,
+//       maxItemCounter: 2
+//     };
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" }
+//     ]);
+
+//     instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+//     wrapper.update();
+//     const removeButtonWrapper = wrapper.find(
+//       ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+//     );
+//     const classNames = removeButtonWrapper.prop("className");
+//     expect(classNames).toMatch(/VS-Disabled/);
+//   });
+// });
+
+// // check getting selected item
+// describe("Checking for getting selected items", () => {
+//   test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+
+//     instant.setJsonData(ITEM_LIST);
+//     // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+//     wrapper.update();
+//     expect(instant.getSelectedValues()).toEqual([]);
+//   });
+
+//   test("getting selected items, when passing some seleted item which is present in listItems", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData(ITEM_LIST);
+//     // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
+//     wrapper.find("Input").simulate("change", { target: { value: "z" } });
+//     wrapper.update();
+//     expect(instant.getFilteredList()).toEqual([]);
+//   });
+// });
+
+// //Append new element and get newly added element
+// describe("get newly added element", () => {
+//   test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+
+//     instant.appendNewElement({ key: "Australia", value: "AL" });
+
+//     wrapper.update();
+//     expect(instant.getNewlyAdded()).toEqual([
+//       { key: "Australia", value: "AL" }
+//     ]);
+//   });
+
+//   test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
+//     test("By appending nothing, then checking it is in newlyAddedElements", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+
+//       wrapper.update();
+//       expect(instant.getNewlyAdded()).toEqual([]);
+//     });
+//   });
+// });
+
+// // Default set selected items
+// // describe('Default set selected items', () => {})
+
+// // Checking selected items after refresh method
+
+// describe("Checking selected items after refresh method", () => {
+//   test.skip("Checking selected items after refresh method, when passing some selected items", () => {
+//     test("Checking selected items after refresh method, when passing some selected items", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AL" }
+//       ]);
+//       instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
+
+//       instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
+
+//       instant.refresh();
+
+//       wrapper.update();
+//       expect(instant.getSelectedValues()).toEqual([]);
+//     });
+//   });
+
+//   test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//     test("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AL" }
+//       ]);
+//       instant.setSelectedItems([]);
+
+//       instant.refresh();
+
+//       wrapper.update();
+//       expect(instant.getSelectedValues()).toEqual([]);
+//     });
+//   });
+// });
+// // Check remove item from list
+// describe("Check remove item from list", () => {
+//   test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//     test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//       let options = {
+//         showHelper: true,
+//         allowNewValue: true,
+//         showHierarchy: false
+//       };
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AU" }
+//       ]);
+//       instant.removeListItem({ key: "Australia", value: "AU" });
+//       wrapper.update();
+//       expect(instant.getListItem()).toEqual([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" }
+//       ]);
+//     });
+//   });
+// });
+
+// test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
+//   test("If object is passed i.e not in the list then listItem got unchanged", () => {
+//     let options = {
+//       showHelper: true,
+//       allowNewValue: true,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" },
+//       { key: "Australia", value: "AU" }
+//     ]);
+//     instant.removeListItem({ key: "Austria", value: "AS" });
+//     wrapper.update();
+//     expect(instant.getListItem()).toEqual([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" },
+//       { key: "Australia", value: "AU" }
+//     ]);
+//   });
+// });
+
+// test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//   test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//     let options = {
+//       showHelper: true,
+//       allowNewValue: true,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" },
+//       { key: "Australia", value: "AU" }
+//     ]);
+//     instant.removeListItem({ key: "Australia", value: "Au" });
+//     wrapper.update();
+//     expect(instant.getListItem()).toEqual([
+//       instant.removeListItem({ key: "Australia", value: "AU" })
+//     ]);
+//     wrapper.update();
+//     expect(instant.getSelectedValues()).toEqual([
+//       { key: "Albania", value: "AL" },
+//       { key: "Armenia", value: "AM" }
+//     ]);
+//   });
+// });
+
+// // checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
+// describe("Testing for searching if value not found.", () => {
+//   test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//     let options = {
+//       showHelper: true,
+//       allowNewValue: false,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(
+//       <TagSelector options={options}>
+//         <ItemsList options={options} />
+//       </TagSelector>
+//     );
+//     let instant = wrapper.instance();
+//     let childInstant = wrapper.find("ItemsList");
+//     let inputNoData = wrapper.find("Input");
+//     console.log(childInstant.props());
+//     inputNoData.simulate("change", { target: { value: "aaa" } });
+//     inputNoData = wrapper.find("Input");
+//     console.log(inputNoData);
+//     inputNoData.simulate("change", { target: { value: "abc" } });
+//     // console.log(instant.getFilteredList());
+//     wrapper.update();
+//   });
+// });
+
+// test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//   let options = {
+//     showHelper: true,
+//     allowNewValue: false,
+//     showHierarchy: false
+//   };
+//   // let wrapper = shallow(<TagSelector options={options} />);
+//   // let instant = wrapper.instance();
+//   // // let inputNoData = wrapper.find("Input");
+//   // // console.log(inputNoData)
+//   // wrapper.find("Input").simulate("change",{target:{value:'a'}});
+//   // // console.log(instant.getFilteredList())
+
+//   let wrapper = shallow(<TagSelector options={options} />);
+//   let get = wrapper.instance();
+
+//   // .simulate('change',{target:{value:'nepal'}})
+//   wrapper.update();
+//   const a = wrapper.find("Input");
+//   console.log(
+//     wrapper.find(".VS-Regular-UPPER-Case VS-TagSelector-Input").length
+//   );
+
+//   // wrapper.update();
+//   expect("aman").toEqual("aman");
+// });
+
+// //Append new element and get newly added element
+// describe("get newly added element", () => {
+//   test.skip("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//     // let optionsHierarchy = {
+//     //   showHelper: false,
+//     //   allowNewValue: true,
+//     //   showHierarchy: true
+//     // };
+//     // tagselector2.setJsonData([{
+//     //   "Bihar": [
+//     //       {"key": "Arwal", "value": "Arwal"},
+//     //       {"key": "Nawada", "value": "Nawada"},
+//     //       {"key": "Gopalganj", "value": "Gopalganj"}
+//     //   ]},
+//     //   {"Andhra Pradesh": [
+//     //       {"key": "Adoni", "value": "Adoni"},
+//     //       {"key": "Bapatla", "value": "Bapatla"},
+//     //       {"key": "Anantapur", "value": "Anantapur"}
+//     //   ]}
+//     // ])
+//   });
+// });
+// // Check
+
+// //Check selected items using maxItemCounter.
+// test("Check selected items using maxItemCounter ", () => {
+//   let options = { showHelper: false, maxItemCounter: 2 };
+//   let wrapper = shallow(<TagSelector options={options} />);
+//   const instant = wrapper.instance();
+//   instant.setJsonData([
+//     { key: "Albania", value: "AL" },
+//     { key: "Armenia", value: "AM" },
+//     { key: "Angola", value: "AO" },
+//     { key: "Anguilla", value: "AI" }
+//   ]);
+
+//   instant.setSelectedItems([
+//     { key: "Albania", value: "AL" },
+//     { key: "Angola", value: "AO" },
+//     { key: "Anguilla", value: "AI" }
+//   ]);
+//   wrapper.update();
+//   const selectedWrapper = wrapper.find(
+//     ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+//   );
+//   expect(selectedWrapper.text()).toEqual("3 SELECTED");
+// });
+
+// //Check remove button enabled or not when canRemoveAll is true.
+// test("Check remove button enabled or not when canRemoveAll is true ", () => {
+//   let options = {
+//     showHelper: false,
+//     allowNewValue: true,
+//     showHierarchy: false,
+//     canRemoveAll: true,
+//     maxItemCounter: 2
+//   };
+//   let wrapper = shallow(<TagSelector options={options} />);
+//   const instant = wrapper.instance();
+//   instant.setJsonData([
+//     { key: "Albania", value: "AL" },
+//     { key: "Armenia", value: "AM" }
+//   ]);
+
+//   instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
+//   wrapper.update();
+//   const removeButtonWrapper = wrapper.find(
+//     ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+//   );
+//   const classNames = removeButtonWrapper.prop("className");
+//   expect(classNames).toMatch(/VS-Disabled/);
+// });
+
+// // check getting selected item
+// describe("Checking for getting selected items", () => {
+//   test("getting selected items, when searching for a string that does not match any item in the list then selected list will be empty ", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+
+//     instant.setJsonData(ITEM_LIST);
+//     // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value
+//     wrapper.update();
+//     expect(instant.getSelectedValues()).toEqual([]);
+//   });
+
+//   test("getting selected items, when passing some seleted item which is present in listItems", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+//     instant.setJsonData(ITEM_LIST);
+//     // wrapper.find('.VS-Regular-UPPER-Case VS-TagSelector-Input').simulate('')
+//     wrapper.find("Input").simulate("change", { target: { value: "z" } });
+//     wrapper.update();
+//     expect(instant.getFilteredList()).toEqual([]);
+//   });
+// });
+
+// //Append new element and get newly added element
+// describe("get newly added element", () => {
+//   test("By appending a new element ,then checking it is in newlyAddedElements", () => {
+//     const options = DEFAULT_OPTIONS;
+//     let wrapper = shallow(<TagSelector options={options} />);
+//     const instant = wrapper.instance();
+
+//     instant.appendNewElement({ key: "Australia", value: "AL" });
+
+//     wrapper.update();
+//     expect(instant.getNewlyAdded()).toEqual([
+//       { key: "Australia", value: "AL" }
+//     ]);
+//   });
+
+//   test.skip("By appending nothing, then checking it is in newlyAddedElements", () => {
+//     test("By appending nothing, then checking it is in newlyAddedElements", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+
+//       wrapper.update();
+//       expect(instant.getNewlyAdded()).toEqual([]);
+//     });
+//   });
+// });
+
+// // Default set selected items
+// describe("Default set selected items", () => {
+//   test.skip("testing", () => {
+//     test("testing", () => {});
+//   });
+// });
+
+// // Checking selected items after refresh method
+
+// describe("Checking selected items after refresh method", () => {
+//   test.skip("Checking selected items after refresh method, when passing some selected items", () => {
+//     test("Checking selected items after refresh method, when passing some selected items", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AL" }
+//       ]);
+//       instant.setSelectedItems([{ key: "Australia", value: "AL" }]);
+
+//       instant.setSelectedItems([{ key: "Australia", value: "AU" }]);
+
+//       instant.refresh();
+
+//       wrapper.update();
+//       expect(instant.getSelectedValues()).toEqual([]);
+//     });
+//   });
+
+//   test.skip("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//     test("Checking selected items after refresh method, when passing empyt array selected items", () => {
+//       const options = DEFAULT_OPTIONS;
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AL" }
+//       ]);
+//       instant.setSelectedItems([]);
+
+//       instant.refresh();
+
+//       wrapper.update();
+//       expect(instant.getSelectedValues()).toEqual([]);
+//     });
+//   });
+// });
+
+// // Check remove item from list
+// describe("Check remove item from list", () => {
+//   test.skip(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//     test(" removeListItem() if object is passed to the function then that object got removed from the ListItem array ", () => {
+//       let options = {
+//         showHelper: true,
+//         allowNewValue: true,
+//         showHierarchy: false
+//       };
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AU" }
+//       ]);
+//       instant.removeListItem({ key: "Australia", value: "AU" });
+//       wrapper.update();
+//       expect(instant.getListItem()).toEqual([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" }
+//       ]);
+//     });
+//   });
+
+//   test.skip("If object is passed i.e not in the list then listItem got unchanged", () => {
+//     test("If object is passed i.e not in the list then listItem got unchanged", () => {
+//       let options = {
+//         showHelper: true,
+//         allowNewValue: true,
+//         showHierarchy: false
+//       };
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AU" }
+//       ]);
+//       instant.removeListItem({ key: "Austria", value: "AS" });
+//       wrapper.update();
+//       expect(instant.getListItem()).toEqual([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AU" }
+//       ]);
+//     });
+//   });
+
+//   test.skip("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//     test("removeListItem() if object is passed to the function then that object got removed from the selected Items array", () => {
+//       let options = {
+//         showHelper: true,
+//         allowNewValue: true,
+//         showHierarchy: false
+//       };
+//       let wrapper = shallow(<TagSelector options={options} />);
+//       const instant = wrapper.instance();
+//       instant.setJsonData([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" },
+//         { key: "Australia", value: "AU" }
+//       ]);
+//       instant.removeListItem({ key: "Australia", value: "Au" });
+//       wrapper.update();
+
+//       instant.removeListItem({ key: "Australia", value: "AU" });
+//       wrapper.update();
+//       expect(instant.getSelectedValues()).toEqual([
+//         { key: "Albania", value: "AL" },
+//         { key: "Armenia", value: "AM" }
+//       ]);
+//     });
+//   });
+// });
+
+// // checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list
+// describe("Testing for searching if value not found.", () => {
+//   test.skip('checking that when "showHelper": true, "allowNewValue": false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//     let options = {
+//       showHelper: true,
+//       allowNewValue: false,
+//       showHierarchy: false
+//     };
+//     let wrapper = shallow(
+//       <TagSelector options={options}>
+//         <ItemsList options={options} />
+//       </TagSelector>
+//     );
+//     let instant = wrapper.instance();
+//     let childInstant = wrapper.find("ItemsList");
+//     let inputNoData = wrapper.find("Input");
+//     console.log(childInstant.props());
+//     inputNoData.simulate("change", { target: { value: "aaa" } });
+//     inputNoData = wrapper.find("Input");
+//     console.log(inputNoData);
+//     inputNoData.simulate("change", { target: { value: "abc" } });
+//     // console.log(instant.getFilteredList());
+//     wrapper.update();
+//   });
+// });
+
+// test('checking that when "showHelper": true, "allowNewValue":false and showHierarchy": false then, it will show no Data Found if user gives an input which is not in the list', () => {
+//   let options = {
+//     showHelper: true,
+//     allowNewValue: false,
+//     showHierarchy: false
+//   };
+//   // let wrapper = shallow(<TagSelector options={options} />);
+//   // let instant = wrapper.instance();
+//   // // let inputNoData = wrapper.find("Input");
+//   // // console.log(inputNoData)
+//   // wrapper.find("Input").simulate("change",{target:{value:'a'}});
+//   // // console.log(instant.getFilteredList())
+
+//   let wrapper = mount(
+//     <TagSelector options={options}>
+//       <ItemsList />
+//     </TagSelector>
+//   );
+//   let instant = wrapper.instance();
+//   instant.onFocus();
+
+//   console.log(wrapper.debug());
+//   // .simulate('change',{target:{value:'nepal'}})
+//   wrapper.update();
+//   wrapper.find("Input").simulate("focus");
+
+//   const a = wrapper.find("Input");
+//   console.log(a.simulate("change", { target: { value: "nepal" } }));
+//   console.log(a.props().className);
+//   console.log(
+//     wrapper.find(".VS-Regular-UPPER-Case VS-TagSelector-Input").length
+//   );
+
+//   console.log();
+//   // wrapper.update();
+//   expect(instant.getFilteredList()).toEqual("aman");
+// });
+

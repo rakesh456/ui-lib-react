@@ -26,7 +26,8 @@ class TagSelector extends React.PureComponent {
       currentHierarchyItemIndex: 0,
       hierarchyParentKey: "",
       hierarchySelectedItem: null,
-      hierarchyParentLength: 0
+      hierarchyParentLength: 0,
+      searchValue:''
     };
     this.countryservice = new CountryService();
   }
@@ -125,10 +126,11 @@ class TagSelector extends React.PureComponent {
   };
 
   appendNewElement(obj) {
+    console.log('in append new Element')
     const { showHierarchy } = this.props.options;
     if (showHierarchy === false) {
       this.addItemAndUpdateList(obj);
-      let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : "";
+      let _val = (this.state.searchValue) ? this.state.searchValue : "";
       this.updateFilterItems(_val);
     }
   }
@@ -163,8 +165,8 @@ class TagSelector extends React.PureComponent {
     });
     console.log(this.state.shouldListOpen)
     this.props.onFocus();
-    console.log(this.inputEl.value)
-    this.updateFilterItems(this.inputEl.value);
+    console.log(this.state.searchValue)
+    this.updateFilterItems(this.state.searchValue);
   };
 
   onBlur = () => {
@@ -283,18 +285,23 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
-    console.log('in filter list', e);
-    let _val = this.inputEl && this.inputEl.value ? this.inputEl.value : e.target.value;
+    let _val = (e && e.target) ? e.target.value : '';
     // setTimeout(() => {
+      console.log(_val)
     this.updateFilterItems(_val);
     if (_val && this.state.filteredlistItems.length <= 0) {
-      this.props.onNotFound();
+      // this.props.onNotFound();
     }
+  
+    this.setState({
+      searchValue: _val
+    })
     // }, 250);
   }
 
   updateFilterItems = _val => {
-    console.log('in update list')
+    console.log('in update list',_val)
+
     const { listItems } = this.state;
     const { showHierarchy } = this.props.options;
     let key;
@@ -312,6 +319,7 @@ class TagSelector extends React.PureComponent {
             }
             if (results1[index]) {
               results1[index][_key] = [...obj];
+              console.log(results1)
             }
           } else {
             results1[index] = {};
@@ -321,7 +329,9 @@ class TagSelector extends React.PureComponent {
 
 
       });
+      console.log(_val)
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
+      console.log(results)
     } else {
       results = _val
         ? this.state.listItems.filter((item, index) =>
@@ -406,10 +416,10 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
     }
 
-    this.inputEl.value = "";
+    this.state.searchValue = "";
     this.inputEl.focus();
-    this.updateFilterItems("");
-    this.props.onSelect(item);
+    // this.updateFilterItems("");
+    // this.props.onSelect(item);
   };
 
   removeListItem(item) {
@@ -453,7 +463,7 @@ class TagSelector extends React.PureComponent {
       let selectedItems = [...this.state.selectedItems];
       selectedItems.splice(index, 1);
       this.setState({ selectedItems: selectedItems });
-      this.props.onDeSelect(item);
+      // this.props.onDeSelect(item);
     } else {
       this.props.onDeSelect(this.state.selectedItems);
       this.setState({ selectedItems: [] });
@@ -568,7 +578,7 @@ class TagSelector extends React.PureComponent {
               >
                 <ItemsList
                   style={this.state.style}
-                  inputEl={this.inputEl}
+                  searchValue={this.state.searchValue}
                   selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}

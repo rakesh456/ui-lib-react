@@ -98,7 +98,7 @@ class ItemsList extends React.PureComponent {
                     (listItems && listItems.length > 0) ?
                         (filteredlistItems && filteredlistItems.length > 0) ?
                             filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
-                            : (allowNewValue === true) ? 'Do you want to add "' + this.props.inputEl.value + '" to list' : 'No Data Found' :
+                            : (allowNewValue === true) ? 'Do you want to add "' + this.props.searchValue + '" to list' : 'No Data Found' :
                         'No List Items'
                 }
             </ul>
@@ -147,14 +147,14 @@ class ItemsList extends React.PureComponent {
     addItemButton = () => {
         return (
             <span>{
-                <span>Do you want to add "{this.props.inputEl.value}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.inputEl.value)}>ADD</Button></span>
+                <span>Do you want to add "{this.props.searchValue}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.searchValue)}>ADD</Button></span>
             }
             </span>
         )
     }
 
     addNewItem = () => {
-        this.props.addNewItem(this.props.inputEl.value);
+        this.props.addNewItem(this.props.searchValue);
     }
 
     getContainerClass = () => {
