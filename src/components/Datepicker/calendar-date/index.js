@@ -105,7 +105,6 @@ class CalendarDate extends React.PureComponent {
         // const { showButtons } = this.props;
         console.log(this.props.shouldCalendarOpen)
         if (!this.props.shouldCalendarOpen) {
-            console.log('return null')
             return null;
         }
 

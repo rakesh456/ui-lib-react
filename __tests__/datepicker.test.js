@@ -57,6 +57,26 @@ test('Month component renders without crashing', () => {
 describe('check defauLt date if current date is in the limit in DD/MM/YYYY',()=>{
 
   test('passing date which perivous then lower limit of ',()=>{
-    
+      let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+      // let options = {
+      //   displayFormat:'DD/MM/YYYY',
+      //   "iconAlignment":"left",
+      //   "dateStringAlignment": "left",
+      //   'manualEntry':true
+      // }
+      const wrapper = mount(<DatePicker options = {options} />)
+      wrapper.setState({
+        manualEntry:true,
+        shouldCalendarOpen:true,
+        isDisabled:false,
+        showMonthSelection:false,
+        showYearSelection:false,  
+      })
+      wrapper.update()
+      wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').simulate('change',{target:{value:'11/05/2019'}})
+      wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').simulate('blur')
+      console.log(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft'))
+      console.log(wrapper.state.selectedDate)
+      console.log(wrapper.debug())
   })
 })
