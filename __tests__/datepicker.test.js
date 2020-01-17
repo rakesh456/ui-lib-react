@@ -822,7 +822,7 @@ describe('check the default date if current date is not in the limit in DD/MM/YY
 
   })
 
-  test('If current date is not in the limit and default date is also not in the limit then it will return current date',()=>{
+  test('If current date is not in the limit and default date is also not in the limit then it will return default date',()=>{
 
     let options = {
       displayFormat: "DD/MM/YYYY",
@@ -876,7 +876,7 @@ describe('check the default date if current date is not in the limit in DD/MM/YY
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(currentDate);
+    ).toEqual('16/01/2020');
 
 
   })
@@ -1008,12 +1008,41 @@ describe("checking the default Year in MM/YYYY format",()=>{
   });
 
 
+  test('If default date is empty string then it returns blank string',()=>{
+
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+
+    
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  });
+
+  test('If default date is any random string then it returns blank string',()=>{
+
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+
+    
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  });
 })
 
 // 9. checking the default Year in QQ/YYYY format
 describe('checking the default Year in QQ/YYYY format',()=>{
 
-  test('testing',()=>{
+  test('If default date is in limit then it returns default date',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
 
     const wrapper = mount(<DatePicker options={options} />);
@@ -1025,5 +1054,221 @@ describe('checking the default Year in QQ/YYYY format',()=>{
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
     ).toEqual("Q1/2015");
+  })
+
+  test('If default date is previous quater/year then lower limit then it return blank string',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2016", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  })
+
+  test('If default date is after quater/year then upper limit then it return blank string',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2039", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2016", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  })
+
+  test('If default date is present in the disabled list then it returns blank string',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  })
+
+  test('If default date is empty string then it returns blank string',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  })
+
+  test('If default date is random string then it returns blank string',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+  })
+
+  test('If default date is  undefined then it returns current date quater/year',()=>{
+    const options = {"displayFormat": "QQ/YYYY", "defaultDate": undefined, "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    let date = new Date()
+    let month = date.getMonth() + 1
+    let quater =  month > 9 ? '4' : month > 6 ? '3' : month > 3 ? '2' : '1';
+    let year = date.getFullYear()
+    let result = ["Q"+quater,year].join("/")
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual(result);
+  })
+
+
+})
+
+// 10.checking the default Year in YYYY format
+describe('checking the default Year in YYYY format',()=>{
+
+  test('testing',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("2022");
+
+  })
+
+  test('If default year is previous year to lower limit then it returns blank string',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "2001", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+
+  })
+
+  test('If default year is after year to upper limit then it returns blank string',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "2027", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+
+  })
+
+  test('If default year is present in diabled list then it returns blank string',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "2010", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+
+  })
+
+
+  test('If default year is undefined then it returns current year',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": undefined, "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    let date = new Date()
+    let currentYear = ""+date.getFullYear()
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual(currentYear);
+
+  })
+
+  test('If default year is empty string then it also returns blank string',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+
+  })
+
+  test('If default year is any random string then it also returns blank string',()=>{
+
+    const options = {"displayFormat": "YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
+
+    const wrapper = mount(<DatePicker options={options} />);
+    // console.log(wrapper.debug())
+    wrapper.update();
+    expect(
+      wrapper
+        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
+        .props().value
+    ).toEqual("");
+
+  })
+})
+
+// 11.Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options
+
+describe('Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options',()=>{
+
+  test('testing',()=>{
+    let options = {}
+    const wrapper = mount(<DatePicker options = {options} />)
   })
 })
