@@ -87,9 +87,6 @@ export const getChildren = function (year, showWeeks, disabledList) {
 			};
 
 			quarter["months"].push(month);
-			// if (disabledList.includes(quarter.quarter + '/' + year) || disabledList.includes(quarter.quarter.toLowerCase() + '/' + year)) {
-			// 	quarterArray.pop();
-			// }
 			if (MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month) + 1 > 9) {
 				if (disabledList.includes(MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month) + 1 + '/' + year)) {
 					quarter["months"].pop();
@@ -107,8 +104,6 @@ export const getChildren = function (year, showWeeks, disabledList) {
 
 	if (showWeeks === false) {
 		quarterArray.forEach((quarter) => {
-			var qno = quarter.quarter.charAt(1)
-			qno = parseInt(qno) - 1;
 			quarter.months.forEach((month) => {
 				var mno = MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month);
 				month["days"] = getMonthDays(mno + 1, year, disabledList);
@@ -116,8 +111,6 @@ export const getChildren = function (year, showWeeks, disabledList) {
 		})
 	} else {
 		quarterArray.forEach((quarter) => {
-			var qno = quarter.quarter.charAt(1)
-			qno = parseInt(qno) - 1;
 			quarter.months.forEach((month) => {
 				var mno = MONTH_SHORT_NAMES_TITLE_CASE.indexOf(month.month);
 				month["weeks"] = getMonthWeeks(mno + 1, year, disabledList);
@@ -173,7 +166,6 @@ export const getMonths = function (year, showWeeks, disabledList) {
 		return months;
 	}
 }
-
 export const getSearchObj = function (options) {
 	let { lowerLimit, upperLimit, showWeeks, showQuarters } = options;
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
@@ -508,7 +500,6 @@ export const getMonthWeeks = function (month_number, year, disabledList) {
 			var monthDate = new Date(year, month_number - 1, i);
 			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
 			weekObj.days.push(dayObj);
-			var mmddyyyy = month_number + '/' + dayObj.date + '/' + year;
 			if (month_number > 9 && dayObj.date > 9) {
 				if (disabledList.includes(month_number + '/' + dayObj.date + '/' + year)) {
 					weekObj.days.pop();
