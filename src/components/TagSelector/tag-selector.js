@@ -130,6 +130,7 @@ class TagSelector extends React.PureComponent {
     if (showHierarchy === false) {
       this.addItemAndUpdateList(obj);
       let _val = this.state.searchValue  ? this.state.searchValue : "";
+      let _val = (this.state.searchValue) ? this.state.searchValue : "";
       this.updateFilterItems(_val);
     }
   }
@@ -289,13 +290,23 @@ class TagSelector extends React.PureComponent {
     this.updateFilterItems(_val);
     if (_val && this.state.filteredlistItems.length <= 0) {
       // this.props.onNotFound();
-
+    let _val = (e && e.target) ? e.target.value : '';
+    // setTimeout(() => {
+    this.updateFilterItems(_val);
+    if (_val && this.state.filteredlistItems.length <= 0) {
+      // this.props.onNotFound();
     }
+  
+    this.setState({
+      searchValue: _val
+    })
     // }, 250);
     this.setState({
       searchValue:e.target.value
     })
   }
+  }
+
 
   updateFilterItems = _val => {
     const { listItems } = this.state;
@@ -352,6 +363,7 @@ class TagSelector extends React.PureComponent {
       hierarchyParentLength: _len
     });
   };
+
   // myfun
   getFilteredList() {
     return this.state.filteredlistItems;
@@ -395,7 +407,6 @@ class TagSelector extends React.PureComponent {
   };
 
   onSelectHandler = item => {
-    console.log('in select handle')
     this.setState({ shouldListOpen: true });
     if (!objectIncludesInArray(this.state.selectedItems, "key", item.key)) {
       let selectedItems = [...this.state.selectedItems];
@@ -412,6 +423,10 @@ class TagSelector extends React.PureComponent {
     this.state.searchValue = "";
     this.inputEl.focus();
     this.updateFilterItems("");
+
+    this.setState({searchValue : ""});
+    this.inputEl.focus();
+    // this.updateFilterItems("");
     // this.props.onSelect(item);
   };
 
@@ -456,7 +471,7 @@ class TagSelector extends React.PureComponent {
       let selectedItems = [...this.state.selectedItems];
       selectedItems.splice(index, 1);
       this.setState({ selectedItems: selectedItems });
-      this.props.onDeSelect(item);
+      // this.props.onDeSelect(item);
     } else {
       this.props.onDeSelect(this.state.selectedItems);
       this.setState({ selectedItems: [] });
@@ -573,6 +588,7 @@ class TagSelector extends React.PureComponent {
                   style={this.state.style}
                   searchValue={this.state.searchValue}
                   selectedItems={this.state.selectedItems}
+                  selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}
                   options={options}
@@ -595,6 +611,7 @@ class TagSelector extends React.PureComponent {
       </div>
     );
   }
+
 }
 
 export default TagSelector;

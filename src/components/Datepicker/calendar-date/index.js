@@ -93,6 +93,8 @@ class CalendarDate extends React.PureComponent {
 
     getCalendarContainerClass = () => {
         const { showButtons } = this.props.options;
+        console.log('in calender container')
+        // const { showButtons } = this.props;
         return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ` + ((showButtons && showButtons === true)? `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_BUTTON}` : `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL}`);
     }
 
@@ -100,6 +102,8 @@ class CalendarDate extends React.PureComponent {
         const { month, year } = this.state;
         const { selectedDate } = this.props;
         const { showButtons } = this.props.options;
+        // const { showButtons } = this.props;
+        console.log(this.props.shouldCalendarOpen)
         if (!this.props.shouldCalendarOpen) {
             return null;
         }
