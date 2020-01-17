@@ -1025,7 +1025,7 @@ describe("checking the default Year in MM/YYYY format",()=>{
 
   test('If default date is any random string then it returns blank string',()=>{
 
-    let options = {"displayFormat": "MM/YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
 
     
     const wrapper = mount(<DatePicker options={options} />);
@@ -1263,12 +1263,3 @@ describe('checking the default Year in YYYY format',()=>{
   })
 })
 
-// 11.Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options
-
-describe('Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options',()=>{
-
-  test('testing',()=>{
-    let options = {}
-    const wrapper = mount(<DatePicker options = {options} />)
-  })
-})

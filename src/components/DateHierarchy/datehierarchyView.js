@@ -17,7 +17,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        console.log(' result ', result);
+        // console.log(' result ', result);
         this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isSelectAll: false, lastFilterData: { 'value': '', 'list': [] } };
     }
 
@@ -484,6 +484,13 @@ class DatehierarchyView extends React.PureComponent {
         }
     }
 
+    onFilteredDataChangeHandler = (data) => {
+        console.log(' data ', data);
+        this.setState({
+            filteredData: data
+        });
+    }
+
     getYearCheckBoxClass = (year, index) => {
         let flag = false;
         const _years = [...this.getYears()];
@@ -573,6 +580,12 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     mergeFilterData = (filteredData, callback) => {
+        this.setState({
+            years: filteredData
+        })
+    }
+
+    mergeFilterData1 = (filteredData, callback) => {
         let { years } = this.state;
         setTimeout(() => {
             years.forEach((yr, yindex) => {
@@ -702,7 +715,7 @@ class DatehierarchyView extends React.PureComponent {
                 <div id="VS-Scrollbar">
                     {
                         (isSearching === true) ?
-                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></FilterView> :
+                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler}></FilterView> :
 
                             <YearDisplay options={options} isFilterView={false} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></YearDisplay>
                     }

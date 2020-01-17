@@ -129,7 +129,8 @@ class TagSelector extends React.PureComponent {
     const { showHierarchy } = this.props.options;
     if (showHierarchy === false) {
       this.addItemAndUpdateList(obj);
-      let _val = (this.state.searchValue) ? this.state.searchValue : "";
+      let _val = this.state.searchValue  ? this.state.searchValue : "";
+      // let _val = (this.state.searchValue) ? this.state.searchValue : "";
       this.updateFilterItems(_val);
     }
   }
@@ -284,6 +285,11 @@ class TagSelector extends React.PureComponent {
   };
 
   filterItemsList = e => {
+    let _val = (e && e.target) ?  e.target.value : "";
+    // setTimeout(() =>{
+    this.updateFilterItems(_val);
+    if (_val && this.state.filteredlistItems.length <= 0) {
+      // this.props.onNotFound();
     let _val = (e && e.target) ? e.target.value : '';
     // setTimeout(() => {
     this.updateFilterItems(_val);
@@ -295,7 +301,12 @@ class TagSelector extends React.PureComponent {
       searchValue: _val
     })
     // }, 250);
+    this.setState({
+      searchValue:e.target.value
+    })
   }
+  }
+
 
   updateFilterItems = _val => {
     const { listItems } = this.state;
@@ -352,6 +363,7 @@ class TagSelector extends React.PureComponent {
       hierarchyParentLength: _len
     });
   };
+
   // myfun
   getFilteredList() {
     return this.state.filteredlistItems;
@@ -407,6 +419,10 @@ class TagSelector extends React.PureComponent {
       });
       this.setState({ selectedItems: selectedItems });
     }
+
+    this.state.searchValue = "";
+    this.inputEl.focus();
+    this.updateFilterItems("");
 
     this.setState({searchValue : ""});
     this.inputEl.focus();
@@ -571,6 +587,7 @@ class TagSelector extends React.PureComponent {
                 <ItemsList
                   style={this.state.style}
                   searchValue={this.state.searchValue}
+                  selectedItems={this.state.selectedItems}
                   selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}
@@ -583,7 +600,7 @@ class TagSelector extends React.PureComponent {
                   updateHierarchyIndex={this.updateHierarchyIndexHandler}
                   hierarchySelectedItem={hierarchySelectedItem}
                 >
-                  {" "}
+
                 </ItemsList>
               </TagSelectorPortal>
             ) : (
@@ -594,6 +611,7 @@ class TagSelector extends React.PureComponent {
       </div>
     );
   }
+
 }
 
 export default TagSelector;
