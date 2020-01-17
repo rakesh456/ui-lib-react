@@ -414,20 +414,27 @@ test("checking that the new element added is rendering properly after adding a n
 		{ key: "Pakistan", value: "PK" }
 	  ]);
 	});
-  test("testing",()=>{
-    let wrapper = mount(<TagSelector options={options} />);
-    let instant = wrapper.instance();
+  // test("testing",()=>{
 
-    instant.setJsonData(ITEM_LIST);
+  //   let options = {
+  //     showHelper: false,
+  //     allowNewValue: true,
+  //     showHierarchy: false
+  //     };
 
-    wrapper.find("Input").simulate("change", { target: { value: "kwp" } });
-    wrapper.update();
-    wrapper.setState({ shouldListOpen: true });
-    // console.log(wrapper.debug())
-    let ulListItems = wrapper.find(".VS-AutocompleteItems.VS-NoData");
+  //   let wrapper = mount(<TagSelector options={options} />);
+  //   let instant = wrapper.instance();
 
-    expect(ulListItems.text()).toEqual("No Data Found");
-  });
+  //   instant.setJsonData(ITEM_LIST);
+
+  //   wrapper.find("Input").simulate("change", { target: { value: "kwp" } });
+  //   wrapper.update();
+  //   wrapper.setState({ shouldListOpen: true });
+  //   // console.log(wrapper.debug())
+  //   let ulListItems = wrapper.find(".VS-AutocompleteItems.VS-NoData");
+
+  //   expect(ulListItems.text()).toEqual("No Data Found");
+  // });
 
   test("getting selected items, when passing some seleted item which is present in listItems", () => {
     const options = DEFAULT_OPTIONS;
@@ -971,7 +978,7 @@ describe("Checking for getting selected items", () => {
     wrapper.find('Input').simulate('change',{ target: { value: 'aq' } })
     wrapper.update();
     wrapper.setState({shouldListOpen: true})
-    // console.log(wrapper.debug())
+    console.log(wrapper.debug())
     // console.log(wrapper.find('.VS-CodeText.VS-PullLeft').at(0).text())
     wrapper.find('.VS-LiItems').at(0).simulate('click')
 	  // let value = wrapperItemList.find('.VS-Regular-UPPER-Case VS-TagSelector-Input form-control').value

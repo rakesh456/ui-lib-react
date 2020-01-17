@@ -1263,3 +1263,106 @@ describe('checking the default Year in YYYY format',()=>{
   })
 })
 
+// 11.Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options
+describe('Check cancel and ok buttons value are setting properly or not using dateButtonPrimary and dateButtonSecondary options',()=>{
+  test("If showButtons is True and pass 'OK' to dateButtonPrimary then the button label will show 'OK",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "OK", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(1).text()).toEqual('OK')
+  })
+
+  test("If showButtons is True and pass 'JSTigers' to dateButtonPrimary then the button label will show 'JSTigers'",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "JSTigers", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(1).text()).toEqual('JSTigers')
+  })
+
+  test("If showButtons is True and pass undfined to dateButtonPrimary then the button label will show default 'Select'",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": undefined, "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(1).text()).toEqual('Select')
+  })
+
+  test("If showButtons is True and pass 'Clear' to dateButtonSecondary then the button label will show default 'Clear'",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonSecondary":"Clear", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(0).text()).toEqual('Clear')
+  })
+
+  test("If showButtons is True and pass 'JSTigers' to dateButtonSecondary then the button label will show default 'JSTigers'",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonSecondary":"JSTigers", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(0).text()).toEqual('JSTigers')
+  })
+
+  test("If showButtons is True and pass undefined to dateButtonSecondary then the button label will show default 'Clear'",()=>{
+
+    let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonSecondary":undefined, "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+
+    const wrapper = mount(<DatePicker options= {options} />)
+    wrapper.setState({
+      manualEntry: true,
+      shouldCalendarOpen: true,
+      isDisabled: false
+    });
+    // console.log(wrapper.debug())
+
+    expect(wrapper.find('button').at(0).text()).toEqual('Clear')
+  })
+
+})
+
+// 12.Check next and previous icon disabled or not based on lowerLimit and upperLimit options
+// describe('Check next and previous icon disabled or not based on lowerLimit and upperLimit options,',()=>{
+
+//   test('testing previous',()=>{
+
+//     const wrapper = mount(<DatePicker options = {options}/>)
+
+//   })
+// })
