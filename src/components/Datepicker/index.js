@@ -605,7 +605,7 @@ class DatePicker extends React.PureComponent {
         const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection } = this.state;
         const { options } = this.state;
         const displayFormat = (options)? options.displayFormat : "";
-        const showClearIcon = (options && options.showClearIcon === true);
+        const showClearIcon = (options && options.showClearIcon === true); 
         const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();
         const currentDateMonth = getSelectedMonthFromDate(selectedDate, options);
