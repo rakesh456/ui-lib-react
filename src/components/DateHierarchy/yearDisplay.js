@@ -146,7 +146,7 @@ class YearDisplay extends React.PureComponent {
                     {
                         (year.showChild && year.quarters) ?
                             <QuarterView options={options} isFilterView={isFilterView} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></QuarterView> : (year.showChild && year.months) ?
-                                <MonthView isFilterView={isFilterView} options={options} years={this.state.years} year={year} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></MonthView> : ''
+                                <MonthView isFilterView={isFilterView} options={options} years={_years} year={year} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></MonthView> : ''
                     }
                 </div>
             )
