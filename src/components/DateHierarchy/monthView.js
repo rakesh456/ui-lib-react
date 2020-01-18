@@ -51,30 +51,30 @@ class MonthView extends React.PureComponent {
         // if (isFilterView === true && day.state === 0) {
         //     return ("")
         // } else {
-            return (
-                <div className="VS-DayRow" key={'day' + dayIndex}>
-    
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
-    
-                        {
-                            (day.state) ?
-                                <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
-                                <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, true)}></input>
-                        }
-    
-                        <span className="VS-Check-Checkmark"></span>
-                    </label>
-                </div>
-            )
+        return (
+            <div className="VS-DayRow" key={'day' + dayIndex}>
+
+                <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
+
+                    {
+                        (day.state) ?
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
+                            <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, true)}></input>
+                    }
+
+                    <span className="VS-Check-Checkmark"></span>
+                </label>
+            </div>
+        )
         // }
     }
 
     renderMonth = (month, quarter, year, monthIndex) => {
         let { options, isFilterView } = this.props;
-        
-        if(isFilterView === true && month.state === 0){
+
+        if (isFilterView === true && month.state === 0) {
             return ("")
-        } else { 
+        } else {
             return (
                 <div className="VS-MonthRow" key={'month' + monthIndex}>
                     {
@@ -90,9 +90,10 @@ class MonthView extends React.PureComponent {
                         }
                         <span className={this.getMonthCheckBoxClass(month)}></span>
                         {
-                            (month.hasDisabled) ?
-                                <span className="VS-HasDisabledDot">
-                                </span> : ""
+                            (month.hasDisabled) ? (month.days) ?
+                                <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span><span className="VS-Tooltiptext">Few Days in this Month are disabled</span></div> : <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span><span className="VS-Tooltiptext">Few Weeks in this Month are disabled</span></div> : ""
                         }
                     </label>
                     {(month.showChild && (month.weeks || month.days)) ?
