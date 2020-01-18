@@ -335,6 +335,7 @@ class TagSelector extends React.PureComponent {
 
 
       });
+      console.log(_val)
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
     } else {
       results = _val
@@ -420,9 +421,9 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
     }
 
-    this.state.searchValue = "";
+    // this.state.searchValue = "";
     this.inputEl.focus();
-    this.updateFilterItems("");
+    // this.updateFilterItems("");
 
     this.setState({searchValue : ""});
     this.inputEl.focus();
@@ -588,7 +589,7 @@ class TagSelector extends React.PureComponent {
                   style={this.state.style}
                   searchValue={this.state.searchValue}
                   selectedItems={this.state.selectedItems}
-                  selectedItems={selectedItems}
+                  // selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}
                   options={options}
