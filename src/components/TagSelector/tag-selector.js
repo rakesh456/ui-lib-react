@@ -335,7 +335,6 @@ class TagSelector extends React.PureComponent {
 
 
       });
-      console.log(_val)
       results = _val && results1.length > 0 ? [...results1] : [...listItems];
     } else {
       results = _val
