@@ -152,7 +152,7 @@ export const getMonths = function (year, showWeeks, disabledList) {
 		return monthss;
 	} else {
 		for (i = 0; i < 12; i++) {
-			var getHasDisabled = getMonthWeeks(i + 1, year, disabledList);
+			getHasDisabled = getMonthWeeks(i + 1, year, disabledList);
 			monthObj = {
 				"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
 				"searchString": MONTH_NAMES[i],
@@ -448,7 +448,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 		}
 		if (showQuarters === false) {
 			while (lowerLimit <= upperLimit) {
-				var getHasDisabled = getMonths(lowerLimit, showWeeks, disabledList)
+				getHasDisabled = getMonths(lowerLimit, showWeeks, disabledList)
 				year = {
 					"year": lowerLimit,
 					"searchString": lowerLimit.toString().toLowerCase(),
