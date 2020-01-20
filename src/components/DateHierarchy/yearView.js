@@ -490,6 +490,7 @@ class YearView extends React.PureComponent {
     }
 
     renderYear = (year, index) => {
+        console.log('year',year);
         let { options } = this.props;
         const { isSearching, years, filteredYears } = this.state;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
