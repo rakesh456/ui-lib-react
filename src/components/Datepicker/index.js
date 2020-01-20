@@ -378,6 +378,7 @@ class DatePicker extends React.PureComponent {
         let { isDisabled } = this.state;
 
         if(isDisabled === false){
+            console.log('in blur')
             if(manualEntry === true){
                 if(this.state.isMonthYear){
                     const { selectedYear } = this.state;
@@ -550,15 +551,18 @@ class DatePicker extends React.PureComponent {
     }
 
     onChangeHandler(name, e) {
+        console.log(e.target.value)
         const manualEntry = (this.state.options && this.state.options.manualEntry === true);
         const { displayFormat } = this.state.options;
 
         if(manualEntry === true && checkAllowedChars(displayFormat, e.target.value)){
+            console.log(e.target.value)
             this.setState({
                 selectedDate: e.target.value,
                 selectedYear: e.target.value,
                 shouldCalendarOpen: false
             });
+            console.log(this.state.selectedDate)
         }
     }
     // Component events handler end
@@ -601,7 +605,7 @@ class DatePicker extends React.PureComponent {
         const { shouldCalendarOpen, selectedDate, isInvalidDate, isInvalidRangeDate, isCalendar, isMonthYear, selectedYear, showMonthSelection, showYearSelection } = this.state;
         const { options } = this.state;
         const displayFormat = (options)? options.displayFormat : "";
-        const showClearIcon = (options && options.showClearIcon === true);
+        const showClearIcon = (options && options.showClearIcon === true); 
         const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();
         const currentDateMonth = getSelectedMonthFromDate(selectedDate, options);
