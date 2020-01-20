@@ -423,6 +423,18 @@ export const getFilterListOfYears1 = (_years, showWeeks, showQuarters, disabledL
 	fullListOfYears = [...newYears];
 }
 
+export const checkHasDisavled = function (year, disabledList) {
+	let hasDisabled = false;
+	let values = ["Q1/" + year, "Q2/" + year]
+	values.forEach((val) => {
+		let index = disabledList.indexOf(val);
+		if (index !== -1) {
+			hasDisabled = true;
+		}
+	});
+	return hasDisabled;
+}
+
 export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		lowerLimit = parseInt(lowerLimit);

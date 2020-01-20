@@ -31,7 +31,7 @@ class YearDisplay extends React.PureComponent {
     toggleYearCheck(year, isCheck) {
         let years = [...this.getYears()];
         let { showWeeks, showQuarters } = this.props.options;
-        year["state"] = isCheck;
+        year["state"] = (isCheck)? 1 : 0;
         if (showQuarters === true) {
             let quarters = year['quarters'];
             quarters.forEach((element, index) => {
@@ -78,8 +78,8 @@ class YearDisplay extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-
-        this.updateSelectAllCheckbox();
+    
+        this.props.onUpdateSelectAllCheckbox();
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -160,20 +160,6 @@ class YearDisplay extends React.PureComponent {
     getInputClass() {
         const { isSearching } = this.state;
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
-    }
-
-    updateSelectAllCheckbox = () => {
-        let _isSelectAll = true;
-        let { years } = this.state;
-        years.forEach((yr) => {
-            if (yr.state === 0) {
-                _isSelectAll = false;
-            }
-        });
-
-        this.setState({
-            isSelectAll: _isSelectAll
-        });
     }
 
     onSelectSearchResultChange = ({ target }) => {
