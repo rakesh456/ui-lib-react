@@ -110,7 +110,6 @@ class YearDisplay extends React.PureComponent {
     }
 
     renderYear = (year, index) => {
-        console.log('year', year);
         let { options, isSearching, years, filteredYears, isFilterView } = this.props;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
         if (isFilterView === true && year.state === 0) {
