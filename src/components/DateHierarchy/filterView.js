@@ -100,7 +100,6 @@ class FilterView extends React.PureComponent {
             });
 
             let maxLevel = this.getMaxLevel(searchResult);
-            console.log(maxLevel, ' searchResult ', searchResult);
             
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex);
@@ -110,7 +109,6 @@ class FilterView extends React.PureComponent {
                 if(showQuarters === true){
                     let quarters = year['quarters'];
                     if(foundYear || (maxLevel === 2 && searchResult.length === 4)){
-                        console.log(' foundYear ', foundYear);
                         let newQuarters = JSON.stringify(quarters).replace(stateRegEx, '"state":1');
 
                         _years[yearIndex]['state'] = 1;
@@ -151,7 +149,6 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = 1;
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
 
-                                                    console.log(' newWeeks '+ JSON.stringify(newWeeks));
                                                 } else {
                                                     if(maxLevel === 3){
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...weeks];
@@ -227,6 +224,7 @@ class FilterView extends React.PureComponent {
                                             if(monthIndex >= months.length - 1 && !foundYear && !foundQuarter){
                                                 let sum = months.reduce((a, b) => +a + +b.state, 0);
                                                 _years[yearIndex]['quarters'][quarterIndex]['state'] = (sum === 3)? 1 : (sum === 0)? _years[yearIndex]['quarters'][quarterIndex]['state'] : -1;
+                                                _years[yearIndex]['quarters'][quarterIndex]['showChild'] = true;
                                             }
                                         });
                                     }

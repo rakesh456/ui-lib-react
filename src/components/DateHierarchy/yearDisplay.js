@@ -6,7 +6,7 @@ import MonthView from "./monthView";
 class YearDisplay extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.state = { };
+        this.state = {};
     }
 
     getYears() {
@@ -31,7 +31,7 @@ class YearDisplay extends React.PureComponent {
     toggleYearCheck(year, isCheck) {
         let years = [...this.getYears()];
         let { showWeeks, showQuarters } = this.props.options;
-        year["state"] = isCheck;
+        year["state"] = (isCheck)? 1 : 0;
         if (showQuarters === true) {
             let quarters = year['quarters'];
             quarters.forEach((element, index) => {
@@ -79,7 +79,7 @@ class YearDisplay extends React.PureComponent {
             years: [...years]
         })
     
-        this.updateSelectAllCheckbox();
+        this.props.onUpdateSelectAllCheckbox();
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -93,7 +93,7 @@ class YearDisplay extends React.PureComponent {
     onChangeWeekHandler = (weekObj) => {
         this.props.onChangeWeek(weekObj);
     }
-    
+
     onChangeDayHandler = (dayObj) => {
         this.props.onChangeDay(dayObj);
     }
@@ -112,7 +112,7 @@ class YearDisplay extends React.PureComponent {
     renderYear = (year, index) => {
         let { options, isSearching, years, filteredYears, isFilterView } = this.props;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
-        if(isFilterView === true && year.state === 0){
+        if (isFilterView === true && year.state === 0) {
             return ("")
         } else {
             return (
@@ -129,12 +129,23 @@ class YearDisplay extends React.PureComponent {
                                 <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
                         }
                         <span className={this.getYearCheckBoxClass(year, index)} ></span>
-    
+                        {
+                            (year.hasDisabled) ? (year.quarters) ?
+                                <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span>
+                                    <span className="VS-Tooltiptext">Few Quarters in this Year are disabled</span>
+                                </div> :
+                                <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span>
+                                    <span className="VS-Tooltiptext">Few Months in this Year are disabled</span>
+                                </div> : ""
+                        }
+
                     </label>
                     {
                         (year.showChild && year.quarters) ?
                             <QuarterView options={options} isFilterView={isFilterView} years={_years} year={year} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></QuarterView> : (year.showChild && year.months) ?
-                            <MonthView isFilterView={isFilterView} options={options} years={this.state.years} year={year}  onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></MonthView> : ''
+                                <MonthView isFilterView={isFilterView} options={options} years={_years} year={year} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}></MonthView> : ''
                     }
                 </div>
             )
@@ -148,20 +159,6 @@ class YearDisplay extends React.PureComponent {
     getInputClass() {
         const { isSearching } = this.state;
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
-    }
-
-    updateSelectAllCheckbox = () => {
-        let _isSelectAll = true;
-        let { years } = this.state;
-        years.forEach((yr) => {
-            if (yr.state === 0) {
-                _isSelectAll = false;
-            }
-        });
-
-        this.setState({
-            isSelectAll: _isSelectAll
-        });
     }
 
     onSelectSearchResultChange = ({ target }) => {
