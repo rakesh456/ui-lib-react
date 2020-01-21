@@ -420,9 +420,9 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
     }
 
-    this.state.searchValue = "";
+    // this.state.searchValue = "";
     this.inputEl.focus();
-    this.updateFilterItems("");
+    // this.updateFilterItems("");
 
     this.setState({searchValue : ""});
     this.inputEl.focus();
@@ -588,7 +588,7 @@ class TagSelector extends React.PureComponent {
                   style={this.state.style}
                   searchValue={this.state.searchValue}
                   selectedItems={this.state.selectedItems}
-                  selectedItems={selectedItems}
+                  // selectedItems={selectedItems}
                   listItems={listItems}
                   filteredlistItems={filteredlistItems}
                   options={options}

@@ -18,24 +18,34 @@ class Month extends React.PureComponent {
 
     isDisableNextMonth = () => {
         const { month, year, options } = this.props;
+        
         const upperLimit = getUpperLimitFromOptions(options);
+        console.log(upperLimit)
+        console.log(month,year)
         if(isUndefinedOrNull(upperLimit)){
             return false;
         } else {
             const _month = (getProperFormattedDate(upperLimit, options).getMonth()) + 1;
+            console.log(_month)
             const _year = (getProperFormattedDate(upperLimit, options).getFullYear());
+            console.log(_year)
             return (month === _month && year === _year);
         }
     }
     
     isDisablePrevMonth = () => {
+        
         const { month, year, options } = this.props;
         const lowerLimit = getLowerLimitFromOptions(options);
+        console.log(lowerLimit)
+        console.log(month,year)
         if(isUndefinedOrNull(lowerLimit)){
             return false;
         } else {
             const _month = getProperFormattedDate(lowerLimit, options).getMonth() + 1;
+            console.log(_month)
             const _year = getProperFormattedDate(lowerLimit, options).getFullYear();
+            console.log(_year)
             return (month === _month && year === _year);
         }
     }
@@ -47,6 +57,7 @@ class Month extends React.PureComponent {
         return (
             <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH} ${CONSTANTS.CLASSES.VS_TEXT_CENTER}`}>
                 {
+    
                     (this.isDisablePrevMonth())?
                     <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} />:
                     <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON}`} onClick={this.props.goToPrevMonth} />
