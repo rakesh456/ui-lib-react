@@ -1412,13 +1412,17 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
 
   test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
       
-    let options = {"displayFormat": "MM/YYYY", "defaultDate": "Q1/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2010", "upperLimit": "Q1/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "01/2031", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/2022", "upperLimit": "02/2040", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+        
 
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
       manualEntry: true,
       shouldCalendarOpen: true,
-      isDisabled: false,
+      isDisabled : false,
+      showMonthSelection:false,
+      showYearSelection:false
+      
     });
     console.log(wrapper.debug())
     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)

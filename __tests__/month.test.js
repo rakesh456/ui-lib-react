@@ -293,7 +293,6 @@ describe('Should render without crashing', () => {
     let options = { "displayFormat": "QQ/YYYY", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2018", "upperLimit": "Q3/2031", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2020", "Q3/2025"] };
     var wrapper = shallow(<DatePicker options={options} />);
     let html = wrapper.find('.VS-Calendar-Input').props().value;
-    console.log(html)
     expect(html).toEqual('Q1/2020');
   })
 
