@@ -1410,24 +1410,24 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
 
   // })
 
-  test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
+  // test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
       
-    let options = {"displayFormat": "MM/YYYY", "defaultDate": "01/2031", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/2022", "upperLimit": "02/2040", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+  //   let options = {"displayFormat": "MM/YYYY", "defaultDate": "01/2031", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/2022", "upperLimit": "02/2040", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
         
 
-    const wrapper = mount(<DatePicker options = {options}/>)
-    wrapper.setState({
-      manualEntry: true,
-      shouldCalendarOpen: true,
-      isDisabled : false,
-      showMonthSelection:false,
-      showYearSelection:false
+  //   const wrapper = mount(<DatePicker options = {options}/>)
+  //   wrapper.setState({
+  //     manualEntry: true,
+  //     shouldCalendarOpen: true,
+  //     isDisabled : false,
+  //     showMonthSelection:false,
+  //     showYearSelection:false
       
-    });
-    console.log(wrapper.debug())
-    expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
+  //   });
+  //   console.log(wrapper.debug())
+  //   expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
 
-  })
+  // })
 })
 
 // 13.Check months and years disabled or not based on lowerLimit and upperLimit options
@@ -1435,7 +1435,65 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
 
 //   test('testing',()=>{
 
+//     const options = {"selectedDate":"18/11/2020","displayFormat": "MM/YYYY", "defaultDate": "19/11/2020", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     console.log(wrapper.debug())
+//     // wrapper.find()
+//     // console.log(wrapper.find(".VS-Medium-UPPER-Case.VS-MonthName").text())
 
 
 //   })
 // })
+
+// 16.Check date properly select or not when click of any day
+describe('Check date properly select or not when click of any day',()=>{
+
+//   test('testing',()=>{
+
+//     const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "30/01/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, 
+//     "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
+//     wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+//     // console.log(wrapper.debug())
+//     expect(wrapper.find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft").props().value).toEqual('01/01/2019')
+// })
+
+// test('testing',()=>{
+
+//   const options = {"displayFormat": "MM/YYYY", "defaultDate": "undefined", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//   const wrapper = mount(<DatePicker options = {options}/>)
+//   wrapper.setState({
+//     manualEntry: true,
+//     shouldCalendarOpen: true,
+//     isDisabled : false,
+//     showMonthSelection:false,
+//     selectedDate:'09/2024'
+    
+//   });
+//   // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
+//   // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+//   // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())
+//   console.log(wrapper.debug())
+//   wrapper.find(".VS-Year").at(0).simulate('click')
+//   wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
+//   console.log(wrapper.find('input').props())
+//   // expect(wrapper.find(".VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-DaySelected.VS-PadExtra").text()).toEqual('1 ')
+//   })
+})

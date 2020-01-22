@@ -359,7 +359,7 @@ export const getYearsList = (year) => {
     for (let index = -1; index < 11; index++) {
         array.push(year - index);
     }
-    console.log(array)
+    // console.log(array)
     return array.reverse();
 }
 

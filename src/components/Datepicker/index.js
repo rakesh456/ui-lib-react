@@ -240,6 +240,7 @@ class DatePicker extends React.PureComponent {
    
     onYearSelectHandler = year => {
         const { showButtons } = this.state.options;
+
         if(showButtons === true){
             this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: true });
         } else {
