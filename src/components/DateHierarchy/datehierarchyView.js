@@ -266,7 +266,7 @@ class DatehierarchyView extends React.PureComponent {
                 for (var i = 0; i < year.quarters.length; i++) {
                     qstateSum += year.quarters[i]["state"];
                 }
-                year.state = (qstateSum < 4) ? -1 : 1;
+                year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
@@ -712,16 +712,16 @@ class DatehierarchyView extends React.PureComponent {
                     }
                     {
                         (isSearching === false) ?
-                                (this.checkSelectAllValues())? 
-                                    <label className="VS-Checkbox-Container">Select All
+                            (this.checkSelectAllValues()) ?
+                                <label className="VS-Checkbox-Container">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
-                                        <span className="VS-Check-Checkmark"></span>
-                                        </label> : 
-                                    <label className="VS-Checkbox-Container">Select All
+                                    <span className="VS-Check-Checkmark"></span>
+                                </label> :
+                                <label className="VS-Checkbox-Container">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
-                                        <span className="VS-Check-Checkmark VS-Check-Partial"></span>
-                                    </label> : 
-                                    ''
+                                    <span className="VS-Check-Checkmark VS-Check-Partial"></span>
+                                </label> :
+                            ''
                     }
                     {
                         (isSearching === true && lastFilterData && lastFilterData.value && lastFilterData.list) ?
