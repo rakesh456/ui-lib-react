@@ -2,7 +2,7 @@ import React from "react";
 import { getSearchObj } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull } from "../../utils/utils";
 import YearDisplay from "./yearDisplay";
-
+const checkPartialState = obj => obj.state === -1;
 class FilterView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -190,7 +190,9 @@ class FilterView extends React.PureComponent {
                         
                                                             if(weekIndex >= weeks.length - 1 && !foundYear && !foundQuarter && !foundMonth){
                                                                 let sum = weeks.reduce((a, b) => +a + +b.state, 0);
-                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (sum === weeks.length)? 1 : (sum === 0)? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : -1;
+                                                                let isPartial = weeks.some(checkPartialState);
+
+                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (sum === weeks.length)? 1 : (sum === 0 && !isPartial)? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : -1;
                                                             }
                                                         });
                                                     }
@@ -278,7 +280,7 @@ class FilterView extends React.PureComponent {
                 
                                                 let days = week['days'];
         
-                                                if(foundWeek || (maxLevel === 4 && searchResult.length === days.length)){
+                                                if(foundWeek){
                                                     _years[yearIndex]['state'] = 1;
                                                     _years[yearIndex]['months'][monthIndex]['state'] = 1;
 
@@ -305,9 +307,10 @@ class FilterView extends React.PureComponent {
                 
                                                 if(weekIndex >= weeks.length - 1 && !foundYear && !foundMonth){
                                                     let sum = weeks.reduce((a, b) => +a + +b.state, 0);
-                                                    _years[yearIndex]['months'][monthIndex]['state'] = (sum === weeks.length)? 1 : (sum === 0)? _years[yearIndex]['months'][monthIndex]['state'] : -1;
+                                                    let isPartial = weeks.some(checkPartialState);
+
+                                                    _years[yearIndex]['months'][monthIndex]['state'] = (sum === weeks.length)? 1 : (sum === 0 && !isPartial)? _years[yearIndex]['months'][monthIndex]['state'] : -1;
                                                 }
-                
                                             });
                                         }
                                     }

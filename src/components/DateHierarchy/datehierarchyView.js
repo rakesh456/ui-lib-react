@@ -28,7 +28,6 @@ class DatehierarchyView extends React.PureComponent {
 
     componentDidMount() {
         let years = [...this.getYears()];
-        console.log('years', years);
         this.setState({ years: [...years] });
     }
 
