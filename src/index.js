@@ -1,19 +1,35 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
-import DatePicker from "./components/Datepicker/index";
+import datepickerRender from "./components/Datepicker/datepickerrender";
+import TagSelector from "./components/TagSelector/tag-selector";
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+
 import {
-    getDateByFormatDDMMYYYY
+    isUndefinedOrNull
 } from "../src/utils/utils";
+
+import {
+    resetTagSelectorOptions
+} from "../src/utils/tagselectorutils";
+
+import {
+    resetDateHierarchyOptions
+} from "./utils/datehierarchyutils";
+
+import './components/Datepicker/date-picker.scss';
+import './components/TagSelector/tag-selector.scss';
+import './components/DateHierarchy/date-hierarchy.scss';
 
 
 (function () {
-
     if (typeof window.CustomEvent === "function") return false;
 
     function CustomEvent(event, params) {
         params = params || { bubbles: false, cancelable: false, detail: undefined };
-        var evt = document.createEvent('CustomEvent');
+        let evt = document.createEvent('CustomEvent');
         evt.initCustomEvent(event, params.bubbles, params.cancelable, params.detail);
         return evt;
     }
@@ -28,64 +44,125 @@ Array.prototype.forEach.call(
     (el) => {
         datepickerRender(el);
     })
-
 window.addReactDatepicker = datepickerRender;
 
 function trigger(elem, name, e) {
-    var func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
+    // eslint-disable-next-line
+    let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
     func.call(elem, e);
 }
 
-function datepickerRender(el) {
+Array.prototype.forEach.call(
+    document.getElementsByTagName('tag-selector'),
+    (el) => {
+        tagSelectorRender(el);
+    })
+
+function tagSelectorRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
 
-    if(!options){
-        options = {"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": false, "displayUnit": ""};
-    }
+    options = (isUndefinedOrNull(options)) ? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
 
-    el.setAttribute('selected-date', getDateByFormatDDMMYYYY(new Date(), options.displayFormat));
-
-    function callOnSelectedEvent(_date, el) {
-        var ev = new CustomEvent("selected");
-        trigger(el, 'onSelected', ev);
+    function callOnSelectedEvent(selectedItem, el) {
+        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
+        trigger(el, 'onSelect', ev);
         el.dispatchEvent(ev);
     }
 
-    function onSelectHandler(date) {
-        const _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        el.setAttribute('selected-date', _date);
-        callOnSelectedEvent(_date, el);
+    function callOnDeSelectedEvent(selectedItem, el) {
+        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
+        trigger(el, 'onDeSelect', ev);
+        el.dispatchEvent(ev);
     }
-    
+
+    function callOnNotFoundEvent(el) {
+        let ev = new CustomEvent("change");
+        trigger(el, 'onNotFound', ev);
+        el.dispatchEvent(ev);
+    }
+
     function onFocusHandler() {
-        var ev = new CustomEvent('focus');
+        let ev = new CustomEvent('focus');
         el.dispatchEvent(ev);
     }
-    
+
     function onBlurHandler() {
-        var ev = new CustomEvent('blur');
+        let ev = new CustomEvent('blur');
         el.dispatchEvent(ev);
     }
 
-    el.getValue = function () {
-        return el.getAttribute('selected-date');
+    function onKeyDownHandler() {
+        let ev = new CustomEvent('keydown');
+        el.dispatchEvent(ev);
     }
 
-    el.setValue = function (date) {
-        var _date = getDateByFormatDDMMYYYY(date, options.displayFormat);
-        el.setAttribute('selected-date', _date);
-        myComponentInstance.setDateValue(_date);
+    function onSelectHandler(selectedItem) {
+        callOnSelectedEvent(selectedItem, el);
     }
 
-    var myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
+    function onDeSelectHandler(selectedItem) {
+        callOnDeSelectedEvent(selectedItem, el);
+    }
 
-    var myComponentInstance = ReactDOM.render(
-        myComponentElement,
+    function onNotFoundHandler(selectedItem) {
+        callOnNotFoundEvent(el);
+    }
+
+    el.getNewlyAdded = function () {
+        return tagComponentInstance.getNewlyAdded();
+    }
+
+    el.getSelectedValues = function () {
+        return tagComponentInstance.getSelectedValues();
+    }
+
+    el.getSelectedCounter = function () {
+        return tagComponentInstance.getSelectedCounter();
+    }
+
+    el.appendNewElement = function (obj) {
+        tagComponentInstance.appendNewElement(obj);
+    }
+
+    el.remove = function (item) {
+        tagComponentInstance.removeListItem(item);
+    }
+
+    el.setJsonData = function (json) {
+        tagComponentInstance.setJsonData(json);
+    }
+
+    el.setSelectedItems = function (json) {
+        tagComponentInstance.setSelectedItems(json);
+    }
+
+    el.refresh = function () {
+        tagComponentInstance.refresh();
+    }
+
+    let tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
+
+    let tagComponentInstance = ReactDOM.render(
+        tagComponentElement,
         el
     )
 }
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
+Array.prototype.forEach.call(
+    document.getElementsByTagName('date-hierarchy'),
+    (el) => {
+        dateHierarchyRender(el);
+    })
+
+function dateHierarchyRender(el) {
+    let options = JSON.parse(el.getAttribute('data-options'));
+    options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
+
+    var HierarchyComponentElement = <DateHierarchy options={options} />
+    // eslint-disable-next-line
+    var HierarchyComponentInstance = ReactDOM.render(
+        HierarchyComponentElement,
+        el
+    )
+}
 serviceWorker.unregister();
