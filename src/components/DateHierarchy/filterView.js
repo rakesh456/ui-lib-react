@@ -90,6 +90,7 @@ class FilterView extends React.PureComponent {
         let { showWeeks, showQuarters } = this.props.options;
         let _years = listOfYears.map(a => Object.assign({}, a));
         const stateRegEx = /\"state\":0/gi
+        const stateRegExMinus = /\"state\":-1/gi
 
         if (!isUndefinedOrNull(searchValue)) {
 
@@ -111,9 +112,11 @@ class FilterView extends React.PureComponent {
                     let quarters = year['quarters'];
                     if(foundYear || (maxLevel === 2 && searchResult.length === 4)){
                         let newQuarters = JSON.stringify(quarters).replace(stateRegEx, '"state":1');
-
+                        // newQuarters = JSON.stringify(newQuarters).replace(stateRegExMinus, '"state":1');
+                        
                         _years[yearIndex]['state'] = 1;
                         _years[yearIndex]['quarters'] = [...JSON.parse(newQuarters)];
+                        console.log(year, ' foundYear', foundYear);
                     } else {
                         if(maxLevel === 1){
                             _years[yearIndex]['quarters'] = [...quarters];
@@ -178,7 +181,7 @@ class FilterView extends React.PureComponent {
                                                                         let foundDay = false;
                 
                                                                         if(!foundWeek){
-                                                                            foundDay = this.searchStringExists(searchResult, 5, day.date);
+                                                                            foundDay = this.searchStringExists(searchResult, 5, day.day);
                                                                             _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                                         }
                                 
@@ -212,8 +215,8 @@ class FilterView extends React.PureComponent {
                                                         days.forEach((day, dayIndex) => {
                                                             let foundDay = false;
                                                             if(!foundMonth){
-                                                                foundDay = this.searchStringExists(searchResult, 4, day.date);
-                                                                // foundDay = this.itemExists(searchResult, 4, dayIndex, day.date);
+                                                                foundDay = this.searchStringExists(searchResult, 4, day.day);
+                                                                // foundDay = this.itemExists(searchResult, 4, dayIndex, day.day);
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                             }
                         
@@ -297,7 +300,7 @@ class FilterView extends React.PureComponent {
                                                         days.forEach((day, dayIndex) => {
                                                             let foundDay = false;
                                                             if(!foundWeek){
-                                                                foundDay = this.searchStringExists(searchResult, 4, day.date);
+                                                                foundDay = this.searchStringExists(searchResult, 4, day.day);
                                                                 _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                             }
                         
@@ -331,8 +334,8 @@ class FilterView extends React.PureComponent {
                                             days.forEach((day, dayIndex) => {
                                                 let foundDay = false;
                                                 if(!foundMonth){
-                                                    foundDay = this.searchStringExists(searchResult, 3, day.date);
-                                                    // foundDay = this.itemExists(searchResult, 3, dayIndex, day.date);
+                                                    foundDay = this.searchStringExists(searchResult, 3, day.day);
+                                                    // foundDay = this.itemExists(searchResult, 3, dayIndex, day.day);
                                                     _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                 }
                 
