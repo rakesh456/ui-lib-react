@@ -153,7 +153,7 @@ class FilterView extends React.PureComponent {
 
                                                 } else {
                                                     if(maxLevel === 3){
-                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
+                                                        // _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...weeks];
                                                     } else {
                                                     
