@@ -144,9 +144,8 @@ test('There should be an indicator point on the Week if there is any Day is disa
 //All the children should be checked if the parent's checkbox is checked.
 test('All the children should be checked if the checkbox of parent is checked', () => {
     let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": ['1/1/2020', '04/1/2020'] };
-    let wrapper = shallow(<YearDisplay options={options} />);
+    let wrapper = shallow(<DatehierarchyView options={options} />);
     console.log(wrapper.debug());
     // wrapper.find('.VS-Plus-Minus').simulate('click');
     // console.log('years',wrapper.instance());
-
 })
