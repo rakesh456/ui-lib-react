@@ -1340,7 +1340,7 @@ import desktop from "react-icons/lib/fa/desktop";
 //     expect(wrapper.find('button').at(0).text()).toEqual('JSTigers')
 //   })
 
-//   test("If showButtons is True and pass undefined to dateButtonSecondary then the button label will show default 'Clear'",()=>{
+//   test("If showButtons is True and pass undefined to dateB11/01/2020uttonSecondary then the button label will show default 'Clear'",()=>{
 
 //     let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonSecondary":undefined, "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
 
@@ -1358,84 +1358,63 @@ import desktop from "react-icons/lib/fa/desktop";
 // })
 
 // 12.Check next and previous icon disabled or not based on lowerLimit and upperLimit options
-describe('Check next and previous icon disabled or not based on lowerLimit and upperLimit options,',()=>{
+// describe('Check next and previous icon disabled or not based on lowerLimit and upperLimit options,',()=>{
 
   
 
-  // test('If default date has same month and year as lower limit then left icon in datePicker is disabled',()=>{
+//   test('If default date has same month and year as lower limit then left icon in datePicker is disabled',()=>{
 
-  //   let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "25/09/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "25/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
+//     let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "25/09/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "25/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
 
-  //   const wrapper = mount(<DatePicker options = {options}/>)
-  //   wrapper.setState({
-  //     manualEntry: true,
-  //     shouldCalendarOpen: true,
-  //     isDisabled: false,
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled: false,
       
-  //   });
-  //   // console.log(wrapper.debug())
+//     });
+//     // console.log(wrapper.debug())
 
-  //   expect(wrapper.find('svg').at(1).props().className).toMatch(/VS-DisabledIcon/)
+//     expect(wrapper.find('svg').at(1).props().className).toMatch(/VS-DisabledIcon/)
 
-  // })
+//   })
 
-  // test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
+//   test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
 
-  //   let options = {"displayFormat": "MM/DD/YYYY", "defaultDate": "02/01/2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "02/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
+//     let options = {"displayFormat": "MM/DD/YYYY", "defaultDate": "02/01/2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "02/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
 
-  //   const wrapper = mount(<DatePicker options = {options}/>)
-  //   wrapper.setState({
-  //     manualEntry: true,
-  //     shouldCalendarOpen: true,
-  //     isDisabled: false,
-  //   });
-  //   // console.log(wrapper.debug())
-  //   expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled: false,
+//     });
+//     // console.log(wrapper.debug())
+//     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
 
-  // })
+//   })
 
-  // test('If default date is in between lower and upper limit the both the icon is enabled',()=>{
+//   test('If default date is in between lower and upper limit the both the icon is enabled',()=>{
 
-  //   let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "01/01/2021", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "01/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
+//     let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "01/01/2021", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "01/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
 
-  //   const wrapper = mount(<DatePicker options = {options}/>)
-  //   wrapper.setState({
-  //     manualEntry: true,
-  //     shouldCalendarOpen: true,
-  //     isDisabled: false,
-  //   });
-  //   // console.log(wrapper.debug())
-  //   expect(wrapper.find('svg').at(1).props().className).toMatch('VS-PullLeft VS-Icon')
-  //   expect(wrapper.find('svg').at(2).props().className).toMatch('VS-PullRight VS-Icon')
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled: false,
+//     });
+//     // console.log(wrapper.debug())
+//     expect(wrapper.find('svg').at(1).props().className).toMatch('VS-PullLeft VS-Icon')
+//     expect(wrapper.find('svg').at(2).props().className).toMatch('VS-PullRight VS-Icon')
 
-  // })
+//   })
 
-  // test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
+//   test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
       
-  //   let options = {"displayFormat": "MM/YYYY", "defaultDate": "01/2031", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/2022", "upperLimit": "02/2040", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+//     let options = {"displayFormat": "MM/YYYY", "defaultDate": "02/24/2021", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/21/2022", "upperLimit": "02/24/2021", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
         
 
-  //   const wrapper = mount(<DatePicker options = {options}/>)
-  //   wrapper.setState({
-  //     manualEntry: true,
-  //     shouldCalendarOpen: true,
-  //     isDisabled : false,
-  //     showMonthSelection:false,
-  //     showYearSelection:false
-      
-  //   });
-  //   console.log(wrapper.debug())
-  //   expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
-
-  // })
-})
-
-// 13.Check months and years disabled or not based on lowerLimit and upperLimit options
-// describe("Check months and years disabled or not based on lowerLimit and upperLimit options",()=>{
-
-//   test('testing',()=>{
-
-//     const options = {"selectedDate":"18/11/2020","displayFormat": "MM/YYYY", "defaultDate": "19/11/2020", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
 //     const wrapper = mount(<DatePicker options = {options}/>)
 //     wrapper.setState({
 //       manualEntry: true,
@@ -1446,17 +1425,312 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
       
 //     });
 //     console.log(wrapper.debug())
-//     // wrapper.find()
-//     // console.log(wrapper.find(".VS-Medium-UPPER-Case.VS-MonthName").text())
+//     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
 
+//   })
+
+//   test('If default date has same month and year as lower limit then left icon in datePicker is disabled',()=>{
+      
+//     let options = {"displayFormat": "MM/YYYY", "defaultDate": "01/21/2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/21/2022", "upperLimit": "02/24/2040", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
+        
+
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     console.log(wrapper.debug())
+//     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
 
 //   })
 // })
 
-// 16.Check date properly select or not when click of any day
-describe('Check date properly select or not when click of any day',()=>{
+// 13.Check months and years disabled or not based on lowerLimit and upperLimit options
+// describe("Check months and years disabled or not based on lowerLimit and upperLimit options",()=>{
 
-//   test('testing',()=>{
+//   test('testing next year',()=>{
+
+//     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/02/2001", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(2).simulate('click')
+//     wrapper.update()
+//     // console.log(wrapper.debug())
+//     console.log(wrapper.find('span').at(4).props())
+//     expect(wrapper.find('span').at(4).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing prev year',()=>{
+
+//     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/02/2001", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(1).simulate('click')
+//     wrapper.update()
+//     // console.log(wrapper.debug())
+//     console.log(wrapper.find('span').at(3).props())
+//     expect(wrapper.find('span').at(3).props().className).toMatch(/VS-Disabled/)
+//   })
+
+
+//   test('testing prev month',()=>{
+
+//     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/05/2010", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(1).simulate('click')
+//     wrapper.find('span').at(1).simulate('click')
+//     wrapper.update()
+//     // console.log(wrapper.debug())
+//     console.log(wrapper.find('span').at(11).props())
+//     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing next month',()=>{
+
+//     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/05/2001", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(2).simulate('click')
+//     wrapper.find('span').at(3).simulate('click')
+//     wrapper.update()
+//     // console.log(wrapper.debug())
+//     console.log(wrapper.find('span').at(11).props())
+//     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing prev year for format QQ/YYYY',()=>{
+
+//     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(1).simulate('click')
+//     wrapper.update()
+//     // console.log(wrapper.debug())
+//     // console.log(wrapper.find('span').at(8).props())
+//     expect(wrapper.find('span').at(8).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing next year for format QQ/YYYY',()=>{
+
+//     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     console.log(wrapper.debug())
+//     wrapper.find('svg').at(2).simulate('click')
+//     wrapper.update()
+//     console.log(wrapper.debug())
+//     // console.log(wrapper.find('span').at(8).props())
+//     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing prev quater for format QQ/YYYY',()=>{
+
+//     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     console.log(wrapper.debug())
+//     wrapper.find('svg').at(1).simulate('click')
+//     wrapper.find('span').at(9).simulate('click')
+//     wrapper.update()
+//     console.log(wrapper.debug())
+//     // console.log(wrapper.find('span').at(8).props())
+//     expect(wrapper.find('span').at(1).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing next quater for format QQ/YYYY',()=>{
+
+//     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2020", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     // console.log(wrapper.debug())
+//     wrapper.find('svg').at(2).simulate('click')
+//     wrapper.find('span').at(4).simulate('click')
+    
+//     // wrapper.update()
+//     console.log(wrapper.debug())
+//     // console.log(wrapper.find('span').at(8).props())
+//     expect(wrapper.find('span').at(4).props().className).toMatch(/VS-Disabled/)
+//   })
+
+//   test('testing next quater for format YYYY',()=>{
+
+//     const options = {"displayFormat": "YYYY", "defaultDate": "2024", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options}/>)
+//     wrapper.setState({
+//       manualEntry: true,
+//       shouldCalendarOpen: true,
+//       isDisabled : false,
+//       showMonthSelection:false,
+//       showYearSelection:false
+      
+//     });
+//     console.log(wrapper.debug())
+//     wrapper.find('svg').at(1).simulate('click')
+//     // wrapper.find('span').at(4).simulate('click')
+    
+//     wrapper.update()
+//     console.log(wrapper.debug())
+//     // console.log(wrapper.find('span').at(8).props())
+//     expect(wrapper.find('span').at(7).props().className).toMatch(/VS-Disabled/)
+//   })
+
+// })
+
+// 14.Check month and year is active or not based on current selected date
+describe('Check month and year is active or not based on current selected date',()=>{
+
+  test('testing ',()=>{
+
+    const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "19/11/2019", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+    const wrapper = mount(<DatePicker options = {options}/>)
+        wrapper.setState({
+          manualEntry: true,
+          shouldCalendarOpen: true,
+          isDisabled : false,
+          showMonthSelection:true,
+          showYearSelection:false
+          
+        });
+        // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+
+        console.log(wrapper.debug())
+        console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(11).props().title)
+        console.log(wrapper.find('span').at(14).props())
+        expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
+    })
+
+    // test('testing',()=>{
+
+    //   const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "19/11/2019", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+    //   const wrapper = mount(<DatePicker options = {options}/>)
+    //       wrapper.setState({
+    //         manualEntry: true,
+    //         shouldCalendarOpen: true,
+    //         isDisabled : false,
+    //         showMonthSelection:false,
+    //         showYearSelection:false
+            
+    //       });
+    //       wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+  
+    //       console.log(wrapper.debug())
+    //       console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(12).props().title)
+    //       console.log(wrapper.find('span').at(14).props())
+    //       expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
+    // })
+
+    // test('testing ',()=>{
+
+    //   const options = {"displayFormat": "MM/DD/YYYY", "defaultDate": "06/25/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2018", "upperLimit": "07/25/2020", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}
+    //   const wrapper = mount(<DatePicker options = {options}/>)
+    //       wrapper.setState({
+    //         manualEntry: true,
+    //         shouldCalendarOpen: true,
+    //         isDisabled : false,
+    //         showMonthSelection:false,
+    //         showYearSelection:false
+    //       });
+    //       console.log(wrapper.debug())
+    //       wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(2).simulate('click')
+  
+    //       console.log(wrapper.debug())
+    //       console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(12).props().title)
+    //       console.log(wrapper.find('span').at(14).props())
+    //       expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
+    //   })
+
+      // test('testing ',()=>{
+
+      //   const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/01/2017", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/02/2011", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+      //   const wrapper = mount(<DatePicker options = {options}/>)
+      //       wrapper.setState({
+      //         manualEntry: true,
+      //         shouldCalendarOpen: true,
+      //         isDisabled : false,
+      //         showMonthSelection:false,
+      //         showYearSelection:false
+      //       });
+      //       console.log(wrapper.debug())
+            // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(2).simulate('click')
+    
+            // console.log(wrapper.debug())
+            // console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(12).props().title)
+            // console.log(wrapper.find('span').at(14).props())
+            // expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
+        // })
+
+
+})
+// // 16.Check date properly select or not when click of any day
+// describe('Check date properly select or not when click of any day',()=>{
+
+//   test('Check When display format is DD/MM/YYYY then if click event happen then some date is got selected or not',()=>{
 
 //     const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "30/01/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "18/11/2018", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, 
 //     "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
@@ -1475,25 +1749,70 @@ describe('Check date properly select or not when click of any day',()=>{
 //     expect(wrapper.find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft").props().value).toEqual('01/01/2019')
 // })
 
-// test('testing',()=>{
+// test('Check When display format is MM/YYYY then if click event happen then some date is got selected or not',()=>{
 
-//   const options = {"displayFormat": "MM/YYYY", "defaultDate": "undefined", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
-//   const wrapper = mount(<DatePicker options = {options}/>)
+//   const options = {"displayFormat": "MM/YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//   const wrapper = mount(<DatePicker options = {options} sele/>)
 //   wrapper.setState({
-//     manualEntry: true,
-//     shouldCalendarOpen: true,
-//     isDisabled : false,
-//     showMonthSelection:false,
-//     selectedDate:'09/2024'
-    
-//   });
+//           manualEntry: true,
+//           shouldCalendarOpen: true,
+//           isDisabled : false,
+//           showMonthSelection:false,
+//           showYearSelection:false
+          
+//         });
 //   // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
 //   // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-//   // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())
+//   // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
 //   console.log(wrapper.debug())
 //   wrapper.find(".VS-Year").at(0).simulate('click')
+//   console.log(wrapper.debug())
 //   wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
 //   console.log(wrapper.find('input').props())
-//   // expect(wrapper.find(".VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-DaySelected.VS-PadExtra").text()).toEqual('1 ')
+//   expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('01/2010')
 //   })
-})
+
+//   test('Check When display format is QQ/YYYY then if click event happen then some date is got selected or not',()=>{
+
+//     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//     const wrapper = mount(<DatePicker options = {options} sele/>)
+//     wrapper.setState({
+//             manualEntry: true,
+//             shouldCalendarOpen: true,
+//             isDisabled : false,
+//             showMonthSelection:false,
+//             showYearSelection:false
+            
+//           });
+//     // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
+//     // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+//     // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
+//     console.log(wrapper.debug())
+//     wrapper.find(".VS-Year").at(0).simulate('click')
+//     console.log(wrapper.debug())
+//     wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
+//     console.log(wrapper.find('input').props())
+//     expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('Q1/2010')
+//     })
+
+//     test('Check When display format is YYYY then if click event happen then some date is got selected or not',()=>{
+
+//       const options = {"displayFormat": "YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
+//       const wrapper = mount(<DatePicker options = {options} sele/>)
+//       wrapper.setState({
+//               manualEntry: true,
+//               shouldCalendarOpen: true,
+//               isDisabled : false,
+//               showMonthSelection:false,
+//               showYearSelection:false
+              
+//             });
+//       // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
+//       // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+//       // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
+//       wrapper.find(".VS-Year").at(0).simulate('click')
+//       // wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
+//       // console.log(wrapper.find('input').props())
+//       expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('2010')
+//       })
+// })

@@ -24,6 +24,7 @@ class YearsView extends React.PureComponent {
         const { upperYearLimit } = getYYYYForUpperLimit(options);
         console.log(upperYearLimit)
         let year = new Date().getFullYear();
+        // let year = upperYearLimit;
         year = parseInt(year);
         console.log(year)
         this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true), displayYearName: ""};

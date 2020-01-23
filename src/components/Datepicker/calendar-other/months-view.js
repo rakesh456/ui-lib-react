@@ -24,6 +24,8 @@ class MonthsView extends React.PureComponent {
         
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
+        console.log(lowerYearLimit)
+        console.log(upperYearLimit)
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         const year = parseInt(currentDateYear);
         
@@ -98,6 +100,10 @@ class MonthsView extends React.PureComponent {
         const isEnabled = this.checkQQMMIsEnabled(month, year);
         return (
             <Fragment key={guid()}>
+            CURRENT_YEAR,
+            getMonthIndex,
+            isMMYYYYFormat,
+            getYYYYForLowerLimit,
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
                         <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:

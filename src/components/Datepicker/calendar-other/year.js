@@ -24,9 +24,11 @@ class Year extends React.PureComponent {
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
         let year = new Date().getFullYear();
+        // console.log(upperYearLimit)
+        // let year = upperYearLimit;
         year = parseInt(year);
 
-        this.state = { year: this.props.year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
+        this.state = { year: year, isYearSelected: false, currentDateMonth: "", selectedYear: "", isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, upperYearLimit: upperYearLimit, lowerYearLimit: lowerYearLimit, lowerMonthLimit: lowerMonthLimit, upperMonthLimit: upperMonthLimit };
 
         this.updateNextPrev();
     }
