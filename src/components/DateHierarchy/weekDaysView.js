@@ -86,7 +86,7 @@ class WeekDaysView extends React.PureComponent {
                         {
                             (week.hasDisabled) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-Tooltiptext">Few days in this week are disabled</span></div>
+                                </span><span className="VS-TooltiptextLarge">Few days in this week are disabled</span></div>
                                 : ""
 
                         }
