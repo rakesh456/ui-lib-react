@@ -26,7 +26,7 @@ export const getMonthDays = (month, year, disabledList, callback) => {
 	var days = [];
 	var hasDisabled = false;
 	for (let i = 1; i <= day; i++) {
-		var dayObj = { day: i, state: 0 }
+		var dayObj = { day: i, state: 0, date: i }
 		days.push(dayObj);
 		if (month > 9 && dayObj.day > 9) {
 			if (disabledList.includes(month + '/' + dayObj.day + '/' + year)) {
