@@ -485,7 +485,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onFilteredDataChangeHandler = (data) => {
-        console.log(' data ', data);
         this.setState({
             filteredData: data,
             isSelectAll: true

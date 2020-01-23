@@ -32,8 +32,8 @@ class FilterView extends React.PureComponent {
         return maxValueOfY;
     }
     
-    itemExists(arr, level, index) {
-        return (arr.filter(item=> (item.level === level && item.index === index))).length >= 1;
+    itemExists(arr, level, index, val) {
+        return (arr.filter(item=> (item.level === level && item.searchKey === val.toString().toLowerCase()))).length >= 1;
     }
     
     searchStringExists(arr, level, searchKey) {
@@ -100,9 +100,10 @@ class FilterView extends React.PureComponent {
             });
 
             let maxLevel = this.getMaxLevel(searchResult);
+            console.log(maxLevel, ' maxLevel ', searchResult);
             
             _years.forEach((year, yearIndex) => {
-                const foundYear = this.itemExists(searchResult, 1, yearIndex);
+                const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
                 _years[yearIndex]['state'] = (foundYear)? 1 : 0;
                 _years[yearIndex]['showChild'] = true;
                 
@@ -120,7 +121,7 @@ class FilterView extends React.PureComponent {
                             quarters.forEach((quarter, quarterIndex) => {
                                 let foundQuarter = false;
                                 if(!foundYear){
-                                    foundQuarter = this.itemExists(searchResult, 2, quarterIndex);
+                                    foundQuarter = this.itemExists(searchResult, 2, quarterIndex, quarter.quarter);
                                     _years[yearIndex]['quarters'][quarterIndex]['state'] = (foundQuarter)? 1 : 0;
                                 }
     
@@ -151,13 +152,14 @@ class FilterView extends React.PureComponent {
 
                                                 } else {
                                                     if(maxLevel === 3){
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...weeks];
                                                     } else {
                                                     
                                                         weeks.forEach((week, weekIndex) => {
                                                             let foundWeek = false;
                                                             if(!foundMonth){
-                                                                foundWeek = this.itemExists(searchResult, 4, weekIndex);
+                                                                foundWeek = this.itemExists(searchResult, 4, weekIndex, week.week);
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek)? 1 : 0;
                                                             }
                         
@@ -210,7 +212,8 @@ class FilterView extends React.PureComponent {
                                                         days.forEach((day, dayIndex) => {
                                                             let foundDay = false;
                                                             if(!foundMonth){
-                                                                foundDay = this.itemExists(searchResult, 4, dayIndex);
+                                                                foundDay = this.searchStringExists(searchResult, 4, day.date);
+                                                                // foundDay = this.itemExists(searchResult, 4, dayIndex, day.date);
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                             }
                         
@@ -263,6 +266,7 @@ class FilterView extends React.PureComponent {
                                     if(foundMonth || (maxLevel === 3 && searchResult.length === weeks.length)){
                                         _years[yearIndex]['state'] = 1;
                                         _years[yearIndex]['months'][monthIndex]['state'] = 1;
+                                        _years[yearIndex]['months'][monthIndex]['showChild'] = true;
                                         let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1');
                                         _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                     } else { 
@@ -274,7 +278,7 @@ class FilterView extends React.PureComponent {
                                             weeks.forEach((week, weekIndex) => {
                                                 let foundWeek = false;
                                                 if(!foundMonth){
-                                                    foundWeek = this.itemExists(searchResult, 3, weekIndex);
+                                                    foundWeek = this.itemExists(searchResult, 3, weekIndex, week.week);
                                                     _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek)? 1 : 0;
                                                 }
                 
@@ -327,7 +331,8 @@ class FilterView extends React.PureComponent {
                                             days.forEach((day, dayIndex) => {
                                                 let foundDay = false;
                                                 if(!foundMonth){
-                                                    foundDay = this.itemExists(searchResult, 3, dayIndex);
+                                                    foundDay = this.searchStringExists(searchResult, 3, day.date);
+                                                    // foundDay = this.itemExists(searchResult, 3, dayIndex, day.date);
                                                     _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay)? 1 : 0;
                                                 }
                 
