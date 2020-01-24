@@ -47,7 +47,8 @@ class WeekDaysView extends React.PureComponent {
             return (
                 <div className="VS-WeekDayRow" key={'day' + weekDayIndex}>
     
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.date + " " + day.day}<span className="VS-Tooltiptext">{day.date}-{month.month}-{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.date+" "}<span className="VS-WEEKDAY">{day.day}</span><span className="VS-Tooltiptext">{day.date}-{month.month}-{year.year}</span></div>
+                    {/* <span className="VS-Day">{day.day}</span> */}
                         {
                             (day.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleWeekDayCheck(day, week, month, quarter, year, false)}></input> :
