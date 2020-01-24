@@ -78,7 +78,6 @@ class YearDisplay extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-    
         this.props.onUpdateSelectAllCheckbox();
     }
 
@@ -133,11 +132,11 @@ class YearDisplay extends React.PureComponent {
                             (year.hasDisabled) ? (year.quarters) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
                                 </span>
-                                    <span className="VS-Tooltiptext">Few Quarters in this Year are disabled</span>
+                                    <span className="VS-TooltiptextLarge">Few Quarters in this Year are disabled</span>
                                 </div> :
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
                                 </span>
-                                    <span className="VS-Tooltiptext">Few Months in this Year are disabled</span>
+                                    <span className="VS-TooltiptextLarge">Few Months in this Year are disabled</span>
                                 </div> : ""
                         }
 
