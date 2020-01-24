@@ -485,7 +485,7 @@ class DatehierarchyView extends React.PureComponent {
 
     onFilteredDataChangeHandler = (data) => {
         this.setState({
-            filteredData: data,
+            filteredData: [...data],
             isSelectAll: true
         });
     }
@@ -590,17 +590,10 @@ class DatehierarchyView extends React.PureComponent {
         });
     }
 
-    mergeFilterData = (filteredData, callback) => {
-        this.setState({
-            years: filteredData
-        })
-    }
-
     mergeTwoArray = (firstArray, secondArray, callback) => {
         let { showWeeks, showQuarters } = this.props.options;
         
-        // console.log(firstArray, ' firstArray ', secondArray);
-        let resultYears = [...firstArray];
+        let resultYears = firstArray.map(a => Object.assign({}, a));
         firstArray.forEach((year, yearIndex) => {
             
             if(showQuarters === true){
@@ -704,8 +697,12 @@ class DatehierarchyView extends React.PureComponent {
 
     closeFilter = () => {
         let { searchValue, filteredYears, filteredData, lastFilterData, selections, isAddCurrentSelection, years } = this.state;
-        let _selections = [...selections];
+
+        const { options } = this.props;
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         
+        let _selections = selections.map(a => Object.assign({}, a));
+
         let _lastFilterData = [...lastFilterData];
         let obj = {
             'value': searchValue,
@@ -717,12 +714,13 @@ class DatehierarchyView extends React.PureComponent {
         if(_selections.length >= 1){
 
             if(isAddCurrentSelection === true){
-                this.mergeTwoArray(selections[0], (filteredData), (resultYears) => {
-                    _selections[0] = [...resultYears];
+                this.mergeTwoArray(_selections, (filteredData), (resultYears) => {
+                    let _selections = resultYears.map(a => Object.assign({}, a));
                     this.setState({
                         isSearching: false,
                         searchValue: "",
                         lastFilterData: _lastFilterData,
+                        listOfYears: yearList,
                         selections: [..._selections],
                         years: [...resultYears]
                     });
@@ -735,11 +733,12 @@ class DatehierarchyView extends React.PureComponent {
                 });
             }
         } else if(_selections.length <= 0){
-            _selections.push(filteredData);
+            _selections = filteredData.map(a => Object.assign({}, a));
             this.setState({
                 isSearching: false,
                 searchValue: "",
                 lastFilterData: _lastFilterData,
+                listOfYears: yearList,
                 selections: [..._selections],
                 years: [...filteredData]
             });
