@@ -558,7 +558,6 @@ class DatehierarchyView extends React.PureComponent {
             }
         });
         
-        console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
 
         this.setState({
             isSelectAll: _isSelectAll,
@@ -800,7 +799,7 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        // let { searchValue, filteredYears, lastFilterData } = this.state;
+        let { searchValue, filteredYears, lastFilterData } = this.state;
 
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
@@ -809,11 +808,10 @@ class DatehierarchyView extends React.PureComponent {
         // };
         // _lastFilterData.push(obj);
 
-        // this.setState({
-        //     isSearching: false,
-        //     searchValue: "",
-        //     lastFilterData: _lastFilterData
-        // });
+        this.setState({
+            isSearching: false,
+            searchValue: ""
+        });
     }
 
     closeFilter = () => {
@@ -949,7 +947,7 @@ class DatehierarchyView extends React.PureComponent {
                             <label className="VS-Checkbox-Container">No Result Found!</label> : ''
                     }
                     {
-                        (isSearching === true && (!lastFilterData || !lastFilterData.length <= 0)) ?
+                        (isSearching === true && lastFilterData && lastFilterData.length > 0) ?
                             <label className="VS-Checkbox-Container">Select All Search Results
                             <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
