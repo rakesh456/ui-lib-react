@@ -181,6 +181,7 @@ export const getProperFormattedDate = (date, options) => {
 
 // Function to get month from date
 export const getSelectedMonthFromDate = (date, options) => {
+    console.log(date)
     const _date = new Date(currentFormatToYYYYMMDD(date, options));
     return _date.getMonth();
 }

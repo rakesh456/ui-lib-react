@@ -61,10 +61,13 @@ class MonthsView extends React.PureComponent {
     }
     
     checkQQMMIsEnabled = (qqmm, year) => {
+        console.log(qqmm,year)
         const {options} = this.props;
         let {disabledList, displayFormat} = options;
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
+        console.log(lowerMonthLimit,lowerYearLimit )
+        console.log(upperMonthLimit,upperYearLimit )
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         
         if(qqmm && year){
@@ -95,15 +98,15 @@ class MonthsView extends React.PureComponent {
     }
 
     renderMonthValue = (month, index) => {
+        console.log(month)
+        console.log(this.props.currentDateMonth)
+        console.log(year)
         const activeClass = (isEqual(this.props.currentDateMonth, month)) ? 'VS-Active' : '';
+        console.log(activeClass)
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const isEnabled = this.checkQQMMIsEnabled(month, year);
         return (
             <Fragment key={guid()}>
-            CURRENT_YEAR,
-            getMonthIndex,
-            isMMYYYYFormat,
-            getYYYYForLowerLimit,
                 {
                     ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
                         <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:
