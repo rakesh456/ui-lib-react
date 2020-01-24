@@ -339,6 +339,14 @@ class FilterView extends React.PureComponent {
     }
 
     onChangeQuarterHandler = (quarterObj) => {
+        // let years = [...this.getYears()];
+        // let { showWeeks } = this.props.options;
+        // quarterChangeCallback(years, showWeeks, quarterObj, (quarterObj) => {
+        //     this.setState({
+        //         filteredYears: [...years]
+        //     })
+        // });
+
         this.props.onChangeQuarter(quarterObj);
     }
 
@@ -363,8 +371,7 @@ class FilterView extends React.PureComponent {
         const { filteredYears } = this.state;
         return (
             <div options={options}>
-                <YearDisplay options={options} isFilterView={true} years={filteredYears} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler}
-                    onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
+                <YearDisplay options={options} isFilterView={true} years={filteredYears} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
             </div>
         )
     }
