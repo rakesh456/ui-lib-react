@@ -55,7 +55,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-        console.log(displayFormat)
+        // console.log(displayFormat)
         this.state = { selectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: false, isDisabledFull: false, options: datePickerOptions};
     }
 

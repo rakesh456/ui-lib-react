@@ -9,11 +9,11 @@ import CalendarDate from "../src/components/Datepicker/calendar-date/index";
 import desktop from "react-icons/lib/fa/desktop";
 
 // // Datepicker renders without crashing
-// it("renders without crashing", () => {
-//   const div = document.createElement("div");
-//   const options = DEFAULT_OPTIONS;
-//   ReactDOM.render(<DatePicker options={options} />, div);
-// });
+it("renders without crashing", () => {
+  const div = document.createElement("div");
+  const options = DEFAULT_OPTIONS;
+  ReactDOM.render(<DatePicker options={options} />, div);
+});
 
 // // Buttons rendering default options without crashing
 // describe("Buttons rendering default options without crashing", () => {
@@ -1643,28 +1643,28 @@ import desktop from "react-icons/lib/fa/desktop";
 // })
 
 // 14.Check month and year is active or not based on current selected date
-describe('Check month and year is active or not based on current selected date',()=>{
+// describe('Check month and year is active or not based on current selected date',()=>{
 
-  test('testing ',()=>{
+//   test('testing ',()=>{
 
-    const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "19/11/2019", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
-    const wrapper = mount(<DatePicker options = {options} />)
-        wrapper.setState({
-          manualEntry: true,
-          shouldCalendarOpen: true,
-          isDisabled : false,
-          showMonthSelection:true,
-          showYearSelection:false,
-          selectedDate: "19/11/2019"
+//     const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "19/11/2019", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
+//     const wrapper = mount(<DatePicker options = {options} />)
+//         wrapper.setState({
+//           manualEntry: true,
+//           shouldCalendarOpen: true,
+//           isDisabled : false,
+//           showMonthSelection:true,
+//           showYearSelection:false,
+//           selectedDate: "19/11/2019"
           
-        });
-        // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-        wrapper.update()
-        console.log(wrapper.debug())
-        // console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(11).props().title)
-        // console.log(wrapper.find('span').at(14).props())
-        // expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
-    })
+//         });
+//         // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
+//         wrapper.update()
+//         console.log(wrapper.debug())
+//         // console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(11).props().title)
+//         // console.log(wrapper.find('span').at(14).props())
+//         // expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
+//     })
 
     // test('testing',()=>{
 
@@ -1727,7 +1727,7 @@ describe('Check month and year is active or not based on current selected date',
         // })
 
 
-})
+// })
 // // 16.Check date properly select or not when click of any day
 // describe('Check date properly select or not when click of any day',()=>{
 

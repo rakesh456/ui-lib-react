@@ -45,7 +45,6 @@ export function getFormatfromOptions(options) {
 
 // Get date by display format
 export function getDateByFormat(date, format) {
-    console.log(date)
     return (date) ? (format && format === 'DD/MM/YYYY') ? getDateDDMMYYYY(date) : getDateMMDDYYYY(date) : "";
 }
 
@@ -66,7 +65,6 @@ export function getDateDDMMYYYYNew(date, format) {
     let month = '' + (d.getMonth() + 1),
         day = '' + d.getDate(),
         year = d.getFullYear();
-    console.log(month)
     if (month.length < 2) month = '0' + month;
     if (day.length < 2) day = '0' + day;
 
