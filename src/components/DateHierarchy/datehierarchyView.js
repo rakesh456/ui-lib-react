@@ -17,7 +17,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false,isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: []};
+        this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: [], isNoDataFound: false};
     }
 
     getYears() {
@@ -128,12 +128,11 @@ class DatehierarchyView extends React.PureComponent {
                 }
             }
         })
-
-        this.setState({
-            years: [...years]
-        })
-
-        this.updateSelectAllCheckboxHandler();
+            this.setState({
+                years: [...years]
+            })
+    
+            this.updateSelectAllCheckboxHandler();
     }
 
     onChangeMonthHandler = (monthObj) => {
@@ -484,9 +483,11 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onFilteredDataChangeHandler = (data) => {
+        let sum = data.reduce((a, b) => +a + +b.state, 0);
         this.setState({
             filteredData: [...data],
-            isSelectAll: true
+            isSelectAll: true,
+            isNoDataFound: (sum === 0)
         });
     }
 
@@ -543,7 +544,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     updateSelectAllCheckboxHandler = () => {
-        console.log('onsearchallcheckbox');
         let _isSelectAll = true;
         let { years } = this.state;
         let selectAllState = 0;
@@ -571,13 +571,15 @@ class DatehierarchyView extends React.PureComponent {
 
     onAddCurrentSelectionChange = ({ target }) => {
         this.setState({
-            isAddCurrentSelection: target.checked
+            isAddCurrentSelection: target.checked,
+            isExcludeFromSelection: !target.checked
         });
     }
     
     onExcludeFromSelectionChange = ({ target }) => {
         this.setState({
-            isExcludeFromSelection: target.checked
+            isExcludeFromSelection: target.checked,
+            isAddCurrentSelection: !target.checked,
         });
     }
 
@@ -592,88 +594,191 @@ class DatehierarchyView extends React.PureComponent {
         });
     }
 
-    mergeTwoArray = (firstArray, secondArray, callback) => {
+    addToCurrentSelection = (firstArray, secondArray, callback) => {
         let { showWeeks, showQuarters } = this.props.options;
         
+        if(!firstArray || firstArray.length <= 0){
+            callback(secondArray);
+        } else {
+            let resultYears = firstArray.map(a => Object.assign({}, a));
+            firstArray.forEach((year, yearIndex) => {
+                
+                if(showQuarters === true){
+    
+                    year.quarters.forEach((quarter, quarterIndex) => {
+                        quarter.months.forEach((month, monthIndex) => {
+                            if(showWeeks === true){
+                                
+                                month.weeks.forEach((week, weekIndex) => {
+                                    week.days.forEach((day, dayIndex) => {
+                                        resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] : day.state;
+                                    });
+    
+                                    let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                                });
+    
+                                let weeks = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks']];
+                                let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+    
+                            } else {
+                                month.days.forEach((day, dayIndex) => {
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] : day.state;
+                                });
+    
+                                let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days']];
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                            }
+    
+                        });
+    
+                        let months = [...resultYears[yearIndex]['quarters'][quarterIndex]['months']];
+                        let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : (monthsum > 0)? -1 : ((quarter.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
+    
+                    });
+                    
+                    let quarters = [...resultYears[yearIndex]['quarters']];
+                    let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
+
+                    resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : (quartersum > 0)? -1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                } else {
+                    year.months.forEach((month, monthIndex) => {
+                        if(showWeeks === true){
+                            month.weeks.forEach((week, weekIndex) => {
+                                
+                                week.days.forEach((day, dayIndex) => {
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] : day.state;
+                                });
+    
+                                let days = [...resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                            });
+    
+                            let weeks = [...resultYears[yearIndex]['months'][monthIndex]['weeks']];
+                            let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 :  ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+                        } else {
+                            month.days.forEach((day, dayIndex) => {
+                                resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] : day.state;
+                            });
+    
+                            let days = [...resultYears[yearIndex]['months'][monthIndex]['days']];
+                            let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+                        }
+                    });
+    
+                    let months = [...resultYears[yearIndex]['months']];
+                    let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                    resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : (monthsum > 0)? -1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                }
+            });
+    
+            callback(resultYears);
+        }
+    }
+    
+    excludeFromSelection = (firstArray, secondArray, callback) => {
+        let { showWeeks, showQuarters } = this.props.options;
+
+        console.log(firstArray, ' firstArray ', secondArray);
         let resultYears = firstArray.map(a => Object.assign({}, a));
         firstArray.forEach((year, yearIndex) => {
             
+            resultYears[yearIndex]['state'] = !secondArray[yearIndex]['state'];
             if(showQuarters === true){
 
                 year.quarters.forEach((quarter, quarterIndex) => {
+
+                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['state'];
+
                     quarter.months.forEach((month, monthIndex) => {
-                        if(showWeeks === true){
-                            
+                        resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'];
+
+                        if(showWeeks === true){                            
                             month.weeks.forEach((week, weekIndex) => {
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'];
+
                                 week.days.forEach((day, dayIndex) => {
-                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] : day.state;
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
                                 });
 
                                 let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
                                 let daysum = days.reduce((a, b) => +a + +b.state, 0);
-
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : ((week.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+    
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                             });
 
                             let weeks = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks']];
                             let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
-
+                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                         } else {
                             month.days.forEach((day, dayIndex) => {
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] : day.state;
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'];
                             });
 
                             let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days']];
                             let daysum = days.reduce((a, b) => +a + +b.state, 0);
 
-                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                         }
-
                     });
 
                     let months = [...resultYears[yearIndex]['quarters'][quarterIndex]['months']];
                     let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : ((quarter.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
-
+                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : (monthsum > 0)? -1 : ((quarter.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
                 });
-                
+
                 let quarters = [...resultYears[yearIndex]['quarters']];
                 let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
-                resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+
+                resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : (quartersum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
             } else {
                 year.months.forEach((month, monthIndex) => {
+                    resultYears[yearIndex]['months'][monthIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['state'];
+
                     if(showWeeks === true){
                         month.weeks.forEach((week, weekIndex) => {
-                            
+                            resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'];
+
                             week.days.forEach((day, dayIndex) => {
-                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] : day.state;
+                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
                             });
 
                             let days = [...resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
                             let daysum = days.reduce((a, b) => +a + +b.state, 0);
-
-                            resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : ((week.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+    
+                            resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                         });
-
+                        
                         let weeks = [...resultYears[yearIndex]['months'][monthIndex]['weeks']];
                         let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                        resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+                        resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 :  ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
+
                     } else {
                         month.days.forEach((day, dayIndex) => {
-                            resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] : day.state;
+                            resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'];
                         });
 
                         let days = [...resultYears[yearIndex]['months'][monthIndex]['days']];
                         let daysum = days.reduce((a, b) => +a + +b.state, 0);
-
-                        resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+    
+                        resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
                     }
                 });
 
                 let months = [...resultYears[yearIndex]['months']];
                 let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : (monthsum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
             }
         });
 
@@ -698,12 +803,13 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     closeFilter = () => {
-        let { searchValue, filteredYears, filteredData, lastFilterData, selections, isAddCurrentSelection, years } = this.state;
+        let { searchValue, filteredYears, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years } = this.state;
 
         const { options } = this.props;
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         
         let _selections = selections.map(a => Object.assign({}, a));
+        let _exclusions = exclusions.map(a => Object.assign({}, a));
 
         let _lastFilterData = [...lastFilterData];
         let obj = {
@@ -716,15 +822,39 @@ class DatehierarchyView extends React.PureComponent {
         if(_selections.length >= 1){
 
             if(isAddCurrentSelection === true){
-                this.mergeTwoArray(_selections, (filteredData), (resultYears) => {
+                this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
                     let _selections = resultYears.map(a => Object.assign({}, a));
                     this.setState({
                         isSearching: false,
+                        isAddCurrentSelection: false, 
+                        isExcludeFromSelection: false,
+                        isNoDataFound: false,
                         searchValue: "",
                         lastFilterData: _lastFilterData,
                         listOfYears: yearList,
                         selections: [..._selections],
                         years: [...resultYears]
+                    });
+                });
+
+            } else if(isExcludeFromSelection === true){
+                this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
+
+                    this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {
+                        let _selections = resultYears.map(a => Object.assign({}, a));
+                        _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                        this.setState({
+                            isSearching: false,
+                            isAddCurrentSelection: false, 
+                            isExcludeFromSelection: false,
+                            isNoDataFound: false,
+                            searchValue: "",
+                            lastFilterData: _lastFilterData,
+                            listOfYears: yearList,
+                            exclusions: [..._exclusions],
+                            selections: [..._selections],
+                            years: [...resultYears]
+                        });
                     });
                 });
 
@@ -738,6 +868,9 @@ class DatehierarchyView extends React.PureComponent {
             _selections = filteredData.map(a => Object.assign({}, a));
             this.setState({
                 isSearching: false,
+                isAddCurrentSelection: false, 
+                isExcludeFromSelection: false,
+                isNoDataFound: false,
                 searchValue: "",
                 lastFilterData: _lastFilterData,
                 listOfYears: yearList,
@@ -745,6 +878,8 @@ class DatehierarchyView extends React.PureComponent {
                 years: [...filteredData]
             });
         }
+
+        this.updateSelectAllCheckboxHandler();
     }
 
     getCheckBoxClass = () => {
@@ -771,7 +906,7 @@ class DatehierarchyView extends React.PureComponent {
 
     render() {
         const { options } = this.props;
-        const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, selections } = this.state;
+        const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound } = this.state;
         return (
             <div className="VS-Hierarchy" options={options}>
                 <div className="VS-Hierarchy-Searchbox">
@@ -790,6 +925,10 @@ class DatehierarchyView extends React.PureComponent {
                     }
                 </div>
                 <div className="VS-Hierarchy-Filter-List VS-YearRow">
+                    {
+                        (isNoDataFound === true) ?
+                            <label className="VS-Checkbox-Container">No Result Found!</label> : ''
+                    }
                     {
                         (isSearching === true && (!lastFilterData || !lastFilterData.length <= 0)) ?
                             <label className="VS-Checkbox-Container">Select All Search Results
@@ -819,7 +958,7 @@ class DatehierarchyView extends React.PureComponent {
                     }
                     {
                         (isSearching === true && lastFilterData && lastFilterData.length > 0) ?
-                            <label className="VS-Checkbox-Container">Exclude From Selection
+                            <label className="VS-Checkbox-Container">{(exclusions && exclusions.length > 0)? 'Add To Previous Exclusions' : 'Exclude From Selection'}
                             <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
