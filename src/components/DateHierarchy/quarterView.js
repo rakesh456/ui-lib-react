@@ -68,7 +68,7 @@ class QuarterView extends React.PureComponent {
                         {
                             (quarter.hasDisabled) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-Tooltiptext">Few months in this quarter are disabled</span></div> : ""
+                                </span><span className="VS-TooltiptextLarge">Few months in this quarter are disabled</span></div> : ""
                         }
                     </label>
                     {

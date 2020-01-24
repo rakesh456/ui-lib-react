@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";

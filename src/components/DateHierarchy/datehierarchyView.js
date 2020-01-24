@@ -17,7 +17,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        console.log(' result ', result);
+        // console.log(' result ', result);
         this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: { 'value': '', 'list': [] } };
     }
 
@@ -28,7 +28,7 @@ class DatehierarchyView extends React.PureComponent {
 
     componentDidMount() {
         let years = [...this.getYears()];
-        console.log('years', years);
+        // console.log('years', years);
         this.setState({ years: [...years] });
     }
 
@@ -266,7 +266,7 @@ class DatehierarchyView extends React.PureComponent {
                 for (var i = 0; i < year.quarters.length; i++) {
                     qstateSum += year.quarters[i]["state"];
                 }
-                year.state = (qstateSum < 4) ? -1 : 1;
+                year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
@@ -486,7 +486,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onFilteredDataChangeHandler = (data) => {
-        console.log(' data ', data);
         this.setState({
             filteredData: data,
             isSelectAll: true
@@ -712,16 +711,16 @@ class DatehierarchyView extends React.PureComponent {
                     }
                     {
                         (isSearching === false) ?
-                                (this.checkSelectAllValues())? 
-                                    <label className="VS-Checkbox-Container">Select All
+                            (this.checkSelectAllValues()) ?
+                                <label className="VS-Checkbox-Container">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
-                                        <span className="VS-Check-Checkmark"></span>
-                                        </label> : 
-                                    <label className="VS-Checkbox-Container">Select All
+                                    <span className="VS-Check-Checkmark"></span>
+                                </label> :
+                                <label className="VS-Checkbox-Container">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
-                                        <span className="VS-Check-Checkmark VS-Check-Partial"></span>
-                                    </label> : 
-                                    ''
+                                    <span className="VS-Check-Checkmark VS-Check-Partial"></span>
+                                </label> :
+                            ''
                     }
                     {
                         (isSearching === true && lastFilterData && lastFilterData.value && lastFilterData.list) ?
@@ -734,7 +733,7 @@ class DatehierarchyView extends React.PureComponent {
                 <div id="VS-Scrollbar">
                     {
                         (isSearching === true) ?
-                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler}></FilterView> :
+                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></FilterView> :
 
                             <YearDisplay options={options} isFilterView={false} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
                     }
