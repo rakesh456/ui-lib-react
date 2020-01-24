@@ -545,6 +545,7 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     updateSelectAllCheckboxHandler = () => {
+        console.log('onsearchallcheckbox');
         let _isSelectAll = true;
         let { years } = this.state;
         let selectAllState = 0;
@@ -555,7 +556,7 @@ class DatehierarchyView extends React.PureComponent {
                 selectAllState = selectAllState + yr.state;
             }
         });
-        // console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
+        console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
 
         this.setState({
             isSelectAll: _isSelectAll,
