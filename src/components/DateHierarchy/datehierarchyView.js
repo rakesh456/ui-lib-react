@@ -696,6 +696,7 @@ class DatehierarchyView extends React.PureComponent {
             if(showQuarters === true){
 
                 year.quarters.forEach((quarter, quarterIndex) => {
+
                     resultYears[yearIndex]['quarters'][quarterIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['state'];
 
                     quarter.months.forEach((month, monthIndex) => {
@@ -704,17 +705,41 @@ class DatehierarchyView extends React.PureComponent {
                         if(showWeeks === true){                            
                             month.weeks.forEach((week, weekIndex) => {
                                 resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'];
+
                                 week.days.forEach((day, dayIndex) => {
                                     resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
                                 });
+
+                                let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                             });
+
+                            let weeks = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks']];
+                            let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                         } else {
                             month.days.forEach((day, dayIndex) => {
                                 resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'];
                             });
+
+                            let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days']];
+                            let daysum = days.reduce((a, b) => +a + +b.state, 0);
+
+                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                         }
                     });
+
+                    let months = [...resultYears[yearIndex]['quarters'][quarterIndex]['months']];
+                    let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : (monthsum > 0)? -1 : ((quarter.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
                 });
+
+                let quarters = [...resultYears[yearIndex]['quarters']];
+                let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
+
+                resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : (quartersum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
             } else {
                 year.months.forEach((month, monthIndex) => {
                     resultYears[yearIndex]['months'][monthIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['state'];
@@ -726,13 +751,32 @@ class DatehierarchyView extends React.PureComponent {
                             week.days.forEach((day, dayIndex) => {
                                 resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
                             });
+
+                            let days = [...resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
+                            let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                            resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                         });
+                        
+                        let weeks = [...resultYears[yearIndex]['months'][monthIndex]['weeks']];
+                        let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                        resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 :  ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
+
                     } else {
                         month.days.forEach((day, dayIndex) => {
                             resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'];
                         });
+
+                        let days = [...resultYears[yearIndex]['months'][monthIndex]['days']];
+                        let daysum = days.reduce((a, b) => +a + +b.state, 0);
+    
+                        resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
                     }
                 });
+
+                let months = [...resultYears[yearIndex]['months']];
+                let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : (monthsum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
             }
         });
 
@@ -861,7 +905,6 @@ class DatehierarchyView extends React.PureComponent {
     render() {
         const { options } = this.props;
         const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound } = this.state;
-        console.log('  filteredData.length ', filteredData.length);
         return (
             <div className="VS-Hierarchy" options={options}>
                 <div className="VS-Hierarchy-Searchbox">
