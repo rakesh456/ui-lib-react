@@ -54,7 +54,7 @@ class MonthView extends React.PureComponent {
             return (
                 <div className="VS-DayRow" key={'day' + dayIndex}>
 
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day}-{month.month}-{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day+" "}{month.month+" "}{year.year}</span></div>
                         {
                             (day.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
@@ -79,7 +79,7 @@ class MonthView extends React.PureComponent {
                             <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
                             <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
                     }
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month}-{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month+" "}{year.year}</span></div>
                         {
                             (month.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, false)}></input> :

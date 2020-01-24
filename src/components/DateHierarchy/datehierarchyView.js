@@ -800,7 +800,8 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        // let { searchValue, filteredYears, lastFilterData } = this.state;
+        // console.log('clearFilterCalled');
+        // let { searchValue, filteredYears, lastFilterData, yearList } = this.state;
 
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
@@ -810,9 +811,13 @@ class DatehierarchyView extends React.PureComponent {
         // _lastFilterData.push(obj);
 
         // this.setState({
-        //     isSearching: false,
-        //     searchValue: "",
-        //     lastFilterData: _lastFilterData
+            // isSearching: false,
+            // searchValue: "",
+            // lastFilterData: _lastFilterData,
+
+
+            //  listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: [], isNoDataFound: false, filterSum: 0
+        
         // });
     }
 
