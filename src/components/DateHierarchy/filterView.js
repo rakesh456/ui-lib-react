@@ -126,7 +126,7 @@ class FilterView extends React.PureComponent {
 
                                                             let days = week['days'];
 
-                                                            if (foundWeek || (maxLevel === 5 && searchResult.length === days.length)) {
+                                                            if (foundWeek) {
                                                                 let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
 
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'] = [...JSON.parse(newDays)];
@@ -324,7 +324,7 @@ class FilterView extends React.PureComponent {
                 filteredYears: _years,
                 searchValue: searchValue
             });
-
+            
             this.props.onFilteredDataChange(_years);
         } else {
             this.setState({
@@ -334,6 +334,7 @@ class FilterView extends React.PureComponent {
             this.props.onFilteredDataChange(_years);
         }
     }
+
     updateSelectAllCheckboxHandler = () =>{
         this.props.onUpdateSelectAllCheckbox()
     }
