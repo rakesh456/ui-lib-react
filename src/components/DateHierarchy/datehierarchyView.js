@@ -554,6 +554,7 @@ class DatehierarchyView extends React.PureComponent {
                 selectAllState = selectAllState + yr.state;
             }
         });
+        
         console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
 
         this.setState({

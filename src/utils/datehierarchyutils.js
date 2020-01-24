@@ -1,4 +1,4 @@
-export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1, "showQuarters": true, 'showWeeks': false, 'disabledList':[] };
+export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 1, "showQuarters": true, 'showWeeks': false, 'disabledList': [] };
 
 export const MONTH_NAMES = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
@@ -560,6 +560,23 @@ export const getMonthWeeks = function (month_number, year, disabledList, callbac
 				hasDisabled = true
 			}
 		}
+	}
+	var regx = /"date":([\d])/ig;
+	var WeekString = JSON.stringify(weeks);
+	var results = regx.exec(WeekString);
+	// console.log('results', results, 'weeks', weeks, "WeekString", WeekString);
+	const regex = /"date":([\d])/gi;
+	const str = `[{"week":"Week 1","searchString":"week 1","state":0,"hasDisabled":false,"showChild":false,"days":[{"date":1,"searchString":"1","day":"Wed","state":0},{"date":2,"searchString":"2","day":"Thu","state":0},{"date":3,"searchString":"3","day":"Fri","state":0},{"date":4,"searchString":"4","day":"Sat","state":0}]}]`;
+	let m;
+
+	while ((m = regex.exec(WeekString)) !== null) {
+		console.log('m',m);
+		if (m.index === regex.lastIndex) {
+			regex.lastIndex++;
+		}
+		m.forEach((match, groupIndex) => {
+			console.log(`Found match, group ${groupIndex}: ${match}`);
+		});
 	}
 	callback({ 'weeks': weeks, 'hasDisabled': hasDisabled });
 }
