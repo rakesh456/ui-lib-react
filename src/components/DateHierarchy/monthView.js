@@ -89,8 +89,8 @@ class MonthView extends React.PureComponent {
                         {
                             (month.hasDisabled) ? (month.days) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-TooltiptextLarge">Few Days in this Month are disabled</span></div> : <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-TooltiptextLarge">Few Weeks in this Month are disabled</span></div> : ""
+                                </span><span className="VS-Tooltiptext">Few Days in this Month are disabled</span></div> : <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span><span className="VS-Tooltiptext">Few Weeks in this Month are disabled</span></div> : ""
                         }
                     </label>
                     {(month.showChild && (month.weeks || month.days)) ?

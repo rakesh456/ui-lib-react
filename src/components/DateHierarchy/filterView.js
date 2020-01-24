@@ -17,8 +17,8 @@ class FilterView extends React.PureComponent {
     }
 
     componentDidMount() {
-        let years = [...this.getYears()];
-        this.setState({ years: [...years] });
+        // let years = [...this.getYears()];
+        this.setState({ filteredYears: [...this.props.listOfYears] });
     }
 
     componentDidUpdate(prevProps, next) {
@@ -40,49 +40,6 @@ class FilterView extends React.PureComponent {
         return (arr.filter(item => (item.level === level && item.searchKey === (searchKey).toString()))).length >= 1;
     }
 
-    onSearchValueChangeHandler1(searchValue) {
-        searchValue = (searchValue) ? searchValue.toLowerCase() : '';
-        let { searchObj } = this.state;
-        let { listOfYears } = this.props;
-        let { showQuarters } = this.props.options;
-        let _years = listOfYears.map(a => Object.assign({}, a));
-
-        if (!isUndefinedOrNull(searchValue)) {
-
-            let searchResult = searchObj.filter(searchElement => (searchElement.searchKey.includes(searchValue)));
-            searchResult.sort((a, b) => {
-                if (a.level > b.level) return -1
-                return a.level < b.level ? 1 : 0
-            })
-
-            let objectName = ['years', 'quarters', 'months', 'weeks', 'days'];
-            searchResult.forEach((search) => {
-                _years.forEach((year, yearIndex) => {
-                    if (search.level === 2) {
-                        _years[yearIndex][objectName[search.level - 1]][search.index]['state'] = 1;
-                    } else if (search.level === 3) {
-                        for (var quarterIndex = 0; quarterIndex <= 3; quarterIndex++) {
-                            _years[yearIndex]['quarters'][quarterIndex][objectName[search.level - 1]][search.index]['state'] = 1;
-                        }
-                    } else if (search.level === 4) {
-                        if (showQuarters === true) {
-                            for (var monthIndex = 0; monthIndex <= 2; monthIndex++) {
-                                _years[yearIndex]['quarters'][quarterIndex][objectName[search.level - 1]][search.index]['state'] = 1;
-                            }
-                        } else {
-
-                        }
-                    }
-                })
-            });
-
-            this.setState({
-                filteredYears: _years,
-                searchValue: searchValue
-            });
-        }
-    }
-
     onSearchValueChangeHandler(searchValue) {
         searchValue = (searchValue) ? searchValue.toLowerCase() : '';
         let { searchObj } = this.state;
@@ -90,7 +47,7 @@ class FilterView extends React.PureComponent {
         let { showWeeks, showQuarters } = this.props.options;
         let _years = listOfYears.map(a => Object.assign({}, a));
         const stateRegEx = /\"state\":0/gi
-        const stateRegExMinus = /\"state\":-1/gi
+        const stateRegExOne = /\"state\":1/gi
 
         if (!isUndefinedOrNull(searchValue)) {
 
@@ -152,9 +109,12 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
 
                                                 } else {
-                                                    if (maxLevel === 3) {
-                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
-                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...weeks];
+                                                    if(maxLevel === 3){
+                                                        // _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
+
+                                                        let newWeeks = JSON.stringify(weeks).replace(stateRegExOne, '"state":0');
+                                                    
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                                     } else {
 
                                                         weeks.forEach((week, weekIndex) => {
@@ -208,8 +168,9 @@ class FilterView extends React.PureComponent {
                                                     let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                                 } else {
-                                                    if (maxLevel === 3) {
-                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...days];
+                                                    if(maxLevel === 3){
+                                                        let newDays = JSON.stringify(days).replace(stateRegExOne, '"state":0');
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                                     } else {
                                                         days.forEach((day, dayIndex) => {
                                                             let foundDay = false;
@@ -271,10 +232,11 @@ class FilterView extends React.PureComponent {
                                         // _years[yearIndex]['months'][monthIndex]['showChild'] = true;
                                         let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1');
                                         _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
-                                    } else {
-
-                                        if (maxLevel === 2) {
-                                            _years[yearIndex]['months'][monthIndex]['weeks'] = [...weeks];
+                                    } else { 
+                                        
+                                        if(maxLevel === 2){
+                                            let newWeeks = JSON.stringify(weeks).replace(stateRegExOne, '"state":0');
+                                            _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                         } else {
 
                                             weeks.forEach((week, weekIndex) => {
@@ -326,9 +288,10 @@ class FilterView extends React.PureComponent {
                                     if (foundMonth || (maxLevel === 3 && searchResult.length === days.length)) {
                                         let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
                                         _years[yearIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
-                                    } else {
-                                        if (maxLevel === 2) {
-                                            _years[yearIndex]['months'][monthIndex]['days'] = [...days];
+                                    }  else {
+                                        if(maxLevel === 2){
+                                            let newDays = JSON.stringify(days).replace(stateRegExOne, '"state":0');
+                                            _years[yearIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                         } else {
                                             days.forEach((day, dayIndex) => {
                                                 let foundDay = false;
