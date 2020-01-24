@@ -188,7 +188,7 @@ $font-family: 'Roboto', sans-serif;
 .VS-Hierarchy{
   position: relative;
   background: #fff;
-  width: 300px;
+  width: 305px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
@@ -205,7 +205,7 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-Hierarchy-Searchbox{
     border: 1px solid #ddd;
-    width: 300px;
+    width: 305px;
     margin: -1px 0px 0px -1px;
 }
 
@@ -295,10 +295,10 @@ $font-family: 'Roboto', sans-serif;
   
 .VS-Tooltip .VS-Tooltiptext {
     visibility: hidden;
-    width: 92px;
+    width: 119px;
     border:solid;
     color: white;
-    font-size: medium;
+    font-size: small;
     background-color: black;
     text-align: center;
     border-radius: 0px;
@@ -346,7 +346,7 @@ $font-family: 'Roboto', sans-serif;
     padding: 2px 2px;
     position: absolute;
     z-index: 1;
-    top: -15px;
+    top: -111%;
     left: 135%;
   }
 
