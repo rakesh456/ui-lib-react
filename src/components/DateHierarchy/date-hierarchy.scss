@@ -170,7 +170,7 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-YearRow{
     list-style: none ;
-    margin: 8px 20px;
+    margin: 10px 20px;
     border: grey
 }
 
@@ -293,13 +293,42 @@ $font-family: 'Roboto', sans-serif;
     display: inline-block;
 }
   
-.VS-Tooltip .VS-Tooltiptext {
+.VS-Tooltip .VS-TooltiptextWeeks {
     visibility: hidden;
-    width: 119px;
+    width: 100px;
     border:solid;
     color: white;
     font-size: small;
-    background-color: black;
+    background-color: #535759;
+    text-align: center;
+    border-radius: 0px;
+    padding: 3px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 105%;
+    text-size-adjust:2px ;
+}
+.VS-Tooltip:hover .VS-TooltiptextWeeks {
+    visibility: visible;
+}
+.VS-Tooltip .VS-TooltiptextWeeks::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #535759 transparent transparent;
+}
+.VS-Tooltip .VS-TooltiptextQuarter {
+    visibility: hidden;
+    width: 75px;
+    border:solid;
+    color: white;
+    font-size: small;
+    background-color: #535759;
     text-align: center;
     border-radius: 0px;
     padding: 3px 0;
@@ -309,8 +338,10 @@ $font-family: 'Roboto', sans-serif;
     left: 135%;
     text-size-adjust:2px ;
 }
-  
-.VS-Tooltip .VS-Tooltiptext::after {
+.VS-Tooltip:hover .VS-TooltiptextQuarter {
+    visibility: visible;
+}
+.VS-Tooltip .VS-TooltiptextQuarter::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -318,12 +349,41 @@ $font-family: 'Roboto', sans-serif;
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent black transparent transparent;
+    border-color: transparent #535759 transparent transparent;
+}
+.VS-Tooltip .VS-TooltiptextWeekDay {
+    visibility: hidden;
+    width: 80px;
+    border:solid;
+    color: white;
+    font-size: small;
+    background-color: #535759;
+    text-align: center;
+    border-radius: 0px;
+    padding: 3px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 115%;
+    text-size-adjust:2px ;
 }
 
-.VS-Tooltip:hover .VS-Tooltiptext {
+.VS-Tooltip:hover .VS-TooltiptextWeekDay {
     visibility: visible;
 }
+  
+.VS-Tooltip .VS-TooltiptextWeekDay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #535759 transparent transparent;
+}
+
+
 .VS-HasDisabledDot {
     height: 9px;
     width: 9px;
@@ -339,15 +399,15 @@ $font-family: 'Roboto', sans-serif;
     width: 92px;
     border:solid;
     border-width: 1px;
-    background-color: whitesmoke;
+    background-color: white;
     border-color: darkgray;
-    font-size: medium;
+    font-size: small;
     text-align: center;
     border-radius: 2px;
     padding: 2px 2px;
     position: absolute;
-    z-index: 1;
-    top: -111%;
+    z-index: 10;
+    top: -90%;
     left: 135%;
   }
 

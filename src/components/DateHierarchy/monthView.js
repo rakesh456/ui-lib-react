@@ -79,7 +79,7 @@ class MonthView extends React.PureComponent {
                             <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
                             <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
                     }
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-Tooltiptext">{month.month+" "}{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-TooltiptextQuarter">{month.month+" "}{year.year}</span></div>
                         {
                             (month.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={month.state} onChange={() => this.toggleMonthCheck(month, quarter, year, false)}></input> :
@@ -89,7 +89,7 @@ class MonthView extends React.PureComponent {
                         {
                             (month.hasDisabled) ? (month.days) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-Tooltiptext">Few Days in this Month are disabled</span></div> : <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
+                                </span><span className="VS-TooltiptextLarge">Few Days in this Month are disabled</span></div> : <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
                                 </span><span className="VS-TooltiptextLarge">Few Weeks in this Month are disabled</span></div> : ""
                         }
                     </label>
