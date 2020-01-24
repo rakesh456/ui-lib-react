@@ -17,7 +17,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: []};
+        this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: [], isNoDataFound: false};
     }
 
     getYears() {
@@ -483,9 +483,11 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onFilteredDataChangeHandler = (data) => {
+        let sum = data.reduce((a, b) => +a + +b.state, 0);
         this.setState({
             filteredData: [...data],
-            isSelectAll: true
+            isSelectAll: true,
+            isNoDataFound: (sum === 0)
         });
     }
 
@@ -542,7 +544,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     updateSelectAllCheckboxHandler = () => {
-        console.log('onsearchallcheckbox');
         let _isSelectAll = true;
         let { years } = this.state;
         let selectAllState = 0;
@@ -553,7 +554,6 @@ class DatehierarchyView extends React.PureComponent {
                 selectAllState = selectAllState + yr.state;
             }
         });
-        console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
 
         this.setState({
             isSelectAll: _isSelectAll,
@@ -594,7 +594,6 @@ class DatehierarchyView extends React.PureComponent {
 
     addToCurrentSelection = (firstArray, secondArray, callback) => {
         let { showWeeks, showQuarters } = this.props.options;
-        let selectAllState = false;
         
         if(!firstArray || firstArray.length <= 0){
             callback(secondArray);
@@ -783,6 +782,7 @@ class DatehierarchyView extends React.PureComponent {
                         isSearching: false,
                         isAddCurrentSelection: false, 
                         isExcludeFromSelection: false,
+                        isNoDataFound: false,
                         searchValue: "",
                         lastFilterData: _lastFilterData,
                         listOfYears: yearList,
@@ -801,6 +801,7 @@ class DatehierarchyView extends React.PureComponent {
                             isSearching: false,
                             isAddCurrentSelection: false, 
                             isExcludeFromSelection: false,
+                            isNoDataFound: false,
                             searchValue: "",
                             lastFilterData: _lastFilterData,
                             listOfYears: yearList,
@@ -823,6 +824,7 @@ class DatehierarchyView extends React.PureComponent {
                 isSearching: false,
                 isAddCurrentSelection: false, 
                 isExcludeFromSelection: false,
+                isNoDataFound: false,
                 searchValue: "",
                 lastFilterData: _lastFilterData,
                 listOfYears: yearList,
@@ -830,6 +832,8 @@ class DatehierarchyView extends React.PureComponent {
                 years: [...filteredData]
             });
         }
+
+        this.updateSelectAllCheckboxHandler();
     }
 
     getCheckBoxClass = () => {
@@ -856,7 +860,8 @@ class DatehierarchyView extends React.PureComponent {
 
     render() {
         const { options } = this.props;
-        const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions } = this.state;
+        const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound } = this.state;
+        console.log('  filteredData.length ', filteredData.length);
         return (
             <div className="VS-Hierarchy" options={options}>
                 <div className="VS-Hierarchy-Searchbox">
@@ -876,7 +881,7 @@ class DatehierarchyView extends React.PureComponent {
                 </div>
                 <div className="VS-Hierarchy-Filter-List VS-YearRow">
                     {
-                        (isSearching === true && (!years || !years.length <= 0)) ?
+                        (isNoDataFound === true) ?
                             <label className="VS-Checkbox-Container">No Result Found!</label> : ''
                     }
                     {
