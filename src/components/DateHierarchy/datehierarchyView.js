@@ -820,7 +820,7 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        let { searchValue, filteredYears, lastFilterData } = this.state;
+        let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
@@ -831,8 +831,17 @@ class DatehierarchyView extends React.PureComponent {
 
         this.setState({
             isSearching: false,
-            searchValue: ""
+            searchValue: "",
+            years: [...listOfYears],
+            isAddCurrentSelection: false, 
+            isExcludeFromSelection: false,
+            isNoDataFound: false,
+            selections: [],
+            exclusions: [],
+            filterSum: 0,
+            lastFilterData: []
         });
+        this.updateSelectAllCheckboxHandler([...listOfYears]);
     }
 
     closeFilter = () => {
@@ -958,7 +967,7 @@ class DatehierarchyView extends React.PureComponent {
                     </span>
                     <input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === false) ? CONSTANTS.CLASSES.VS_DISABLED_ICON : ''}`} onClick={() => this.clearFilter()} />
+                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                     </span>
                     {
                         (isSearching === true) ?
