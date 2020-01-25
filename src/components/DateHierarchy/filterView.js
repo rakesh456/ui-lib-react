@@ -1,8 +1,9 @@
 import React from "react";
-import { getSearchObj } from "../../utils/datehierarchyutils";
+import { getSearchObj, quarterChangeCallback, monthChangeCallback, weekChangeCallback, dayChangeCallback, weekDayChangeCallback } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull } from "../../utils/utils";
 import YearDisplay from "./yearDisplay";
 const checkPartialState = obj => obj.state === -1;
+const checkOneMatch = obj => obj.state === 1;
 class FilterView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -48,6 +49,8 @@ class FilterView extends React.PureComponent {
         let _years = listOfYears.map(a => Object.assign({}, a));
         const stateRegEx = /\"state\":0/gi
         const stateRegExOne = /\"state\":1/gi
+        const matchRegEx = /\"match\":0/gi
+        const matchRegExOne = /\"match\":1/gi
 
         if (!isUndefinedOrNull(searchValue)) {
 
@@ -58,18 +61,18 @@ class FilterView extends React.PureComponent {
             });
 
             let maxLevel = this.getMaxLevel(searchResult);
+
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
-                _years[yearIndex]['state'] = (foundYear) ? 1 : 0;
+                _years[yearIndex]['state'] = (foundYear) ? 1 : 0;;
                 _years[yearIndex]['showChild'] = true;
 
                 if (showQuarters === true) {
                     let quarters = year['quarters'];
                     if (foundYear || (maxLevel === 2 && searchResult.length === 4)) {
-                        let newQuarters = JSON.stringify(quarters).replace(stateRegEx, '"state":1');
-                        // newQuarters = JSON.stringify(newQuarters).replace(stateRegExMinus, '"state":1');
-
-                        _years[yearIndex]['state'] = 1;
+                        let newQuarters = JSON.stringify(quarters).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
+                        
+                        _years[yearIndex]['state'] = _years[yearIndex]['match'] = 1;
                         _years[yearIndex]['quarters'] = [...JSON.parse(newQuarters)];
 
                     } else {
@@ -78,14 +81,15 @@ class FilterView extends React.PureComponent {
                         } else {
                             quarters.forEach((quarter, quarterIndex) => {
                                 let foundQuarter = false;
+                                
                                 if (!foundYear) {
                                     foundQuarter = this.itemExists(searchResult, 2, quarterIndex, quarter.quarter);
-                                    _years[yearIndex]['quarters'][quarterIndex]['state'] = (foundQuarter) ? 1 : 0;
+                                    _years[yearIndex]['quarters'][quarterIndex]['match'] = _years[yearIndex]['quarters'][quarterIndex]['state'] = (foundQuarter) ? 1 : 0;                                    
                                 }
 
                                 let months = quarter['months'];
                                 if (foundQuarter) {
-                                    let newMonths = JSON.stringify(months).replace(stateRegEx, '"state":1');
+                                    let newMonths = JSON.stringify(months).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                     _years[yearIndex]['quarters'][quarterIndex]['months'] = [...JSON.parse(newMonths)];
                                 } else {
                                     if (maxLevel === 2) {
@@ -95,14 +99,14 @@ class FilterView extends React.PureComponent {
                                             let foundMonth = false;
                                             if (!foundQuarter) {
                                                 foundMonth = this.searchStringExists(searchResult, 3, month.searchString);
-                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (foundMonth) ? 1 : 0;
+                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (foundMonth) ? 1 : 0;
                                             }
 
                                             if (showWeeks === true) {
                                                 let weeks = month['weeks'];
 
                                                 if (foundMonth || (maxLevel === 4 && searchResult.length === weeks.length)) {
-                                                    let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1');
+                                                    let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                                     _years[yearIndex]['state'] = 1;
                                                     _years[yearIndex]['quarters'][quarterIndex]['state'] = 1;
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = 1;
@@ -121,13 +125,13 @@ class FilterView extends React.PureComponent {
                                                             let foundWeek = false;
                                                             if (!foundMonth) {
                                                                 foundWeek = this.itemExists(searchResult, 4, weekIndex, week.week);
-                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek) ? 1 : 0;
+                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek) ? 1 : 0;
                                                             }
 
                                                             let days = week['days'];
 
                                                             if (foundWeek) {
-                                                                let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
+                                                                let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
 
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'] = [...JSON.parse(newDays)];
                                                             } else {
@@ -141,7 +145,7 @@ class FilterView extends React.PureComponent {
                                                                         if (!foundWeek) {
                                                                             foundDay = this.searchStringExists(searchResult, 5, day.date);
 
-                                                                            _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
+                                                                            _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['match'] = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
                                                                         }
 
                                                                         if (dayIndex >= days.length - 1 && !foundYear && !foundQuarter && !foundMonth && !foundWeek) {
@@ -149,6 +153,9 @@ class FilterView extends React.PureComponent {
                                                                             _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (sum === days.length) ? 1 : (sum === 0) ? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : -1;
                                                                         }
                                                                     });
+
+                                                                    let isMathcOne = JSON.stringify(days).match(matchRegExOne);
+                                                                    _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = (isMathcOne)? 1 : 0;
                                                                 }
                                                             }
 
@@ -159,13 +166,15 @@ class FilterView extends React.PureComponent {
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (sum === weeks.length) ? 1 : (sum === 0 && !isPartial) ? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : -1;
                                                             }
                                                         });
+                                                        let isMathcOne = JSON.stringify(weeks).match(matchRegExOne);
+                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
                                                     }
                                                 }
                                             } else {
                                                 let days = month['days'];
 
                                                 if (foundMonth || (maxLevel === 3 && searchResult.length === days.length)) {
-                                                    let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
+                                                    let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                                 } else {
                                                     if (maxLevel === 3) {
@@ -177,7 +186,7 @@ class FilterView extends React.PureComponent {
                                                             if (!foundMonth) {
                                                                 foundDay = this.searchStringExists(searchResult, 4, day.date);
                                                                 // foundDay = this.itemExists(searchResult, 4, dayIndex, day.day);
-                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
+                                                                _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['match'] = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
                                                             }
 
                                                             if (dayIndex >= days.length - 1 && !foundYear && !foundQuarter && !foundMonth) {
@@ -195,6 +204,11 @@ class FilterView extends React.PureComponent {
                                                 _years[yearIndex]['quarters'][quarterIndex]['showChild'] = true;
                                             }
                                         });
+
+                                        
+                                        let isMathcOne = JSON.stringify(months).match(matchRegExOne);
+                                        console.log(quarter.quarter, (isMathcOne === null), ' isMathcOne ', months);
+                                        _years[yearIndex]['quarters'][quarterIndex]['match'] = (isMathcOne === null)? 0 : 1;
                                     }
                                 }
 
@@ -203,13 +217,17 @@ class FilterView extends React.PureComponent {
                                     _years[yearIndex]['state'] = (sum === 4) ? 1 : (sum === 0) ? _years[yearIndex]['state'] : -1;
                                 }
                             });
+
+                            let isMathcOne = JSON.stringify(quarters).match(matchRegExOne);
+                            // let isMathcOne = quarters.some(checkOneMatch);
+                            _years[yearIndex]['match'] = (isMathcOne)? 1 : 0;
                         }
                     }
                 } else {
                     let months = year['months'];
 
                     if (foundYear) {
-                        let newMonths = JSON.stringify(months).replace(stateRegEx, '"state":1');
+                        let newMonths = JSON.stringify(months).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                         _years[yearIndex]['months'] = [...JSON.parse(newMonths)];
                     } else {
                         if (maxLevel === 1) {
@@ -230,7 +248,7 @@ class FilterView extends React.PureComponent {
                                         _years[yearIndex]['state'] = 1;
                                         _years[yearIndex]['months'][monthIndex]['state'] = 1;
                                         // _years[yearIndex]['months'][monthIndex]['showChild'] = true;
-                                        let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1');
+                                        let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                         _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                     } else {
 
@@ -243,7 +261,7 @@ class FilterView extends React.PureComponent {
                                                 let foundWeek = false;
                                                 if (!foundMonth) {
                                                     foundWeek = this.itemExists(searchResult, 3, weekIndex, week.week);
-                                                    _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek) ? 1 : 0;
+                                                    _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (foundWeek) ? 1 : 0;
                                                 }
 
                                                 let days = week['days'];
@@ -252,7 +270,7 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['state'] = 1;
                                                     _years[yearIndex]['months'][monthIndex]['state'] = 1;
 
-                                                    let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
+                                                    let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                                     _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'] = [...JSON.parse(newDays)];
                                                 } else {
                                                     if (maxLevel === 3) {
@@ -262,7 +280,8 @@ class FilterView extends React.PureComponent {
                                                             let foundDay = false;
                                                             if (!foundWeek) {
                                                                 foundDay = this.searchStringExists(searchResult, 4, day.date);
-                                                                _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
+
+                                                                _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['match'] = _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
                                                             }
 
                                                             if (dayIndex >= days.length - 1 && !foundYear && !foundMonth && !foundWeek) {
@@ -286,7 +305,7 @@ class FilterView extends React.PureComponent {
                                     let days = month['days'];
 
                                     if (foundMonth || (maxLevel === 3 && searchResult.length === days.length)) {
-                                        let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
+                                        let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                         _years[yearIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                     } else {
                                         if (maxLevel === 2) {
@@ -298,7 +317,8 @@ class FilterView extends React.PureComponent {
                                                 if (!foundMonth) {
                                                     foundDay = this.searchStringExists(searchResult, 3, day.date);
                                                     // foundDay = this.itemExists(searchResult, 3, dayIndex, day.day);
-                                                    _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
+
+                                                    _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['match'] = _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
                                                 }
 
                                                 if (dayIndex >= days.length - 1 && !foundYear && !foundMonth) {
@@ -315,20 +335,26 @@ class FilterView extends React.PureComponent {
                                     _years[yearIndex]['state'] = (sum === 12) ? 1 : (sum === 0) ? _years[yearIndex]['state'] : -1;
                                 }
                             });
+
+                            let isMathcOne = JSON.stringify(months).match(matchRegExOne);
+                            // let isMathcOne = months.some(checkOneMatch);
+                            _years[yearIndex]['match'] = (isMathcOne === true)? 1 : 0;
                         }
                     }
                 }
             });
 
             this.setState({
-                filteredYears: _years,
+                filteredYears: [..._years],
                 searchValue: searchValue
             });
+
+            console.log(' _years ', _years);
 
             this.props.onFilteredDataChange(_years);
         } else {
             this.setState({
-                filteredYears: _years,
+                filteredYears: [..._years],
                 searchValue: searchValue
             });
             this.props.onFilteredDataChange(_years);
@@ -340,31 +366,63 @@ class FilterView extends React.PureComponent {
     }
 
     onChangeQuarterHandler = (quarterObj) => {
-        // let years = [...this.getYears()];
-        // let { showWeeks } = this.props.options;
-        // quarterChangeCallback(years, showWeeks, quarterObj, (quarterObj) => {
-        //     this.setState({
-        //         filteredYears: [...years]
-        //     })
-        // });
+        let years = [...this.getYears()];
+        let { showWeeks } = this.props.options;
+        quarterChangeCallback(years, showWeeks, quarterObj, (years) => {
+            this.setState({
+                filteredYears: [...years]
+            })
+        });
 
-        this.props.onChangeQuarter(quarterObj);
+        // this.props.onChangeQuarter(quarterObj);
     }
 
     onChangeMonthHandler = (monthObj) => {
-        this.props.onChangeMonth(monthObj);
+        let years = [...this.getYears()];
+        let { showWeeks, showQuarters } = this.props.options;
+        monthChangeCallback(years, showWeeks, showQuarters, monthObj, (years) => {
+            this.setState({
+                filteredYears: [...years]
+            })
+        });
+
+        // this.props.onChangeMonth(monthObj);
     }
 
     onChangeWeekHandler = (weekObj) => {
-        this.props.onChangeWeek(weekObj);
+        let years = [...this.getYears()];
+        let { showQuarters } = this.props.options;
+        weekChangeCallback(years, showQuarters, weekObj, (years) => {
+            this.setState({
+                filteredYears: [...years]
+            })
+        });
+
+        // this.props.onChangeWeek(weekObj);
     }
 
     onChangeDayHandler = (dayObj) => {
-        this.props.onChangeDay(dayObj);
+        let years = [...this.getYears()];
+        let { showQuarters } = this.props.options;
+        dayChangeCallback(years, showQuarters, dayObj, (years) => {
+            this.setState({
+                filteredYears: [...years]
+            })
+        });
+
+        // this.props.onChangeDay(dayObj);
     }
 
     onChangeWeekDayHandler = (weekDaysObj) => {
-        this.props.onChangeWeekDay(weekDaysObj);
+        let years = [...this.getYears()];
+        let { showQuarters } = this.props.options;
+        weekDayChangeCallback(years, showQuarters, weekDaysObj, (years) => {
+            this.setState({
+                filteredYears: [...years]
+            })
+        });
+
+        // this.props.onChangeWeekDay(weekDaysObj);
     }
 
     render() {

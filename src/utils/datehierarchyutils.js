@@ -26,7 +26,7 @@ export const getMonthDays = (month, year, disabledList, callback) => {
 	var days = [];
 	var hasDisabled = false;
 	for (let i = 1; i <= day; i++) {
-		var dayObj = { day: i, state: 0, date: i }
+		var dayObj = { day: i, state: 0, match: 0, date: i }
 		days.push(dayObj);
 		if (month > 9 && dayObj.day > 9) {
 			if (disabledList.includes(month + '/' + dayObj.day + '/' + year)) {
@@ -65,6 +65,7 @@ export const getChildren = function (year, showWeeks, disabledList, callback) {
 			"searchString": "q" + (i + 1),
 			"showChild": false,
 			"state": 0,
+			"match": 0,
 			"hasDisabled": false,
 			"months": []
 		};
@@ -79,6 +80,7 @@ export const getChildren = function (year, showWeeks, disabledList, callback) {
 				"searchString": MONTH_NAMES[3 * i + j],
 				"showChild": false,
 				"state": 0,
+				"match": 0,
 				"hasDisabled": false
 			};
 			quarter["months"].push(month);
@@ -131,6 +133,7 @@ export const getMonths = function (year, showWeeks, disabledList, callback) {
 					"searchString": MONTH_NAMES[i],
 					"showChild": false,
 					"state": 0,
+					"match": 0,
 					"days": Days.days,
 					'hasDisabled': Days.hasDisabled
 				}
@@ -158,6 +161,7 @@ export const getMonths = function (year, showWeeks, disabledList, callback) {
 					"searchString": MONTH_NAMES[i],
 					"showChild": false,
 					"state": 0,
+					"match": 0,
 					"hasDisabled": Weeks.hasDisabled,
 					"weeks": Weeks.weeks
 				}
@@ -225,6 +229,7 @@ export const getQuarterObject = (quarter, showChild, state, months) => {
 		"quarter": quarter,
 		"showChild": showChild,
 		"state": state,
+		"match": 0,
 		"months": [...months]
 	};
 }
@@ -235,6 +240,7 @@ export const getYearObject = (year, showChild, state, children, showQuarters) =>
 			"year": year,
 			"showChild": showChild,
 			"state": state,
+			"match": 0,
 			"quarters": [...children]
 		};
 	} else {
@@ -242,6 +248,7 @@ export const getYearObject = (year, showChild, state, children, showQuarters) =>
 			"year": year,
 			"showChild": showChild,
 			"state": state,
+			"match": 0,
 			"months": [...children]
 		};
 	}
@@ -252,11 +259,13 @@ export const getMonthObject = (month, showChild, state, daysWeeks, showWeeks) =>
 		"month": month,
 		"showChild": showChild,
 		"state": state,
+		"match": 0,
 		"weeks": [...daysWeeks]
 	} : {
 			"month": month,
 			"showChild": showChild,
 			"state": state,
+			"match": 0,
 			"days": [...daysWeeks]
 		};
 }
@@ -266,6 +275,7 @@ export const getWeekObject = (week, showChild, state, days) => {
 		"week": week,
 		"showChild": showChild,
 		"state": state,
+		"match": 0,
 		"days": [...days]
 	};
 }
@@ -274,6 +284,7 @@ export const getDayObject = (date, day, state) => {
 	return {
 		"date": date,
 		"day": day,
+		"match": 0,
 		"state": state
 	};
 }
@@ -435,6 +446,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 						"searchString": lowerLimit.toString().toLowerCase(),
 						"showChild": false,
 						"state": 0,
+						"match": 0,
 						"quarters": Quarters.quarter,
 						'hasDisabled': Quarters.hasDisabled
 					}
@@ -454,6 +466,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 						"searchString": lowerLimit.toString().toLowerCase(),
 						"showChild": false,
 						"state": 0,
+						"match": 0,
 						"hasDisabled": Months.hasDisabled,
 						"months": Months.months
 					}
@@ -479,6 +492,7 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 				"searchString": lowerLimit.toString().toLowerCase(),
 				"showChild": false,
 				"state": 0,
+				"match": 0,
 				"hasDisabled": false,
 				"quarters": getChildren(lowerLimit)
 			}
@@ -510,13 +524,14 @@ export const getMonthWeeks = function (month_number, year, disabledList, callbac
 			'week': "Week " + weekNo,
 			'searchString': "week " + weekNo,
 			'state': 0,
+			"match": 0,
 			'hasDisabled': false,
 			'showChild': false,
 			'days': []
 		}
 		for (var i = start; i < (lastOfMonth).getDate() + 1; i++) {
 			var monthDate = new Date(year, month_number - 1, i);
-			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0 };
+			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0, match: 0 };
 			weekObj.days.push(dayObj);
 			if (month_number > 9 && dayObj.date > 9) {
 				if (disabledList.includes(month_number + '/' + dayObj.date + '/' + year)) {
@@ -604,5 +619,359 @@ export const isDayVal = (val) => {
 
 //Function to convert 1 to 0 and 0 to 1
 export const opposite = (number) => {
-	return (number === 1)? 0 : 1;
+	return (number === 1) ? 0 : 1;
+}
+
+
+export const quarterChangeCallback = (years, showWeeks, quarterObj, callback) => {
+	let { quarter, year } = quarterObj;
+	let stateSum = 0;
+
+	quarter.state = (quarterObj.isCheck === true) ? 1 : 0;
+
+	for (var i = 0; i < year.quarters.length; i++) {
+		stateSum += year.quarters[i]["state"];
+	}
+	if (quarterObj.isCheck === true) {
+		year.state = (stateSum < year.quarters.length) ? -1 : 1;
+	} else {
+		year.state = (stateSum < year.quarters.length) ? (stateSum === 0) ? 0 : -1 : 1;
+	}
+	quarter.months.forEach((element, qindex1) => {
+		quarter.months[qindex1]['state'] = quarter.state;
+		if (showWeeks === true) {
+			quarter.months[qindex1]['weeks'].forEach((element, qindex2) => {
+				quarter.months[qindex1]['weeks'][qindex2]['state'] = quarter.state;
+				if (quarter.months[qindex1]['weeks'][qindex2]['days']) {
+					quarter.months[qindex1]['weeks'][qindex2]['days'].forEach((element, qindex3) => {
+						quarter.months[qindex1]['weeks'][qindex2]['days'][qindex3]['state'] = quarter.state;
+					})
+				}
+			})
+		}
+		else {
+			if (quarter.months[qindex1]['days']) {
+				quarter.months[qindex1]['days'].forEach((element, qindex2) => {
+					quarter.months[qindex1]['days'][qindex2]['state'] = quarter.state;
+				})
+			}
+		}
+	});
+	callback([...years]);
+}
+
+export const monthChangeCallback = (years, showWeeks, showQuarters, monthObj, callback) => {
+
+	let { month, quarter, year } = monthObj;
+	let mstateSum = 0;
+	let qstateSum = 0;
+
+	if (monthObj.isCheck === true) {
+		month.state = 1;
+		if (showQuarters === true) {
+			for (var i = 0; i < quarter.months.length; i++) {
+				mstateSum += quarter.months[i]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
+
+			for (var j = 0; j < year.quarters.length; j++) {
+				qstateSum += year.quarters[j]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? -1 : 1;
+		}
+		if (showWeeks === true) {
+			let weeks = month.weeks;
+			weeks.forEach((element, index) => {
+				weeks[index]['state'] = 1;
+				if (weeks[index]['days']) {
+					weeks[index]['days'].forEach((element, index1) => {
+						weeks[index]['days'][index1]['state'] = 1;
+					})
+				}
+			});
+		} else {
+			let days = month.days;
+			if (days) {
+				days.forEach((element, index) => {
+					days[index]['state'] = 1;
+				});
+			}
+		}
+		if (showQuarters === false) {
+			for (j = 0; j < year.months.length; j++) {
+				qstateSum += year.months[j]["state"];
+			}
+			year.state = (qstateSum < year.months.length) ? -1 : 1;
+		}
+		callback([...years]);
+	} else {
+		let stateSum = 0;
+		let qstateSum = 0;
+		month.state = 0;
+		if (showQuarters === true) {
+			for (i = 0; i < quarter.months.length; i++) {
+				stateSum += quarter.months[i]["state"];
+			}
+			quarter.state = (stateSum < quarter.months.length) ? (stateSum === 0) ? 0 : -1 : 1;
+
+			for (j = 0; j < year.quarters.length; j++) {
+				if (year.quarters[j]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.quarters[j]["state"];
+			}
+			year.state = (qstateSum !== 0) ? (qstateSum < year.quarters.length) ? -1 : 1 : 0;
+		}
+		if (showWeeks === true) {
+			let weeks = month.weeks;
+			weeks.forEach((element, index) => {
+				weeks[index]['state'] = 0;
+				if (weeks[index]['days']) {
+					weeks[index]['days'].forEach((element, index1) => {
+						weeks[index]['days'][index1]['state'] = 0;
+					})
+				}
+			});
+		} else {
+			let days = month.days;
+			if (days) {
+				days.forEach((element, index) => {
+					days[index]['state'] = 0;
+				});
+			}
+		}
+		if (showQuarters === false) {
+			for (j = 0; j < year.months.length; j++) {
+				if (year.months[j]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.months[j]["state"];
+			}
+			year.state = (qstateSum !== 0) ? (qstateSum < year.months.length) ? -1 : 1 : 0;
+		}
+
+		callback([...years]);
+	}
+}
+
+
+export const weekChangeCallback = (years, showQuarters, weekObj, callback) => {
+	let { week, month, quarter, year, isCheck } = weekObj;
+	if (isCheck === true) {
+		let wstateSum = 0;
+		let qstateSum = 0;
+		let mstateSum = 0;
+		week.state = 1;
+		if (week.days) {
+			week.days.forEach((element, index) => {
+				week.days[index]['state'] = 1;
+			});
+		}
+		for (var j = 0; j < month.weeks.length; j++) {
+			wstateSum += month.weeks[j]["state"];
+		}
+		month.state = (wstateSum < month.weeks.length) ? -1 : 1;
+		if (showQuarters === true) {
+			for (var k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
+
+			for (var i = 0; i < year.quarters.length; i++) {
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (k = 0; k < year.months.length; k++) {
+				mstateSum += year.months[k]["state"];
+			}
+			year.state = (mstateSum < year.months.length) ? -1 : 1;
+		}
+		callback([...years]);
+	}
+	else {
+		let wstateSum = 0;
+		let qstateSum = 0;
+		let mstateSum = 0;
+		week.state = 0;
+		if (week.days) {
+			week.days.forEach((element, index) => {
+				week.days[index]['state'] = 0;
+			});
+		}
+		for (j = 0; j < month.weeks.length; j++) {
+			wstateSum += month.weeks[j]["state"];
+		}
+		month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
+
+		if (showQuarters === true) {
+			for (k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+			for (i = 0; i < year.quarters.length; i++) {
+				if (year.quarters[i]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? (qstateSum === 0) ? 0 : -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (k = 0; k < year.months.length; k++) {
+				mstateSum += year.months[k]["state"];
+			}
+			year.state = (mstateSum < year.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
+		}
+		callback([...years]);
+	}
+}
+
+export const dayChangeCallback = (years, showQuarters, dayObj, callback) => {
+	let { day, month, quarter, year, isCheck } = dayObj;
+
+	let dstateSum = 0;
+	let qstateSum = 0;
+	let mstateSum = 0;
+
+	if (isCheck === true) {
+		day['state'] = 1;
+		for (var j = 0; j < month.days.length; j++) {
+			dstateSum += month.days[j]["state"];
+		}
+		month.state = (dstateSum < month.days.length) ? -1 : 1;
+		if (showQuarters === true) {
+			for (var k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
+
+			for (var i = 0; i < year.quarters.length; i++) {
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (k = 0; k < year.months.length; k++) {
+				mstateSum += year.months[k]["state"];
+			}
+			year.state = (mstateSum < year.months.length) ? -1 : 1;
+		}
+		callback([...years]);
+	}
+	else {
+		day.state = 0;
+		for (j = 0; j < month.days.length; j++) {
+			dstateSum += month.days[j]["state"];
+		}
+		month.state = (dstateSum < month.days.length) ? (dstateSum === 0) ? 0 : -1 : 1;
+		if (showQuarters === true) {
+			for (k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+			for (i = 0; i < year.quarters.length; i++) {
+				if (year.quarters[i]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? (qstateSum === 0) ? 0 : -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (i = 0; i < year.months.length; i++) {
+				if (year.months[i]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.months[i]["state"];
+			}
+			year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1;
+		}
+		callback([...years]);
+	}
+}
+
+export const weekDayChangeCallback = (years, showQuarters, weekDaysObj, callback) => {
+	let { day, week, month, quarter, year, isCheck } = weekDaysObj;
+
+	let wstateSum = 0;
+	let qstateSum = 0;
+	let mstateSum = 0;
+	let wdstateSum = 0;
+	if (isCheck === true) {
+		day.state = 1;
+		for (var n = 0; n < week.days.length; n++) {
+			wdstateSum += week.days[n]["state"];
+		}
+		week.state = (wdstateSum < week.days.length) ? -1 : 1;
+
+		for (var j = 0; j < month.weeks.length; j++) {
+			wstateSum += month.weeks[j]["state"];
+		}
+		month.state = (wstateSum < month.weeks.length) ? -1 : 1;
+		if (showQuarters === true) {
+			for (var k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
+
+			for (var i = 0; i < year.quarters.length; i++) {
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (k = 0; k < year.months.length; k++) {
+				mstateSum += year.months[k]["state"];
+			}
+			year.state = (mstateSum < year.months.length) ? -1 : 1;
+		}
+		callback([...years]);
+	}
+	else {
+		day.state = 0;
+
+		for (n = 0; n < week.days.length; n++) {
+			wdstateSum += week.days[n]["state"];
+		}
+		week.state = (wdstateSum < week.days.length) ? (wdstateSum === 0) ? 0 : -1 : 1;
+		for (j = 0; j < month.weeks.length; j++) {
+			wstateSum += month.weeks[j]["state"];
+		}
+		month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
+		if (showQuarters === true) {
+			for (k = 0; k < quarter.months.length; k++) {
+				mstateSum += quarter.months[k]["state"];
+			}
+			quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
+
+			for (i = 0; i < year.quarters.length; i++) {
+				if (year.quarters[i]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.quarters[i]["state"];
+			}
+			year.state = (qstateSum < year.quarters.length) ? (qstateSum === 0) ? 0 : -1 : 1;
+		}
+		if (showQuarters === false) {
+			for (i = 0; i < year.months.length; i++) {
+				if (year.months[i]['state'] === -1) {
+					qstateSum = -1;
+					break;
+				}
+				qstateSum += year.months[i]["state"];
+			}
+			year.state = (qstateSum < year.months.length) ? (qstateSum === 0) ? 0 : -1 : 1;
+		}
+		callback([...years]);
+	}
 }
