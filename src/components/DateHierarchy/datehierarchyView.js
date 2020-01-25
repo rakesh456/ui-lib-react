@@ -90,7 +90,7 @@ class DatehierarchyView extends React.PureComponent {
             years: [...years]
         })
 
-        this.updateSelectAllCheckboxHandler();
+        this.updateSelectAllCheckboxHandler([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -133,7 +133,7 @@ class DatehierarchyView extends React.PureComponent {
                 years: [...years]
             })
     
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
     }
 
     onChangeMonthHandler = (monthObj) => {
@@ -183,7 +183,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             })
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         } else {
             let stateSum = 0;
             let qstateSum = 0;
@@ -235,7 +235,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -353,7 +353,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
         else {
             let wstateSum = 0;
@@ -394,7 +394,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -438,7 +438,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
         else {
             day.state = 0;
@@ -479,7 +479,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -546,9 +546,9 @@ class DatehierarchyView extends React.PureComponent {
         });
     }
 
-    updateSelectAllCheckboxHandler = () => {
+    updateSelectAllCheckboxHandler = (years) => {
         let _isSelectAll = true;
-        let { years } = this.state;
+        // let { years } = this.state;
         let selectAllState = 0;
         years.forEach((yr) => {
             if (yr.state === 0) {
@@ -558,7 +558,6 @@ class DatehierarchyView extends React.PureComponent {
             }
         });
         
-
         this.setState({
             isSelectAll: _isSelectAll,
             selectAllState: selectAllState
@@ -837,9 +836,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     closeFilter = () => {
-        
-        this.updateSelectAllCheckboxHandler();
-
         let { searchValue, filteredYears, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years } = this.state;
 
         const { options } = this.props;
@@ -874,6 +870,8 @@ class DatehierarchyView extends React.PureComponent {
                         filterSum: 0,
                         years: [...resultYears]
                     });
+                    
+                    this.updateSelectAllCheckboxHandler([...resultYears]);
                 });
 
             } else if(isExcludeFromSelection === true){
@@ -895,6 +893,8 @@ class DatehierarchyView extends React.PureComponent {
                             filterSum: 0,
                             years: [...resultYears]
                         });
+
+                        this.updateSelectAllCheckboxHandler([...resultYears]);
                     });
                 });
 
@@ -903,9 +903,12 @@ class DatehierarchyView extends React.PureComponent {
                     isSearching: false,
                     searchValue: ""
                 });
+
+                this.updateSelectAllCheckboxHandler([...years]);
             }
         } else if(_selections.length <= 0){
             _selections = filteredData.map(a => Object.assign({}, a));
+            
             this.setState({
                 isSearching: false,
                 isAddCurrentSelection: false, 
@@ -917,8 +920,9 @@ class DatehierarchyView extends React.PureComponent {
                 selections: [..._selections],
                 years: [...filteredData]
             });
-        }
 
+            this.updateSelectAllCheckboxHandler([...filteredData]);
+        }
     }
 
     getCheckBoxClass = () => {
