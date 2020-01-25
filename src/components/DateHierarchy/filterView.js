@@ -109,11 +109,11 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
 
                                                 } else {
-                                                    if(maxLevel === 3){
+                                                    if (maxLevel === 3) {
                                                         // _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
 
                                                         let newWeeks = JSON.stringify(weeks).replace(stateRegExOne, '"state":0');
-                                                    
+
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                                     } else {
 
@@ -168,7 +168,7 @@ class FilterView extends React.PureComponent {
                                                     let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                                 } else {
-                                                    if(maxLevel === 3){
+                                                    if (maxLevel === 3) {
                                                         let newDays = JSON.stringify(days).replace(stateRegExOne, '"state":0');
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                                     } else {
@@ -232,9 +232,9 @@ class FilterView extends React.PureComponent {
                                         // _years[yearIndex]['months'][monthIndex]['showChild'] = true;
                                         let newWeeks = JSON.stringify(weeks).replace(stateRegEx, '"state":1');
                                         _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
-                                    } else { 
-                                        
-                                        if(maxLevel === 2){
+                                    } else {
+
+                                        if (maxLevel === 2) {
                                             let newWeeks = JSON.stringify(weeks).replace(stateRegExOne, '"state":0');
                                             _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
                                         } else {
@@ -288,8 +288,8 @@ class FilterView extends React.PureComponent {
                                     if (foundMonth || (maxLevel === 3 && searchResult.length === days.length)) {
                                         let newDays = JSON.stringify(days).replace(stateRegEx, '"state":1');
                                         _years[yearIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
-                                    }  else {
-                                        if(maxLevel === 2){
+                                    } else {
+                                        if (maxLevel === 2) {
                                             let newDays = JSON.stringify(days).replace(stateRegExOne, '"state":0');
                                             _years[yearIndex]['months'][monthIndex]['days'] = [...JSON.parse(newDays)];
                                         } else {
@@ -324,7 +324,7 @@ class FilterView extends React.PureComponent {
                 filteredYears: _years,
                 searchValue: searchValue
             });
-            
+
             this.props.onFilteredDataChange(_years);
         } else {
             this.setState({
@@ -335,7 +335,7 @@ class FilterView extends React.PureComponent {
         }
     }
 
-    updateSelectAllCheckboxHandler = () =>{
+    updateSelectAllCheckboxHandler = () => {
         this.props.onUpdateSelectAllCheckbox()
     }
 
