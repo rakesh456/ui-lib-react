@@ -809,12 +809,13 @@ class DatehierarchyView extends React.PureComponent {
             'list': filteredYears
         };
         _lastFilterData.push(obj);
-
         this.setState({
             isSearching: false,
             searchValue: "",
             lastFilterData: _lastFilterData,
+            
         });
+        console.log('last filter data',_lastFilterData);
     }
 
     closeFilter = () => {
