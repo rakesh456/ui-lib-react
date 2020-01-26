@@ -335,8 +335,8 @@ class FilterView extends React.PureComponent {
         }
     }
 
-    updateSelectAllCheckboxHandler = () => {
-        this.props.onUpdateSelectAllCheckbox()
+    updateSelectAllCheckboxHandler = (years) => {
+        this.props.onUpdateSelectAllCheckbox([...years])
     }
 
     onChangeQuarterHandler = (quarterObj) => {
