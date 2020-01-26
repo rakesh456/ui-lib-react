@@ -822,7 +822,7 @@ class DatehierarchyView extends React.PureComponent {
     clearFilter = () => {
         let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
-<<<<<<< HEAD
+
         let _lastFilterData = [...lastFilterData];
         let obj = {
             'value': searchValue,
@@ -834,22 +834,12 @@ class DatehierarchyView extends React.PureComponent {
             searchValue: "",
             lastFilterData: _lastFilterData,
             
-=======
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
         //     'value': searchValue,
         //     'list': filteredYears
         // };
         // _lastFilterData.push(obj);
-
-        this.setState({
-            isSearching: false,
-<<<<<<< HEAD
-            searchValue: ""
->>>>>>> 84c6c917f54fdcd476ab5844ef6b759272e7e3ad
-        });
-        console.log('last filter data',_lastFilterData);
-=======
             searchValue: "",
             years: [...listOfYears],
             isAddCurrentSelection: false, 
@@ -861,7 +851,6 @@ class DatehierarchyView extends React.PureComponent {
             lastFilterData: []
         });
         this.updateSelectAllCheckboxHandler([...listOfYears]);
->>>>>>> girish
     }
 
     closeFilter = () => {
