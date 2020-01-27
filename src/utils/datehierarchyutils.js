@@ -602,3 +602,8 @@ export const isDayVal = (val) => {
 	let _val = (val) ? parseInt(val) : '';
 	return (_val <= 1 || _val <= 31);
 }
+
+//Function to convert 1 to 0 and 0 to 1
+export const opposite = (number) => {
+	return (number === 1)? 0 : 1;
+}

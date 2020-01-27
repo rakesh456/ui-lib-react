@@ -1,6 +1,6 @@
 import React from "react";
 
-import { getListOfYears, getSearchObj } from "../../utils/datehierarchyutils";
+import { getListOfYears, getSearchObj, opposite } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull } from "../../utils/utils";
 import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
@@ -9,7 +9,7 @@ import MonthView from "./monthView";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
 const stateRegExOne = /\"state\":1/gi
-
+const checkPartialState = obj => obj.state === -1;
 class DatehierarchyView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -90,7 +90,7 @@ class DatehierarchyView extends React.PureComponent {
             years: [...years]
         })
 
-        this.updateSelectAllCheckboxHandler();
+        this.updateSelectAllCheckboxHandler([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -133,7 +133,7 @@ class DatehierarchyView extends React.PureComponent {
                 years: [...years]
             })
     
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
     }
 
     onChangeMonthHandler = (monthObj) => {
@@ -183,7 +183,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             })
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         } else {
             let stateSum = 0;
             let qstateSum = 0;
@@ -235,7 +235,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -353,7 +353,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
         else {
             let wstateSum = 0;
@@ -394,7 +394,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -438,7 +438,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
         else {
             day.state = 0;
@@ -479,7 +479,7 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
-            this.updateSelectAllCheckboxHandler();
+            this.updateSelectAllCheckboxHandler([...years]);
         }
     }
 
@@ -546,9 +546,9 @@ class DatehierarchyView extends React.PureComponent {
         });
     }
 
-    updateSelectAllCheckboxHandler = () => {
+    updateSelectAllCheckboxHandler = (years) => {
         let _isSelectAll = true;
-        let { years } = this.state;
+        // let { years } = this.state;
         let selectAllState = 0;
         years.forEach((yr) => {
             if (yr.state === 0) {
@@ -558,8 +558,11 @@ class DatehierarchyView extends React.PureComponent {
             }
         });
         
+<<<<<<< HEAD
         // console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
 
+=======
+>>>>>>> 0deff960bdbbd746cdb19258a9ac5704dd8bb653
         this.setState({
             isSelectAll: _isSelectAll,
             selectAllState: selectAllState
@@ -599,8 +602,6 @@ class DatehierarchyView extends React.PureComponent {
 
     addToCurrentSelection = (firstArray, secondArray, callback) => {
         let { showWeeks, showQuarters } = this.props.options;
-        
-        
         if(!firstArray || firstArray.length <= 0){
             callback(secondArray);
         } else {
@@ -622,15 +623,17 @@ class DatehierarchyView extends React.PureComponent {
     
                                     let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
                                     let daysum = days.reduce((a, b) => +a + +b.state, 0);
-
+                                    let isPartial = days.some(checkPartialState);
                                     
-                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial)? -1 : (daysum === week.days.length)? 1 : ((week.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
 
                                 });
     
                                 let weeks = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks']];
                                 let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                                let isPartial = weeks.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial)? -1 :  (weeksum === month.weeks.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
     
                             } else {
                                 month.days.forEach((day, dayIndex) => {
@@ -639,23 +642,26 @@ class DatehierarchyView extends React.PureComponent {
     
                                 let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days']];
                                 let daysum = days.reduce((a, b) => +a + +b.state, 0);
-    
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial)? -1 : (daysum === month.days.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                             }
     
                         });
     
                         let months = [...resultYears[yearIndex]['quarters'][quarterIndex]['months']];
                         let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : (monthsum > 0)? -1 : ((quarter.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
+                        let isPartial = months.some(checkPartialState);
+                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (isPartial)? -1 : (monthsum === quarter.months.length)? 1 : ((quarter.state === 0)? secondArray[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
     
                     });
                     
                     let quarters = [...resultYears[yearIndex]['quarters']];
                     let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
-
-                    resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : (quartersum > 0)? -1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                    let isPartial = quarters.some(checkPartialState);
                     
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (quartersum === year.quarters.length)? 1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                   
                 } else {
                     year.months.forEach((month, monthIndex) => {
                         if(showWeeks === true){
@@ -667,13 +673,16 @@ class DatehierarchyView extends React.PureComponent {
     
                                 let days = [...resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
                                 let daysum = days.reduce((a, b) => +a + +b.state, 0);
-    
-                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial)? -1 : (daysum === week.days.length)? 1 : ((week.state === 0)? secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                             });
     
                             let weeks = [...resultYears[yearIndex]['months'][monthIndex]['weeks']];
                             let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                            resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 :  ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+                            let isPartial = weeks.some(checkPartialState);
+
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial)? -1 : (weeksum === month.weeks.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
                         } else {
                             month.days.forEach((day, dayIndex) => {
                                 resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (day.state === 0)? secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] : day.state;
@@ -681,14 +690,16 @@ class DatehierarchyView extends React.PureComponent {
     
                             let days = [...resultYears[yearIndex]['months'][monthIndex]['days']];
                             let daysum = days.reduce((a, b) => +a + +b.state, 0);
-    
-                            resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
+                            let isPartial = days.some(checkPartialState);
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial)? -1 : (daysum === month.days.length)? 1 : ((month.state === 0)? secondArray[yearIndex]['months'][monthIndex]['state'] : month.state);
                         }
                     });
     
                     let months = [...resultYears[yearIndex]['months']];
                     let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                    resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : (monthsum > 0)? -1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
+                    let isPartial = months.some(checkPartialState);
+
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (monthsum === year.months.length)? 1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
                 }
             });
     
@@ -706,91 +717,105 @@ class DatehierarchyView extends React.PureComponent {
             let resultYears = firstArray.map(a => Object.assign({}, a));
             firstArray.forEach((year, yearIndex) => {
                 
-                resultYears[yearIndex]['state'] = !secondArray[yearIndex]['state'];
+                resultYears[yearIndex]['state'] = opposite(secondArray[yearIndex]['state']);
                 if(showQuarters === true){
     
                     year.quarters.forEach((quarter, quarterIndex) => {
     
-                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['state'];
+                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = opposite(secondArray[yearIndex]['quarters'][quarterIndex]['state']);
     
                         quarter.months.forEach((month, monthIndex) => {
-                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'];
+                            resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = opposite(secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state']);
     
                             if(showWeeks === true){                            
                                 month.weeks.forEach((week, weekIndex) => {
-                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'];
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = opposite(secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state']);
     
                                     week.days.forEach((day, dayIndex) => {
-                                        resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
+                                        resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = opposite(secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state']);
                                     });
     
                                     let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
+                                    let isPartial = days.some(checkPartialState);
                                     let daysum = days.reduce((a, b) => +a + +b.state, 0);
-        
-                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                                    
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial)? -1 : (daysum === week.days.length)? 1 : ((week.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                                 });
     
                                 let weeks = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks']];
+                                let isPartial = weeks.some(checkPartialState);
                                 let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial)? -1 :(weeksum === month.weeks.length)? 1 :  ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+
                             } else {
                                 month.days.forEach((day, dayIndex) => {
-                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'];
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = opposite(secondArray[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state']);
                                 });
     
                                 let days = [...resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days']];
                                 let daysum = days.reduce((a, b) => +a + +b.state, 0);
-    
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial)? -1 :(daysum === month.days.length)? 1 : ((month.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : month.state);
                             }
                         });
     
                         let months = [...resultYears[yearIndex]['quarters'][quarterIndex]['months']];
                         let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (monthsum === quarter.months.length)? 1 : (monthsum > 0)? -1 : ((quarter.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
+                        let isPartial = months.some(checkPartialState);
+                        resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (isPartial)? -1 : (monthsum === quarter.months.length)? 1 :  ((quarter.state === 0)? resultYears[yearIndex]['quarters'][quarterIndex]['state'] : quarter.state);
                     });
     
                     let quarters = [...resultYears[yearIndex]['quarters']];
                     let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
-    
-                    resultYears[yearIndex]['state'] = (quartersum === year.quarters.length)? 1 : (quartersum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
+                    let isPartial = quarters.some(checkPartialState);
+                    
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (quartersum === year.quarters.length)? 1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
+
+                    
                 } else {
                     year.months.forEach((month, monthIndex) => {
-                        resultYears[yearIndex]['months'][monthIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['state'];
+                        resultYears[yearIndex]['months'][monthIndex]['state'] = opposite(secondArray[yearIndex]['months'][monthIndex]['state']);
     
                         if(showWeeks === true){
                             month.weeks.forEach((week, weekIndex) => {
-                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'];
+                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = opposite(secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state']);
     
                                 week.days.forEach((day, dayIndex) => {
-                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'];
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = opposite(secondArray[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state']);
                                 });
     
                                 let days = [...resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days']];
                                 let daysum = days.reduce((a, b) => +a + +b.state, 0);
-        
-                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (daysum === week.days.length)? 1 : (daysum > 0)? -1 : ((week.state === 0)? resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial)? -1 : (daysum === week.days.length)? 1 : ((week.state === 0)? resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : week.state);
                             });
                             
                             let weeks = [...resultYears[yearIndex]['months'][monthIndex]['weeks']];
                             let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
-                            resultYears[yearIndex]['months'][monthIndex]['state'] = (weeksum === month.weeks.length)? 1 : (weeksum > 0)? -1 :  ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
+                            let isPartial = weeks.some(checkPartialState);
+
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial)? -1 : (weeksum === month.weeks.length)? 1 :  ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
     
                         } else {
                             month.days.forEach((day, dayIndex) => {
-                                resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = !secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'];
+                                resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = opposite(secondArray[yearIndex]['months'][monthIndex]['days'][dayIndex]['state']);
                             });
     
                             let days = [...resultYears[yearIndex]['months'][monthIndex]['days']];
                             let daysum = days.reduce((a, b) => +a + +b.state, 0);
-        
-                            resultYears[yearIndex]['months'][monthIndex]['state'] = (daysum === month.days.length)? 1 : (daysum > 0)? -1 : ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
+                            let isPartial = days.some(checkPartialState);
+
+                            resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial)? -1 : (daysum === month.days.length)? 1 : ((month.state === 0)? resultYears[yearIndex]['months'][monthIndex]['state'] : month.state);
                         }
                     });
     
                     let months = [...resultYears[yearIndex]['months']];
                     let monthsum = months.reduce((a, b) => +a + +b.state, 0);
-                    resultYears[yearIndex]['state'] = (monthsum === year.months.length)? 1 : (monthsum > 0)? -1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
+                    let isPartial = months.some(checkPartialState);
+
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (monthsum === year.months.length)? 1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
                 }
             });
     
@@ -800,26 +825,40 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        // let { searchValue, filteredYears, lastFilterData } = this.state;
+        let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
+
+        let _lastFilterData = [...lastFilterData];
+        let obj = {
+            'value': searchValue,
+            'list': filteredYears
+        };
+        _lastFilterData.push(obj);
+        this.setState({
+            isSearching: false,
+            searchValue: "",
+            lastFilterData: _lastFilterData,
+            
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
         //     'value': searchValue,
         //     'list': filteredYears
         // };
         // _lastFilterData.push(obj);
-
-        // this.setState({
-        //     isSearching: false,
-        //     searchValue: "",
-        //     lastFilterData: _lastFilterData
-        // });
+            searchValue: "",
+            years: [...listOfYears],
+            isAddCurrentSelection: false, 
+            isExcludeFromSelection: false,
+            isNoDataFound: false,
+            selections: [],
+            exclusions: [],
+            filterSum: 0,
+            lastFilterData: []
+        });
+        this.updateSelectAllCheckboxHandler([...listOfYears]);
     }
 
     closeFilter = () => {
-        
-        this.updateSelectAllCheckboxHandler();
-
         let { searchValue, filteredYears, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years } = this.state;
 
         const { options } = this.props;
@@ -854,6 +893,8 @@ class DatehierarchyView extends React.PureComponent {
                         filterSum: 0,
                         years: [...resultYears]
                     });
+                    
+                    this.updateSelectAllCheckboxHandler([...resultYears]);
                 });
 
             } else if(isExcludeFromSelection === true){
@@ -875,6 +916,8 @@ class DatehierarchyView extends React.PureComponent {
                             filterSum: 0,
                             years: [...resultYears]
                         });
+
+                        this.updateSelectAllCheckboxHandler([...resultYears]);
                     });
                 });
 
@@ -883,9 +926,12 @@ class DatehierarchyView extends React.PureComponent {
                     isSearching: false,
                     searchValue: ""
                 });
+
+                this.updateSelectAllCheckboxHandler([...years]);
             }
         } else if(_selections.length <= 0){
             _selections = filteredData.map(a => Object.assign({}, a));
+            
             this.setState({
                 isSearching: false,
                 isAddCurrentSelection: false, 
@@ -897,8 +943,9 @@ class DatehierarchyView extends React.PureComponent {
                 selections: [..._selections],
                 years: [...filteredData]
             });
-        }
 
+            this.updateSelectAllCheckboxHandler([...filteredData]);
+        }
     }
 
     getCheckBoxClass = () => {
@@ -934,7 +981,7 @@ class DatehierarchyView extends React.PureComponent {
                     </span>
                     <input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === false) ? CONSTANTS.CLASSES.VS_DISABLED_ICON : ''}`} onClick={() => this.clearFilter()} />
+                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                     </span>
                     {
                         (isSearching === true) ?
@@ -949,7 +996,7 @@ class DatehierarchyView extends React.PureComponent {
                             <label className="VS-Checkbox-Container">No Result Found!</label> : ''
                     }
                     {
-                        (isSearching === true && (!lastFilterData || !lastFilterData.length <= 0)) ?
+                        (isSearching === true && lastFilterData && lastFilterData.length > 0) ?
                             <label className="VS-Checkbox-Container">Select All Search Results
                             <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
