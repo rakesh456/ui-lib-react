@@ -61,7 +61,7 @@ class FilterView extends React.PureComponent {
             });
 
             let maxLevel = this.getMaxLevel(searchResult);
-
+            console.log(maxLevel, ' maxLevel ', searchResult);
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
                 _years[yearIndex]['state'] = (foundYear) ? 1 : 0;;
@@ -91,6 +91,7 @@ class FilterView extends React.PureComponent {
                                 if (foundQuarter) {
                                     let newMonths = JSON.stringify(months).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
                                     _years[yearIndex]['quarters'][quarterIndex]['months'] = [...JSON.parse(newMonths)];
+                                    _years[yearIndex]['match'] = 1;
                                 } else {
                                     if (maxLevel === 2) {
                                         _years[yearIndex]['quarters'][quarterIndex]['months'] = [...months];
@@ -154,7 +155,9 @@ class FilterView extends React.PureComponent {
                                                                         }
                                                                     });
 
-                                                                    let isMathcOne = JSON.stringify(days).match(matchRegExOne);
+                                                                    let matchDays = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+
+                                                                    let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
                                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = (isMathcOne)? 1 : 0;
                                                                 }
                                                             }
@@ -166,8 +169,11 @@ class FilterView extends React.PureComponent {
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (sum === weeks.length) ? 1 : (sum === 0 && !isPartial) ? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : -1;
                                                             }
                                                         });
-                                                        let isMathcOne = JSON.stringify(weeks).match(matchRegExOne);
-                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
+
+                                                        let matchWeeks = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'];
+                                                        let isMathcOne = JSON.stringify(matchWeeks).match(matchRegExOne);
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
+
                                                     }
                                                 }
                                             } else {
@@ -194,6 +200,10 @@ class FilterView extends React.PureComponent {
                                                                 _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (sum === days.length) ? 1 : (sum === 0) ? _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] : -1;
                                                             }
                                                         });
+
+                                                        let matchDays = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'];
+                                                        let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
                                                     }
                                                 }
                                             }
@@ -202,24 +212,31 @@ class FilterView extends React.PureComponent {
                                                 let sum = months.reduce((a, b) => +a + +b.state, 0);
                                                 _years[yearIndex]['quarters'][quarterIndex]['state'] = (sum === 3) ? 1 : (sum === 0) ? _years[yearIndex]['quarters'][quarterIndex]['state'] : -1;
                                                 _years[yearIndex]['quarters'][quarterIndex]['showChild'] = true;
+                                                
                                             }
                                         });
-
                                         
-                                        let isMathcOne = JSON.stringify(months).match(matchRegExOne);
-                                        console.log(quarter.quarter, (isMathcOne === null), ' isMathcOne ', months);
+                                        let matchMonths = _years[yearIndex]['quarters'][quarterIndex]['months'];
+                                        let isMathcOne = JSON.stringify(matchMonths).match(matchRegExOne);
                                         _years[yearIndex]['quarters'][quarterIndex]['match'] = (isMathcOne === null)? 0 : 1;
+                                        
                                     }
                                 }
 
                                 if (quarterIndex >= quarters.length - 1 && !foundYear) {
                                     let sum = quarters.reduce((a, b) => +a + +b.state, 0);
                                     _years[yearIndex]['state'] = (sum === 4) ? 1 : (sum === 0) ? _years[yearIndex]['state'] : -1;
+                                    if(sum === 4){
+                                        let newQuarters = JSON.stringify(quarters).replace(stateRegEx, '"state":1').replace(matchRegEx, '"match":1');
+                        
+                                        _years[yearIndex]['match'] = 1;
+                                        _years[yearIndex]['quarters'] = [...JSON.parse(newQuarters)];
+                                    }
                                 }
                             });
 
-                            let isMathcOne = JSON.stringify(quarters).match(matchRegExOne);
-                            // let isMathcOne = quarters.some(checkOneMatch);
+                            let matchQuarters = _years[yearIndex]['quarters'];
+                            let isMathcOne = JSON.stringify(matchQuarters).match(matchRegExOne);
                             _years[yearIndex]['match'] = (isMathcOne)? 1 : 0;
                         }
                     }
@@ -289,6 +306,10 @@ class FilterView extends React.PureComponent {
                                                                 _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (sum === days.length) ? 1 : (sum === 0) ? _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] : -1;
                                                             }
                                                         });
+
+                                                        let matchDays = _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+                                                        let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
+                                                        _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = (isMathcOne)? 1 : 0;
                                                     }
                                                 }
 
@@ -299,6 +320,10 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['months'][monthIndex]['state'] = (sum === weeks.length) ? 1 : (sum === 0 && !isPartial) ? _years[yearIndex]['months'][monthIndex]['state'] : -1;
                                                 }
                                             });
+
+                                            let matchWeeks = _years[yearIndex]['months'][monthIndex]['weeks'];
+                                            let isMathcOne = JSON.stringify(matchWeeks).match(matchRegExOne);
+                                            _years[yearIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
                                         }
                                     }
                                 } else {
@@ -326,6 +351,9 @@ class FilterView extends React.PureComponent {
                                                     _years[yearIndex]['months'][monthIndex]['state'] = (sum === days.length) ? 1 : (sum === 0) ? _years[yearIndex]['months'][monthIndex]['state'] : -1;
                                                 }
                                             });
+                                            let matchDays = _years[yearIndex]['months'][monthIndex]['days'];
+                                            let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
+                                            _years[yearIndex]['months'][monthIndex]['match'] = (isMathcOne)? 1 : 0;
                                         }
                                     }
                                 }
@@ -336,9 +364,10 @@ class FilterView extends React.PureComponent {
                                 }
                             });
 
-                            let isMathcOne = JSON.stringify(months).match(matchRegExOne);
-                            // let isMathcOne = months.some(checkOneMatch);
+                            let matchMonths = _years[yearIndex]['months'];
+                            let isMathcOne = JSON.stringify(matchMonths).match(matchRegExOne);
                             _years[yearIndex]['match'] = (isMathcOne === true)? 1 : 0;
+                            
                         }
                     }
                 }
