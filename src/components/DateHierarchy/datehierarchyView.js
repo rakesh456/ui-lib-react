@@ -693,7 +693,7 @@ class DatehierarchyView extends React.PureComponent {
                     let months = [...resultYears[yearIndex]['months']];
                     let monthsum = months.reduce((a, b) => +a + +b.state, 0);
                     let isPartial = months.some(checkPartialState);
-
+                    
                     resultYears[yearIndex]['state'] = (isPartial)? -1 : (monthsum === year.months.length)? 1 : ((year.state === 0)? secondArray[yearIndex]['state'] : year.state);
                 }
             });
@@ -865,7 +865,7 @@ class DatehierarchyView extends React.PureComponent {
         let _lastFilterData = [...lastFilterData];
         let obj = {
             'value': searchValue,
-            'list': filteredData
+            'list': [...filteredData]
         };
 
         _lastFilterData.push(obj);
@@ -925,7 +925,7 @@ class DatehierarchyView extends React.PureComponent {
                 this.updateSelectAllCheckboxHandler([...years]);
             }
         } else if(_selections.length <= 0){
-            _selections = filteredData.map(a => Object.assign({}, a));
+            var _newselections = filteredData.map(a => Object.assign({}, a));
             
             this.setState({
                 isSearching: false,
@@ -935,7 +935,7 @@ class DatehierarchyView extends React.PureComponent {
                 searchValue: "",
                 lastFilterData: _lastFilterData,
                 listOfYears: yearList,
-                selections: [..._selections],
+                selections: [..._newselections],
                 years: [...filteredData]
             });
 
@@ -1017,13 +1017,13 @@ class DatehierarchyView extends React.PureComponent {
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
                     }
-                    {
+                    {/* {
                         (isSearching === true && lastFilterData && lastFilterData.length > 0) ?
                             <label className="VS-Checkbox-Container">{(exclusions && exclusions.length > 0)? 'Add To Previous Exclusions' : 'Exclude From Selection'}
                             <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
-                    }
+                    } */}
                 </div>
                 <div id="VS-Scrollbar">
                     {
