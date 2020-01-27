@@ -48,13 +48,13 @@ class MonthView extends React.PureComponent {
 
     renderDay = (day, month, quarter, year, dayIndex) => {
         let { isFilterView } = this.props;
-        if (isFilterView === true && day.state === 0) {
+        if (isFilterView === true && day.match === 0) {
             return ("")
         } else {
             return (
                 <div className="VS-DayRow" key={'day' + dayIndex}>
 
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-Tooltiptext">{day.day+" "}{month.month+" "}{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.day}<span className="VS-TooltiptextWeekDay">{day.day+" "}{month.month+" "}{year.year}</span></div>
                         {
                             (day.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleDayCheck(day, month, quarter, year, false)}></input> :
@@ -69,7 +69,7 @@ class MonthView extends React.PureComponent {
 
     renderMonth = (month, quarter, year, monthIndex) => {
         let { options, isFilterView } = this.props;
-        if (isFilterView === true && month.state === 0) {
+        if (isFilterView === true && month.match === 0) {
             return ("")
         } else {
             return (
