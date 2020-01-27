@@ -822,15 +822,24 @@ class DatehierarchyView extends React.PureComponent {
     clearFilter = () => {
         let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
+
+        let _lastFilterData = [...lastFilterData];
+        let obj = {
+            'value': searchValue,
+            'list': filteredYears
+        };
+        _lastFilterData.push(obj);
+        this.setState({
+            isSearching: false,
+            searchValue: "",
+            lastFilterData: _lastFilterData,
+            
         // let _lastFilterData = [...lastFilterData];
         // let obj = {
         //     'value': searchValue,
         //     'list': filteredYears
         // };
         // _lastFilterData.push(obj);
-
-        this.setState({
-            isSearching: false,
             searchValue: "",
             years: [...listOfYears],
             isAddCurrentSelection: false, 
