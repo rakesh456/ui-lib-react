@@ -1,7 +1,7 @@
 import React from "react";
 
 import { getListOfYears, getSearchObj, opposite } from "../../utils/datehierarchyutils";
-import { isUndefinedOrNull } from "../../utils/utils";
+import { isUndefinedOrNull, isBlank } from "../../utils/utils";
 import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
 import QuarterView from "./quarterView";
@@ -18,7 +18,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        this.state = { listOfYears: yearList, years: yearList, isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: [], isNoDataFound: false, filterSum: 0};
+        this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], exclusions: [], isNoDataFound: false, filterSum: 0};
     }
 
     getYears() {
@@ -540,11 +540,15 @@ class DatehierarchyView extends React.PureComponent {
 
     onChangeHandler = (name, e) => {
         if(isUndefinedOrNull(e.target.value)){
-            let {years} = this.state;
+            let {years, lastFilterData, listOfYears} = this.state;
+            let {options} = this.props;
+            let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
             this.setState({
                 isSearching: false,
                 searchValue: e.target.value,
+                years: (lastFilterData && lastFilterData.length > 0)? [...years] : [...yearList]
             });
+            this.updateSelectAllCheckboxHandler([...years]);
         } else {
             this.setState({
                 isSearching: true,
@@ -948,7 +952,8 @@ class DatehierarchyView extends React.PureComponent {
                 isAddCurrentSelection: false, 
                 isExcludeFromSelection: false,
                 isNoDataFound: false,
-                searchValue: ""
+                searchValue: "",
+                years: [...years]
             });
         }
     }
