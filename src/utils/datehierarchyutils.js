@@ -171,6 +171,7 @@ export const getMonths = function (year, showWeeks, disabledList, callback) {
 				if ((MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1) < 10) {
 					if (disabledList.includes('0' + (MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1) + '/' + year) || disabledList.includes((MONTH_SHORT_NAMES_TITLE_CASE.indexOf(monthObj.month) + 1) + '/' + year)) {
 						months.pop();
+						
 						hasDisabled = true;
 					}
 				}
