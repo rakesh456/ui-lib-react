@@ -20,15 +20,11 @@ class Month extends React.PureComponent {
         const { month, year, options } = this.props;
         
         const upperLimit = getUpperLimitFromOptions(options);
-        console.log(upperLimit)
-        console.log(month,year)
         if(isUndefinedOrNull(upperLimit)){
             return false;
         } else {
             const _month = (getProperFormattedDate(upperLimit, options).getMonth()) + 1;
-            console.log(_month)
             const _year = (getProperFormattedDate(upperLimit, options).getFullYear());
-            console.log(_year)
             return (month === _month && year === _year);
         }
     }
@@ -37,8 +33,6 @@ class Month extends React.PureComponent {
         
         const { month, year, options } = this.props;
         const lowerLimit = getLowerLimitFromOptions(options);
-        console.log(lowerLimit)
-        console.log(month,year)
         if(isUndefinedOrNull(lowerLimit)){
             return false;
         } else {

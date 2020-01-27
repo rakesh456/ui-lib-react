@@ -15,12 +15,12 @@ test("Checking yearArray", () => {
 })
 
 // getMonths should return the MonthArray
-test('Checking MonthArray', () =>{
-    let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": false, "showQuarters": true, "disabledList": [] };
-    getMonths(options.lowerLimit, options.showWeeks, options.disabledList, useCallback);
-    var monthArray = [];
-    months.forEach(month => {
-        monthArray.push(month.month);
-    });
-    expect(monthArray).toEqual(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
-})
+// test('Checking MonthArray', () =>{
+//     let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": false, "showQuarters": true, "disabledList": [] };
+//     getMonths(options.lowerLimit, options.showWeeks, options.disabledList, useCallback);
+//     var monthArray = [];
+//     months.forEach(month => {
+//         monthArray.push(month.month);
+//     });
+//     expect(monthArray).toEqual(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]);
+// })

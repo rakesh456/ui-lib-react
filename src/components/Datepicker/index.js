@@ -55,7 +55,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = this.props.options;
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
-
+        // console.log(displayFormat)
         this.state = { selectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: false, isDisabledFull: false, options: datePickerOptions};
     }
 
@@ -240,11 +240,12 @@ class DatePicker extends React.PureComponent {
    
     onYearSelectHandler = year => {
         const { showButtons } = this.state.options;
+
         if(showButtons === true){
             this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: true });
         } else {
             this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: false });
-            this.props.onYearSelect(year);
+            // this.props.onYearSelect(year);
         }
     }
     
@@ -661,6 +662,7 @@ class DatePicker extends React.PureComponent {
                         }
                         {
                             (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.props.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
+
                         }
                         {
                             (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
