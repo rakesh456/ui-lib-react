@@ -516,9 +516,9 @@ class DatehierarchyView extends React.PureComponent {
         const { isSearching } = this.state;
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
     }
-    getDates() {
+    getValues() {
         var t1 = performance.now();
-        let getDates = [];
+        let getValues = [];
         let years = [...this.state.years];
         let { showQuarters, showWeeks } = this.props.options;
         years.forEach((year) => {
@@ -534,7 +534,7 @@ class DatehierarchyView extends React.PureComponent {
                                                 if (week.state === 1 || week.state === -1 || week.state === true) {
                                                     week.days.forEach((day) => {
                                                         if (day.state === 1 || day.state === true) {
-                                                            getDates.push(day.fullDate);
+                                                            getValues.push(day.fullDate);
                                                         }
                                                     })
                                                 }
@@ -543,7 +543,7 @@ class DatehierarchyView extends React.PureComponent {
                                         if (showWeeks === false) {
                                             month.days.forEach((day) => {
                                                 if (day.state === true || day.state === 1) {
-                                                    getDates.push(day.fullDate);
+                                                    getValues.push(day.fullDate);
                                                 }
                                             })
                                         }
@@ -560,7 +560,7 @@ class DatehierarchyView extends React.PureComponent {
                                 if (showWeeks === false) {
                                     month.days.forEach((day) => {
                                         if (day.state === true || day.state === 1) {
-                                            getDates.push(day.fullDate);
+                                            getValues.push(day.fullDate);
                                         }
                                     })
                                 }
@@ -570,7 +570,7 @@ class DatehierarchyView extends React.PureComponent {
                                     if (week.state === 1 || week.state === -1 || week.state === true) {
                                         week.days.forEach((day) => {
                                             if (day.state === 1 || day.state === true) {
-                                                getDates.push(day.fullDate);
+                                                getValues.push(day.fullDate);
                                             }
                                         })
                                     }
@@ -583,7 +583,7 @@ class DatehierarchyView extends React.PureComponent {
         })
         var t2 = performance.now();
         console.log('time', t2 - t1);
-        console.log('dates', getDates);
+        console.log('dates', getValues);
     }
 
 
@@ -1053,14 +1053,14 @@ class DatehierarchyView extends React.PureComponent {
                         <FaSearch className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} />
                     </span>
                     <input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
-                    <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                   <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                         <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                     </span>
                     {
                         (isSearching === true) ?
-                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                         <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                            </span> : ''
+                           </span>  : ''
                     }
                 </div>
                 <div className="VS-Hierarchy-Filter-List VS-YearRow">

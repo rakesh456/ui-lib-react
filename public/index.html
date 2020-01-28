@@ -413,9 +413,9 @@
             var form = document.forms["myform"];
         }
 
-        function getDates(id) {
+        function getValues(id) {
             let element = document.getElementById(id);
-            let values = element.getDates();
+            let values = element.getValues();
         }
 
         function getSelectedValuesById(id) {
@@ -510,9 +510,9 @@
     <p>data-options={"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, 
         "disabledList":["2021","10/2020","8/2022","q3/2020","Q2/2023","w1/12/2020","11/01/2020", "11/11/2022"]}'</p>
     <date-hierarchy id='datehierarchy'
-        data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": false, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
+        data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
     </date-hierarchy>
-    <button onclick="getDates('datehierarchy')">Get Dates</button>
+    <button onclick="getValues('datehierarchy')">Get Dates</button>
 
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">

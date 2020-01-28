@@ -159,8 +159,8 @@ function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
-    el.getDates = function () {
-        return HierarchyComponentInstance.getDates();
+    el.getValues = function () {
+        return HierarchyComponentInstance.getValues();
     }
 
     var HierarchyComponentElement = <DatehierarchyView options={options} />
