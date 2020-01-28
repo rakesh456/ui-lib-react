@@ -159,15 +159,26 @@ function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
+    function onFocusHandler() {
+        let ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+    
+    function onChangeHandler() {
+        let ev = new CustomEvent("change");
+        el.dispatchEvent(ev);
+    }
+
     el.getDates = function () {
         return HierarchyComponentInstance.getDates();
     }
 
-    var HierarchyComponentElement = <DatehierarchyView options={options} />
+    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} />
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
         el
     )
 }
+
 serviceWorker.unregister();

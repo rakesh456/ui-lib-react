@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Input } from "reactstrap";
 import { getListOfYears, getSearchObj, opposite } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull, isBlank } from "../../utils/utils";
 import FilterView from "./filterView";
@@ -30,6 +30,10 @@ class DatehierarchyView extends React.PureComponent {
         let years = [...this.getYears()];
         this.setState({ years: [...years] });
     }
+
+    onFocus = () => {
+        this.props.onFocus();
+    };
 
     toggleYearChild(year, showChild) {
         let years = [...this.getYears()];
@@ -535,6 +539,7 @@ class DatehierarchyView extends React.PureComponent {
                 searchValue: e.target.value
             });
         }
+        this.props.onChange();
     }
 
     updateSelectAllCheckboxHandler = (checkYears) => {
@@ -980,7 +985,8 @@ class DatehierarchyView extends React.PureComponent {
                     <span className={this.getSeachIconAlignClass()}>
                         <FaSearch className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} />
                     </span>
-                    <input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)}></input>
+                    <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus} />
+
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                         <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                     </span>
