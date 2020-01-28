@@ -146,7 +146,7 @@ test('There should be an indicator point on the Week if there is any Day is disa
 test('All the children should be checked if the checkbox of parent is checked', () => {
     let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": ['1/1/2020', '04/1/2020'] };
     let wrapper = shallow(<DatehierarchyView options={options} />);
-    console.log(wrapper.debug());
+    // console.log(wrapper.debug());
     // wrapper.find('.VS-Plus-Minus').simulate('click');
     // console.log('years',wrapper.instance());
 })
@@ -162,7 +162,7 @@ describe("Toggle the Year to expand and collapse on clicking the +/- button.",()
         //     isSearching :true
         // })
         // wrapper.update()
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         wrapper.find('.VS-Plus-Minus').simulate('click')
         // wrapper.update()
         
@@ -344,10 +344,10 @@ describe('On checking the parents checkbox all type of its childs checkbox shoul
         let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
         const wrapper = mount(<DatehierarchyView options={options} />)
         //  
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         wrapper.find('.VS-Plus-Minus').simulate('click')
         wrapper.find("input").at(2).simulate('change')
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         // expect(wrapper.find("input").at(2).props().checked).toEqual(true)
 
     })
@@ -361,11 +361,14 @@ describe('Parents checkbox should be partially checked if all the childs of the 
         let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
         const wrapper = mount(<DatehierarchyView options={options} />)
         //  
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         wrapper.find('.VS-Plus-Minus').simulate('click')
         wrapper.find("input").at(3).simulate('change')
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         expect(wrapper.find("input").at(2).props().checked).toEqual(-1)
 
     })
 })
+
+
+
