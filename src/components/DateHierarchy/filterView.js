@@ -1,9 +1,12 @@
 import React from "react";
-import { getSearchObj, quarterChangeCallback, monthChangeCallback, weekChangeCallback, dayChangeCallback, weekDayChangeCallback } from "../../utils/datehierarchyutils";
+import { getSearchObj, quarterChangeCallback, monthChangeCallback, weekChangeCallback, dayChangeCallback, weekDayChangeCallback, getListOfYears } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull } from "../../utils/utils";
 import YearDisplay from "./yearDisplay";
 const checkPartialState = obj => obj.state === -1;
 const checkOneMatch = obj => obj.state === 1;
+const stateRegEx = /\"state\":0/gi
+const stateRegExOne = /\"state\":1/gi
+
 class FilterView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -18,13 +21,28 @@ class FilterView extends React.PureComponent {
     }
 
     componentDidMount() {
-        // let years = [...this.getYears()];
+        let years = [...this.props.years];
         this.setState({ filteredYears: [...this.props.listOfYears] });
     }
 
     componentDidUpdate(prevProps, next) {
         if (prevProps.searchValue !== this.props.searchValue || isUndefinedOrNull(this.state.searchValue)) {
             this.onSearchValueChangeHandler(this.props.searchValue);
+        }
+        if(prevProps.isSelectAllSearchResult !== this.props.isSelectAllSearchResult){
+            let { filteredYears } = this.state;
+            let newYears = "";
+            if(this.props.isSelectAllSearchResult === true){
+                newYears = JSON.stringify(filteredYears).replace(stateRegEx, '"state":1');
+            } else {
+                newYears = JSON.stringify(filteredYears).replace(stateRegExOne, '"state":0');
+            }
+
+            this.setState({
+                filteredYears: [...JSON.parse(newYears)]
+            });
+
+            this.props.onFilteredDataChange([...JSON.parse(newYears)]);
         }
     }
 
@@ -44,7 +62,10 @@ class FilterView extends React.PureComponent {
     onSearchValueChangeHandler(searchValue) {
         searchValue = (searchValue) ? searchValue.toLowerCase() : '';
         let { searchObj } = this.state;
-        let { listOfYears } = this.props;
+        // let { listOfYears } = this.props;
+        const { options } = this.props;
+        let listOfYears = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        
         let { showWeeks, showQuarters } = this.props.options;
         let _years = listOfYears.map(a => Object.assign({}, a));
         const stateRegEx = /\"state\":0/gi
@@ -61,7 +82,6 @@ class FilterView extends React.PureComponent {
             });
 
             let maxLevel = this.getMaxLevel(searchResult);
-            console.log(maxLevel, ' maxLevel ', searchResult);
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
                 _years[yearIndex]['match'] = _years[yearIndex]['state'] = (foundYear) ? 1 : 0;;

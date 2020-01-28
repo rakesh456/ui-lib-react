@@ -413,6 +413,12 @@
             var form = document.forms["myform"];
         }
 
+        function getDates(id) {
+            let element = document.getElementById(id);
+            let values = element.getDates();
+            console.log(' values ', values);
+        }
+
         function getSelectedValuesById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedValues');
@@ -507,6 +513,7 @@
     <date-hierarchy id='datehierarchy'
         data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": false, "disabledList":["01/01/2020","02/01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
     </date-hierarchy>
+    <button onclick="getDates('datehierarchy');">Get Dates</button>
 
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">

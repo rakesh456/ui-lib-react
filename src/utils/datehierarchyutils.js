@@ -53,7 +53,6 @@ export const getMonthDays = (month, year, disabledList, callback) => {
 			}
 		}
 	}
-	console.log('date',JSON.stringify(days));
 	callback({ 'days': days, 'hasDisabled': hasDisabled });
 }
 
@@ -621,7 +620,7 @@ export const isDayVal = (val) => {
 
 //Function to convert 1 to 0 and 0 to 1
 export const opposite = (number) => {
-	return (number === 1) ? 0 : 1;
+	return (number === -1)? -1 : (number === 1) ? 0 : 1;
 }
 
 
