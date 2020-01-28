@@ -161,6 +161,8 @@ function dateHierarchyRender(el) {
 
     el.getValues = function () {
         return HierarchyComponentInstance.getValues();
+    }
+    
     function onFocusHandler() {
         let ev = new CustomEvent('focus');
         el.dispatchEvent(ev);
