@@ -53,7 +53,6 @@ export const getMonthDays = (month, year, disabledList, callback) => {
 			}
 		}
 	}
-	console.log('date',JSON.stringify(days));
 	callback({ 'days': days, 'hasDisabled': hasDisabled });
 }
 
