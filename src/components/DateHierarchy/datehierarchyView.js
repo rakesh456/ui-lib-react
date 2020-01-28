@@ -548,11 +548,6 @@ class DatehierarchyView extends React.PureComponent {
             }
         });
         
-<<<<<<< HEAD
-        // console.log(selectAllState, ' _isSelectAll ', _isSelectAll);
-
-=======
->>>>>>> 0deff960bdbbd746cdb19258a9ac5704dd8bb653
         this.setState({
             isSelectAll: _isSelectAll,
             selectAllState: selectAllState
