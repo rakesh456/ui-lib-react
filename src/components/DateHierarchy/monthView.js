@@ -48,7 +48,7 @@ class MonthView extends React.PureComponent {
 
     renderDay = (day, month, quarter, year, dayIndex) => {
         let { isFilterView } = this.props;
-        if (isFilterView === true && day.state === 0) {
+        if (isFilterView === true && day.match === 0) {
             return ("")
         } else {
             return (
@@ -69,7 +69,7 @@ class MonthView extends React.PureComponent {
 
     renderMonth = (month, quarter, year, monthIndex) => {
         let { options, isFilterView } = this.props;
-        if (isFilterView === true && month.state === 0) {
+        if (isFilterView === true && month.match === 0) {
             return ("")
         } else {
             return (
