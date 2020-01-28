@@ -766,8 +766,7 @@ class DatehierarchyView extends React.PureComponent {
                     let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
                     let isPartial = quarters.some(checkPartialState);
                     
-                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (quartersum === year.quarters.length)? 1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
-
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (quartersum === year.quarters.length)? 1 : (resultYears[yearIndex]['state']);
                     
                 } else {
                     year.months.forEach((month, monthIndex) => {
@@ -811,7 +810,7 @@ class DatehierarchyView extends React.PureComponent {
                     let monthsum = months.reduce((a, b) => +a + +b.state, 0);
                     let isPartial = months.some(checkPartialState);
 
-                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (monthsum === year.months.length)? 1 : ((year.state === 0)? resultYears[yearIndex]['state'] : year.state);
+                    resultYears[yearIndex]['state'] = (isPartial)? -1 : (monthsum === year.months.length)? 1 : (resultYears[yearIndex]['state']);
                 }
             });
     
@@ -860,25 +859,23 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         
         let _selections = selections.map(a => Object.assign({}, a));
-        console.log(_selections, ' yearList ', filteredData);
 
         let _exclusions = exclusions.map(a => Object.assign({}, a));
-
+        
         let _lastFilterData = [...lastFilterData];
         let obj = {
             'value': searchValue,
             'list': [...filteredData]
         };
-
+        
         _lastFilterData.push(obj);
-        console.log(' _lastFilterData ', _lastFilterData.length);
-
+        
         if(_selections.length >= 1){
-
+            
             if(isAddCurrentSelection === true || _lastFilterData.length === 1){
-
+                
                 this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
-                    console.log(' resultYears ', resultYears);
+                    
                     let _selections = resultYears.map(a => Object.assign({}, a));
                     this.setState({
                         isSearching: false,
@@ -898,8 +895,9 @@ class DatehierarchyView extends React.PureComponent {
 
             } else if(isExcludeFromSelection === true || _lastFilterData.length === 1){
                 this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
-
+                    
                     this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {
+                        // console.log(resultYears, ' resultYears ');
                         let _selections = resultYears.map(a => Object.assign({}, a));
                         _exclusions = resultExclusion.map(a => Object.assign({}, a));
                         this.setState({
@@ -931,7 +929,6 @@ class DatehierarchyView extends React.PureComponent {
             }
         } else if(_selections.length <= 0){
             var _newselections = filteredData.map(a => Object.assign({}, a));
-            
             this.setState({
                 isSearching: false,
                 isAddCurrentSelection: false, 
@@ -946,14 +943,14 @@ class DatehierarchyView extends React.PureComponent {
 
             this.updateSelectAllCheckboxHandler([...filteredData]);
         } else {
-            // this.setState({
-            //     isSearching: false,
-            //     isAddCurrentSelection: false, 
-            //     isExcludeFromSelection: false,
-            //     isNoDataFound: false,
-            //     searchValue: "",
-            //     years: [...years]
-            // });
+            this.setState({
+                isSearching: false,
+                isAddCurrentSelection: false, 
+                isExcludeFromSelection: false,
+                isNoDataFound: false,
+                searchValue: "",
+                years: [...years]
+            });
         }
     }
 
@@ -1031,13 +1028,13 @@ class DatehierarchyView extends React.PureComponent {
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
                     }
-                    {/* {
+                    {
                         (isSearching === true && isNoDataFound === false && lastFilterData && lastFilterData.length > 0) ?
                             <label className="VS-Checkbox-Container">{(exclusions && exclusions.length > 0)? 'Add To Previous Exclusions' : 'Exclude From Selection'}
                             <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
-                    } */}
+                    }
                 </div>
                 <div id="VS-Scrollbar">
                     {
