@@ -22,6 +22,7 @@ import {
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
+import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
 
 
 (function () {
@@ -158,7 +159,11 @@ function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
-    var HierarchyComponentElement = <DateHierarchy options={options} />
+    el.getDates = function () {
+        return HierarchyComponentInstance.getDates();
+    }
+
+    var HierarchyComponentElement = <DatehierarchyView options={options} />
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
