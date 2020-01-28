@@ -101,6 +101,7 @@
             let element = document.getElementById('datepicker1');
             let elementDiv = document.getElementById('display2');
 
+
             element.addEventListener("selected", function (event) {
                 let value = event.srcElement.getValue();
                 elementDiv.innerHTML = 'From addEventListener : ' + value;
@@ -377,7 +378,7 @@
                 ]
             }
             ]);
-        }
+            }
 
         function reloadDatepicker(id) {
             let element = document.getElementById(id);
@@ -416,6 +417,12 @@
         function getValues(id) {
             let element = document.getElementById(id);
             let values = element.getValues();
+        }
+        
+        function setValues(id) {
+            let element = document.getElementById(id);
+            let json = ["2/1/2020", "2/5/2020", "11/6/2020"];
+            element.setValues(json);
         }
 
         function getSelectedValuesById(id) {
@@ -513,7 +520,9 @@
         data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
     </date-hierarchy>
     <button onclick="getValues('datehierarchy')">Get Dates</button>
+    <button onclick="setValues('datehierarchy')">Set Dates</button>
 
+<
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
         <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> :
@@ -694,6 +703,6 @@
 
     <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
-</body>
+    </body>
 
 </html>

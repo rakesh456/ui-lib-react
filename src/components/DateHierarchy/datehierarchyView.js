@@ -520,6 +520,75 @@ class DatehierarchyView extends React.PureComponent {
         const { isSearching } = this.state;
         return (isSearching === true) ? 'VS-SearchBox VS-IsSearching' : 'VS-SearchBox';
     }
+
+
+    setValues(values) {
+        var t1 = performance.now();
+        let getValues = [];
+        let years = [...this.state.years];
+        let { showQuarters, showWeeks } = this.props.options;
+        let resultYears = [];
+
+        years.forEach((year, yearIndex) => {
+            resultYears.push(year);
+            if (showQuarters === true) {
+                year.quarters.forEach((quarter, quarterIndex) => {
+                    quarter.months.forEach((month, monthIndex) => {
+                        if (showWeeks === true) {
+                            month.weeks.forEach((week, weekIndex) => {
+                                week.days.forEach((day, dayIndex) => {
+                                    if (values.indexOf(day.fullDate) !== -1) {
+                                        resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = 1;
+                                    }
+                                });
+                                let days = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                            });
+                        }
+                        if (showWeeks === false) {
+                            month.days.forEach((day) => {
+                                if (day.state === true || day.state === 1) {
+                                    getValues.push(day.fullDate);
+                                }
+                            })
+                        }
+                    })
+                })
+            }
+            if (showQuarters === false) {
+                year.months.forEach((month) => {
+                    if (month.state === true || month.state === -1 || month.state === 1) {
+                        if (showWeeks === false) {
+                            month.days.forEach((day) => {
+                                if (day.state === true || day.state === 1) {
+                                    getValues.push(day.fullDate);
+                                }
+                            })
+                        }
+                    }
+                    if (showWeeks === true) {
+                        month.weeks.forEach((week) => {
+                            if (week.state === 1 || week.state === -1 || week.state === true) {
+                                week.days.forEach((day) => {
+                                    if (day.state === 1 || day.state === true) {
+                                        getValues.push(day.fullDate);
+                                    }
+                                })
+                            }
+                        })
+                    }
+                })
+            }
+        });
+
+        this.setState({
+            years: [...resultYears]
+        });
+    }
+    
     getValues() {
         var t1 = performance.now();
         let getValues = [];
@@ -556,8 +625,6 @@ class DatehierarchyView extends React.PureComponent {
                             }
                         })
                     }
-                }
-                {
                     if (showQuarters === false) {
                         year.months.forEach((month) => {
                             if (month.state === true || month.state === -1 || month.state === 1) {

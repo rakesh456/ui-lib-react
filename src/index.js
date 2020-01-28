@@ -177,6 +177,10 @@ function dateHierarchyRender(el) {
         return HierarchyComponentInstance.getDates();
     }
 
+    el.setValues = function (json) {
+        HierarchyComponentInstance.setValues(json);
+    }
+
     var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} />
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
