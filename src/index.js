@@ -23,6 +23,7 @@ import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
 import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+import { FaVolumeControlPhone } from 'react-icons/lib/fa';
 
 
 (function () {
@@ -97,6 +98,11 @@ function tagSelectorRender(el) {
         el.dispatchEvent(ev);
     }
 
+    function onChangeHandler(){
+        let ev = new CustomEvent('change');
+        el.dispatchEvent(ev);
+    }
+    
     function onSelectHandler(selectedItem) {
         callOnSelectedEvent(selectedItem, el);
     }
@@ -169,11 +175,27 @@ function dateHierarchyRender(el) {
         el.dispatchEvent(ev);
     }
 
+    function onBlurHandler() {
+        let ev = new CustomEvent("blur");
+        el.dispatchEvent(ev);
+    }
+
+    function onInputHandler(){
+        let ev = new CustomEvent("input");
+        el.dispatchEvent(ev);
+    }
+
+
+
     el.getDates = function () {
         return HierarchyComponentInstance.getDates();
     }
+    // fun
+    el.refresh = function (){
+        return HierarchyComponentInstance.refresh();
+    }
 
-    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} />
+    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
