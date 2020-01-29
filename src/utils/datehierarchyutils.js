@@ -26,7 +26,7 @@ export const getMonthDays = (month, year, disabledList, callback) => {
 	var days = [];
 	var hasDisabled = false;
 	for (let i = 1; i <= day; i++) {
-		var dayObj = { day: i, state: 0, match: 0, date: i }
+		var dayObj = { day: i, state: 0, match: 0, date: i, fullDate: month+'/'+ i +'/'+ year }
 		days.push(dayObj);
 		if (month > 9 && dayObj.day > 9) {
 			if (disabledList.includes(month + '/' + dayObj.day + '/' + year)) {
@@ -532,7 +532,7 @@ export const getMonthWeeks = function (month_number, year, disabledList, callbac
 		}
 		for (var i = start; i < (lastOfMonth).getDate() + 1; i++) {
 			var monthDate = new Date(year, month_number - 1, i);
-			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0, match: 0 };
+			var dayObj = { date: i, searchString: i.toString().toLowerCase(), day: weekdays[monthDate.getDay()], state: 0, match: 0 ,fullDate: month_number+'/'+i+'/'+year};
 			weekObj.days.push(dayObj);
 			if (month_number > 9 && dayObj.date > 9) {
 				if (disabledList.includes(month_number + '/' + dayObj.date + '/' + year)) {
