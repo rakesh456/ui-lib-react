@@ -1171,7 +1171,12 @@ class DatehierarchyView extends React.PureComponent {
                     <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus}  onBlur={this.onBlur} onInput={this.onInput}/>
 
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        
+                            <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                            {
+                                (lastFilterData && lastFilterData.length > 0)? <div className='refresh-tooltip'><span>Clear</span></div> : ""
+                            }
+                        
                     </span>
                     {
                         (isSearching === true) ?
