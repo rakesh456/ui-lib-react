@@ -703,6 +703,7 @@ class DatehierarchyView extends React.PureComponent {
         var t2 = performance.now();
         console.log('time', t2 - t1);
         console.log('dates', getValues);
+        return getValues;
     }
 
 
