@@ -841,7 +841,7 @@ class DatehierarchyView extends React.PureComponent {
     
             let {options} = this.props;
             let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-    
+            console.log(yearList)
             this.setState({
                 isSearching: false,
                 searchValue: "",
@@ -986,6 +986,19 @@ class DatehierarchyView extends React.PureComponent {
 
     refresh() {
         console.log('in refresh')
+        let {options} = this.props;
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        let { searchValue, filteredYears, lastFilterData, listOfYears ,years} = this.state;
+
+        if(lastFilterData && lastFilterData.length > 0){
+            let _lastFilterData = [...lastFilterData];
+            let obj = {
+                'value': searchValue,
+                'list': filteredYears
+            };
+    
+            _lastFilterData.push(obj);
+
         this.setState({
             isSearching: false,
             searchValue: "",
@@ -1000,7 +1013,15 @@ class DatehierarchyView extends React.PureComponent {
             filterSum: 0,
             lastFilterData: []
         });
-        
+        this.updateSelectAllCheckboxHandler([...listOfYears]);
+        }else{
+            this.setState({
+            
+                isSelectAll: false,    
+                years: [...yearList]
+            
+            })
+        }
     }
 
     render() {
