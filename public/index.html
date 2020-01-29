@@ -106,6 +106,7 @@
             let element = document.getElementById('datepicker1');
             let elementDiv = document.getElementById('display2');
 
+
             element.addEventListener("selected", function (event) {
                 let value = event.srcElement.getValue();
                 elementDiv.innerHTML = 'From addEventListener : ' + value;
@@ -382,7 +383,7 @@
                 ]
             }
             ]);
-        }
+            }
 
         function reloadDatepicker(id) {
             let element = document.getElementById(id);
@@ -418,10 +419,15 @@
             var form = document.forms["myform"];
         }
 
-        function getDates(id) {
+        function getValues(id) {
             let element = document.getElementById(id);
-            let values = element.getDates();
-            console.log(' values ', values);
+            let values = element.getValues();
+        }
+        
+        function setValues(id) {
+            let element = document.getElementById(id);
+            let json = ["2/1/2020", "2/5/2020", "11/6/2020"];
+            element.setValues(json);
         }
 
         function refresh(id){
@@ -527,6 +533,9 @@
     <button onclick="getDates('datehierarchy');">Get Dates</button>
     <button onclick="refresh('datehierarchy')">Refresh</button>
 
+    <button onclick="setValues('datehierarchy')">Set Dates</button>
+
+<
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
         <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> :
@@ -707,6 +716,6 @@
 
     <button onclick="addDatepickerNew('newdatepicker');">Add Datepicker</button>
     <br>
-</body>
+    </body>
 
 </html>
