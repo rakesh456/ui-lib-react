@@ -1122,13 +1122,13 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     refresh() {
-        console.log('in refresh')
+        
         this.setState({
             isSearching: false,
             searchValue: "",
             lastFilterData: [],
             searchValue: "",
-            years: [...yearList],
+            years: [...this.state.listOfYears],
             isAddCurrentSelection: false, 
             isExcludeFromSelection: false,
             isNoDataFound: false,
