@@ -531,12 +531,9 @@ class DatehierarchyView extends React.PureComponent {
 
 
     setValues(values) {
-        var t1 = performance.now();
-        let getValues = [];
         let years = [...this.state.years];
         let { showQuarters, showWeeks } = this.props.options;
         let resultYears = [];
-
         years.forEach((year, yearIndex) => {
             resultYears.push(year);
             if (showQuarters === true) {
@@ -550,45 +547,96 @@ class DatehierarchyView extends React.PureComponent {
                                     }
                                 });
                                 let days = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
-                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
-                                let isPartial = days.some(checkPartialState);
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
 
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                }
                             });
+                            let weeks = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'];
+                            if (weeks.length > 0) {
+                                let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = weeks.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial || (weeksum < month.weeks.length && weeksum !== 0)) ? -1 : (weeksum === month.weeks.length) ? 1 : month.state;
+                            }
                         }
                         if (showWeeks === false) {
-                            month.days.forEach((day) => {
-                                if (day.state === true || day.state === 1) {
-                                    getValues.push(day.fullDate);
+                            month.days.forEach((day, dayIndex) => {
+                                if (values.indexOf(day.fullDate) !== -1) {
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
                                 }
+                                let days = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'];
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
+
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial || (daysum < month.days.length && daysum !== 0)) ? -1 : (daysum === month.days.length) ? 1 : month.state;
+                                }
+
                             })
                         }
                     })
+
+                    let months = resultYears[yearIndex]['quarters'][quarterIndex]['months'];
+                    let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                    let isPartial = months.some(checkPartialState);
+                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (isPartial || (monthsum < quarter.months.length && monthsum !== 0)) ? -1 : (monthsum === quarter.months.length) ? 1 : quarter.state;
                 })
+
+                let quarters = resultYears[yearIndex]['quarters'];
+                let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
+                let isPartial = quarters.some(checkPartialState);
+                resultYears[yearIndex]['state'] = (isPartial || (quartersum < year.quarters.length && quartersum !== 0)) ? -1 : (quartersum === year.quarters.length) ? 1 : year.state;
             }
             if (showQuarters === false) {
-                year.months.forEach((month) => {
-                    if (month.state === true || month.state === -1 || month.state === 1) {
-                        if (showWeeks === false) {
-                            month.days.forEach((day) => {
-                                if (day.state === true || day.state === 1) {
-                                    getValues.push(day.fullDate);
-                                }
-                            })
-                        }
+                year.months.forEach((month, monthIndex) => {
+                    if (showWeeks === false) {
+                        month.days.forEach((day, dayIndex) => {
+                            if (values.indexOf(day.fullDate) !== -1) {
+                                resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
+                            }
+                            let days = resultYears[yearIndex]['months'][monthIndex]['days'];
+                            if (days.length > 0) {
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial || (daysum < month.days.length && daysum !== 0)) ? -1 : (daysum === month.days.length) ? 1 : month.state;
+                            }
+                        })
                     }
                     if (showWeeks === true) {
-                        month.weeks.forEach((week) => {
-                            if (week.state === 1 || week.state === -1 || week.state === true) {
-                                week.days.forEach((day) => {
-                                    if (day.state === 1 || day.state === true) {
-                                        getValues.push(day.fullDate);
-                                    }
-                                })
+                        month.weeks.forEach((week, weekIndex) => {
+                            week.days.forEach((day, dayIndex) => {
+                                if (values.indexOf(day.fullDate) !== -1) {
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = 1;
+                                }
+
+                                let days = resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
+
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                }
+                            })
+                            let weeks = resultYears[yearIndex]['months'][monthIndex]['weeks'];
+                            if (weeks.length > 0) {
+                                let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = weeks.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial || (weeksum < month.weeks.length && weeksum !== 0)) ? -1 : (weeksum === month.weeks.length) ? 1 : month.state;
                             }
                         })
                     }
                 })
+                let months = resultYears[yearIndex]['months'];
+                let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                let isPartial = months.some(checkPartialState);
+                resultYears[yearIndex]['state'] = (isPartial || (monthsum < year.months.length && monthsum !== 0)) ? -1 : (monthsum === year.months.length) ? 1 : year.state;
+
+
             }
         });
 
@@ -596,7 +644,7 @@ class DatehierarchyView extends React.PureComponent {
             years: [...resultYears]
         });
     }
-    
+
     getValues() {
         var t1 = performance.now();
         let getValues = [];
@@ -663,6 +711,7 @@ class DatehierarchyView extends React.PureComponent {
         var t2 = performance.now();
         console.log('time', t2 - t1);
         console.log('dates', getValues);
+        return getValues;
     }
 
 
@@ -1180,7 +1229,7 @@ class DatehierarchyView extends React.PureComponent {
                     </span>
                     {
                         (isSearching === true) ?
-                         <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
                                 <div className='cross_tool_tip'>
                                     <span>Close Filter</span>
