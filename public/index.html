@@ -14,6 +14,11 @@
             console.log('onFocusHandler called ');
         }
 
+        function onChangeHandler() {
+            console.log('onChangeHandler called ');
+        }
+
+
         function onBlurHandler() {
             console.log('onBlurHandler called ');
         }
@@ -430,6 +435,12 @@
             element.setValues(textBox);
         }
 
+        function refresh(id){
+            let element = document.getElementById(id);
+            let values = element.refresh();
+
+        }
+
         function getSelectedValuesById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedValues');
@@ -521,13 +532,13 @@
 
     <p>  data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'</p>
     <date-hierarchy id='datehierarchy'
-        data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
+        data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["q1/2020","02/01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}' onChange="onChangeHandler()" onFocus="onFocusHandler()" onBlur="onBlurHandler()" onInput="onInputHandler()" >
     </date-hierarchy>
-    <button onclick="getValues('datehierarchy')">Get Dates</button>
-    <div id="selectedDates" style="width:60em ; overflow-x: auto; white-space: normal;"></div>
-    <label>Enter Dates seperated by comma :</label></br>
-    <input id="setDates" type="text"></input>
+    <button onclick="getDates('datehierarchy');">Get Dates</button>
+    <button onclick="refresh('datehierarchy')">Refresh</button>
+
     <button onclick="setValues('datehierarchy')">Set Dates</button>
+
 
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">

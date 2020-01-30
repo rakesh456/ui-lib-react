@@ -35,6 +35,14 @@ class DatehierarchyView extends React.PureComponent {
         this.props.onFocus();
     };
 
+    onBlur = () => {
+        this.props.onBlur();
+    };
+
+    onInput = () => {
+        this.props.onInput();
+    };
+
     toggleYearChild(year, showChild) {
         let years = [...this.getYears()];
         year['showChild'] = showChild;
@@ -1019,7 +1027,6 @@ class DatehierarchyView extends React.PureComponent {
 
             let { options } = this.props;
             let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-
             this.setState({
                 isSearching: false,
                 searchValue: "",
@@ -1162,6 +1169,45 @@ class DatehierarchyView extends React.PureComponent {
         return (selectAllState === years.length);
     }
 
+    refresh() {
+        console.log('in refresh')
+        let {options} = this.props;
+        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        let { searchValue, filteredYears, lastFilterData, listOfYears ,years} = this.state;
+
+        if(lastFilterData && lastFilterData.length > 0){
+            let _lastFilterData = [...lastFilterData];
+            let obj = {
+                'value': searchValue,
+                'list': filteredYears
+            };
+    
+            _lastFilterData.push(obj);
+        this.setState({
+            isSearching: false,
+            searchValue: "",
+            lastFilterData: [],
+            searchValue: "",
+            years: [...this.state.listOfYears],
+            isAddCurrentSelection: false, 
+            isExcludeFromSelection: false,
+            isNoDataFound: false,
+            selections: [],
+            exclusions: [],
+            filterSum: 0,
+            lastFilterData: []
+        });
+        this.updateSelectAllCheckboxHandler([...listOfYears]);
+        }else{
+            this.setState({
+            
+                isSelectAll: false,    
+                years: [...yearList]
+            
+            })
+        }
+    }
+
     render() {
         const { options } = this.props;
         const { isSearching, searchValue, years, listOfYears, isSelectAllSearchResult, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound } = this.state;
@@ -1171,17 +1217,24 @@ class DatehierarchyView extends React.PureComponent {
                     <span className={this.getSeachIconAlignClass()}>
                         <FaSearch className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} />
                     </span>
-
-                    <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus} />
+                    <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus}  onBlur={this.onBlur} onInput={this.onInput}/>
 
                     <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        
+                            <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                            {
+                                (lastFilterData && lastFilterData.length > 0)? <div className='VS-refresh-tooltip'><span>Clear Filter</span></div> : ""
+                            }
+                        
                     </span>
                     {
                         (isSearching === true) ?
                             <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                            </span> : ''
+                                <div className='VS_cross_tool_tip'>
+                                    <span>Close Filter</span>
+                                </div>
+                           </span>  : ''
                     }
                 </div>
                 <div className="VS-Hierarchy-Filter-List VS-YearRow">
@@ -1232,6 +1285,7 @@ class DatehierarchyView extends React.PureComponent {
                             <YearDisplay options={options} isFilterView={false} years={years} onChangeQuarter={this.onChangeQuarterHandler} isAddCurrentSelection={isAddCurrentSelection} isExcludeFromSelection={isExcludeFromSelection} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
                     }
                 </div>
+               
             </div>
         )
     }

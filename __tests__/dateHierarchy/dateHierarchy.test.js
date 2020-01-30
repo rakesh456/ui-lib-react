@@ -372,3 +372,16 @@ describe('Parents checkbox should be partially checked if all the childs of the 
 
 
 
+// 30. Check years list stats after close click first time
+describe(' Check years list stats after close click first time',()=>{
+
+    test('testing',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        console.log(wrapper.debug())
+
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        console.log(wrapper.debug())
+
+    })
+})

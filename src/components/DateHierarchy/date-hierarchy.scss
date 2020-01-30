@@ -429,3 +429,43 @@ $font-family: 'Roboto', sans-serif;
     color: rgb(163, 148, 148);
     font-size:10px ;
 }
+
+.VS-refresh-tooltip{
+
+    visibility: hidden;
+    position: absolute;
+    border:solid;
+    border-width: 1px;
+    background-color: white;
+    border-color: darkgray;
+    font-size: 9px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px 2px;
+    width: 54px;
+    
+}
+
+.VS-PullRight:hover .VS-refresh-tooltip {
+    visibility: visible;
+}
+
+.VS_cross_tool_tip{
+
+    visibility: hidden;
+    position: absolute;
+    border:solid;
+    border-width: 1px;
+    background-color: white;
+    border-color: darkgray;
+    font-size:9px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px 2px;
+    width:54px;
+}
+
+.VS-PullRight:hover .VS_cross_tool_tip{
+    visibility: visible;
+
+}
