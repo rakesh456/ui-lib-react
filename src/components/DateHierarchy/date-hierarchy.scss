@@ -430,7 +430,7 @@ $font-family: 'Roboto', sans-serif;
     font-size:10px ;
 }
 
-.refresh-tooltip{
+.VS-refresh-tooltip{
 
     visibility: hidden;
     position: absolute;
@@ -446,11 +446,11 @@ $font-family: 'Roboto', sans-serif;
     
 }
 
-.VS-PullRight:hover .refresh-tooltip {
+.VS-PullRight:hover .VS-refresh-tooltip {
     visibility: visible;
 }
 
-.cross_tool_tip{
+.VS_cross_tool_tip{
 
     visibility: hidden;
     position: absolute;
@@ -465,7 +465,7 @@ $font-family: 'Roboto', sans-serif;
     width:54px;
 }
 
-.VS-PullRight:hover .cross_tool_tip{
+.VS-PullRight:hover .VS_cross_tool_tip{
     visibility: visible;
 
 }

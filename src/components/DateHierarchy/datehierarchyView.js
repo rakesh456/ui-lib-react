@@ -1223,7 +1223,7 @@ class DatehierarchyView extends React.PureComponent {
                         
                             <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${((lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                             {
-                                (lastFilterData && lastFilterData.length > 0)? <div className='refresh-tooltip'><span>Clear Filter</span></div> : ""
+                                (lastFilterData && lastFilterData.length > 0)? <div className='VS-refresh-tooltip'><span>Clear Filter</span></div> : ""
                             }
                         
                     </span>
@@ -1231,7 +1231,7 @@ class DatehierarchyView extends React.PureComponent {
                         (isSearching === true) ?
                             <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                                <div className='cross_tool_tip'>
+                                <div className='VS_cross_tool_tip'>
                                     <span>Close Filter</span>
                                 </div>
                            </span>  : ''
