@@ -421,13 +421,18 @@
 
         function getValues(id) {
             let element = document.getElementById(id);
+            let divElement = document.getElementById('selectedDates');
             let values = element.getValues();
+            divElement.innerHTML = 'Selected Dates : ' + JSON.stringify(values);
         }
         
         function setValues(id) {
             let element = document.getElementById(id);
-            let json = ["2/1/2020", "2/5/2020", "11/6/2020"];
-            element.setValues(json);
+            let textBox = document.getElementById('setDates').value.split(",");
+
+            let json= ["2/1/2020", "2/2/2020", "2/3/2020", "2/4/2020", "2/5/2020", "2/6/2020", "2/7/2020", "2/8/2020", "2/9/2020", "2/10/2020", "2/11/2020", "2/12/2020", "2/13/2020", "2/14/2020", "2/15/2020", "2/16/2020", "2/17/2020", "2/18/2020", "2/19/2020", "2/20/2020", "2/21/2020", "2/22/2020", "2/23/2020", "2/24/2020"];
+            console.log('values',textBox);
+            element.setValues(textBox);
         }
 
         function refresh(id){
@@ -527,15 +532,16 @@
 
     <p>data-options={"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, 
         "disabledList":["2021","10/2020","8/2022","q3/2020","Q2/2023","w1/12/2020","11/01/2020", "11/11/2022"]}'</p>
-    <date-hierarchy id='datehierarchy'
-        data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": true,"showQuarters": true, "disabledList":["q1/2020","02/01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}' onChange="onChangeHandler()" onFocus="onFocusHandler()" onBlur="onBlurHandler()" onInput="onInputHandler()" >
+    <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2025", "showWeeks": false,"showQuarters": false, "disabledList":["2022","01/01/2020","01/2020","09/05/2020","12/02/2023","q2/2020","09/01/2024","12/03/2025","11/1/2023","8/01/2020", "11/11/2022"]}'>
     </date-hierarchy>
-    <button onclick="getDates('datehierarchy');">Get Dates</button>
-    <button onclick="refresh('datehierarchy')">Refresh</button>
+    <button onclick="getValues('datehierarchy')">Get Dates</button>
+    <div id="selectedDates" style="width:60em ; overflow-x: auto; white-space: normal;"></div>
+    <label>Enter Dates seperated by comma :</label></br>
+    <input id="setDates" type="text"></input>
 
+    <button onclick="refresh('datehierarchy')">Refresh</button>
     <button onclick="setValues('datehierarchy')">Set Dates</button>
 
-<
     <h2>Tag selector Sample using React Component</h2>
     <div class="div-buttons">
         <button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> :
