@@ -115,6 +115,10 @@ class DatehierarchyView extends React.PureComponent {
         quarter.state = (quarterObj.isCheck === true) ? 1 : 0;
 
         for (var i = 0; i < year.quarters.length; i++) {
+            if (year.quarters[i]['state'] === -1) {
+                stateSum = -1;
+                break;
+            }
             stateSum += year.quarters[i]["state"];
         }
         if (quarterObj.isCheck === true) {
@@ -161,6 +165,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = 1;
             if (showQuarters === true) {
                 for (var i = 0; i < quarter.months.length; i++) {
+                    if (quarter.months[i]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[i]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
@@ -205,6 +213,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = 0;
             if (showQuarters === true) {
                 for (i = 0; i < quarter.months.length; i++) {
+                    if (quarter.months[i]['state'] === -1) {
+                        stateSum = -1;
+                        break;
+                    }
                     stateSum += quarter.months[i]["state"];
                 }
                 quarter.state = (stateSum < quarter.months.length) ? (stateSum === 0) ? 0 : -1 : 1;
@@ -273,17 +285,29 @@ class DatehierarchyView extends React.PureComponent {
             month.state = (dstateSum < month.days.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
 
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -302,6 +326,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = (dstateSum < month.days.length) ? (dstateSum === 0) ? 0 : -1 : 1;
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -346,22 +374,38 @@ class DatehierarchyView extends React.PureComponent {
                 });
             }
             for (var j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
 
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -383,12 +427,20 @@ class DatehierarchyView extends React.PureComponent {
                 });
             }
             for (j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
 
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -404,6 +456,10 @@ class DatehierarchyView extends React.PureComponent {
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -433,22 +489,37 @@ class DatehierarchyView extends React.PureComponent {
             week.state = (wdstateSum < week.days.length) ? -1 : 1;
 
             for (var j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
-
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -467,11 +538,19 @@ class DatehierarchyView extends React.PureComponent {
             }
             week.state = (wdstateSum < week.days.length) ? (wdstateSum === 0) ? 0 : -1 : 1;
             for (j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
