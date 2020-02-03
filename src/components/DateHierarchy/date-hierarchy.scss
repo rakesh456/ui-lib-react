@@ -431,7 +431,6 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS-refresh-tooltip{
-
     visibility: hidden;
     position: absolute;
     border:solid;
@@ -451,7 +450,6 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS_cross_tool_tip{
-
     visibility: hidden;
     position: absolute;
     border:solid;
@@ -467,5 +465,11 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-PullRight:hover .VS_cross_tool_tip{
     visibility: visible;
+}
 
+.VS-HorizontalLine{
+    width: 220px;
+    border: 0.5px solid #ddd;
+    margin-top: 2px;
+    margin-bottom: 2px;
 }
