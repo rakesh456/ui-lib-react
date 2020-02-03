@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../App.css';
-import "../../node_modules/react-datepicker/dist/react-datepicker.css";
+import '../../App.css';
+import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import { Grid, GridColumn } from '@progress/kendo-react-grid';
 import '@progress/kendo-theme-default/dist/all.css';
 import { DropDownList } from '@progress/kendo-react-dropdowns';

@@ -7,15 +7,15 @@ import { GridPDFExport } from '@progress/kendo-react-pdf';
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import { IntlProvider, load, LocalizationProvider, loadMessages } from '@progress/kendo-react-intl';
 
-import likelySubtags from '../utils/supplemental/likelySubtags.json';
-import currencyData from '../utils/supplemental/currencyData.json';
-import weekData from '../utils/supplemental/weekData.json';
+import likelySubtags from '../../utils/supplemental/likelySubtags.json';
+import currencyData from '../../utils/supplemental/currencyData.json';
+import weekData from '../../utils/supplemental/weekData.json';
 
-import numbers from '../utils/es-AR/numbers.json';
-import currencies from '../utils/es-AR/currencies.json';
-import caGregorian from '../utils/es/ca-gregorian.json';
-import dateFields from '../utils/es/dateFields.json';
-import timeZoneNames from '../utils/es/timeZoneNames.json';
+import numbers from '../../utils/es-AR/numbers.json';
+import currencies from '../../utils/es-AR/currencies.json';
+import caGregorian from '../../utils/es/ca-gregorian.json';
+import dateFields from '../../utils/es/dateFields.json';
+import timeZoneNames from '../../utils/es/timeZoneNames.json';
 import '@progress/kendo-theme-default/dist/all.css';
 load(
   likelySubtags,
@@ -28,11 +28,11 @@ load(
   timeZoneNames
 );
 
-import esMessages from './es.json';
+import esMessages from './../es.json';
 loadMessages(esMessages, 'es-ES');
 
 import { process } from '@progress/kendo-data-query';
-import orders from './orders.json';
+import orders from './../orders.json';
 
 orders.forEach(o => {
   o.orderDate = new Date(o.orderDate);

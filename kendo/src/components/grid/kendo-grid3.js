@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import '../App.css';
-import "../../node_modules/react-datepicker/dist/react-datepicker.css";
+import '../../App.css';
+import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid';
 import {
   GridColumnMenuFilter
