@@ -1010,6 +1010,10 @@ class DatehierarchyView extends React.PureComponent {
                             </label> : ''
                     }
                     {
+                        (isSearching === true && isNoDataFound === false && lastFilterData && lastFilterData.length > 0) ?
+                        <hr className="VS-HorizontalLine"></hr> : ''
+                    }
+                    {
                         (isSearching === false) ?
                             (this.checkSelectAllValues()) ?
                                 <label className="VS-Checkbox-Container">Select All
@@ -1035,6 +1039,10 @@ class DatehierarchyView extends React.PureComponent {
                             <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
+                    }
+                    {
+                        (isSearching === true && isNoDataFound === false && lastFilterData && lastFilterData.length > 0) ?
+                        <hr className="VS-HorizontalLine"></hr> : ''
                     }
                 </div>
                 <div id="VS-Scrollbar">
