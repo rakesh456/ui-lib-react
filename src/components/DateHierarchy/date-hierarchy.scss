@@ -195,12 +195,21 @@ $font-family: 'Roboto', sans-serif;
   padding-left: 0px;
   margin: 5px 20px;
   border: 1px solid #ddd;
+//   max-height: 465px;
 }
 
 .VS-Hierarchy #VS-Scrollbar{
-    max-height: 500px;
+    max-height: 465px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight1{
+    max-height: 365px;
+}
+
+.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight2{
+    max-height: 430px;
 }
 
 .VS-Hierarchy-Searchbox{
@@ -407,7 +416,7 @@ $font-family: 'Roboto', sans-serif;
     padding: 2px 2px;
     position: absolute;
     z-index: 10;
-    top: -90%;
+    top: -89%;
     left: 135%;
   }
 
