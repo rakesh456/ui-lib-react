@@ -372,16 +372,176 @@ describe('Parents checkbox should be partially checked if all the childs of the 
 
 
 
-// 30. Check years list stats after close click first time
-describe(' Check years list stats after close click first time',()=>{
+// 30. Check years list status after close click first time
+describe(' Check years list status after close click first time',()=>{
 
-    test('testing',()=>{
-        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
-        const wrapper = mount(<DatehierarchyView options={options} />)
-        console.log(wrapper.debug())
+    test('Check years list status after close click first time',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+       
 
         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
-        console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+
+        expect(wrapper.find('Input').props().value).toEqual('')
 
     })
+})
+
+// 31. Check years list status after add to current selection  issue 
+describe('Check years list status after add to current selection',()=>{
+
+    test('testing',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        // console.log(wrapper.debug())
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
+
+
+    })
+
+})
+
+// 32. For first time searching add to current selection should be hide
+describe('For first time searching add to current selection should be hide',()=>{
+
+    test('testing',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        // console.log(wrapper.debug())
+        wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+        // console.log(wrapper.debug())
+    })
+})
+
+
+// 36.State of select all checkbox should be checked if everything is checked or partially checked if something is not checked
+// describe('State of select all checkbox should be checked if everything is checked or partially checked if something is not checked',()=>{
+//     test(' fully checked ',()=>{
+
+//         let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+//         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+//         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+//         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+
+//         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(1)
+
+//     })
+
+//     test(' partical checked ',()=>{
+
+//         let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+//         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+//         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+//         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+
+//         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
+
+//     })
+// })
+
+// 37.Get values button should display all the selected dates .
+test('Get values button should display all the selected dates ',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+
+        // console.log(wrapper.debug())
+        // console.log(wrapper)
+})
+
+// 40.if user search for 1st time and after clicking on the close filter and doing next search with checking exclude from selection except the data searched everything should be checked.
+test('if user search for 1st time and after clicking on the close filter and doing next search with checking exclude from selection except the data searched everything should be checked.',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        // console.log(wrapper.debug())
+        wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+        // console.log(wrapper.debug())
+        // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+        wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(2).simulate('change',{target:{checked :true}})
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        // console.log(wrapper.debug())
+        expect(wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(1).props().checked).toEqual(1)
+        expect(wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(14).props().checked).toEqual(0)
+})      
+
+//41. if user search any data for the first time and then clicked on close filter then he search again and closes it with exclude from selection and then he is search again some data and closes it with add to previous exclusion then it should exclude the search results from the checked data.
+test('if user search any data for the first time and then clicked on close filter then he search again and closes it with exclude from selection and then he is search again some data and closes it with add to previous exclusion then it should exclude the search results from the checked data.',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2022", "showWeeks": true, "showQuarters": false, "disabledList": []}
+    const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+    wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+    // console.log(wrapper.debug())
+    wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+    wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(2).simulate('change',{target:{checked :true}})
+    // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+    // console.log(wrapper.debug())
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(1).simulate('click')
+    // console.log(wrapper.debug())
+    wrapper.find('Input').simulate('change',{target:{value:'2022'}})
+    // console.log(wrapper.debug())
+    wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(2).simulate('change',{target:{checked :true}})
+    // console.log(wrapper.debug())
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+    // console.log(wrapper.debug())
+    expect(wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(1).props().checked).toEqual(1)
+    expect(wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(14).props().checked).toEqual(0)
+    expect(wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(27).props().checked).toEqual(0)
+})
+
+// 35. If exclude from selection is already done then Add To Previous exclusion checkbox should be there.
+test('If exclude from selection is already done then Add To Previous exclusion checkbox should be there.',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2022", "showWeeks": true, "showQuarters": false, "disabledList": []}
+    const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+    wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+    // console.log(wrapper.debug())
+    wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+    wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(2).simulate('change',{target:{checked :true}})
+    // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+    // console.log(wrapper.debug())
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(1).simulate('click')
+    // console.log(wrapper.debug())
+    wrapper.find('Input').simulate('change',{target:{value:'2022'}})
+    // console.log(wrapper.debug())
+    expect(wrapper.find('.VS-Checkbox-Container').at(2).text()).toEqual('Add To Previous Exclusions')
+
+})
+
+// 32.search for any data first time and after close search again for different data and close again with checking the adding to current selection it should merge our 1st and 2nd search result
+
+test('search for any data first time and after close search again for different data and close again with checking the adding to current selection it should merge our 1st and 2nd search result',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+    const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+    wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+    // console.log(wrapper.debug())
+    wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+    // console.log(wrapper.debug())
+    // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
+    wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(1).simulate('change',{target:{checked :true}})
+    wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+    console.log(wrapper.debug())
 })

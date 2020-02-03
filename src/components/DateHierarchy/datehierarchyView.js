@@ -8,6 +8,7 @@ import QuarterView from "./quarterView";
 import MonthView from "./monthView";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
+import compass from "react-icons/lib/fa/compass";
 const stateRegExOne = /\"state\":1/gi
 const checkPartialState = obj => obj.state === -1;
 class DatehierarchyView extends React.PureComponent {
@@ -766,6 +767,7 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onAddCurrentSelectionChange = ({ target }) => {
+        console.log('target',target)
         this.setState({
             isAddCurrentSelection: target.checked,
             isExcludeFromSelection: !target.checked
