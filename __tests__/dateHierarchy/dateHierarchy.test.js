@@ -9,6 +9,7 @@ import ReactDOM from "react-dom";
 import { mount, shallow } from "enzyme";
 import { getListOfYears, resetDateHierarchyOptions } from "../../src/utils/datehierarchyutils";
 import tree from "react-icons/lib/fa/tree";
+import compass from "react-icons/lib/fa/compass";
 
 // DateHierarchy renders without crashing
 test("DateHierarchy component renders without crashing", () => {
@@ -543,5 +544,91 @@ test('search for any data first time and after close search again for different 
     // console.log(wrapper.find('.VS-Checkbox-Container').at(2).text())
     wrapper.find('.VS-Checkbox-Container .VS-Checkbox').at(1).simulate('change',{target:{checked :true}})
     wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
-    console.log(wrapper.debug())
+    expect(wrapper.find('.VS-Checkbox').at(1).props().checked).toEqual(1)
+    expect(wrapper.find('.VS-Checkbox').at(14).props().checked).toEqual(1)
+
 })
+
+// 36.State of select all checkbox should be checked if everything is checked and partially checked if something is not checked.
+describe('State of select all checkbox should be checked if everything is checked and partially checked if something is not checked.',()=>{
+
+    test('State of select all should be 1 if everything is checked',()=>{
+
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        console.log(wrapper.debug())
+
+        console.log(wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}}))
+        console.log(wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :true}}))
+        
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(1)
+
+    })
+
+    test('State of select all should be -1 if something is not checked.',()=>{
+
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        console.log(wrapper.debug())
+
+        console.log(wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}}))
+        // console.log(wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :true}}))
+        
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
+
+    })
+
+    test('State of select all should be 0 if no item is  checked.',()=>{
+
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        console.log(wrapper.debug())
+
+        // console.log(wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}}))
+        // console.log(wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :true}}))
+        
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(0)
+
+    })
+})
+
+// 42.Search for any data any if user manually unchecking the data after search then the search all search results checkbox should be partially checked
+describe('Search for any data any if user manually unchecking the data after search then the select all search results checkbox should be partially checked',()=>{
+
+    test('Search for any data any if user manually unchecking the data after search then the select all search results checkbox should be partially checked',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+
+        wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :false}})   
+        wrapper.find('.VS-Checkbox').at(4).simulate('change',{target:{checked :false}})
+        console.log(wrapper.debug())
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
+        
+    })
+
+})
+
+// 41.During search either it is first time or other time select all search results should be there which is checked uncheked and partial checked according to the searched data
+
+describe('During search either it is first time or other time select all search results should be there which is checked uncheked and partial checked according to the searched data',()=>{
+
+    test('testing',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+
+        console.log(wrapper.debug());
+    
+
+
+    })
+})
+
