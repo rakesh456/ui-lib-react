@@ -14,10 +14,10 @@ class ProductNameHeader extends React.Component {
   render() {
     return (
       <a className="k-link" onClick={this.props.onClick}>
-        <span className="k-icon k-i-cart"></span>
+        {/* <span className="k-icon k-i-cart"></span> */}
         <span style={{ color: "#53d2fa" }}>{this.props.title}</span>
         <input type="textbox" />
-        
+
       </a>
     );
   }
@@ -52,7 +52,8 @@ class KendoGrid extends React.Component {
       { "ProductID": 60, "ProductName": "Camembert Pierrot", "CategoryID": 4, "QuantityPerUnit": "15 - 300 g rounds", "UnitPrice": 34.0, "UnitsInStock": 19, "Discontinued": true },
       { "ProductID": 65, "ProductName": "Hot Pepper Sauce", "CategoryID": 2, "QuantityPerUnit": "32 - 8 oz bottles", "UnitPrice": 21.05, "UnitsInStock": 76, "Discontinued": false },
       { "ProductID": 72, "ProductName": "Mozzarella di Giovanni", "CategoryID": 4, "QuantityPerUnit": "24 - 200 g pkgs.", "UnitPrice": 34.8, "UnitsInStock": 14, "Discontinued": false },
-      { "ProductID": 73, "ProductName": "Röd Kaviar", "CategoryID": 8, "QuantityPerUnit": "24 - 150 g jars", "UnitPrice": 15.0, "UnitsInStock": 101, "Discontinued": true }
+      { "ProductID": 73, "ProductName": "Röd Kaviar", "CategoryID": 8, "QuantityPerUnit": "24 - 150 g jars", "UnitPrice": 15.0, "UnitsInStock": 101, "Discontinued": true },
+      { "ProductID": 99, "ProductName": "Tea-coffee", "CategoryID": 2, "QuantityPerUnit": "10 boxes x 20 bags", "UnitPrice": 18.0, "UnitsInStock": 39, "Discontinued": false }
     ];
     return {
       items: products.slice(skip, skip + take),
@@ -99,7 +100,7 @@ class KendoGrid extends React.Component {
 
 
   render() {
-
+    console.log('state',this.state.items);
     return (
       <div>
         <div className="example-config row">

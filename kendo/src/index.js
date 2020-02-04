@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import KendoGrid from "./components/grid/kendo-grid6";
+// import KendoGrid from "./components/grid/kendo-grid2";
+// import KendoGrid from "./components/grid/kendo-grid4";
+import KendoGrid from "./components/grid/kendo-grid2";
 import BkeySearcher from "./components/bkey/bkey-searcher";
 import * as serviceWorker from './serviceWorker';
 

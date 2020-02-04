@@ -167,15 +167,15 @@ class KendoGrid extends React.Component {
 
           <Column field="_id" title="ID" width="200px" />
           <Column field={'title'}
-                  title={'Title'}
-                  filter={'string'}
-                  columnMenu={
-                      props =>
-                          <GridColumnMenuFilter
-                              {...props}
-                              filterUI={CustomFilterUI}
-                          />
-                  } />
+            title={'Title'}
+            filter={'string'}
+            columnMenu={
+              props =>
+                <GridColumnMenuFilter
+                  {...props}
+                  filterUI={CustomFilterUI}
+                />
+            } />
           <Column field="date" title="Date" width="240px" />
         </Grid>
       </div>
