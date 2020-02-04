@@ -115,6 +115,10 @@ class DatehierarchyView extends React.PureComponent {
         quarter.state = (quarterObj.isCheck === true) ? 1 : 0;
 
         for (var i = 0; i < year.quarters.length; i++) {
+            if (year.quarters[i]['state'] === -1) {
+                stateSum = -1;
+                break;
+            }
             stateSum += year.quarters[i]["state"];
         }
         if (quarterObj.isCheck === true) {
@@ -161,6 +165,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = 1;
             if (showQuarters === true) {
                 for (var i = 0; i < quarter.months.length; i++) {
+                    if (quarter.months[i]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[i]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
@@ -205,6 +213,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = 0;
             if (showQuarters === true) {
                 for (i = 0; i < quarter.months.length; i++) {
+                    if (quarter.months[i]['state'] === -1) {
+                        stateSum = -1;
+                        break;
+                    }
                     stateSum += quarter.months[i]["state"];
                 }
                 quarter.state = (stateSum < quarter.months.length) ? (stateSum === 0) ? 0 : -1 : 1;
@@ -273,17 +285,29 @@ class DatehierarchyView extends React.PureComponent {
             month.state = (dstateSum < month.days.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
 
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -302,6 +326,10 @@ class DatehierarchyView extends React.PureComponent {
             month.state = (dstateSum < month.days.length) ? (dstateSum === 0) ? 0 : -1 : 1;
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -346,22 +374,38 @@ class DatehierarchyView extends React.PureComponent {
                 });
             }
             for (var j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
 
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -383,12 +427,20 @@ class DatehierarchyView extends React.PureComponent {
                 });
             }
             for (j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
 
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -404,6 +456,10 @@ class DatehierarchyView extends React.PureComponent {
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -433,22 +489,37 @@ class DatehierarchyView extends React.PureComponent {
             week.state = (wdstateSum < week.days.length) ? -1 : 1;
 
             for (var j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? -1 : 1;
             if (showQuarters === true) {
                 for (var k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? -1 : 1;
-
                 for (var i = 0; i < year.quarters.length; i++) {
+                    if (year.quarters[i]['state'] === -1) {
+                        qstateSum = -1;
+                        break;
+                    }
                     qstateSum += year.quarters[i]["state"];
                 }
                 year.state = (qstateSum < year.quarters.length) ? -1 : 1;
             }
             if (showQuarters === false) {
                 for (k = 0; k < year.months.length; k++) {
+                    if (year.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += year.months[k]["state"];
                 }
                 year.state = (mstateSum < year.months.length) ? -1 : 1;
@@ -467,11 +538,19 @@ class DatehierarchyView extends React.PureComponent {
             }
             week.state = (wdstateSum < week.days.length) ? (wdstateSum === 0) ? 0 : -1 : 1;
             for (j = 0; j < month.weeks.length; j++) {
+                if (month.weeks[j]['state'] === -1) {
+                    wstateSum = -1;
+                    break;
+                }
                 wstateSum += month.weeks[j]["state"];
             }
             month.state = (wstateSum < month.weeks.length) ? (wstateSum === 0) ? 0 : -1 : 1;
             if (showQuarters === true) {
                 for (k = 0; k < quarter.months.length; k++) {
+                    if (quarter.months[k]['state'] === -1) {
+                        mstateSum = -1;
+                        break;
+                    }
                     mstateSum += quarter.months[k]["state"];
                 }
                 quarter.state = (mstateSum < quarter.months.length) ? (mstateSum === 0) ? 0 : -1 : 1;
@@ -531,12 +610,9 @@ class DatehierarchyView extends React.PureComponent {
 
 
     setValues(values) {
-        var t1 = performance.now();
-        let getValues = [];
         let years = [...this.state.years];
         let { showQuarters, showWeeks } = this.props.options;
         let resultYears = [];
-
         years.forEach((year, yearIndex) => {
             resultYears.push(year);
             if (showQuarters === true) {
@@ -550,45 +626,96 @@ class DatehierarchyView extends React.PureComponent {
                                     }
                                 });
                                 let days = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
-                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
-                                let isPartial = days.some(checkPartialState);
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
 
-                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                }
                             });
+                            let weeks = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'];
+                            if (weeks.length > 0) {
+                                let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = weeks.some(checkPartialState);
+
+                                resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial || (weeksum < month.weeks.length && weeksum !== 0)) ? -1 : (weeksum === month.weeks.length) ? 1 : month.state;
+                            }
                         }
                         if (showWeeks === false) {
-                            month.days.forEach((day) => {
-                                if (day.state === true || day.state === 1) {
-                                    getValues.push(day.fullDate);
+                            month.days.forEach((day, dayIndex) => {
+                                if (values.indexOf(day.fullDate) !== -1) {
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
                                 }
+                                let days = resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'];
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
+
+                                    resultYears[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['state'] = (isPartial || (daysum < month.days.length && daysum !== 0)) ? -1 : (daysum === month.days.length) ? 1 : month.state;
+                                }
+
                             })
                         }
                     })
+
+                    let months = resultYears[yearIndex]['quarters'][quarterIndex]['months'];
+                    let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                    let isPartial = months.some(checkPartialState);
+                    resultYears[yearIndex]['quarters'][quarterIndex]['state'] = (isPartial || (monthsum < quarter.months.length && monthsum !== 0)) ? -1 : (monthsum === quarter.months.length) ? 1 : quarter.state;
                 })
+
+                let quarters = resultYears[yearIndex]['quarters'];
+                let quartersum = quarters.reduce((a, b) => +a + +b.state, 0);
+                let isPartial = quarters.some(checkPartialState);
+                resultYears[yearIndex]['state'] = (isPartial || (quartersum < year.quarters.length && quartersum !== 0)) ? -1 : (quartersum === year.quarters.length) ? 1 : year.state;
             }
             if (showQuarters === false) {
-                year.months.forEach((month) => {
-                    if (month.state === true || month.state === -1 || month.state === 1) {
-                        if (showWeeks === false) {
-                            month.days.forEach((day) => {
-                                if (day.state === true || day.state === 1) {
-                                    getValues.push(day.fullDate);
-                                }
-                            })
-                        }
+                year.months.forEach((month, monthIndex) => {
+                    if (showWeeks === false) {
+                        month.days.forEach((day, dayIndex) => {
+                            if (values.indexOf(day.fullDate) !== -1) {
+                                resultYears[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = 1;
+                            }
+                            let days = resultYears[yearIndex]['months'][monthIndex]['days'];
+                            if (days.length > 0) {
+                                let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = days.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial || (daysum < month.days.length && daysum !== 0)) ? -1 : (daysum === month.days.length) ? 1 : month.state;
+                            }
+                        })
                     }
                     if (showWeeks === true) {
-                        month.weeks.forEach((week) => {
-                            if (week.state === 1 || week.state === -1 || week.state === true) {
-                                week.days.forEach((day) => {
-                                    if (day.state === 1 || day.state === true) {
-                                        getValues.push(day.fullDate);
-                                    }
-                                })
+                        month.weeks.forEach((week, weekIndex) => {
+                            week.days.forEach((day, dayIndex) => {
+                                if (values.indexOf(day.fullDate) !== -1) {
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'][dayIndex]['state'] = 1;
+                                }
+
+                                let days = resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
+                                if (days.length > 0) {
+                                    let daysum = days.reduce((a, b) => +a + +b.state, 0);
+                                    let isPartial = days.some(checkPartialState);
+
+                                    resultYears[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['state'] = (isPartial || (daysum < week.days.length && daysum !== 0)) ? -1 : (daysum === week.days.length) ? 1 : week.state;
+                                }
+                            })
+                            let weeks = resultYears[yearIndex]['months'][monthIndex]['weeks'];
+                            if (weeks.length > 0) {
+                                let weeksum = weeks.reduce((a, b) => +a + +b.state, 0);
+                                let isPartial = weeks.some(checkPartialState);
+
+                                resultYears[yearIndex]['months'][monthIndex]['state'] = (isPartial || (weeksum < month.weeks.length && weeksum !== 0)) ? -1 : (weeksum === month.weeks.length) ? 1 : month.state;
                             }
                         })
                     }
                 })
+                let months = resultYears[yearIndex]['months'];
+                let monthsum = months.reduce((a, b) => +a + +b.state, 0);
+                let isPartial = months.some(checkPartialState);
+                resultYears[yearIndex]['state'] = (isPartial || (monthsum < year.months.length && monthsum !== 0)) ? -1 : (monthsum === year.months.length) ? 1 : year.state;
+
+
             }
         });
 
@@ -596,7 +723,7 @@ class DatehierarchyView extends React.PureComponent {
             years: [...resultYears]
         });
     }
-    
+
     getValues() {
         var t1 = performance.now();
         let getValues = [];
@@ -663,6 +790,7 @@ class DatehierarchyView extends React.PureComponent {
         var t2 = performance.now();
         console.log('time', t2 - t1);
         console.log('dates', getValues);
+        return getValues;
     }
 
 
@@ -1156,9 +1284,9 @@ class DatehierarchyView extends React.PureComponent {
                     </span>
                     {
                         (isSearching === true) ?
-                         <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                           </span>  : ''
+                            </span> : ''
                     }
                 </div>
                 <div className="VS-Hierarchy-Filter-List VS-YearRow">
@@ -1172,6 +1300,10 @@ class DatehierarchyView extends React.PureComponent {
                             <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
+                    }
+                    {
+                        (isSearching === true && isNoDataFound === false && lastFilterData && lastFilterData.length > 0) ?
+                        <hr className="VS-HorizontalLine"></hr> : ''
                     }
                     {
                         (isSearching === false) ?
@@ -1199,6 +1331,10 @@ class DatehierarchyView extends React.PureComponent {
                                 <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
+                    }
+                    {
+                        (isSearching === true && isNoDataFound === false && lastFilterData && lastFilterData.length > 0) ?
+                        <hr className="VS-HorizontalLine"></hr> : ''
                     }
                 </div>
                 <div id="VS-Scrollbar">

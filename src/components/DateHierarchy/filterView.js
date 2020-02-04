@@ -75,7 +75,8 @@ class FilterView extends React.PureComponent {
 
         if (!isUndefinedOrNull(searchValue)) {
 
-            let searchResult = searchObj.filter(searchElement => (searchElement.searchKey.includes(searchValue)));
+            let searchResult = searchObj.filter(searchElement => ((searchElement.searchKey.includes(searchValue) && (searchValue > 99 || searchElement.level !== 1)) || (searchElement.searchKey === searchValue && searchElement.level === 1)));
+
             searchResult.sort((a, b) => {
                 if (a.level > b.level) return -1
                 return a.level < b.level ? 1 : 0
