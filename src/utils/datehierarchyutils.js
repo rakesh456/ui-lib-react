@@ -6,7 +6,7 @@ export const MONTH_SHORT_NAMES = ["jan", "feb", "mar", "apr", "may", "jun", "jul
 
 export const MONTH_SHORT_NAMES_TITLE_CASE = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-export const WEEK_NAMES = ["week 1", "week 2", "week 3", "week 4", "week 5", "week 6"];
+export const WEEK_NAMES = ["week1", "week2", "week3", "week4", "week5", "week6"];
 
 // Function to reset options with default options
 export const resetDateHierarchyOptions = (options) => {

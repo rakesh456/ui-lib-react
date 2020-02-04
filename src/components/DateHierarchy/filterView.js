@@ -52,7 +52,7 @@ class FilterView extends React.PureComponent {
     }
 
     itemExists(arr, level, index, val) {
-        return (arr.filter(item => (item.level === level && item.searchKey === val.toString().toLowerCase()))).length >= 1;
+        return (arr.filter(item => (item.level === level && item.searchKey === val.toString().toLowerCase().replace(/ /g,'')))).length >= 1;
     }
 
     searchStringExists(arr, level, searchKey) {
@@ -61,6 +61,8 @@ class FilterView extends React.PureComponent {
 
     onSearchValueChangeHandler(searchValue) {
         searchValue = (searchValue) ? searchValue.toLowerCase() : '';
+        searchValue = searchValue.replace(/ /g,'');
+
         let { searchObj } = this.state;
         // let { listOfYears } = this.props;
         const { options } = this.props;
@@ -74,8 +76,68 @@ class FilterView extends React.PureComponent {
         const matchRegExOne = /\"match\":1/gi
 
         if (!isUndefinedOrNull(searchValue)) {
+            let searchResult = [];
 
-            let searchResult = searchObj.filter(searchElement => ((searchElement.searchKey.includes(searchValue) && (searchValue > 99 || searchElement.level !== 1)) || (searchElement.searchKey === searchValue && searchElement.level === 1)));
+            let isStartWithQ = searchValue.startsWith('q');
+            let isStartWithWeek = (searchValue.startsWith('w') || searchValue.startsWith('we') || searchValue.startsWith('wee') || searchValue.startsWith('week'));
+            if(showQuarters === true){
+                
+                if(showWeeks === true){
+                    searchResult = searchObj.filter(searchElement => {
+                        if(isStartWithQ === true && searchElement.level === 2 && searchElement.searchKey.includes(searchValue)){
+                            return true;
+                        } else if(isStartWithWeek === true && searchElement.level === 4 && searchElement.searchKey.includes(searchValue)){
+                            return true;
+                        } else if(isStartWithQ === false && searchValue <= 99 && searchElement.searchKey.includes(searchValue) && searchElement.level !== 1 && searchElement.level !== 2 && searchElement.level !== 4){
+                            return true;
+                        } else if((isStartWithQ === false && searchElement.searchKey.includes(searchValue) && (searchValue > 99 || (searchElement.level !== 1 && searchElement.level !== 2 && searchElement.level !== 4))) || (searchElement.searchKey === searchValue && searchElement.level === 1)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                } else {
+                    searchResult = searchObj.filter(searchElement => {
+                        if(isStartWithQ === true && searchElement.level === 2 && searchElement.searchKey.includes(searchValue)){
+                            return true;
+                        } else if(isStartWithQ === false && searchValue <= 99 && searchElement.searchKey.includes(searchValue) && searchElement.level !== 1 && searchElement.level !== 2){
+                            return true;
+                        } else if((isStartWithQ === false && searchElement.searchKey.includes(searchValue) && (searchValue > 99 || (searchElement.level !== 1 && searchElement.level !== 2))) || (searchElement.searchKey === searchValue && searchElement.level === 1)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                }
+            } else {
+                if(showWeeks === true){
+                    searchResult = searchObj.filter(searchElement => {
+                        if(isStartWithWeek === true && searchElement.level === 3 && searchElement.searchKey.includes(searchValue)){
+                            return true;
+                        } else if(isStartWithWeek === false && searchValue <= 99 && searchElement.searchKey.includes(searchValue) && searchElement.level !== 1 && searchElement.level !== 3){
+                            return true;
+                        } else if((isStartWithQ === false && searchElement.searchKey.includes(searchValue) && (searchValue > 99 || (searchElement.level !== 1 && searchElement.level !== 3))) || (searchElement.searchKey === searchValue && searchElement.level === 1)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                } else {
+                    searchResult = searchObj.filter(searchElement => {
+                        if(isStartWithQ === true && searchElement.level === 2 && searchElement.searchKey.includes(searchValue)){
+                            return true;
+                        } else if(isStartWithQ === false && searchValue <= 99 && searchElement.searchKey.includes(searchValue) && searchElement.level !== 1){
+                            return true;
+                        } else if((isStartWithQ === false && searchElement.searchKey.includes(searchValue) && (searchValue > 99 || (searchElement.level !== 1))) || (searchElement.searchKey === searchValue && searchElement.level === 1)){
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    });
+                }
+            }
+
+            console.log(' searchResult ', searchResult);
 
             searchResult.sort((a, b) => {
                 if (a.level > b.level) return -1

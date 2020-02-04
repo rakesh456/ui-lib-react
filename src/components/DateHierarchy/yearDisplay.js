@@ -203,7 +203,7 @@ class YearDisplay extends React.PureComponent {
         const { options, years } = this.props;
         return (
             <div options={options}>
-                <div id="VS-Scrollbar">
+                <div>
                     {(years)?years.map((year, index) => this.renderYear(year, index)):''}
                 </div>
             </div>
