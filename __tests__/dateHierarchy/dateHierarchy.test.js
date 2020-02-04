@@ -607,7 +607,7 @@ describe('Search for any data any if user manually unchecking the data after sea
 
         wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :false}})   
         wrapper.find('.VS-Checkbox').at(4).simulate('change',{target:{checked :false}})
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
         
     })
@@ -625,10 +625,25 @@ describe('During search either it is first time or other time select all search 
         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
 
-        console.log(wrapper.debug());
+        // console.log(wrapper.debug());
     
 
 
     })
 })
 
+// sample 
+test('testing',()=>{
+
+    let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'20'}})
+        for(let i = 0;i<12;i++ ){
+        wrapper.find('.VS-Month-Plus-Minus').at(i).simulate('click')
+        wrapper.find('.VS-week-Plus-Minus').at(i).simulate('click')
+        }
+        for(let i = 0;i<12;i++ ){
+        console.log(wrapper.find('.VS-WeekDayRow').at(i).text())
+        }
+        console.log(wrapper.debug())
+})
