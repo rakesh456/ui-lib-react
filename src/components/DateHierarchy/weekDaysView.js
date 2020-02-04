@@ -41,13 +41,13 @@ class WeekDaysView extends React.PureComponent {
 
     renderWeekDays = (day, week, month, quarter, year, weekDayIndex) => {
         let { isFilterView } = this.props;
-        if (isFilterView === true && day.state === 0) {
+        if (isFilterView === true && day.match === 0) {
             return ("")
         } else {
             return (
                 <div className="VS-WeekDayRow" key={'day' + weekDayIndex}>
     
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.date + " " + day.day}<span className="VS-Tooltiptext">{day.date}-{month.month}-{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{day.date+" "}<span className="VS-WEEKDAY">{day.day}</span><span className="VS-TooltiptextWeekDay">{day.date+" "}{month.month+" "}{year.year}</span></div>
                         {
                             (day.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={day.state} onChange={() => this.toggleWeekDayCheck(day, week, month, quarter, year, false)}></input> :
@@ -63,7 +63,7 @@ class WeekDaysView extends React.PureComponent {
     renderWeeks = (week, month, quarter, year, weekIndex) => {
         let { isFilterView } = this.props;
 
-        if (isFilterView === true && week.state === 0) {
+        if (isFilterView === true && week.match === 0) {
             return ("")
         } else {
             return (
@@ -74,7 +74,7 @@ class WeekDaysView extends React.PureComponent {
                             <span className="VS-week-Plus-Minus" onClick={() => this.toggleWeekChild(week, true)} >+</span>
                     }
 
-                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{week.week}<span className="VS-Tooltiptext">{week.week}-{month.month}-{year.year}</span></div>
+                    <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{week.week}<span className="VS-TooltiptextWeeks">{week.week+" "}{month.month+" "}{year.year}</span></div>
 
                         {
                             (week.state) ?
@@ -86,7 +86,7 @@ class WeekDaysView extends React.PureComponent {
                         {
                             (week.hasDisabled) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-Tooltiptext">Few days in this week are disabled</span></div>
+                                </span><span className="VS-TooltiptextLarge">Few days in this week are disabled</span></div>
                                 : ""
 
                         }

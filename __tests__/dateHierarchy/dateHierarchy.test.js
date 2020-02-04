@@ -7,7 +7,8 @@ import DateHierarchy from "../../src/components/DateHierarchy/date-hierarchy";
 import React from "react";
 import ReactDOM from "react-dom";
 import { mount, shallow } from "enzyme";
-import { getListOfYears } from "../../src/utils/datehierarchyutils";
+import { getListOfYears, resetDateHierarchyOptions } from "../../src/utils/datehierarchyutils";
+import tree from "react-icons/lib/fa/tree";
 
 // DateHierarchy renders without crashing
 test("DateHierarchy component renders without crashing", () => {
@@ -145,7 +146,242 @@ test('There should be an indicator point on the Week if there is any Day is disa
 test('All the children should be checked if the checkbox of parent is checked', () => {
     let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": ['1/1/2020', '04/1/2020'] };
     let wrapper = shallow(<DatehierarchyView options={options} />);
-    console.log(wrapper.debug());
+    // console.log(wrapper.debug());
     // wrapper.find('.VS-Plus-Minus').simulate('click');
     // console.log('years',wrapper.instance());
+})
+
+// 1.Toggle the Year to expand and collapse on clicking the +/- button.
+describe("Toggle the Year to expand and collapse on clicking the +/- button.",()=>{
+
+
+    test('Check if + is clicked Year will get expand',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        // wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('MonthView').length).toEqual(1)
+    })
+
+    test('Check if - is Clicked Year will get collapsed',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('MonthView').length).toEqual(0)
+    })
+})
+
+// 2.Toggle the Quarter to expand and collapse on clicking the +/- button.
+describe('Toggle the Quarter to expand and collapse on clicking the +/- button.',()=>{
+
+    test('Check if + is clicked Quater will get expand',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": true, "disabledList": [] }
+
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Quarter-Plus-Minus').at(0).simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('MonthView').length).toEqual(1)
+
+    })
+
+    test('Check if - is clicked Quater will get collapse',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": true, "disabledList": [] }
+
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Quarter-Plus-Minus').at(0).simulate('click')
+        wrapper.find('.VS-Quarter-Plus-Minus').at(0).simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('MonthView').length).toEqual(0)
+
+    })
+})
+
+// 3.Toggle the Month to expand and collapse on clicking the +/- button.
+describe('Toggle the Month to expand and collapse on clicking the +/- button.',()=>{
+
+    test('Check if + is clicked month will get expand',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Month-Plus-Minus').at(0).simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('WeekDaysView').length).toEqual(1)
+    })
+
+    test('Check if - is clicked Quater will get collapse',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Month-Plus-Minus').at(0).simulate('click')
+        wrapper.find('.VS-Month-Plus-Minus').at(0).simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('WeekDaysView').length).toEqual(0)
+    })
+})
+
+// 4.Toggle the Week to expand and collapse on clicking the +/- button.
+describe('Toggle the Week to expand and collapse on clicking the +/- button',()=>{
+
+    test('testing expand ',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Month-Plus-Minus').at(0).simulate('click')
+        wrapper.find('.VS-week-Plus-Minus').at(0).simulate('click')
+
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('.VS-WeekDayRow').length).toEqual(4)
+
+    })
+
+    test('testing collapse ',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // wrapper.setState({
+        //     isSearching :true
+        // })
+        // wrapper.update()
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find('.VS-Month-Plus-Minus').at(0).simulate('click')
+        wrapper.find('.VS-week-Plus-Minus').at(0).simulate('click')
+        wrapper.find('.VS-week-Plus-Minus').at(0).simulate('click')
+        wrapper.update()
+        
+        // console.log(wrapper.debug())
+        expect(wrapper.find('.VS-WeekDayRow').length).toEqual(0)
+
+    })
+})
+
+// 9.Toggle the check box sign on clicking it, it should be either checked or unchecked.
+describe("Toggle the check box sign on clicking it, it should be either checked or unchecked.",()=>{
+
+    test('If click happens checkBox then it should be checked',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // console.log(wrapper.find("input").at(2).props())
+        wrapper.find("input").at(2).simulate('change')
+        expect(wrapper.find("input").at(2).props().checked).toEqual(1)
+
+    })
+
+    test('If click happens on checked checkBox then it should be unchecked',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        // console.log(wrapper.find("input").at(2).props())
+        wrapper.find("input").at(2).simulate('change')
+        wrapper.find("input").at(2).simulate('change')
+        expect(wrapper.find("input").at(2).props().checked).toEqual(0)
+
+    })
+})
+
+// 10. On checking the parent's checkbox all type of its child's checkbox should also be checked.
+describe('On checking the parents checkbox all type of its childs checkbox should also be checked.',()=>{
+ 
+    test('testing',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        //  
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find("input").at(2).simulate('change')
+        // console.log(wrapper.debug())
+        // expect(wrapper.find("input").at(2).props().checked).toEqual(true)
+
+    })
+})
+
+// 11. Parent's checkbox should be partially checked if all the child's of the same are not checked.
+describe('Parents checkbox should be partially checked if all the childs of the same are not checked.',()=>{
+
+    test('If some childs of parent are checked then parent ',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        //  
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find("input").at(3).simulate('change')
+        // console.log(wrapper.debug())
+        expect(wrapper.find("input").at(2).props().checked).toEqual(-1)
+
+    })
+})
+
+
+
+// 30. Check years list stats after close click first time
+describe(' Check years list stats after close click first time',()=>{
+
+    test('testing',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        console.log(wrapper.debug())
+
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        console.log(wrapper.debug())
+
+    })
 })

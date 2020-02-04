@@ -78,8 +78,7 @@ class YearDisplay extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-    
-        this.props.onUpdateSelectAllCheckbox();
+        this.props.onUpdateSelectAllCheckbox([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -112,7 +111,7 @@ class YearDisplay extends React.PureComponent {
     renderYear = (year, index) => {
         let { options, isSearching, years, filteredYears, isFilterView } = this.props;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
-        if (isFilterView === true && year.state === 0) {
+        if (isFilterView === true && year.match === 0) {
             return ("")
         } else {
             return (
@@ -133,11 +132,11 @@ class YearDisplay extends React.PureComponent {
                             (year.hasDisabled) ? (year.quarters) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
                                 </span>
-                                    <span className="VS-Tooltiptext">Few Quarters in this Year are disabled</span>
+                                    <span className="VS-TooltiptextLarge">Few Quarters in this Year are disabled</span>
                                 </div> :
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
                                 </span>
-                                    <span className="VS-Tooltiptext">Few Months in this Year are disabled</span>
+                                    <span className="VS-TooltiptextLarge">Few Months in this Year are disabled</span>
                                 </div> : ""
                         }
 
@@ -204,7 +203,7 @@ class YearDisplay extends React.PureComponent {
         const { options, years } = this.props;
         return (
             <div options={options}>
-                <div id="VS-Scrollbar">
+                <div>
                     {(years)?years.map((year, index) => this.renderYear(year, index)):''}
                 </div>
             </div>

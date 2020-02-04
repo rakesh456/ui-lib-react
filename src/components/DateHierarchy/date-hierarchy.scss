@@ -170,7 +170,7 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-YearRow{
     list-style: none ;
-    margin: 5px 20px;
+    margin: 10px 20px;
     border: grey
 }
 
@@ -188,24 +188,33 @@ $font-family: 'Roboto', sans-serif;
 .VS-Hierarchy{
   position: relative;
   background: #fff;
-  width: 300px;
+  width: 305px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
   padding-left: 0px;
   margin: 5px 20px;
   border: 1px solid #ddd;
+//   max-height: 465px;
 }
 
 .VS-Hierarchy #VS-Scrollbar{
-    max-height: 500px;
+    max-height: 465px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight1{
+    max-height: 365px;
+}
+
+.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight2{
+    max-height: 430px;
+}
+
 .VS-Hierarchy-Searchbox{
     border: 1px solid #ddd;
-    width: 300px;
+    width: 305px;
     margin: -1px 0px 0px -1px;
 }
 
@@ -293,23 +302,26 @@ $font-family: 'Roboto', sans-serif;
     display: inline-block;
 }
   
-.VS-Tooltip .VS-Tooltiptext {
+.VS-Tooltip .VS-TooltiptextWeeks {
     visibility: hidden;
-    width: 92px;
-    font-size: medium;
-    background-color: black;
-    color: #fff;
+    width: 100px;
+    border:solid;
+    color: white;
+    font-size: small;
+    background-color: #535759;
     text-align: center;
-    border-radius: 12px;
-    padding: 2px 0;
+    border-radius: 0px;
+    padding: 3px 0;
     position: absolute;
     z-index: 1;
     top: -4px;
-    left: 135%;
+    left: 105%;
     text-size-adjust:2px ;
 }
-  
-.VS-Tooltip .VS-Tooltiptext::after {
+.VS-Tooltip:hover .VS-TooltiptextWeeks {
+    visibility: visible;
+}
+.VS-Tooltip .VS-TooltiptextWeeks::after {
     content: "";
     position: absolute;
     top: 50%;
@@ -317,12 +329,70 @@ $font-family: 'Roboto', sans-serif;
     margin-top: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: transparent black transparent transparent;
+    border-color: transparent #535759 transparent transparent;
 }
-
-.VS-Tooltip:hover .VS-Tooltiptext {
+.VS-Tooltip .VS-TooltiptextQuarter {
+    visibility: hidden;
+    width: 56px;
+    border:solid;
+    color: white;
+    font-size: small;
+    background-color: #535759;
+    text-align: center;
+    border-radius: 0px;
+    padding: 3px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 135%;
+    text-size-adjust:2px ;
+}
+.VS-Tooltip:hover .VS-TooltiptextQuarter {
     visibility: visible;
 }
+.VS-Tooltip .VS-TooltiptextQuarter::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #535759 transparent transparent;
+}
+.VS-Tooltip .VS-TooltiptextWeekDay {
+    visibility: hidden;
+    width: 80px;
+    border:solid;
+    color: white;
+    font-size: small;
+    background-color: #535759;
+    text-align: center;
+    border-radius: 0px;
+    padding: 3px 0;
+    position: absolute;
+    z-index: 1;
+    top: -4px;
+    left: 115%;
+    text-size-adjust:2px ;
+}
+
+.VS-Tooltip:hover .VS-TooltiptextWeekDay {
+    visibility: visible;
+}
+  
+.VS-Tooltip .VS-TooltiptextWeekDay::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent #535759 transparent transparent;
+}
+
+
 .VS-HasDisabledDot {
     height: 9px;
     width: 9px;
@@ -332,4 +402,83 @@ $font-family: 'Roboto', sans-serif;
     border-radius: 50%;
     display: inline-block;
   }
-  
+
+  .VS-Tooltip .VS-TooltiptextLarge {
+    visibility: hidden;
+    width: 92px;
+    border:solid;
+    border-width: 1px;
+    background-color: white;
+    border-color: darkgray;
+    font-size: small;
+    text-align: center;
+    border-radius: 2px;
+    padding: 2px 2px;
+    position: absolute;
+    z-index: 10;
+    top: -89%;
+    left: 135%;
+  }
+
+.VS-Tooltip:hover .VS-TooltiptextLarge {
+    visibility: visible;
+}
+
+.VS-Tooltip .VS-TooltiptextLarge::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    margin-top: -11px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent darkgrey transparent transparent;
+}
+.VS-WEEKDAY {
+    color: rgb(163, 148, 148);
+    font-size:10px ;
+}
+
+.VS-refresh-tooltip{
+    visibility: hidden;
+    position: absolute;
+    border:solid;
+    border-width: 1px;
+    background-color: white;
+    border-color: darkgray;
+    font-size: 9px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px 2px;
+    width: 54px;
+    
+}
+
+.VS-PullRight:hover .VS-refresh-tooltip {
+    visibility: visible;
+}
+
+.VS_cross_tool_tip{
+    visibility: hidden;
+    position: absolute;
+    border:solid;
+    border-width: 1px;
+    background-color: white;
+    border-color: darkgray;
+    font-size:9px;
+    text-align: center;
+    border-radius: 3px;
+    padding: 2px 2px;
+    width:54px;
+}
+
+.VS-PullRight:hover .VS_cross_tool_tip{
+    visibility: visible;
+}
+
+.VS-HorizontalLine{
+    width: 220px;
+    border: 0.5px solid #ddd;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}

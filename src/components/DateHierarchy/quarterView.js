@@ -46,7 +46,7 @@ class QuarterView extends React.PureComponent {
     renderQuarter = (quarter, year, quarterIndex) => {
         let { options, isFilterView } = this.props;
         let quarterName = (quarter && quarter.quarter) ? quarter.quarter : '';
-        if (isFilterView === true && quarter.state === 0) {
+        if (isFilterView === true && quarter.match === 0) {
             return ("")
         } else {
             return (
@@ -58,7 +58,7 @@ class QuarterView extends React.PureComponent {
                     }
                     <label className="VS-Checkbox-Container">
 
-                        <div className="VS-Tooltip">{quarterName}<span className="VS-Tooltiptext">{quarterName}-{year.year}</span></div>
+                        <div className="VS-Tooltip">{quarterName}<span className="VS-TooltiptextQuarter">{quarterName+" "}{year.year}</span></div>
                         {
                             (quarter.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={quarter.state} onChange={() => this.toggleQuarterCheck(quarter, year, false)}></input> :
@@ -68,7 +68,7 @@ class QuarterView extends React.PureComponent {
                         {
                             (quarter.hasDisabled) ?
                                 <div className="VS-Tooltip"><span className="VS-HasDisabledDot">
-                                </span><span className="VS-Tooltiptext">Few months in this quarter are disabled</span></div> : ""
+                                </span><span className="VS-TooltiptextLarge">Few months in this quarter are disabled</span></div> : ""
                         }
                     </label>
                     {

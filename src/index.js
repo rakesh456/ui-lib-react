@@ -22,6 +22,8 @@ import {
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
+import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+import { FaVolumeControlPhone } from 'react-icons/lib/fa';
 
 
 (function () {
@@ -96,6 +98,11 @@ function tagSelectorRender(el) {
         el.dispatchEvent(ev);
     }
 
+    function onChangeHandler(){
+        let ev = new CustomEvent('change');
+        el.dispatchEvent(ev);
+    }
+    
     function onSelectHandler(selectedItem) {
         callOnSelectedEvent(selectedItem, el);
     }
@@ -158,11 +165,50 @@ function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
 
-    var HierarchyComponentElement = <DateHierarchy options={options} />
+    el.getValues = function () {
+        return HierarchyComponentInstance.getValues();
+    }
+    
+    function onFocusHandler() {
+        let ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+    
+    function onChangeHandler() {
+        let ev = new CustomEvent("change");
+        el.dispatchEvent(ev);
+    }
+
+    function onBlurHandler() {
+        let ev = new CustomEvent("blur");
+        el.dispatchEvent(ev);
+    }
+
+    function onInputHandler(){
+        let ev = new CustomEvent("input");
+        el.dispatchEvent(ev);
+    }
+
+
+
+    el.getDates = function () {
+        return HierarchyComponentInstance.getDates();
+    }
+    // fun
+    el.refresh = function (){
+        return HierarchyComponentInstance.refresh();
+    }
+
+    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+    el.setValues = function (json) {
+        HierarchyComponentInstance.setValues(json);
+    }
+
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
         el
     )
 }
+
 serviceWorker.unregister();

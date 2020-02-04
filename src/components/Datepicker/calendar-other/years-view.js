@@ -20,11 +20,15 @@ class YearsView extends React.PureComponent {
         const { options, showHeaderSelection } = this.props;
         
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
+        console.log(lowerYearLimit)
         const { upperYearLimit } = getYYYYForUpperLimit(options);
+        console.log(upperYearLimit)
         let year = new Date().getFullYear();
+        // let year = upperYearLimit;
         year = parseInt(year);
-        
+        console.log(year)
         this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true), displayYearName: ""};
+        console.log(this.state.isDisabledPrev)
     }
     
     componentDidMount() {
@@ -54,7 +58,7 @@ class YearsView extends React.PureComponent {
         const { options } = this.props;
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
-        let { year } = this.state;
+        let { year } = this.state
         year = parseInt(year);
         
         const _array = getYearsList(year);
@@ -65,7 +69,9 @@ class YearsView extends React.PureComponent {
     
     getYears = () => {
         const { year } = this.state;
+        console.log(year)
         const _array = getYearsList(year);
+        console.log(_array)
         return splitArray(_array, 3);
     }
     
@@ -127,6 +133,7 @@ class YearsView extends React.PureComponent {
                 <Fragment>
                     <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH} ${CONSTANTS.CLASSES.VS_TEXT_CENTER}`}>
                         {
+                            // isDisabledPrev
                             (isDisabledPrev) ?
                                 <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON} ${CONSTANTS.CLASSES.VS_DISABLED_ICON}`} /> :
                                 <FaCaretLeft className={`${CONSTANTS.CLASSES.VS_PULL_LEFT} ${CONSTANTS.CLASSES.VS_ICON}`}  onClick={this.goToPrevYear} />
