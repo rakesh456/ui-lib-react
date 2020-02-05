@@ -47,6 +47,9 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
+.mrgL30{
+    margin-left: 30px !important;
+}
 
 .VS-Hidden{
     display: none;
@@ -251,7 +254,7 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-Hierarchy-Filter-List .VS-Checkbox-Container{
     list-style: none;
-    margin: 5px 22px;
+    margin: 5px 0px;
     border: grey;
 }
 
@@ -477,8 +480,9 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS-HorizontalLine{
-    width: 220px;
+    width: 210px;
     border: 0.5px solid #ddd;
     margin-top: 2px;
     margin-bottom: 2px;
+    margin-left: 0px;
 }
