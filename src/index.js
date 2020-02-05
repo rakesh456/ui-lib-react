@@ -6,7 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
-import FormGenerator from './components/FormGenerator/FormGenerator';
+import FormGenerator from './components/FormGenerator/form-generator';
 
 import {
     isUndefinedOrNull

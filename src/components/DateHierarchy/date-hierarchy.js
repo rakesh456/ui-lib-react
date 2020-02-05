@@ -15,7 +15,8 @@ class DateHierarchy extends React.PureComponent {
     render() {        
         return (
             <div>
-                <DatehierarchyView options={this.props.options} ></DatehierarchyView>
+                {/* <DatehierarchyView options={this.props.options} ></DatehierarchyView> */}
+                <p>Date Hierarchy View</p>
             </div>
         )    
     }

@@ -4,7 +4,7 @@ class FormGenerator extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const datePickerOptions = this.props.options;
+        const formGenOptions = this.props.options;
         this.state = {};
     }
 
@@ -13,8 +13,12 @@ class FormGenerator extends React.PureComponent {
     componentDidUpdate() {}
 
     render() {
+        return (
         <div>
-            <p>Logic to render should come here!</p>
+            <p>Logic to render form should come here!</p>
         </div>
+        )
     }
 }
+
+export default FormGenerator;
