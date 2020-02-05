@@ -52,15 +52,6 @@ export class CustomFilterUI extends React.Component {
                     checked={value === true}
                     onChange={this.onChange}
                 />
-                <label htmlFor="bool-false">&nbsp;not equal</label>
-                <br/>
-                <input
-                    name="start with"
-                    type="radio"
-                    value="start with"
-                    checked={value === true}
-                    onChange={this.onChange}
-                />
                 <label htmlFor="bool-false">&nbsp;start with</label>
                 <br/>
                 <input

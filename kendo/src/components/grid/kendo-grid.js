@@ -33,6 +33,8 @@ class DetailComponent extends GridDetailRow {
 
 class KendoGrid extends React.Component {
   baseUrl = 'http://68.183.84.35:8089/getTodos';
+  
+  
   init = {};
 
   constructor(props) {
@@ -146,10 +148,14 @@ class KendoGrid extends React.Component {
   }
 
   render() {
+    console.log('state',this.props)
     const titleFilter = { multi: true, search: true };
 
     return (
       <div>
+        <label>Search :
+        <input type="text" placeholder="in the entire grid...." ></input>
+        </label>
         {this.state.pageSizes}
         <Grid
           style={{ height: '620px' }}
