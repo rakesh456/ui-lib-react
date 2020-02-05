@@ -65,14 +65,14 @@ class FilterView extends React.PureComponent {
                 restoreFilterArray: [...filteredYears],
                 filteredYears: [...JSON.parse(newYears)]
             });
+            // this.props.onFilteredDataChange([...JSON.parse(newYears)]);
         } else {
             this.setState({
                 filteredYears: [...restoreFilterArray],
                 restoreFilterArray: [],
             });
+            // this.props.onFilteredDataChange([...restoreFilterArray]);
         }
-
-        // this.props.onFilteredDataChange([...JSON.parse(newYears)]);
     }
 
     getMaxLevel(arr) {
@@ -524,12 +524,13 @@ class FilterView extends React.PureComponent {
     updateSelectAllCheckboxHandler = (years) => {
         let isPartial = years.some(checkPartialState);
         let isOne = years.some(checkOneState);
-        this.props.onUpdateSelectAllCheckbox([...years]);
         let isZero = years.some(checkZeroState);
         this.setState({
-            selectAllResultState: (isPartial === false && isOne === true && isZero === false) ? true : false,
+            selectAllResultState: !this.state.selectAllResultState,
             isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
         });
+
+        this.props.onUpdateSelectAllCheckbox([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
