@@ -12,5 +12,9 @@ class FormGenerator extends React.PureComponent {
 
     componentDidUpdate() {}
 
-    render() {}
+    render() {
+        <div>
+            <p>Logic to render should come here!</p>
+        </div>
+    }
 }
