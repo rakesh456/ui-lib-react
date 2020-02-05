@@ -7,6 +7,7 @@ const checkOneMatch = obj => obj.state === 1;
 const checkZeroState = obj => obj.state === 0;
 const stateRegEx = /\"state\":0/gi
 const stateRegExOne = /\"state\":1/gi
+const checkOneState = obj => obj.state === 1;   
 
 class FilterView extends React.PureComponent {
     constructor(props) {
@@ -14,7 +15,7 @@ class FilterView extends React.PureComponent {
         let { options } = this.props;
 
         let searchObj = getSearchObj(options);
-        this.state = { filteredYears: [], searchValue: "", searchObj: searchObj, maxLevel: -1 };
+        this.state = { filteredYears: [], searchValue: "", searchObj: searchObj, maxLevel: -1, isSelectAllSearchResult: true, selectAllResultState: true };
     }
 
     getYears() {
@@ -493,9 +494,13 @@ class FilterView extends React.PureComponent {
     }
 
     updateSelectAllCheckboxHandler = (years) => {
+        let isPartial = years.some(checkPartialState);
+        let isOne = years.some(checkOneState);
         this.props.onUpdateSelectAllCheckbox([...years]);
         let isZero = years.some(checkZeroState);
-        this.props.onUpdateFilterCheckbox(!isZero);
+        //this.props.onUpdateFilterCheckbox(!isZero);
+        this.setState({selectAllResultState: (isPartial === false && isOne === true && isZero === false)? true: false, 
+            isSelectAllSearchResult: (isPartial === false && isOne === false)? false: true});
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -511,14 +516,18 @@ class FilterView extends React.PureComponent {
                 this.props.onUpdateFilterCheckbox(quarterObj.year.state === 0, this.state.maxLevel, years);
             } else {
                 // console.log(isZero, quarterObj.year.match, ' elsequarterObj.year ', quarterObj.year.state);
-                this.props.onUpdateFilterCheckbox(quarterObj.year.state !== 0 && !isZero);
+                //this.props.onUpdateFilterCheckbox(quarterObj.year.state !== 0 && !isZero);
+                let isPartial = years.some(checkPartialState);
+                let isOne = years.some(checkOneState);
+                this.setState({selectAllResultState: (quarterObj.year.state !== 0 && !isZero), 
+                               isSelectAllSearchResult: (isPartial === false && isOne === false)? false: true});
             }
         });
 
         // this.props.onChangeQuarter(quarterObj);
     }
 
-    onChangeMonthHandler = (monthObj) => {
+    onChangeMonthHandler = (monthObj) => {        
         let years = [...this.getYears()];
         let { showWeeks, showQuarters } = this.props.options;
         monthChangeCallback(years, showWeeks, showQuarters, monthObj, (years) => {
@@ -526,7 +535,11 @@ class FilterView extends React.PureComponent {
                 filteredYears: [...years]
             })
             let isZero = years.some(checkZeroState);
-            this.props.onUpdateFilterCheckbox(!isZero && monthObj.year.state !== 0);
+            //this.props.onUpdateFilterCheckbox(!isZero && monthObj.year.state !== 0);
+            let isPartial = years.some(checkPartialState);
+            let isOne = years.some(checkOneState);
+            this.setState({selectAllResultState: (monthObj.year.state !== 0 && !isZero), 
+                           isSelectAllSearchResult: (isPartial === false && isOne === false)? false: true});
         });
 
         // this.props.onChangeMonth(monthObj);
@@ -541,6 +554,8 @@ class FilterView extends React.PureComponent {
             });
 
             this.updateResultState([...years], weekObj.week, true, false);
+            //let isZero = years.some(checkZeroState);
+            
         });
 
         // this.props.onChangeWeek(weekObj);
@@ -633,15 +648,58 @@ class FilterView extends React.PureComponent {
             }
         });
 
-        this.props.onUpdateFilterCheckbox(!isZero);
+        //this.props.onUpdateFilterCheckbox(!isZero);
+        let isPartial = years.some(checkPartialState);
+        let isOne = years.some(checkOneState);
+        
+        this.setState({selectAllResultState: !isZero, 
+                       isSelectAllSearchResult: (isPartial === false && isOne === false)? false: true});
+    }
+
+    checkSelectAllSearchResultValues = () => {
+        const { selectAllResultState } = this.state;
+        return (selectAllResultState);
     }
 
     render() {
         const { options } = this.props;
-        const { filteredYears } = this.state;
+        const { filteredYears, isSelectAllSearchResult } = this.state;
         return (
+            <div className="VS-Hierarchy-Filter-List">
+                {
+                        
+                            (this.checkSelectAllSearchResultValues()) ?
+                                <label className="VS-Checkbox-Container">Select All Search Results
+                                        <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
+                                    <span className="VS-Check-Checkmark"></span>
+                                </label> :
+                                <label className="VS-Checkbox-Container">Select All Search Results
+                                        <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
+                                    <span className="VS-Check-Checkmark VS-Check-Partial"></span>
+                                </label> 
+                            
+                            
+                    }
+                    {
+                        // (isSearching === true && isNoDataFound === false && isShowAddToCurrentSelection === true) ?
+                            <label className="VS-Checkbox-Container">Add To Current Selection
+                            <input className="VS-Checkbox" type="checkbox" checked={isAddCurrentSelection} onChange={(e) => this.onAddCurrentSelectionChange(e)}></input>
+                                <span className={this.getCheckBoxClass()}></span>
+                            </label> 
+                            // : ''
+                    }
+                    {
+                        // (isSearching === true && isNoDataFound === false) ?
+                            <label className="VS-Checkbox-Container">{(exclusions && exclusions.length > 0) ? 'Add To Previous Exclusions' : 'Exclude From Selection'}
+                                <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
+                                <span className={this.getCheckBoxClass()}></span>
+                            </label> 
+                            // : ''
+                    }
+            
             <div options={options}>
                 <YearDisplay options={options} isFilterView={true} years={filteredYears} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
+            </div>
             </div>
         )
     }

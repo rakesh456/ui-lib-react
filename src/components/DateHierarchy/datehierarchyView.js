@@ -20,7 +20,7 @@ class DatehierarchyView extends React.PureComponent {
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
         let searchObj = getSearchObj(options);
         const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isSelectAllSearchResult: true, selectAllResultState: true, isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], initialSelections: [], exclusions: [], isNoDataFound: false, filterSum: 0, isShowAddToCurrentSelection: false };
+        this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], initialSelections: [], exclusions: [], isNoDataFound: false, filterSum: 0, isShowAddToCurrentSelection: false };
     }
 
     getYears() {
@@ -1320,10 +1320,7 @@ class DatehierarchyView extends React.PureComponent {
         return (selectAllState === years.length);
     }
 
-    checkSelectAllSearchResultValues = () => {
-        const { selectAllResultState } = this.state;
-        return (selectAllResultState);
-    }
+    
 
     refresh() {
         let { options } = this.props;
@@ -1397,24 +1394,7 @@ class DatehierarchyView extends React.PureComponent {
                         (isNoDataFound === true && isSelectAllSearchResult === true) ?
                             <label className="VS-Checkbox-Container">No Result Found!</label> : ''
                     }
-                    {
-                        (isSearching === true && isNoDataFound === false) ?
-                            (this.checkSelectAllSearchResultValues()) ?
-                                <label className="VS-Checkbox-Container">Select All Search Results
-                                        <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
-                                    <span className="VS-Check-Checkmark"></span>
-                                </label> :
-                                <label className="VS-Checkbox-Container">Select All Search Results
-                                        <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
-                                    <span className="VS-Check-Checkmark VS-Check-Partial"></span>
-                                </label> :
-                                ''
-                            
-                            // <label className="VS-Checkbox-Container">Select All Search Results
-                            // <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
-                            //     <span className={this.getCheckBoxClass()}></span>
-                            // </label> : ''
-                    }
+                    
                     {
                         (isSearching === true && isNoDataFound === false) ?
                             <hr className="VS-HorizontalLine"></hr> : ''
@@ -1432,7 +1412,7 @@ class DatehierarchyView extends React.PureComponent {
                                 </label> :
                             ''
                     }
-                    {
+                    {/* {
                         (isSearching === true && isNoDataFound === false && isShowAddToCurrentSelection === true) ?
                             <label className="VS-Checkbox-Container">Add To Current Selection
                             <input className="VS-Checkbox" type="checkbox" checked={isAddCurrentSelection} onChange={(e) => this.onAddCurrentSelectionChange(e)}></input>
@@ -1445,7 +1425,7 @@ class DatehierarchyView extends React.PureComponent {
                                 <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label> : ''
-                    }
+                    } */}
                     {
                         (isSearching === true && isNoDataFound === false) ?
                             <hr className="VS-HorizontalLine"></hr> : ''
