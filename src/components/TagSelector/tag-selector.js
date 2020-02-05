@@ -13,6 +13,7 @@ import { CountryService } from "../../services/CountryService";
 class TagSelector extends React.PureComponent {
   constructor(props) {
     super(props);
+    console.log(this.props.options);
     const { maxItemCounter } = this.props.options;
     this.state = {
       shouldListOpen: false,

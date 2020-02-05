@@ -4,7 +4,9 @@ class FormGenerator extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        console.log(props);
         const formGenOptions = this.props.options;
+        console.log(formGenOptions);
         this.state = {};
     }
 
@@ -15,7 +17,7 @@ class FormGenerator extends React.PureComponent {
     render() {
         return (
         <div>
-            <p>Logic to render form should come here!</p>
+            <label>{formGenOptions.label}</label>
         </div>
         )
     }

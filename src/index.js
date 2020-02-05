@@ -149,6 +149,7 @@ function tagSelectorRender(el) {
     }
 
     let tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
+    console.log(tagComponentElement);
 
     let tagComponentInstance = ReactDOM.render(
         tagComponentElement,
@@ -211,7 +212,10 @@ function dateHierarchyRender(el) {
 }
 
 //mock function
-function resetFormGenOptions() {}
+function resetFormGenOptions(options) 
+{
+    return { ...options };
+}
 
 Array.prototype.forEach.call(
     document.getElementsByTagName('form-gen'),
@@ -221,6 +225,7 @@ Array.prototype.forEach.call(
 
 function formGenRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
+    console.log(options);
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
 
     el.getValues = function () {
@@ -254,8 +259,9 @@ function formGenRender(el) {
     el.refresh = function (){
         return FormGenComponentInstance.refresh();
     }
-
+                                   
     var FormGenComponentElement = <FormGenerator options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+    console.log(FormGenComponentElement);
     el.setValues = function (json) {
         FormGenComponentInstance.setValues(json);
     }
