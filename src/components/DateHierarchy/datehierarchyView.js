@@ -1157,7 +1157,6 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 isSearching: false,
                 searchValue: "",
-                lastFilterData: [],
                 searchValue: "",
                 years: [...yearList],
                 isAddCurrentSelection: false,
@@ -1218,8 +1217,7 @@ class DatehierarchyView extends React.PureComponent {
         } else {
 
             if (_selections.length >= 1) {
-
-                if (isAddCurrentSelection === true || _lastFilterData.length === 1) {
+                if (isAddCurrentSelection === true) {
                     this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
                         let _selections = resultYears.map(a => Object.assign({}, a));
                         this.setState({
@@ -1239,7 +1237,7 @@ class DatehierarchyView extends React.PureComponent {
                         this.updateSelectAllCheckboxHandler([...resultYears], null, true);
                     });
 
-                } else if (isExcludeFromSelection === true || _lastFilterData.length === 1) {
+                } else if (isExcludeFromSelection === true) {
                     this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
 
                         this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {

@@ -170,6 +170,7 @@ class FilterView extends React.PureComponent {
                 return a.level < b.level ? 1 : 0
             });
 
+            console.log(' searchResult ', searchResult);
             let maxLevel = this.getMaxLevel(searchResult);
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
@@ -189,6 +190,7 @@ class FilterView extends React.PureComponent {
                             _years[yearIndex]['quarters'] = [...quarters];
                         } else {
                             quarters.forEach((quarter, quarterIndex) => {
+
                                 let foundQuarter = false;
 
                                 if (!foundYear) {
@@ -224,7 +226,6 @@ class FilterView extends React.PureComponent {
 
                                                 } else {
                                                     if (maxLevel === 3) {
-                                                        // _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
 
                                                         let newWeeks = JSON.stringify(weeks).replace(stateRegExOne, '"state":0');
 
@@ -271,6 +272,8 @@ class FilterView extends React.PureComponent {
 
                                                                     let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
                                                                     _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+
+                                                                    _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'][weekIndex]['showChild'] = true;
                                                                 }
                                                             }
 
@@ -285,7 +288,8 @@ class FilterView extends React.PureComponent {
                                                         let matchWeeks = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['weeks'];
                                                         let isMathcOne = JSON.stringify(matchWeeks).match(matchRegExOne);
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne === null) ? 0 : 1;
-                                                        // _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
+
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
                                                     }
                                                 }
                                             } else {
@@ -318,6 +322,8 @@ class FilterView extends React.PureComponent {
                                                         let matchDays = _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['days'];
                                                         let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
                                                         _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+
+                                                        _years[yearIndex]['quarters'][quarterIndex]['months'][monthIndex]['showChild'] = true;
                                                     }
                                                 }
                                             }
@@ -430,6 +436,8 @@ class FilterView extends React.PureComponent {
                                                         let matchDays = _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['days'];
                                                         let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
                                                         _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+
+                                                        _years[yearIndex]['months'][monthIndex]['weeks'][weekIndex]['showChild'] = true;
                                                     }
                                                 }
 
@@ -445,6 +453,7 @@ class FilterView extends React.PureComponent {
                                             let isMathcOne = JSON.stringify(matchWeeks).match(matchRegExOne);
 
                                             _years[yearIndex]['months'][monthIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+                                            _years[yearIndex]['months'][monthIndex]['showChild'] = true;
                                         }
                                     }
                                 } else {
@@ -479,6 +488,7 @@ class FilterView extends React.PureComponent {
                                             let isMathcOne = JSON.stringify(matchDays).match(matchRegExOne);
 
                                             _years[yearIndex]['months'][monthIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+                                            _years[yearIndex]['months'][monthIndex]['showChild'] = true;
                                         }
                                     }
                                 }
@@ -521,16 +531,18 @@ class FilterView extends React.PureComponent {
         }
     }
 
-    updateSelectAllCheckboxHandler = (years) => {
-        let isPartial = years.some(checkPartialState);
-        let isOne = years.some(checkOneState);
-        let isZero = years.some(checkZeroState);
-        this.setState({
-            selectAllResultState: !this.state.selectAllResultState,
-            isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
-        });
+    updateSelectAllCheckboxHandler = (years, yearObj) => {
+        this.updateResultState([...years], yearObj, true, false, false, false, false);
 
-        this.props.onUpdateSelectAllCheckbox([...years]);
+        // let isPartial = years.some(checkPartialState);
+        // let isOne = years.some(checkOneState);
+        // let isZero = years.some(checkZeroState);
+        // this.setState({
+        //     selectAllResultState: !this.state.selectAllResultState,
+        //     isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
+        // });
+
+        // this.props.onUpdateSelectAllCheckbox([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -540,18 +552,20 @@ class FilterView extends React.PureComponent {
             this.setState({
                 filteredYears: [...years]
             })
-            let isZero = years.some(checkZeroState);
-            if (this.state.maxLevel === 1) {
-                this.props.onUpdateFilterCheckbox(quarterObj.year.state === 0, this.state.maxLevel, years);
-            } else {
-                //this.props.onUpdateFilterCheckbox(quarterObj.year.state !== 0 && !isZero);
-                let isPartial = years.some(checkPartialState);
-                let isOne = years.some(checkOneState);
-                this.setState({
-                    selectAllResultState: (quarterObj.year.state !== 0 && !isZero),
-                    isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
-                });
-            }
+
+            this.updateResultState([...years], quarterObj, false, true, false, false, false);
+
+            // let isZero = years.some(checkZeroState);
+            // if (this.state.maxLevel === 1) {
+            //     this.props.onUpdateFilterCheckbox(quarterObj.year.state === 0, this.state.maxLevel, years);
+            // } else {
+            //     let isPartial = years.some(checkPartialState);
+            //     let isOne = years.some(checkOneState);
+            //     this.setState({
+            //         selectAllResultState: (quarterObj.year.state !== 0 && !isZero),
+            //         isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
+            //     });
+            // }
         });
 
         // this.props.onChangeQuarter(quarterObj);
@@ -563,16 +577,18 @@ class FilterView extends React.PureComponent {
         monthChangeCallback(years, showWeeks, showQuarters, monthObj, (years) => {
             this.setState({
                 filteredYears: [...years]
-            })
-            let isZero = years.some(checkZeroState);
-            //this.props.onUpdateFilterCheckbox(!isZero && monthObj.year.state !== 0);
-            let isPartial = years.some(checkPartialState);
-            let isOne = years.some(checkOneState);
-
-            this.setState({
-                selectAllResultState: (monthObj.year.state !== 0 && !isZero),
-                isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
             });
+
+            this.updateResultState([...years], monthObj.month, false, false, true, false, false);
+
+            // let isZero = years.some(checkZeroState);
+            // let isPartial = years.some(checkPartialState);
+            // let isOne = years.some(checkOneState);
+
+            // this.setState({
+            //     selectAllResultState: (monthObj.year.state !== 0 && !isZero),
+            //     isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
+            // });
         });
 
         // this.props.onChangeMonth(monthObj);
@@ -586,7 +602,7 @@ class FilterView extends React.PureComponent {
                 filteredYears: [...years]
             });
 
-            this.updateResultState([...years], weekObj.week, true, false);
+            this.updateResultState([...years], weekObj.week, false, false, false, true, false);
         });
 
         // this.props.onChangeWeek(weekObj);
@@ -599,7 +615,7 @@ class FilterView extends React.PureComponent {
             this.setState({
                 filteredYears: [...years]
             })
-            this.updateResultState([...years], dayObj.day, false, true);
+            this.updateResultState([...years], dayObj.day, false, false, false, false, true);
         });
 
         // this.props.onChangeDay(dayObj);
@@ -612,70 +628,94 @@ class FilterView extends React.PureComponent {
             this.setState({
                 filteredYears: [...years]
             })
-            this.updateResultState([...years], weekDaysObj.day, false, true);
+            this.updateResultState([...years], weekDaysObj.day, false, false, false, false, true);
         });
 
         // this.props.onChangeWeekDay(weekDaysObj);
     }
 
-    updateResultState = (years, obj, isWeek, isDay) => {
+    updateResultState = (years, obj, isYear, isQuarter, isMonth, isWeek, isDay) => {
         let isZero = false;
         let { showQuarters, showWeeks } = this.props.options;
         years.forEach((year) => {
-            if (showQuarters) {
-                year.quarters.forEach((quarter) => {
-                    quarter.months.forEach((month) => {
-                        if (showWeeks) {
-                            month.weeks.forEach((week) => {
-                                if (isWeek === true) {
-                                    if (week.state === 0 && week.match === 1) {
+            if(isYear){
+                if (year.state === 0 && year.match === 1) {
+                    isZero = true;
+                }
+            } else {
+                if (showQuarters) {
+                    year.quarters.forEach((quarter) => {
+                        if(isQuarter){
+                            if (quarter.state === 0 && quarter.match === 1) {
+                                isZero = true;
+                            }
+                        } else {
+                            quarter.months.forEach((month) => {
+                                if(isMonth){
+                                    if (month.state === 0 && month.match === 1) {
                                         isZero = true;
                                     }
                                 } else {
-                                    week.days.forEach((day) => {
-                                        if (isDay === true) {
+                                    if (showWeeks) {
+                                        month.weeks.forEach((week) => {
+                                            if (isWeek === true) {
+                                                if (week.state === 0 && week.match === 1) {
+                                                    isZero = true;
+                                                }
+                                            } else {
+                                                week.days.forEach((day) => {
+                                                    if (isDay === true) {
+                                                        if (day.state === 0 && day.match === 1) {
+                                                            isZero = true;
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    } else if (isDay === true) {
+                                        month.days.forEach((day) => {
                                             if (day.state === 0 && day.match === 1) {
                                                 isZero = true;
                                             }
-                                        }
-                                    });
-                                }
-                            });
-                        } else if (isDay === true) {
-                            month.days.forEach((day) => {
-                                if (day.state === 0 && day.match === 1) {
-                                    isZero = true;
+                                        });
+                                    }
                                 }
                             });
                         }
                     });
-                });
-            } else {
-                year.months.forEach((month) => {
-                    if (showWeeks) {
-                        month.weeks.forEach((week) => {
-                            if (isWeek === true) {
-                                if (week.state === 0 && week.match === 1) {
-                                    isZero = true;
-                                }
-                            } else {
-                                week.days.forEach((day) => {
-                                    if (isDay === true) {
-                                        if (day.state === 0 && day.match === 1) {
+                } else {
+                    year.months.forEach((month) => {
+                        if(isMonth){
+                            if (month.state === 0 && month.match === 1) {
+                                isZero = true;
+                            }
+                        } else {
+                            if (showWeeks) {
+                                month.weeks.forEach((week) => {
+                                    if (isWeek === true) {
+                                        if (week.state === 0 && week.match === 1) {
                                             isZero = true;
                                         }
+                                    } else {
+                                        week.days.forEach((day) => {
+                                            if (isDay === true) {
+                                                if (day.state === 0 && day.match === 1) {
+                                                    isZero = true;
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                month.days.forEach((day) => {
+                                    if (day.state === 0 && day.match === 1) {
+                                        isZero = true;
                                     }
                                 });
                             }
-                        });
-                    } else {
-                        month.days.forEach((day) => {
-                            if (day.state === 0 && day.match === 1) {
-                                isZero = true;
-                            }
-                        });
-                    }
-                });
+                        }
+                    });
+                }
             }
         });
 

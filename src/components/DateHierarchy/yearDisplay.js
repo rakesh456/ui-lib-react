@@ -78,7 +78,7 @@ class YearDisplay extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-        this.props.onUpdateSelectAllCheckbox([...years]);
+        this.props.onUpdateSelectAllCheckbox([...years], year);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
