@@ -553,16 +553,6 @@ class FilterView extends React.PureComponent {
 
     updateSelectAllCheckboxHandler = (years, yearObj) => {
         this.updateResultState([...years], yearObj, true, false, false, false, false);
-
-        // let isPartial = years.some(checkPartialState);
-        // let isOne = years.some(checkOneState);
-        // let isZero = years.some(checkZeroState);
-        // this.setState({
-        //     selectAllResultState: !this.state.selectAllResultState,
-        //     isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
-        // });
-
-        // this.props.onUpdateSelectAllCheckbox([...years]);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -575,17 +565,6 @@ class FilterView extends React.PureComponent {
 
             this.updateResultState([...years], quarterObj, false, true, false, false, false);
 
-            // let isZero = years.some(checkZeroState);
-            // if (this.state.maxLevel === 1) {
-            //     this.props.onUpdateFilterCheckbox(quarterObj.year.state === 0, this.state.maxLevel, years);
-            // } else {
-            //     let isPartial = years.some(checkPartialState);
-            //     let isOne = years.some(checkOneState);
-            //     this.setState({
-            //         selectAllResultState: (quarterObj.year.state !== 0 && !isZero),
-            //         isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
-            //     });
-            // }
         });
 
         // this.props.onChangeQuarter(quarterObj);
@@ -601,14 +580,6 @@ class FilterView extends React.PureComponent {
 
             this.updateResultState([...years], monthObj.month, false, false, true, false, false);
 
-            // let isZero = years.some(checkZeroState);
-            // let isPartial = years.some(checkPartialState);
-            // let isOne = years.some(checkOneState);
-
-            // this.setState({
-            //     selectAllResultState: (monthObj.year.state !== 0 && !isZero),
-            //     isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
-            // });
         });
 
         // this.props.onChangeMonth(monthObj);
