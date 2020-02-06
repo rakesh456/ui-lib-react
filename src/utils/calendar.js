@@ -353,13 +353,11 @@ export default (month = CURRENT_MONTH, year = CURRENT_YEAR) => {
 
 // Function to get year list based on current year
 export const getYearsList = (year) => {
-    console.log(year)
     year = (year)? year : new Date().getFullYear();
     let  array = [];
     for (let index = -1; index < 11; index++) {
         array.push(year - index);
     }
-    // console.log(array)
     return array.reverse();
 }
 

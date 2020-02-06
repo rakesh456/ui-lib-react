@@ -3,11 +3,11 @@ import { getSearchObj, quarterChangeCallback, monthChangeCallback, weekChangeCal
 import { isUndefinedOrNull, isBlank } from "../../utils/utils";
 import YearDisplay from "./yearDisplay";
 const checkPartialState = obj => obj.state === -1;
-const checkOneMatch = obj => obj.state === 1;
-const checkZeroState = obj => obj.state === 0;
-const stateRegExZero = /\"state\":0/gi
-const stateRegExOne = /\"state\":1/gi
-const stateRegExMinus = /\"state\":-1/gi
+const stateRegExZero = /\"state\":0/gi // eslint-disable-line
+const stateRegExOne = /\"state\":1/gi // eslint-disable-line
+const stateRegExMinus = /\"state\":-1/gi // eslint-disable-line
+const matchRegEx = /\"match\":0/gi // eslint-disable-line
+const matchRegExOne = /\"match\":1/gi // eslint-disable-line
 const checkOneState = obj => obj.state === 1;
 
 class FilterView extends React.PureComponent {
@@ -24,7 +24,7 @@ class FilterView extends React.PureComponent {
     }
 
     componentDidMount() {
-        let years = [...this.props.years];
+        // let years = [...this.props.years];
         this.setState({ filteredYears: [...this.props.listOfYears] });
     }
 
@@ -111,8 +111,6 @@ class FilterView extends React.PureComponent {
         let { showWeeks, showQuarters } = this.props.options;
         let _years = listOfYears.map(a => Object.assign({}, a));
 
-        const matchRegEx = /\"match\":0/gi
-        const matchRegExOne = /\"match\":1/gi
 
         if (!isUndefinedOrNull(searchValue)) {
             let searchResult = [];

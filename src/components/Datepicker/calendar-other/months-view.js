@@ -24,8 +24,6 @@ class MonthsView extends React.PureComponent {
         
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
-        console.log(lowerYearLimit)
-        console.log(upperYearLimit)
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         const year = parseInt(currentDateYear);
         
@@ -61,13 +59,10 @@ class MonthsView extends React.PureComponent {
     }
     
     checkQQMMIsEnabled = (qqmm, year) => {
-        console.log(qqmm,year)
         const {options} = this.props;
         let {disabledList, displayFormat} = options;
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
-        console.log(lowerMonthLimit,lowerYearLimit )
-        console.log(upperMonthLimit,upperYearLimit )
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         
         if(qqmm && year){
@@ -98,11 +93,7 @@ class MonthsView extends React.PureComponent {
     }
 
     renderMonthValue = (month, index) => {
-        console.log(month)
-        console.log(this.props.currentDateMonth)
-        console.log(year)
         const activeClass = (isEqual(this.props.currentDateMonth, month)) ? 'VS-Active' : '';
-        console.log(activeClass)
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year } = this.state;
         const isEnabled = this.checkQQMMIsEnabled(month, year);
         return (

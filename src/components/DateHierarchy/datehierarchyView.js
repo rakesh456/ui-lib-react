@@ -1,15 +1,11 @@
 import React from "react";
 import { Input } from "reactstrap";
-import { getListOfYears, getSearchObj, opposite } from "../../utils/datehierarchyutils";
-import { isUndefinedOrNull, isBlank } from "../../utils/utils";
+import { getListOfYears, opposite } from "../../utils/datehierarchyutils";
+import { isUndefinedOrNull } from "../../utils/utils";
 import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
-import QuarterView from "./quarterView";
-import MonthView from "./monthView";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
-const stateRegExOne = /\"state\":1/gi
-const checkZeroState = obj => obj.state === 0;
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
 class DatehierarchyView extends React.PureComponent {
@@ -18,8 +14,6 @@ class DatehierarchyView extends React.PureComponent {
         let { options } = this.props;
 
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-        let searchObj = getSearchObj(options);
-        const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
         this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], initialSelections: [], exclusions: [], isNoDataFound: false, filterSum: 0, isShowAddToCurrentSelection: false, isSelectAllSearchResult: true };
     }
 
@@ -732,70 +726,65 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     getValues() {
-        var t1 = performance.now();
         let getValues = [];
         let years = [...this.state.years];
         let { showQuarters, showWeeks } = this.props.options;
         years.forEach((year) => {
-            {
-                if (year.state === 1 || year.state === -1) {
-                    if (showQuarters === true) {
-                        year.quarters.forEach((quarter) => {
-                            if (quarter.state === true || quarter.state === -1 || quarter.state === 1) {
-                                quarter.months.forEach((month) => {
-                                    if (month.state === true || month.state === -1 || month.state === 1) {
-                                        if (showWeeks === true) {
-                                            month.weeks.forEach((week) => {
-                                                if (week.state === 1 || week.state === -1 || week.state === true) {
-                                                    week.days.forEach((day) => {
-                                                        if (day.state === 1 || day.state === true) {
-                                                            getValues.push(day.fullDate);
-                                                        }
-                                                    })
-                                                }
-                                            })
-                                        }
-                                        if (showWeeks === false) {
-                                            month.days.forEach((day) => {
-                                                if (day.state === true || day.state === 1) {
-                                                    getValues.push(day.fullDate);
-                                                }
-                                            })
-                                        }
+            if (year.state === 1 || year.state === -1) {
+                if (showQuarters === true) {
+                    year.quarters.forEach((quarter) => {
+                        if (quarter.state === true || quarter.state === -1 || quarter.state === 1) {
+                            quarter.months.forEach((month) => {
+                                if (month.state === true || month.state === -1 || month.state === 1) {
+                                    if (showWeeks === true) {
+                                        month.weeks.forEach((week) => {
+                                            if (week.state === 1 || week.state === -1 || week.state === true) {
+                                                week.days.forEach((day) => {
+                                                    if (day.state === 1 || day.state === true) {
+                                                        getValues.push(day.fullDate);
+                                                    }
+                                                })
+                                            }
+                                        })
                                     }
-                                })
-                            }
-                        })
-                    }
-                    if (showQuarters === false) {
-                        year.months.forEach((month) => {
-                            if (month.state === true || month.state === -1 || month.state === 1) {
-                                if (showWeeks === false) {
-                                    month.days.forEach((day) => {
-                                        if (day.state === true || day.state === 1) {
-                                            getValues.push(day.fullDate);
-                                        }
-                                    })
-                                }
-                            }
-                            if (showWeeks === true) {
-                                month.weeks.forEach((week) => {
-                                    if (week.state === 1 || week.state === -1 || week.state === true) {
-                                        week.days.forEach((day) => {
-                                            if (day.state === 1 || day.state === true) {
+                                    if (showWeeks === false) {
+                                        month.days.forEach((day) => {
+                                            if (day.state === true || day.state === 1) {
                                                 getValues.push(day.fullDate);
                                             }
                                         })
                                     }
+                                }
+                            })
+                        }
+                    })
+                }
+                if (showQuarters === false) {
+                    year.months.forEach((month) => {
+                        if (month.state === true || month.state === -1 || month.state === 1) {
+                            if (showWeeks === false) {
+                                month.days.forEach((day) => {
+                                    if (day.state === true || day.state === 1) {
+                                        getValues.push(day.fullDate);
+                                    }
                                 })
                             }
-                        })
-                    }
+                        }
+                        if (showWeeks === true) {
+                            month.weeks.forEach((week) => {
+                                if (week.state === 1 || week.state === -1 || week.state === true) {
+                                    week.days.forEach((day) => {
+                                        if (day.state === 1 || day.state === true) {
+                                            getValues.push(day.fullDate);
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
                 }
             }
         })
-        var t2 = performance.now();
-
         return getValues;
     }
 
@@ -828,17 +817,16 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     updateSelectAllCheckboxHandler = (checkYears, isChecked, isClose) => {
-        
-        let _isSelectAll = true;
+        // let isSelectAll = true;
         let selectAllState = 0;
-        let { isSearching, searchValue } = this.state;
+        let { isSearching } = this.state;
         let isPartial = checkYears.some(checkPartialState);
         let isOne = checkYears.some(checkOneState);
 
         let isShowAddToCurrentSelection = false;
         checkYears.forEach((yr) => {
             if (yr.state === 0) {
-                _isSelectAll = false;
+                // isSelectAll = false;
             } else {
                 selectAllState = selectAllState + yr.state;
                 // isShowAddToCurrentSelection = true;
@@ -892,7 +880,6 @@ class DatehierarchyView extends React.PureComponent {
 
     addToCurrentSelection = (firstArray, secondArray, callback) => {
         let { showWeeks, showQuarters } = this.props.options;
-        console.log(firstArray, ' firstArray ',secondArray )
         if (!firstArray || firstArray.length <= 0) {
             callback(secondArray);
         } else {
@@ -1124,9 +1111,9 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        let { searchValue, filteredYears, lastFilterData, listOfYears, isSearching } = this.state;
+        let { searchValue, filteredYears, lastFilterData, isSearching } = this.state;
 
-        if (isSearching === true || lastFilterData && lastFilterData.length > 0) {
+        if (isSearching === true || (lastFilterData && lastFilterData.length > 0)) {
             let _lastFilterData = [...lastFilterData];
             let obj = {
                 'value': searchValue,
@@ -1139,7 +1126,6 @@ class DatehierarchyView extends React.PureComponent {
             let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
             this.setState({
                 isSearching: false,
-                searchValue: "",
                 searchValue: "",
                 years: [...yearList],
                 isAddCurrentSelection: false,
@@ -1159,9 +1145,7 @@ class DatehierarchyView extends React.PureComponent {
     closeFilter = () => {
         let { searchValue, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years, isSelectAllSearchResult } = this.state;
 
-        console.log(' isSelectAllSearchResult ', isSelectAllSearchResult);
         if(isSelectAllSearchResult === true){
-            console.log(' if1 ');
 
             const { options } = this.props;
             let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
@@ -1318,15 +1302,14 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     checkSelectAllValues = () => {
-        const { years, selectAllState, isSelectAll } = this.state;
-
+        const { years, selectAllState } = this.state;
         return (selectAllState === years.length);
     }
 
     refresh() {
         let { options } = this.props;
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-        let { searchValue, filteredYears, lastFilterData, listOfYears, years } = this.state;
+        let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
         if (lastFilterData && lastFilterData.length > 0) {
             let _lastFilterData = [...lastFilterData];
@@ -1340,15 +1323,13 @@ class DatehierarchyView extends React.PureComponent {
                 isSearching: false,
                 searchValue: "",
                 lastFilterData: [],
-                searchValue: "",
                 years: [...this.state.listOfYears],
                 isAddCurrentSelection: false,
                 isExcludeFromSelection: false,
                 isNoDataFound: false,
                 selections: [],
                 exclusions: [],
-                filterSum: 0,
-                lastFilterData: []
+                filterSum: 0
             });
             this.updateSelectAllCheckboxHandler([...listOfYears]);
         } else {
@@ -1371,7 +1352,7 @@ class DatehierarchyView extends React.PureComponent {
 
     render() {
         const { options } = this.props;
-        const { isSearching, searchValue, years, listOfYears, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound, isShowAddToCurrentSelection } = this.state;
+        const { isSearching, searchValue, years, listOfYears, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, isShowAddToCurrentSelection } = this.state;
         return (
             <div className="VS-Hierarchy" options={options} style={{minHeight: this.getHierarchyHeight(), maxHeight: this.getHierarchyHeight()}}>
                 <div className="VS-Hierarchy-Searchbox">
