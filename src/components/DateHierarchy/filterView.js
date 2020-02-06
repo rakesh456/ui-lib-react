@@ -16,7 +16,7 @@ class FilterView extends React.PureComponent {
         let { options } = this.props;
 
         let searchObj = getSearchObj(options);
-        this.state = { filteredYears: [], searchValue: "", searchObj: searchObj, maxLevel: -1, isSelectAllSearchResult: true, selectAllResultState: true, isNoDataFound: false, isAddCurrentSelection: false, isExcludeFromSelection: false, restoreFilterArray: [] };
+        this.state = { filteredYears: [], latestFilterYears: [], searchValue: "", searchObj: searchObj, maxLevel: -1, isSelectAllSearchResult: true, selectAllResultState: true, isNoDataFound: false, isAddCurrentSelection: false, isExcludeFromSelection: false, restoreFilterArray: [] };
     }
 
     getYears() {
@@ -51,11 +51,12 @@ class FilterView extends React.PureComponent {
     }
 
     onSelectSearchResultChange = ({ target }) => {
+        this.props.onUpdateSearchResultCheckbox(target.checked);
         this.setState({
             isSelectAllSearchResult: target.checked
         });
 
-        let { filteredYears, restoreFilterArray } = this.state;
+        let { filteredYears, latestFilterYears, restoreFilterArray } = this.state;
         let newYears = "";
 
         if (target.checked === false) {
@@ -65,13 +66,23 @@ class FilterView extends React.PureComponent {
                 restoreFilterArray: [...filteredYears],
                 filteredYears: [...JSON.parse(newYears)]
             });
-            // this.props.onFilteredDataChange([...JSON.parse(newYears)]);
+            this.props.onFilteredDataChange([...filteredYears]);
         } else {
-            this.setState({
-                filteredYears: [...restoreFilterArray],
-                restoreFilterArray: [],
-            });
-            // this.props.onFilteredDataChange([...restoreFilterArray]);
+            if(restoreFilterArray && restoreFilterArray.length > 0){
+                this.setState({
+                    filteredYears: [...restoreFilterArray],
+                    restoreFilterArray: [],
+                });
+                this.props.onFilteredDataChange([...restoreFilterArray]);
+            } else {
+                this.setState({
+                    filteredYears: JSON.parse(JSON.stringify(latestFilterYears)),
+                    selectAllResultState: true,
+                    isSelectAllSearchResult: true,
+                    restoreFilterArray: [],
+                });
+                this.props.onFilteredDataChange([...latestFilterYears]);
+            }
         }
     }
 
@@ -170,12 +181,10 @@ class FilterView extends React.PureComponent {
                 return a.level < b.level ? 1 : 0
             });
 
-            console.log(' searchResult ', searchResult);
             let maxLevel = this.getMaxLevel(searchResult);
             _years.forEach((year, yearIndex) => {
                 const foundYear = this.itemExists(searchResult, 1, yearIndex, year.year);
-                _years[yearIndex]['match'] = _years[yearIndex]['state'] = (foundYear) ? 1 : 0;;
-                _years[yearIndex]['showChild'] = true;
+                _years[yearIndex]['match'] = _years[yearIndex]['state'] = (foundYear) ? 1 : 0;
 
                 if (showQuarters === true) {
                     let quarters = year['quarters'];
@@ -358,6 +367,7 @@ class FilterView extends React.PureComponent {
                             let matchQuarters = _years[yearIndex]['quarters'];
                             let isMathcOne = JSON.stringify(matchQuarters).match(matchRegExOne);
                             _years[yearIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+                            _years[yearIndex]['showChild'] = true;
                         }
                     }
                 } else {
@@ -504,26 +514,38 @@ class FilterView extends React.PureComponent {
                             let isMathcOne = JSON.stringify(matchMonths).match(matchRegExOne);
 
                             _years[yearIndex]['match'] = (isMathcOne === null) ? 0 : 1;
+                            _years[yearIndex]['showChild'] = true;
                         }
                     }
                 }
             });
 
+            let isPartial = _years.some(checkPartialState);
+            let isOne = _years.some(checkOneState);
+
+            let newYears = JSON.parse(JSON.stringify(_years));
+
             this.setState({
                 filteredYears: [..._years],
+                latestFilterYears: [...newYears],
                 searchValue: searchValue,
+                isNoDataFound: (isPartial === false && isOne === false),
                 maxLevel: maxLevel
             });
 
             this.props.onFilteredDataChange(_years);
+            
+
         } else if (isBlank(searchValue)) {
             this.props.onFilteredDataChange(_years);
             this.setState({
                 isNoDataFound: true
             });
         } else {
+            let newYears = JSON.parse(JSON.stringify(_years));
             this.setState({
                 filteredYears: [..._years],
+                latestFilterYears: [...newYears],
                 searchValue: searchValue,
                 maxLevel: -1
             });
@@ -729,6 +751,11 @@ class FilterView extends React.PureComponent {
         });
     }
 
+    getScrollbarClass() {
+        const { isShowAddToCurrentSelection } = this.props;
+        return (isShowAddToCurrentSelection === true) ? 'VS-FilterViewYear VS-ScrollbarHeight1' : 'VS-FilterViewYear VS-ScrollbarHeight2';
+    }
+
     getCheckBoxClass = () => {
         return 'VS-Check-Checkmark';
     }
@@ -737,26 +764,34 @@ class FilterView extends React.PureComponent {
         const { selectAllResultState } = this.state;
         return (selectAllResultState);
     }
+    
+    getScrollHeight = () => {
+        let { height } = this.props.options;
+        const { isShowAddToCurrentSelection } = this.props;
+        let newHeight = (isShowAddToCurrentSelection === true)? height - 130 : height - 102;
+        let fixedHeight = (isShowAddToCurrentSelection === true)? "70px" : "98px";
+        return (!isUndefinedOrNull(height) && height >= 200)? (newHeight) + 'px' : fixedHeight;
+    }
 
     render() {
         const { options } = this.props;
         const { filteredYears, isSelectAllSearchResult, isAddCurrentSelection, isExcludeFromSelection, isNoDataFound } = this.state;
         const { exclusions, isShowAddToCurrentSelection } = this.props;
         return (
-            <div className="VS-Hierarchy-Filter-List">
-                <div className="mrgL30">
-                    {
-                        (isNoDataFound === true && isSelectAllSearchResult === true) ?
-                            <label className="VS-Checkbox-Container">No Result Found!</label> : ''
-                    }
+            <div>
+                {
+                    (isNoDataFound === true && isSelectAllSearchResult === true) ?
+                        <label className="VS-NoResult">No Result Found!</label> : ''
+                }
+                <div className="mrgL33">
                     {
                         (isNoDataFound === false)?
                         (this.checkSelectAllSearchResultValues()) ?
-                            <label className="VS-Checkbox-Container">Select All Search Results
+                            <label className="VS-Checkbox-Container VS-Action">Select All Search Results
                                     <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
                                 <span className="VS-Check-Checkmark"></span>
                             </label> :
-                            <label className="VS-Checkbox-Container">Select All Search Results
+                            <label className="VS-Checkbox-Container VS-Action">Select All Search Results
                                     <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
                                 <span className="VS-Check-Checkmark VS-Check-Partial"></span>
                             </label> : ''
@@ -767,7 +802,7 @@ class FilterView extends React.PureComponent {
                     }
                     {
                         (isNoDataFound === false && isShowAddToCurrentSelection === true) ?
-                            <label className="VS-Checkbox-Container">Add To Current Selection
+                            <label className="VS-Checkbox-Container VS-Action">Add To Current Selection
                             <input className="VS-Checkbox" type="checkbox" checked={isAddCurrentSelection} onChange={(e) => this.onAddCurrentSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label>
@@ -775,7 +810,7 @@ class FilterView extends React.PureComponent {
                     }
                     {
                         (isNoDataFound === false) ?
-                            <label className="VS-Checkbox-Container">{(exclusions && exclusions.length > 0) ? 'Add To Previous Exclusions' : 'Exclude From Selection'}
+                            <label className="VS-Checkbox-Container VS-Action">{(exclusions && exclusions.length > 0) ? 'Add To Previous Exclusions' : 'Exclude From Selection'}
                                 <input className="VS-Checkbox" type="checkbox" checked={isExcludeFromSelection} onChange={(e) => this.onExcludeFromSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label>
@@ -786,7 +821,7 @@ class FilterView extends React.PureComponent {
                             <hr className="VS-HorizontalLine"></hr> : ''
                     }
                 </div>
-                <div id="VS-Scrollbar" options={options}>
+                <div id="VS-Scrollbar" style={{minHeight: this.getScrollHeight(), maxHeight: this.getScrollHeight()}} className={this.getScrollbarClass()} options={options}>
                     <YearDisplay options={options} isFilterView={true} years={filteredYears} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
                 </div>
             </div>

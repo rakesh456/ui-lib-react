@@ -47,8 +47,18 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
-.mrgL30{
-    margin-left: 30px !important;
+.mrgL43{
+    margin-left: 43px !important;
+}
+
+.mrgL33{
+    margin-left: 33px !important;
+}
+
+.VS-NoResult{
+    text-align: center;
+    margin: 10px auto 0px;
+    display: block;;
 }
 
 .VS-Hidden{
@@ -64,7 +74,7 @@ $font-family: 'Roboto', sans-serif;
 .VS-Checkbox-Container{
     display: inline-block;
     position: relative;
-    padding-left: 24px;
+    padding-left: 23.5px;
     margin-bottom: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -73,6 +83,14 @@ $font-family: 'Roboto', sans-serif;
     -ms-user-select: none;
     user-select: none;
     color: $secondary-two-dark
+}
+
+.VS-Checkbox-Container.VS-Action{
+    margin: 5px 0px;
+}
+
+.VS-Checkbox-Container.VS-ShowChild-Checkbox{
+    margin-left: -5px !important;
 }
 
 .VS-Checkbox-Container input {
@@ -136,83 +154,98 @@ $font-family: 'Roboto', sans-serif;
     transform: rotate(45deg);
 }
 
-.VS-week-Plus-Minus,
+.VS-Week-Plus-Minus,
 .VS-Plus-Minus,
 .VS-Month-Plus-Minus,
 .VS-Quarter-Plus-Minus{
     position: relative;
     border-radius: 5px;
     font-size: 22px;
-    padding: 5px;
+    padding: 5px 10.1px 5px 10.8px;
     font-weight: bold;
     color: #555;
     cursor: pointer;
     top: 2px;
 }
 
+.VS-Week-Plus-Minus.VS-Minus,
+.VS-Plus-Minus.VS-Minus,
+.VS-Month-Plus-Minus.VS-Minus,
+.VS-Quarter-Plus-Minus.VS-Minus{
+    padding: 5px 13px;
+}
+
 .VS-ExpandCollapseSign{
     padding: 5px;
 }
 
-.VS-DayRow{
-    list-style: none;
-    margin: 1px 44px;
-    right: 0;
-}
 
 .VS-MonthRow{
     list-style: none;
-    margin: 5px 16px;
+    margin: 5px 5px 5px 24px;
     right: 30;
 }
 
 .VS-QuarterRow{
     list-style: none;
-    margin: 8px 18px;
+    margin: 5px 5px 5px 25px;
 }
 
 .VS-YearRow{
     list-style: none ;
-    margin: 10px 20px;
+    margin: 5px 1px;
     border: grey
 }
 
 .VS-WeekRow{
     list-style: none;
-    margin: 2px 16px;
+    margin: 5px 24px;
     right: 30;
 }
 
 .VS-WeekDayRow{
     list-style: none;
-    margin: 2px 40px;
+    margin: 5px 10px 5px 60px;
     right: 30; 
 }
+
+.VS-DayRow{
+    list-style: none;
+    margin: 5px 10px 5px 56px;
+    right: 0;
+}
+
 .VS-Hierarchy{
   position: relative;
   background: #fff;
-  width: 305px;
+  width: 315px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
   padding-left: 0px;
   margin: 5px 20px;
   border: 1px solid #ddd;
-//   max-height: 465px;
+//   min-height: 200px;
+//   max-height: 200px;
 }
 
 .VS-Hierarchy #VS-Scrollbar{
-    max-height: 465px;
+    // max-height: 136px;
+    // min-height: 136px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
+.VS-Hierarchy #VS-Scrollbar.VS-FilterViewYear{
+    // max-height: 275px;
+}
+
 .VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight1{
-    max-height: 365px;
+    // max-height: 70px;
 }
 
 .VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight2{
-    max-height: 430px;
+    // max-height: 98px;
 }
 
 .VS-Hierarchy-Searchbox{
@@ -254,7 +287,7 @@ $font-family: 'Roboto', sans-serif;
 
 .VS-Hierarchy-Filter-List .VS-Checkbox-Container{
     list-style: none;
-    margin: 5px 0px;
+    margin: 8px 0px 2px;
     border: grey;
 }
 
@@ -400,7 +433,7 @@ $font-family: 'Roboto', sans-serif;
     height: 9px;
     width: 9px;
     margin-bottom: 0px;
-    margin-left:10px;
+    margin-left: 5px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;

@@ -76,7 +76,7 @@ class MonthView extends React.PureComponent {
                 <div className="VS-MonthRow" key={'month' + monthIndex}>
                     {
                         (month.showChild) ?
-                            <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
+                            <span className="VS-Month-Plus-Minus VS-Minus" onClick={() => this.toggleMonthChild(month, false)}>-</span> :
                             <span className="VS-Month-Plus-Minus" onClick={() => this.toggleMonthChild(month, true)} >+</span>
                     }
                     <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{month.month}<span className="VS-TooltiptextQuarter">{month.month+" "}{year.year}</span></div>
