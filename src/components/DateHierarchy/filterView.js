@@ -137,7 +137,7 @@ class FilterView extends React.PureComponent {
                 }
             }
 
-            console.log(' searchResult ', searchResult);
+            
 
             searchResult.sort((a, b) => {
                 if (a.level > b.level) return -1

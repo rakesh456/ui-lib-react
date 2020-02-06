@@ -934,20 +934,9 @@ describe('check the default date if current date is not in the limit in DD/MM/YY
 
 // // 8. checking the default Year in MM/YYYY format
 describe("checking the default Year in MM/YYYY format",()=>{
-
-  
   test('If default date is in limit then it returns the date value in default date',()=>{
-
-    let options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
-    // wrapper.setState({
-    //   manualEntry: true,
-    //   shouldCalendarOpen: true,
-    //   isDisabled: false
-    // });
     wrapper.update();
     expect(
       wrapper
@@ -957,12 +946,8 @@ describe("checking the default Year in MM/YYYY format",()=>{
   });
 
   test('If default date is not in limit then it returns the date value in default date',()=>{
-
     let options = {"displayFormat": "MM/YYYY", "defaultDate": "10/2019", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     expect(
       wrapper
@@ -972,18 +957,13 @@ describe("checking the default Year in MM/YYYY format",()=>{
   });
 
   test('If default date is undefined in limit then it returns the current date value ',()=>{
-
     let options = {"displayFormat": "MM/YYYY", "defaultDate": undefined, "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     let date = new Date();
     let month = "" + (date.getMonth() + 1);
     month = month.length === 1 ? "0" + month : month;
     let currentDate = [month, date.getFullYear()].join("/");
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -992,14 +972,9 @@ describe("checking the default Year in MM/YYYY format",()=>{
   });
 
   test('If default date is present in disabledDate list then it returns the empty string ',()=>{
-
     let options = {"displayFormat": "MM/YYYY", "defaultDate": '10/2024', "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1009,12 +984,8 @@ describe("checking the default Year in MM/YYYY format",()=>{
 
 
   test('If default date is empty string then it returns blank string',()=>{
-
     let options = {"displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     expect(
       wrapper
@@ -1024,12 +995,8 @@ describe("checking the default Year in MM/YYYY format",()=>{
   });
 
   test('If default date is any random string then it returns blank string',()=>{
-
-    let options = {"displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-
-    
+    let options = {"displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};    
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     expect(
       wrapper
@@ -1046,9 +1013,7 @@ describe('checking the default Year in QQ/YYYY format',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
 
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1058,11 +1023,8 @@ describe('checking the default Year in QQ/YYYY format',()=>{
 
   test('If default date is previous quater/year then lower limit then it return blank string',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2016", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1072,11 +1034,8 @@ describe('checking the default Year in QQ/YYYY format',()=>{
 
   test('If default date is after quater/year then upper limit then it return blank string',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2039", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2016", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1097,14 +1056,10 @@ describe('checking the default Year in QQ/YYYY format',()=>{
         .props().value
     ).toEqual("");
   })
-
   test('If default date is empty string then it returns blank string',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1114,11 +1069,8 @@ describe('checking the default Year in QQ/YYYY format',()=>{
 
   test('If default date is random string then it returns blank string',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1128,9 +1080,7 @@ describe('checking the default Year in QQ/YYYY format',()=>{
 
   test('If default date is  undefined then it returns current date quater/year',()=>{
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": undefined, "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q1/2015","Q2/2011", "Q3/2011", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     let date = new Date()
     let month = date.getMonth() + 1
@@ -1147,15 +1097,10 @@ describe('checking the default Year in QQ/YYYY format',()=>{
 
 // // 10.checking the default Year in YYYY format
 describe('checking the default Year in YYYY format',()=>{
-
   test('testing',()=>{
-
     const options = {"displayFormat": "YYYY", "defaultDate": "2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1165,13 +1110,9 @@ describe('checking the default Year in YYYY format',()=>{
   })
 
   test('If default year is previous year to lower limit then it returns blank string',()=>{
-
     const options = {"displayFormat": "YYYY", "defaultDate": "2001", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1181,13 +1122,9 @@ describe('checking the default Year in YYYY format',()=>{
   })
 
   test('If default year is after year to upper limit then it returns blank string',()=>{
-
     const options = {"displayFormat": "YYYY", "defaultDate": "2027", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1197,13 +1134,9 @@ describe('checking the default Year in YYYY format',()=>{
   })
 
   test('If default year is present in diabled list then it returns blank string',()=>{
-
     const options = {"displayFormat": "YYYY", "defaultDate": "2010", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
-
     expect(
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
@@ -1216,9 +1149,7 @@ describe('checking the default Year in YYYY format',()=>{
   test('If default year is undefined then it returns current year',()=>{
 
     const options = {"displayFormat": "YYYY", "defaultDate": undefined, "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
-
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     let date = new Date()
     let currentYear = ""+date.getFullYear()
@@ -1235,7 +1166,6 @@ describe('checking the default Year in YYYY format',()=>{
     const options = {"displayFormat": "YYYY", "defaultDate": "", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
 
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     expect(
       wrapper
@@ -1250,7 +1180,6 @@ describe('checking the default Year in YYYY format',()=>{
     const options = {"displayFormat": "YYYY", "defaultDate": "ABCD", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2010","2007", "2008", "2015"]}
 
     const wrapper = mount(<DatePicker options={options} />);
-    // console.log(wrapper.debug())
     wrapper.update();
     expect(
       wrapper
@@ -1273,9 +1202,7 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
-    expect(wrapper.find('button').at(1).text()).toEqual('OK')
+  expect(wrapper.find('button').at(1).text()).toEqual('OK')
   })
 
   test("If showButtons is True and pass 'JSTigers' to dateButtonPrimary then the button label will show 'JSTigers'",()=>{
@@ -1288,8 +1215,6 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('button').at(1).text()).toEqual('JSTigers')
   })
 
@@ -1303,8 +1228,6 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('button').at(1).text()).toEqual('Select')
   })
 
@@ -1318,8 +1241,6 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('button').at(0).text()).toEqual('Clear')
   })
 
@@ -1333,8 +1254,6 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('button').at(0).text()).toEqual('JSTigers')
   })
 
@@ -1348,8 +1267,6 @@ describe('Check cancel and ok buttons value are setting properly or not using da
       shouldCalendarOpen: true,
       isDisabled: false
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('button').at(0).text()).toEqual('Clear')
   })
 
@@ -1357,62 +1274,44 @@ describe('Check cancel and ok buttons value are setting properly or not using da
 
 // 12.Check next and previous icon disabled or not based on lowerLimit and upperLimit options
 describe('Check next and previous icon disabled or not based on lowerLimit and upperLimit options,',()=>{
-
-  
-
   test('If default date has same month and year as lower limit then left icon in datePicker is disabled',()=>{
-
     let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "25/09/2020", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "25/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
-
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
       manualEntry: true,
       shouldCalendarOpen: true,
       isDisabled: false,
-      
     });
-    // console.log(wrapper.debug())
-
     expect(wrapper.find('svg').at(1).props().className).toMatch(/VS-DisabledIcon/)
-
   })
 
   test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
-
     let options = {"displayFormat": "MM/DD/YYYY", "defaultDate": "02/01/2022", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "02/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
-
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
       manualEntry: true,
       shouldCalendarOpen: true,
       isDisabled: false,
     });
-    // console.log(wrapper.debug())
     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
 
   })
 
   test('If default date is in between lower and upper limit the both the icon is enabled',()=>{
-
     let options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "01/01/2021", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "09/09/2020", "upperLimit": "01/01/2022", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2020", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]};
-
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
       manualEntry: true,
       shouldCalendarOpen: true,
       isDisabled: false,
     });
-    // console.log(wrapper.debug())
     expect(wrapper.find('svg').at(1).props().className).toMatch('VS-PullLeft VS-Icon')
     expect(wrapper.find('svg').at(2).props().className).toMatch('VS-PullRight VS-Icon')
 
   })
 
   test('If default date has same month and year as upper limit then right icon in datePicker is disabled',()=>{
-      
     let options = {"displayFormat": "MM/YYYY", "defaultDate": "02/24/2021", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "01/21/2022", "upperLimit": "02/24/2021", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]};
-        
-
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
       manualEntry: true,
@@ -1420,11 +1319,8 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    console.log(wrapper.debug())
     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
-
   })
 
   // test('If default date has same month and year as lower limit then left icon in datePicker is disabled',()=>{
@@ -1449,9 +1345,7 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
 
 // 13.Check months and years disabled or not based on lowerLimit and upperLimit options
 describe("Check months and years disabled or not based on lowerLimit and upperLimit options",()=>{
-
   test('testing next year',()=>{
-
     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/02/2001", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
@@ -1462,11 +1356,8 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       showYearSelection:false
       
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(2).simulate('click')
     wrapper.update()
-    // console.log(wrapper.debug())
-    console.log(wrapper.find('span').at(4).props())
     expect(wrapper.find('span').at(4).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1480,13 +1371,9 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(1).simulate('click')
     wrapper.update()
-    // console.log(wrapper.debug())
-    console.log(wrapper.find('span').at(3).props())
     expect(wrapper.find('span').at(3).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1501,19 +1388,14 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(1).simulate('click')
     wrapper.find('span').at(1).simulate('click')
     wrapper.update()
-    // console.log(wrapper.debug())
-    console.log(wrapper.find('span').at(11).props())
     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
   })
 
   test('testing next month',()=>{
-
     const options = {"displayFormat": "MM/YYYY", "defaultDate": "11/2034", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/05/2001", "upperLimit": "09/02/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
@@ -1522,19 +1404,14 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(2).simulate('click')
     wrapper.find('span').at(3).simulate('click')
     wrapper.update()
-    // console.log(wrapper.debug())
-    console.log(wrapper.find('span').at(11).props())
     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
   })
 
   test('testing prev year for format QQ/YYYY',()=>{
-
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
@@ -1543,18 +1420,13 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(1).simulate('click')
     wrapper.update()
-    // console.log(wrapper.debug())
-    // console.log(wrapper.find('span').at(8).props())
     expect(wrapper.find('span').at(8).props().className).toMatch(/VS-Disabled/)
   })
 
   test('testing next year for format QQ/YYYY',()=>{
-
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"]}
     const wrapper = mount(<DatePicker options = {options}/>)
     wrapper.setState({
@@ -1565,11 +1437,8 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       showYearSelection:false
       
     });
-    console.log(wrapper.debug())
     wrapper.find('svg').at(2).simulate('click')
     wrapper.update()
-    console.log(wrapper.debug())
-    // console.log(wrapper.find('span').at(8).props())
     expect(wrapper.find('span').at(11).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1585,12 +1454,9 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       showYearSelection:false
       
     });
-    console.log(wrapper.debug())
     wrapper.find('svg').at(1).simulate('click')
     wrapper.find('span').at(9).simulate('click')
     wrapper.update()
-    console.log(wrapper.debug())
-    // console.log(wrapper.find('span').at(8).props())
     expect(wrapper.find('span').at(1).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1604,15 +1470,9 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    // console.log(wrapper.debug())
     wrapper.find('svg').at(2).simulate('click')
     wrapper.find('span').at(4).simulate('click')
-    
-    // wrapper.update()
-    console.log(wrapper.debug())
-    // console.log(wrapper.find('span').at(8).props())
     expect(wrapper.find('span').at(4).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1626,15 +1486,9 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       isDisabled : false,
       showMonthSelection:false,
       showYearSelection:false
-      
     });
-    console.log(wrapper.debug())
     wrapper.find('svg').at(1).simulate('click')
-    // wrapper.find('span').at(4).simulate('click')
-    
     wrapper.update()
-    console.log(wrapper.debug())
-    // console.log(wrapper.find('span').at(8).props())
     expect(wrapper.find('span').at(7).props().className).toMatch(/VS-Disabled/)
   })
 
@@ -1642,9 +1496,7 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
 
 // 14.Check month and year is active or not based on current selected date
 describe('Check month and year is active or not based on current selected date',()=>{
-
   test('testing ',()=>{
-
     const options = {"displayFormat": "DD/MM/YYYY", "defaultDate": "19/11/2019", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "19/11/2019", "upperLimit": "18/11/2020", "validationMessages1": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": true, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2021", "20/11/2022", "06/2018", "07/2018", "07/2015", "2017", "ABCD"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}
     const wrapper = mount(<DatePicker options = {options}  onSelect = {()=>{}}/>)
         wrapper.setState({
@@ -1654,11 +1506,10 @@ describe('Check month and year is active or not based on current selected date',
           showMonthSelection:true,
           showYearSelection:false,
           selectedDate: "19/11/2019"
-          
         });
         // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
         wrapper.update()
-        console.log(wrapper.debug())
+        // console.log(wrapper.debug())
         // console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(11).props().title)
         // console.log(wrapper.find('span').at(14).props())
         // expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
@@ -1678,9 +1529,9 @@ describe('Check month and year is active or not based on current selected date',
           });
           wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
   
-          console.log(wrapper.debug())
-          console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(12).props().title)
-          console.log(wrapper.find('span').at(14).props())
+          // console.log(wrapper.debug())
+          // console.log(wrapper.find('.VS-Day.VS-Medium-UPPER-Case').at(12).props().title)
+          // console.log(wrapper.find('span').at(14).props())
           expect(wrapper.find('span').at(14).props().className).toMatch('VS-CalDay VS-DaySelected VS-PadExtra')
     })
 
@@ -1742,14 +1593,11 @@ describe('Check date properly select or not when click of any day',()=>{
       showYearSelection:false
       
     });
-    // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
     wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-    // console.log(wrapper.debug())
     expect(wrapper.find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft").props().value).toEqual('01/01/2019')
 })
 
 test('Check When display format is MM/YYYY then if click event happen then some date is got selected or not',()=>{
-
   const options = {"displayFormat": "MM/YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
   const wrapper = mount(<DatePicker options = {options} sele/>)
   wrapper.setState({
@@ -1760,19 +1608,12 @@ test('Check When display format is MM/YYYY then if click event happen then some 
           showYearSelection:false
           
         });
-  // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
-  // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-  // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
-  console.log(wrapper.debug())
   wrapper.find(".VS-Year").at(0).simulate('click')
-  console.log(wrapper.debug())
   wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
-  console.log(wrapper.find('input').props())
   expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('01/2010')
   })
 
   test('Check When display format is QQ/YYYY then if click event happen then some date is got selected or not',()=>{
-
     const options = {"displayFormat": "QQ/YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
     const wrapper = mount(<DatePicker options = {options} sele/>)
     wrapper.setState({
@@ -1783,19 +1624,11 @@ test('Check When display format is MM/YYYY then if click event happen then some 
             showYearSelection:false
             
           });
-    // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
-    // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-    // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
-    console.log(wrapper.debug())
     wrapper.find(".VS-Year").at(0).simulate('click')
-    console.log(wrapper.debug())
     wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
-    console.log(wrapper.find('input').props())
     expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('Q1/2010')
     })
-
     test('Check When display format is YYYY then if click event happen then some date is got selected or not',()=>{
-
       const options = {"displayFormat": "YYYY", "defaultDate": "06/12/2014", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/01/2001", "upperLimit": "09/01/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"]}
       const wrapper = mount(<DatePicker options = {options} sele/>)
       wrapper.setState({
@@ -1804,14 +1637,8 @@ test('Check When display format is MM/YYYY then if click event happen then some 
               isDisabled : false,
               showMonthSelection:false,
               showYearSelection:false
-              
             });
-      // .VS-Day.VS-Medium-UPPER-Case.VS-DayStart
-      // wrapper.find('.VS-Day.VS-Medium-UPPER-Case .VS-CalDay.VS-NormalDay.VS-PadExtra').at(0).simulate('click')
-      // console.log(wrapper.find('.VS-CalendarContainer.VS-modal.VS-shape-rounded-fill-for-year').debug())/
       wrapper.find(".VS-Year").at(0).simulate('click')
-      // wrapper.find('.VS-MonthQuarter').at(0).simulate('click')
-      // console.log(wrapper.find('input').props())
       expect(wrapper.find('.VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft').props().value).toEqual('2010')
       })
 })

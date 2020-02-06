@@ -18,17 +18,12 @@ class YearsView extends React.PureComponent {
     constructor(props) {
         super(props);
         const { options, showHeaderSelection } = this.props;
-        
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
-        console.log(lowerYearLimit)
         const { upperYearLimit } = getYYYYForUpperLimit(options);
-        console.log(upperYearLimit)
         let year = new Date().getFullYear();
         // let year = upperYearLimit;
         year = parseInt(year);
-        console.log(year)
         this.state = { year: year, isDisabledPrev: ((year - 11) < lowerYearLimit) ? true : false, isDisabledNext: ((year + 1) >= upperYearLimit)? true : false, showHeaderSelection: (showHeaderSelection === true), displayYearName: ""};
-        console.log(this.state.isDisabledPrev)
     }
     
     componentDidMount() {
@@ -69,9 +64,7 @@ class YearsView extends React.PureComponent {
     
     getYears = () => {
         const { year } = this.state;
-        console.log(year)
         const _array = getYearsList(year);
-        console.log(_array)
         return splitArray(_array, 3);
     }
     

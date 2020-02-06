@@ -853,7 +853,6 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     onAddCurrentSelectionChange = ({ target }) => {
-        console.log('target',target)
         this.setState({
             isAddCurrentSelection: target.checked,
             isExcludeFromSelection: !target.checked

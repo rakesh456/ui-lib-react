@@ -181,8 +181,8 @@ test('All the children should be checked if the checkbox of parent is checked', 
     let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": ['1/1/2020', '04/1/2020'] };
     let wrapper = shallow(<DatehierarchyView options={options} />);
 
-    console.log(wrapper.debug());
-    console.log(wrapper.find('.VS-MonthRow .VS-Checkbox').props());
+    // console.log(wrapper.debug());
+    // console.log(wrapper.find('.VS-MonthRow .VS-Checkbox').props());
     // console.log('years',wrapper.instance());
 })
 
@@ -301,15 +301,36 @@ describe("Toggle the check box sign on clicking it, it should be either checked 
 
 // 10. On checking the parent's checkbox all type of its child's checkbox should also be checked.
 describe('On checking the parents checkbox all type of its childs checkbox should also be checked.',()=>{
-    test('testing',()=>{
+    test('testing Year as parent and child as months',()=>{
         let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": [] }
         const wrapper = mount(<DatehierarchyView options={options} />)
         wrapper.find('.VS-Plus-Minus').simulate('click')
         wrapper.find("input").at(2).simulate('change')
-        // console.log(wrapper.debug())
-        // expect(wrapper.find("input").at(2).props().checked).toEqual(true)
-
+        for(let i = 0;i<12;i++){
+        expect(wrapper.find(".VS-MonthRow .VS-Checkbox").at(i).props().checked).toEqual(true)
+        }
     })
+
+    test('testing Year as parent and child as quaters',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": true, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find("input").at(2).simulate('change')
+        for(let i = 0;i<4;i++){
+        expect(wrapper.find(".VS-QuarterRow .VS-Checkbox").at(i).props().checked).toEqual(true)
+        }
+    })
+
+    test('testing Year as quaters and child as months',()=>{
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": true, "disabledList": [] }
+        const wrapper = mount(<DatehierarchyView options={options} />)
+        wrapper.find('.VS-Plus-Minus').simulate('click')
+        wrapper.find("input").at(2).simulate('change')
+        wrapper.find('.VS-Quarter-Plus-Minus').at(0).simulate('click')
+        for(let i = 0;i<3;i++){
+        expect(wrapper.find(".VS-MonthRow .VS-Checkbox").at(i).props().checked).toEqual(true)
+        }
+        })
 })
 
 // 11. Parent's checkbox should be partially checked if all the child's of the same are not checked.
@@ -337,22 +358,21 @@ describe(' Check years list status after close click first time',()=>{
 })
 
 // 31. Check years list status after add to current selection  issue 
-// describe('Check years list status after add to current selection',()=>{
+describe('Check years list status after add to current selection',()=>{
 
-//     test('testing',()=>{
+    test('testing',()=>{
 
-//         let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
-//         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
-//         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
-//         // console.log(wrapper.debug())
-//         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
-//         console.log(wrapper.debug())
-//         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(-1)
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        // console.log(wrapper.debug())
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual()
 
 
-//     })
+    })
 
-// })
+})
 
 // 34. For first time searching add to current selection should be hide
 // describe('For first time searching add to current selection should be hide',()=>{
@@ -389,7 +409,6 @@ describe('State of select all checkbox should be checked if everything is checke
         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
         wrapper.find('Input').simulate('change',{target:{value:'2020'}})
         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
-        console.log(wrapper.debug())
         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(true)
 
     })
@@ -520,22 +539,19 @@ describe('State of select all checkbox should be checked if everything is checke
     test('State of select all should be 1 if everything is checked',()=>{
         let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
-        console.log(wrapper.debug())
-        console.log(wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}}))
-        console.log(wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :true}}))
+        wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}})
+        wrapper.find('.VS-Checkbox').at(2).simulate('change',{target:{checked :true}})
         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(true)
     })
     test('State of select all should be -1 if something is not checked.',()=>{
         let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
         const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
-        console.log(wrapper.debug())
-        console.log(wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}}))
+        wrapper.find('.VS-Checkbox').at(1).simulate('change',{target:{checked :true}})
         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(true)
     })
     test('State of select all should be 0 if no item is  checked.',()=>{
         let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
-        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
-        console.log(wrapper.debug())      
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)     
         expect(wrapper.find('.VS-Checkbox').at(0).props().checked).toEqual(false)
     })
 })
@@ -563,7 +579,7 @@ describe('During search either it is first time or other time select all search 
         wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
 
         // console.log(wrapper.debug());
-    
+        
 
 
     })
