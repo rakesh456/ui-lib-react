@@ -10,8 +10,6 @@ class YearDisplay extends React.PureComponent {
     }
 
     getYears() {
-        // const { isSearching, years, filteredYears } = this.state;
-        // return (isSearching === true) ? [...filteredYears] : [...years];
         return this.props.years;
     }
 

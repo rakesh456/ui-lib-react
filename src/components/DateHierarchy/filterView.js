@@ -23,8 +23,7 @@ class FilterView extends React.PureComponent {
         return this.state.filteredYears;
     }
 
-    componentDidMount() {
-        // let years = [...this.props.years];
+    componentDidMount() {        
         this.setState({ filteredYears: [...this.props.listOfYears] });
     }
 
@@ -103,8 +102,7 @@ class FilterView extends React.PureComponent {
         searchValue = (searchValue) ? searchValue.toLowerCase() : '';
         searchValue = searchValue.replace(/ /g, '');
 
-        let { searchObj } = this.state;
-        // let { listOfYears } = this.props;
+        let { searchObj } = this.state;        
         const { options } = this.props;
         let listOfYears = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
 
@@ -391,8 +389,7 @@ class FilterView extends React.PureComponent {
 
                                     if (foundMonth || (maxLevel === 3 && searchResult.length === weeks.length)) {
                                         _years[yearIndex]['state'] = 1;
-                                        _years[yearIndex]['months'][monthIndex]['state'] = 1;
-                                        // _years[yearIndex]['months'][monthIndex]['showChild'] = true;
+                                        _years[yearIndex]['months'][monthIndex]['state'] = 1;                                        
                                         let newWeeks = JSON.stringify(weeks).replace(stateRegExZero, '"state":1').replace(matchRegEx, '"match":1');
                                         _years[yearIndex]['months'][monthIndex]['weeks'] = [...JSON.parse(newWeeks)];
 
@@ -479,8 +476,6 @@ class FilterView extends React.PureComponent {
                                                 let foundDay = false;
                                                 if (!foundMonth) {
                                                     foundDay = this.searchStringExists(searchResult, 3, day.date);
-                                                    // foundDay = this.itemExists(searchResult, 3, dayIndex, day.day);
-
                                                     _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['match'] = _years[yearIndex]['months'][monthIndex]['days'][dayIndex]['state'] = (foundDay) ? 1 : 0;
 
                                                 }
@@ -566,8 +561,6 @@ class FilterView extends React.PureComponent {
             this.updateResultState([...years], quarterObj, false, true, false, false, false);
 
         });
-
-        // this.props.onChangeQuarter(quarterObj);
     }
 
     onChangeMonthHandler = (monthObj) => {
@@ -581,8 +574,6 @@ class FilterView extends React.PureComponent {
             this.updateResultState([...years], monthObj.month, false, false, true, false, false);
 
         });
-
-        // this.props.onChangeMonth(monthObj);
     }
 
     onChangeWeekHandler = (weekObj) => {
@@ -595,8 +586,6 @@ class FilterView extends React.PureComponent {
 
             this.updateResultState([...years], weekObj.week, false, false, false, true, false);
         });
-
-        // this.props.onChangeWeek(weekObj);
     }
 
     onChangeDayHandler = (dayObj) => {
@@ -608,8 +597,6 @@ class FilterView extends React.PureComponent {
             })
             this.updateResultState([...years], dayObj.day, false, false, false, false, true);
         });
-
-        // this.props.onChangeDay(dayObj);
     }
 
     onChangeWeekDayHandler = (weekDaysObj) => {
@@ -621,8 +608,6 @@ class FilterView extends React.PureComponent {
             })
             this.updateResultState([...years], weekDaysObj.day, false, false, false, false, true);
         });
-
-        // this.props.onChangeWeekDay(weekDaysObj);
     }
 
     updateResultState = (years, obj, isYear, isQuarter, isMonth, isWeek, isDay) => {
@@ -710,7 +695,6 @@ class FilterView extends React.PureComponent {
             }
         });
 
-        //this.props.onUpdateFilterCheckbox(!isZero);
         let isPartial = years.some(checkPartialState);
         let isOne = years.some(checkOneState);
 
