@@ -508,3 +508,7 @@ $font-family: 'Roboto', sans-serif;
     margin-bottom: 2px;
     margin-left: 0px;
 }
+
+.VS-SearchBox::-ms-clear {
+    display: none;
+}

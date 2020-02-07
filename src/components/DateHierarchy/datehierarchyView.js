@@ -8,6 +8,8 @@ import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
+const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line
+const showChildRegExFalse = /\"showChild\":false/gi // eslint-disable-line
 class DatehierarchyView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -1164,6 +1166,8 @@ class DatehierarchyView extends React.PureComponent {
                     this.excludeFromSelection(years, (resultExclusion), (resultYears) => {
                         let _selections = resultYears.map(a => Object.assign({}, a));
                         _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                        resultYears = this.convertShowChild(resultYears, false);
+
                         this.setState({
                             isSearching: false,
                             isAddCurrentSelection: false,
@@ -1175,11 +1179,11 @@ class DatehierarchyView extends React.PureComponent {
                             exclusions: [..._exclusions],
                             selections: [..._selections],
                             filterSum: 0,
-                            years: [...resultYears],
+                            years: [...JSON.parse(resultYears)],
                             selectAllResultState: true
                         });
     
-                        this.updateSelectAllCheckboxHandler([...resultYears], null, true);
+                        this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                     });
                 });
             } else {
@@ -1187,6 +1191,8 @@ class DatehierarchyView extends React.PureComponent {
                     if (isAddCurrentSelection === true) {
                         this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
                             let _selections = resultYears.map(a => Object.assign({}, a));
+                            resultYears = this.convertShowChild(resultYears, false);
+
                             this.setState({
                                 isSearching: false,
                                 isAddCurrentSelection: false,
@@ -1197,11 +1203,11 @@ class DatehierarchyView extends React.PureComponent {
                                 listOfYears: [...yearList],
                                 selections: [..._selections],
                                 filterSum: 0,
-                                years: [...resultYears],
+                                years: [...JSON.parse(resultYears)],
                                 selectAllResultState: true
                             });
     
-                            this.updateSelectAllCheckboxHandler([...resultYears], null, true);
+                            this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                         });
     
                     } else if (isExcludeFromSelection === true) {
@@ -1210,6 +1216,8 @@ class DatehierarchyView extends React.PureComponent {
                             this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {
                                 let _selections = resultYears.map(a => Object.assign({}, a));
                                 _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                                resultYears = this.convertShowChild(resultYears, false);
+
                                 this.setState({
                                     isSearching: false,
                                     isAddCurrentSelection: false,
@@ -1221,11 +1229,11 @@ class DatehierarchyView extends React.PureComponent {
                                     exclusions: [..._exclusions],
                                     selections: [..._selections],
                                     filterSum: 0,
-                                    years: [...resultYears],
+                                    years: [...JSON.parse(resultYears)],
                                     selectAllResultState: true
                                 });
     
-                                this.updateSelectAllCheckboxHandler([...resultYears], null, true);
+                                this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                             });
                         });
     
@@ -1239,7 +1247,9 @@ class DatehierarchyView extends React.PureComponent {
                         this.updateSelectAllCheckboxHandler([...years], null, true);
                     }
                 } else if (_selections.length <= 0) {
-                    var _newselections = filteredData.map(a => Object.assign({}, a));
+                    var newselections = filteredData.map(a => Object.assign({}, a));
+                    filteredData = this.convertShowChild(filteredData, false);
+                    
                     this.setState({
                         isSearching: false,
                         isAddCurrentSelection: false,
@@ -1248,37 +1258,45 @@ class DatehierarchyView extends React.PureComponent {
                         searchValue: "",
                         lastFilterData: _lastFilterData,
                         listOfYears: [...yearList],
-                        selections: [..._newselections],
-                        years: [...filteredData],
+                        selections: [...newselections],
+                        years: [...JSON.parse(filteredData)],
                         selectAllResultState: true
                     });
     
-                    this.updateSelectAllCheckboxHandler([...filteredData], null, true);
+                    this.updateSelectAllCheckboxHandler([...JSON.parse(filteredData)], null, true);
                 } else {
+                    years = this.convertShowChild(years, false);
+
                     this.setState({
                         isSearching: false,
                         isAddCurrentSelection: false,
                         isExcludeFromSelection: false,
                         isNoDataFound: false,
                         searchValue: "",
-                        years: [...years],
+                        years: [...JSON.parse(years)],
                         selectAllResultState: true
                     });
                 }
             }
         } else {
+            years = this.convertShowChild(years, false);
+
             this.setState({
                 isSearching: false,
                 isAddCurrentSelection: false,
                 isExcludeFromSelection: false,
                 isNoDataFound: false,
                 searchValue: "",
-                years: [...years],
+                years: [...JSON.parse(years)],
                 selectAllResultState: true,
                 isSelectAllSearchResult: true
             });
-            this.updateSelectAllCheckboxHandler([...years], null, true);
+            this.updateSelectAllCheckboxHandler([...JSON.parse(years)], null, true);
         }
+    }
+
+    convertShowChild = (data, flag) => {
+        return (flag === false)? JSON.stringify(data).replace(showChildRegExTrue, '"showChild":false') : JSON.stringify(data).replace(showChildRegExFalse, '"showChild":true');
     }
 
     getCheckBoxClass = () => {
