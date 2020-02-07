@@ -121,8 +121,8 @@ class YearDisplay extends React.PureComponent {
                 <div className="VS-YearRow" key={'year' + index} >
                     {
                         (year.showChild) ?
-                            <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, false)}><span className="VS-ExpandCollapseSign">-</span></span> :
-                            <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, true)}><span className="VS-ExpandCollapse">+</span></span>
+                            <span className="VS-Year-Plus-Minus" onClick={() => this.toggleYearChild(year, false)}><span className="VS-ExpandCollapseSign">-</span></span> :
+                            <span className="VS-Year-Plus-Minus" onClick={() => this.toggleYearChild(year, true)}><span className="VS-ExpandCollapse">+</span></span>
                     }
                     <label className={this.getLabelContainerClass(year)} key={'year' + index}>{year.year}
                         {

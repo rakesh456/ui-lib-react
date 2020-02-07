@@ -1358,25 +1358,24 @@ class DatehierarchyView extends React.PureComponent {
                     </span>
                     <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus} onBlur={this.onBlur} onInput={this.onInput} />
 
-                    <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-
+                    <span className={`VS-Clear-Filter ${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                        
                         <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
-                        {
-                            (isSearching === true) ? <div className='VS-refresh-tooltip'><span>Clear</span></div> : ""
-                        }
+                        <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        <div className='VS-Clear-Tooltip'><span>Clear Filter</span></div>
 
                     </span>
                     {
                         (isSearching === true) ?
-                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                            <span className={`VS-Close-Filter ${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                                <div className='VS_cross_tool_tip'>
+                                <div className='VS-Cross-Tooltip'>
                                     <span>Close</span>
                                 </div>
                             </span> : ''
                     }
                 </div>
-                <div className="VS-Hierarchy-Filter-List mrgL33">
+                <div className="VS-Hierarchy-Filter-List mrgL34">
                     {
                         (isSearching === false) ?
                             (this.checkSelectAllValues()) ?

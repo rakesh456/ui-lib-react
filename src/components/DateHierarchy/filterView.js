@@ -736,7 +736,7 @@ class FilterView extends React.PureComponent {
                     (isNoDataFound === true && isSelectAllSearchResult === true) ?
                         <label className="VS-NoResult">No Result Found!</label> : ''
                 }
-                <div className="mrgL33">
+                <div className="mrgL34">
                     {
                         (isNoDataFound === false)?
                         (this.checkSelectAllSearchResultValues()) ?
