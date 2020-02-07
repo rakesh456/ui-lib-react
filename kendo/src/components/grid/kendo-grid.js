@@ -81,18 +81,19 @@ class KendoGrid extends React.Component {
       dataState: dataState,
       currentLocale: this.locales[0]
     };
+    
   }
 
-  
+
   expandChange = (event) => {
     const isExpanded =
-    event.dataItem.expanded === undefined ?
-    event.dataItem.aggregates : event.dataItem.expanded;
+      event.dataItem.expanded === undefined ?
+        event.dataItem.aggregates : event.dataItem.expanded;
     event.dataItem.expanded = !isExpanded;
 
     this.setState({ ...this.state });
   }
-  
+
   _pdfExport;
   exportExcel = () => {
     this._export.save();
@@ -102,37 +103,86 @@ class KendoGrid extends React.Component {
   exportPDF = () => {
     this._pdfExport.save();
   }
-  
+
   dataStateChange = (event) => {
-    console.log('eventgrid',event.data.filter.filters);
-    console.log('dataresults',this.state.dataResult);
-    console.log('order',orders,'datastate',this.state.dataState);
+    console.log('dataStateChangecalled',JSON.stringify(event.data));
+    // console.log('eventgrid', event.nativeEvent.data);
+    // console.log('dataresults', this.state.dataResult);
+    // console.log('order', orders, 'datastate', this.state.dataState);
     this.setState({
       dataResult: process(orders, event.data),
       dataState: event.data
     });
   }
-
   Search = (event) => {
-    console.log('event',event);
-    // console.log('orders',orders);
-    this.setState({
-      dataResult: process(orders, event.target.value),
-      dataState: this.state.dataState
+    let datajson = [{
+      "orderID": 10271,
+      "customerID": "SPLIR",
+      "employeeID": 6,
+      "orderDate": "1996-08-01 00:00:00.000",
+      "requiredDate": "1996-08-29 00:00:00.000",
+      "shippedDate": "1996-08-30 00:00:00.000",
+      "shipVia": 2,
+      "freight": 4.54,
+      "shipName": "Split Rail Beer & Ale",
+      "shipAddress": {
+        "street": "P.O. Box 555",
+        "city": "Lander",
+        "region": "WY",
+        "postalCode": 82520,
+        "country": "USA"
+      },
+      "details": [
+        {
+          "productID": 33,
+          "unitPrice": 2,
+          "quantity": 24,
+          "discount": 0
+        }
+      ]
+    }];
+    let coulmns = ["customerId", "shipName", "freight", "employeeID"]
+    for(var i = 0; i < coulmns.length; i++){
+      this.setState({
+      dataResult: process(orders,{
+        "filter": {
+          "logic": "and",
+          "filters": [
+            {
+              "field": coulmns[i],
+              "operator": "contains",
+              "value": event.target.value
+            }
+          ]
+        },
+        "sort": [
+          {
+            "field": "orderDate",
+            "dir": "desc"
+          }
+        ],
+        "skip": 0,
+        "take": 20,
+        "group": [
+          {
+            "field": "customerID"
+          }
+        ]
+      }),
     });
-    console.log('dataState',this.state.dataState)
   }
-  
+  }
+
+   
+
   render() {
-    console.log()
     return (
       <LocalizationProvider language={this.state.currentLocale.language}>
         <IntlProvider locale={this.state.currentLocale.locale} >
           <div>
-            <input type="text" placeholder="Search"  data={this.state.dataResult}
-                {...this.state.dataState} onChange={this.Search}
-               ></input>
-                
+            <input type="text" placeholder="Search" data={this.state.dataResult}
+              {...this.state.dataState} onChange={this.Search}
+            ></input>
             <ExcelExport
               data={orders}
               ref={(exporter) => { this._export = exporter; }}
@@ -215,6 +265,7 @@ class KendoGrid extends React.Component {
                 </Grid>
               }
             </GridPDFExport>
+
           </div>
         </IntlProvider>
       </LocalizationProvider>
