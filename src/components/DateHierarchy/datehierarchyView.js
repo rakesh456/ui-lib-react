@@ -6,6 +6,8 @@ import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
+import compass from "react-icons/lib/fa/compass";
+const stateRegExOne = /\"state\":1/gi // eslint-disable-line
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
 const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line

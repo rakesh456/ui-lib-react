@@ -21,12 +21,10 @@ class MonthsView extends React.PureComponent {
     constructor(props) {
         super(props);
         const { options, showHeaderSelection } = this.props;
-        
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
         const year = parseInt(currentDateYear);
-        
         this.state = { sDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false, showHeaderSelection: (showHeaderSelection === true), year: year};
     }
     
