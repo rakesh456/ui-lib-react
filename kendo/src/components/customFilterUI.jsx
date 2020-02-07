@@ -43,8 +43,8 @@ export class CustomFilterUI extends React.Component {
                     checked={value === true}
                     onChange={this.onChange}
                 />
-                <label htmlFor="bool-false">&nbsp;equal</label>                
-                <br/>
+                <label htmlFor="bool-false">&nbsp;equal</label>
+                <br />
                 <input
                     name="not equal"
                     type="radio"
@@ -53,7 +53,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;start with</label>
-                <br/>
+                <br />
                 <input
                     name="end with"
                     type="radio"
@@ -62,7 +62,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;end with</label>
-                <br/>
+                <br />
                 <input
                     name="null"
                     type="radio"
@@ -71,7 +71,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;null</label>
-                <br/>
+                <br />
                 <input
                     name="not null"
                     type="radio"
@@ -80,7 +80,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;not null</label>
-                <br/>
+                <br />
                 <input
                     name="empty"
                     type="radio"
@@ -89,7 +89,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;empty</label>
-                <br/>
+                <br />
                 <input
                     name="not empty"
                     type="radio"
@@ -98,7 +98,7 @@ export class CustomFilterUI extends React.Component {
                     onChange={this.onChange}
                 />
                 <label htmlFor="bool-false">&nbsp;not empty</label>
-                <input type = "text" />
+                <input type="text" />
             </div>
         );
     }
