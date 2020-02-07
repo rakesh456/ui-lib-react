@@ -508,3 +508,26 @@ describe('Search for any data any if user manually unchecking the data after sea
     })
 })
 
+// 41.During search either it is first time or other time select all search results should be there which is checked uncheked and partial checked according to the searched data
+describe('During search either it is first time or other time select all search results should be there which is checked uncheked and partial checked according to the searched data',()=>{
+    test('when searching first time',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2020", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        console.log(wrapper.debug());
+        expect(wrapper.find('.VS-Checkbox-Container').at(0).text()).toEqual('Select All Search Results')
+    })
+
+    test('when searching second time',()=>{
+
+        let options = { "lowerLimit": "2020", "upperLimit": "2021", "showWeeks": true, "showQuarters": false, "disabledList": []}
+        const wrapper = mount(<DatehierarchyView options={options} onChange = {()=>{}} />)
+        wrapper.find('Input').simulate('change',{target:{value:'2020'}})
+        wrapper.find('.VS-Shape.VS-TextDark.VS-CloseIcon').at(2).simulate('click')
+        wrapper.find('Input').simulate('change',{target:{value:'2021'}})
+        expect(wrapper.find('.VS-Checkbox-Container').at(0).text()).toEqual('Select All Search Results')
+    })
+    
+})
+
