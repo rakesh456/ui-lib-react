@@ -211,7 +211,10 @@ function dateHierarchyRender(el) {
 }
 
 //mock function
-function resetFormGenOptions() {}
+function resetFormGenOptions(options) {
+
+    return { ...options };
+}
 
 Array.prototype.forEach.call(
     document.getElementsByTagName('form-gen'),
@@ -221,6 +224,7 @@ Array.prototype.forEach.call(
 
 function formGenRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
+    console.log(options);
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
 
     el.getValues = function () {
