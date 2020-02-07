@@ -10,8 +10,6 @@ class YearDisplay extends React.PureComponent {
     }
 
     getYears() {
-        // const { isSearching, years, filteredYears } = this.state;
-        // return (isSearching === true) ? [...filteredYears] : [...years];
         return this.props.years;
     }
 
@@ -31,25 +29,26 @@ class YearDisplay extends React.PureComponent {
     toggleYearCheck(year, isCheck) {
         let years = [...this.getYears()];
         let { showWeeks, showQuarters } = this.props.options;
-        year["state"] = (isCheck)? 1 : 0;
+        let flag = (isCheck)? 1 : 0;
+        year["state"] = flag;
         if (showQuarters === true) {
             let quarters = year['quarters'];
             quarters.forEach((element, index) => {
-                quarters[index]['state'] = isCheck;
+                quarters[index]['state'] = flag;
                 quarters[index]['months'].forEach((element, index1) => {
-                    quarters[index]['months'][index1]['state'] = isCheck;
+                    quarters[index]['months'][index1]['state'] = flag;
                     if (showWeeks === true) {
                         quarters[index]['months'][index1]['weeks'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['weeks'][index2]['state'] = isCheck;
+                            quarters[index]['months'][index1]['weeks'][index2]['state'] = flag;
                             if (quarters[index]['months'][index1]['weeks'][index2]['days']) {
                                 quarters[index]['months'][index1]['weeks'][index2]['days'].forEach((element, index3) => {
-                                    quarters[index]['months'][index1]['weeks'][index2]['days'][index3]['state'] = isCheck;
+                                    quarters[index]['months'][index1]['weeks'][index2]['days'][index3]['state'] = flag;
                                 });
                             }
                         });
                     } else {
                         quarters[index]['months'][index1]['days'].forEach((element, index2) => {
-                            quarters[index]['months'][index1]['days'][index2]['state'] = isCheck;
+                            quarters[index]['months'][index1]['days'][index2]['state'] = flag;
                         });
                     }
                 });
@@ -58,19 +57,19 @@ class YearDisplay extends React.PureComponent {
         else {
             let months = year['months'];
             months.forEach((element, index) => {
-                months[index]['state'] = isCheck;
+                months[index]['state'] = flag;
                 if (showWeeks === true) {
                     months[index]['weeks'].forEach((element, index1) => {
-                        months[index]['weeks'][index1]['state'] = isCheck;
+                        months[index]['weeks'][index1]['state'] = flag;
                         if (months[index]['weeks'][index1]['days']) {
                             months[index]['weeks'][index1]['days'].forEach((element, index2) => {
-                                months[index]['weeks'][index1]['days'][index2]['state'] = isCheck;
+                                months[index]['weeks'][index1]['days'][index2]['state'] = flag;
                             });
                         }
                     });
                 } else {
                     months[index]['days'].forEach((element, index1) => {
-                        months[index]['days'][index1]['state'] = isCheck;
+                        months[index]['days'][index1]['state'] = flag;
                     });
                 }
             });
@@ -78,7 +77,7 @@ class YearDisplay extends React.PureComponent {
         this.setState({
             years: [...years]
         })
-        this.props.onUpdateSelectAllCheckbox([...years]);
+        this.props.onUpdateSelectAllCheckbox([...years], year);
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -108,6 +107,10 @@ class YearDisplay extends React.PureComponent {
         return (flag) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
+    getLabelContainerClass = (year) => {
+        return (year.showChild === true)? "VS-Checkbox-Container VS-ShowChild-Checkbox" : "VS-Checkbox-Container";
+    }
+
     renderYear = (year, index) => {
         let { options, isSearching, years, filteredYears, isFilterView } = this.props;
         const _years = (isSearching === true) ? [...filteredYears] : [...years];
@@ -118,10 +121,10 @@ class YearDisplay extends React.PureComponent {
                 <div className="VS-YearRow" key={'year' + index} >
                     {
                         (year.showChild) ?
-                            <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, false)}><span className="VS-ExpandCollapseSign">-</span></span> :
-                            <span className="VS-Plus-Minus" onClick={() => this.toggleYearChild(year, true)}><span className="VS-ExpandCollapse">+</span></span>
+                            <span className="VS-Year-Plus-Minus" onClick={() => this.toggleYearChild(year, false)}><span className="VS-ExpandCollapseSign">-</span></span> :
+                            <span className="VS-Year-Plus-Minus" onClick={() => this.toggleYearChild(year, true)}><span className="VS-ExpandCollapse">+</span></span>
                     }
-                    <label className="VS-Checkbox-Container" key={'year' + index}>{year.year}
+                    <label className={this.getLabelContainerClass(year)} key={'year' + index}>{year.year}
                         {
                             (year.state) ?
                                 <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, false)}></input> :

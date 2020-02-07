@@ -163,9 +163,7 @@ class TagSelector extends React.PureComponent {
     this.setState({
       shouldListOpen: true
     });
-    console.log(this.state.shouldListOpen)
     this.props.onFocus();
-    console.log(this.state.searchValue)
     this.updateFilterItems(this.state.searchValue);
   };
 
@@ -383,7 +381,6 @@ class TagSelector extends React.PureComponent {
 
   closeTagSelector = e => {
     let shouldListOpen = true;
-    console.log("in close tag")
     if (
       e.target &&
       e.target.classList &&
@@ -557,7 +554,6 @@ class TagSelector extends React.PureComponent {
       listItems,
       filteredlistItems,
       noDataFound,
-      selectedItems,
       currentItemIndex,
       currentHierarchyItemIndex,
       hierarchySelectedItem

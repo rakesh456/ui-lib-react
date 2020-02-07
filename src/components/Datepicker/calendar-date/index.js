@@ -101,8 +101,6 @@ class CalendarDate extends React.PureComponent {
         const { month, year } = this.state;
         const { selectedDate } = this.props;
         const { showButtons } = this.props.options;
-        // const { showButtons } = this.props;
-        // console.log(this.props.shouldCalendarOpen)
         if (!this.props.shouldCalendarOpen) {
             return null;
         }

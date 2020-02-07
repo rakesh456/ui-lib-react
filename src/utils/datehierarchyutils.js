@@ -124,9 +124,10 @@ export const getChildren = function (year, showWeeks, disabledList, callback) {
 }
 export const getMonths = function (year, showWeeks, disabledList, callback) {
 	let months = [];
-	var hasDisabled = false;
+	let hasDisabled = false;
+	let oneToEleven = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 	if (showWeeks === false) {
-		for (var i = 0; i < 12; i++) {
+		oneToEleven.forEach((i, index) => {
 			getMonthDays(i + 1, year, disabledList, (Days) => {
 				var monthObj = {
 					"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
@@ -151,10 +152,11 @@ export const getMonths = function (year, showWeeks, disabledList, callback) {
 					}
 				}
 			});
-		}
+		});
+		
 		callback({ "months": months, "hasDisabled": hasDisabled });
 	} else {
-		for (i = 0; i < 12; i++) {
+		oneToEleven.forEach((i, index) => {
 			getMonthWeeks(i + 1, year, disabledList, (Weeks) => {
 				var monthObj = {
 					"month": MONTH_SHORT_NAMES_TITLE_CASE[i],
@@ -180,7 +182,7 @@ export const getMonths = function (year, showWeeks, disabledList, callback) {
 					}
 				}
 			});
-		}
+		});
 		callback({ "months": months, "hasDisabled": hasDisabled });
 	}
 }
@@ -438,9 +440,14 @@ export const getFilterListOfYears1 = (_years, showWeeks, showQuarters, disabledL
 export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQuarters, disabledList) {
 	if (lowerLimit > 999 && upperLimit > 999 && (lowerLimit <= upperLimit) && lowerLimit % 1 === 0 && upperLimit % 1 === 0) {
 		lowerLimit = parseInt(lowerLimit);
+		upperLimit = parseInt(upperLimit);
 		let years = [];
+		var list = [];
+		for (var i = lowerLimit; i <= upperLimit; i++) {
+			list.push(i);
+		}
 		if (showQuarters === true) {
-			while (lowerLimit <= upperLimit) {
+			list.forEach((lowerLimit) => {
 				getChildren(lowerLimit, showWeeks, disabledList, (Quarters) => {
 					var year = {
 						"year": lowerLimit,
@@ -457,10 +464,10 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					}
 					lowerLimit++;
 				})
-			}
+			});
 		}
 		if (showQuarters === false) {
-			while (lowerLimit <= upperLimit) {
+			list.forEach((lowerLimit) => {
 				getMonths(lowerLimit, showWeeks, disabledList, (Months) => {
 					var year = {
 						"year": lowerLimit,
@@ -477,13 +484,11 @@ export const getListOfYears = function (lowerLimit, upperLimit, showWeeks, showQ
 					}
 					lowerLimit++;
 				})
-			}
+			});
 		}
 		getFilterListOfYears([...years], showWeeks, showQuarters, disabledList);
 		return years;
-	}
-
-	else {
+	} else {
 		lowerLimit = 2;
 		upperLimit = 1;
 		let years = [];
