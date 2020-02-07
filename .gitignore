@@ -6,7 +6,7 @@ node_modules/
 /kendo/node_modules
 /.pnp
 .pnp.js
-
+/kendo/node_modules
 # testing
 /coverage
 

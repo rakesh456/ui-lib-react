@@ -18,7 +18,6 @@ class YearsView extends React.PureComponent {
     constructor(props) {
         super(props);
         const { options, showHeaderSelection } = this.props;
-        
         const { lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperYearLimit } = getYYYYForUpperLimit(options);
         let year = new Date().getFullYear();
