@@ -231,83 +231,86 @@
 
 <body>
     <div class="col-50">
-        <h4>Form Generator</h4>
+        <h1 style="text-align: center;">Form Generator</h1>
         <!-- <form-gen id='formGen1' data-options='{"formId": "id1"}'></form-gen> -->
-        <form-gen id='formGen1' data-options='{
-            "form": {
-                "props": {
-                    "action": "<https://google.com>",
-                    "method": "post"
-                }
+        <form-gen id='formGen1' data-options='{ 
+            "form":{ 
+               "props":{ 
+                  "action":"<https://google.com>",
+                  "method":"post"
+               }
             },
-            "elements": [{
-                    "elementType": "input",
-                    "props": {
-                        "type": "text",
-                        "id": "id1",
-                        "class": "vs-textbox",
-                        "value": "",
-                        "required": "true"
-                    },
-                    "label": {
-                        "name": "firstname",
-                        "props": {
-                            "class": "vs-body-regular-primary"
-                        }
-                    }
-                },
-                {
-                    "elementType": "input",
-                    "props": {
-                        "type": "text",
-                        "id": "id2",
-                        "class": "vs-textbox",
-                        "value": "",
-                        "required": "false"
-                    },
-                    "label": {
-                        "name": "lastname",
-                        "props": {
-                            "class": "vs-body-regular-primary"
-                        }
-                    }
-                },
-                {
-                    "elementType": "email",
-                    "props": {
-                        "type": "text",
-                        "id": "id3",
-                        "class": "vs-textbox",
-                        "value": "",
-                        "required": "true"
-                    },
-                    "label": {
-                        "name": "email",
-                        "props": {
-                            "class": "vs-body-regular-primary"
-                        }
-                    }
-                },
-                {
-                    "elementType": "input",
-                    "props": {
-                        "type": "password",
-                        "id": "id4",
-                        "class": "vs-textbox",
-                        "value": "",
-                        "required": "true"
-                    },
-                    "label": {
-                        "name": "password",
-                        "props": {
-                            "class": "vs-body-regular-primary"
-                        }
-                    }
-        
-                }
+            "elements":[ 
+               { 
+                  "elementType":"input",
+                  "props":{ 
+                     "type":"text",
+                     "id":"id1",
+                     "class":"vs-textbox",
+                     "value":"",
+                     "required":"true",
+                     "title": "Firstname"
+                  },
+                  "label":{ 
+                     "name":"firstname",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "elementType":"input",
+                  "props":{ 
+                     "type":"text",
+                     "id":"id2",
+                     "class":"vs-textbox",
+                     "value":"",
+                     "required":"false",
+                     "title": "Lastname"
+                  },
+                  "label":{ 
+                     "name":"lastname",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "elementType":"email",
+                  "props":{ 
+                     "type":"email",
+                     "id":"id3",
+                     "class":"vs-textbox",
+                     "value":"",
+                     "required":"true",
+                     "title": "Email"
+                  },
+                  "label":{ 
+                     "name":"email",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "elementType":"input",
+                  "props":{ 
+                     "type":"password",
+                     "id":"id4",
+                     "class":"vs-textbox",
+                     "value":"",
+                     "required":"true",
+                     "title": "Password"
+                  },
+                  "label":{ 
+                     "name":"password",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               }
             ]
-        
-        }'></form-gen>
+         }'></form-gen>
     </div>
     <!-- <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
     <div class="col-50">
