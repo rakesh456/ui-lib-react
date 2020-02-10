@@ -81,7 +81,7 @@ class KendoGrid extends React.Component {
       dataState: dataState,
       currentLocale: this.locales[0]
     };
-    
+
   }
 
 
@@ -105,54 +105,65 @@ class KendoGrid extends React.Component {
   }
 
   dataStateChange = (event) => {
-    console.log('dataStateChangecalled',JSON.stringify(event.data));
-    // console.log('eventgrid', event.nativeEvent.data);
-    // console.log('dataresults', this.state.dataResult);
-    // console.log('order', orders, 'datastate', this.state.dataState);
+    console.log('dataStateChangecalled', JSON.stringify(event.data));
     this.setState({
       dataResult: process(orders, event.data),
       dataState: event.data
     });
   }
+
+
   Search = (event) => {
-    let datajson = [{
-      "orderID": 10271,
-      "customerID": "SPLIR",
-      "employeeID": 6,
-      "orderDate": "1996-08-01 00:00:00.000",
-      "requiredDate": "1996-08-29 00:00:00.000",
-      "shippedDate": "1996-08-30 00:00:00.000",
-      "shipVia": 2,
-      "freight": 4.54,
-      "shipName": "Split Rail Beer & Ale",
-      "shipAddress": {
-        "street": "P.O. Box 555",
-        "city": "Lander",
-        "region": "WY",
-        "postalCode": 82520,
-        "country": "USA"
-      },
-      "details": [
-        {
-          "productID": 33,
-          "unitPrice": 2,
-          "quantity": 24,
-          "discount": 0
-        }
-      ]
-    }];
-    let coulmns = ["customerId", "shipName", "freight", "employeeID"]
-    for(var i = 0; i < coulmns.length; i++){
-      this.setState({
-      dataResult: process(orders,{
+    let Standard = (value) => {
+      var date = value.toString().split("-");
+      if (value.length > 6) {
+        var dobj = new Date(parseInt(date[2]), parseInt(date[0]) - 1, parseInt(date[1]));
+        console.log('date',dobj.toISOString().toString());
+        return dobj.toISOString().toString();
+      }
+    }
+
+
+    this.setState({
+      dataResult: process(orders, {
         "filter": {
-          "logic": "and",
+          "logic": "or",
           "filters": [
             {
-              "field": coulmns[i],
+              "field": "customerID",
               "operator": "contains",
               "value": event.target.value
-            }
+            },
+            {
+              "field": "shipName",
+              "operator": "contains",
+              "value": event.target.value
+            },
+            {
+              "field": "employeeID",
+              "operator": "contains",
+              "value": event.target.value
+            },
+            {
+              "field": "freight",
+              "operator": "contains",
+              "value": event.target.value
+            },
+            {
+              "field": "shipAddress.country",
+              "operator": "contains",
+              "value": event.target.value
+            },
+            {
+              "field": "orderID",
+              "operator": "contains",
+              "value": event.target.value
+            },
+            {
+              "field": "orderDate",
+              "operator": "eq",
+              "value": Standard(event.target.value)
+            },
           ]
         },
         "sort": [
@@ -168,12 +179,10 @@ class KendoGrid extends React.Component {
             "field": "customerID"
           }
         ]
-      }),
-    });
-  }
+      })
+    })
   }
 
-   
 
   render() {
     return (
