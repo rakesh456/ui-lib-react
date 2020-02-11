@@ -39,7 +39,7 @@ class FormGenerator extends React.PureComponent {
     render() {
         console.log('Options at Render func. for test',this.props.options.elements.length);
         console.log('Options at Render func. for test',Object.keys(this.props.options.elements).length);
-        var len = Object.keys(this.props.options.elements).length;
+        var len = this.props.options.elements.length;
         const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
         // handleChange = (event) => 
         // {
@@ -50,8 +50,8 @@ class FormGenerator extends React.PureComponent {
         {
             var element_type = this.props.options.elements[i].elementType;
             var label_name = this.props.options.elements[i].label.name;
-            var required = this.props.options.elements[i].props.required;
-            var id = this.props.options.elements[i].props.id;
+            var required = (this.props.options.elements[i].props.required === true)?'required': '';
+            //var id = this.props.options.elements[i].props.id;
             var placeholder_custom = "Enter your "+this.props.options.elements[i].label.name;
             if( label_name != '')
             {
@@ -59,18 +59,15 @@ class FormGenerator extends React.PureComponent {
             // tags.push(":")
             
             }
-            if (element_type == 'input' && required == 'true')
+            if (element_type == 'input')
             {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title}  id={this.props.options.elements[i].props.id} required></input>)
+                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title}  id={this.props.options.elements[i].props.id} required={required}></input>)
             }
-            else if(element_type =='email' && required =='true')
+            else if(element_type =='email')
             {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title} id={this.props.options.elements[i].props.id} pattern='/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i' required></input>)
+                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title} id={this.props.options.elements[i].props.id} pattern='/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i' required={required}></input>)
             }
-            else if (element_type == 'input')
-            {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom} title={this.props.options.elements[i].props.title} id={this.props.options.elements[i].props.id}></input>)
-            }
+            
             // if (errors.id.length > 0) 
             //   tags.push(<span className='error'>{errors.fullName}</span>)
             console.log("The values are",this.props.options.elements[i].props.id.value);
