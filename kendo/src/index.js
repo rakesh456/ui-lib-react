@@ -10,9 +10,9 @@ Array.prototype.forEach.call(
         kendogridRender(el);
     })
 
-
 function kendogridRender(el) {
-    var myComponentElement = <KendoGrid/>;
+    let options = JSON.parse(el.getAttribute('data-options'));
+    var myComponentElement = <KendoGrid options={options} />;
 
     ReactDOM.render(
         myComponentElement,
@@ -28,7 +28,7 @@ Array.prototype.forEach.call(
 
 
 function bkeySearcherRender(el) {
-    var myComponentElement = <BkeySearcher/>;
+    var myComponentElement = <BkeySearcher />;
 
     ReactDOM.render(
         myComponentElement,

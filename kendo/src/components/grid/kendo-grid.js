@@ -104,8 +104,8 @@ class KendoGrid extends React.Component {
     this._pdfExport.save();
   }
 
-  dataStateChange = (event) => {
-    console.log('dataStateChangecalled', JSON.stringify(event.data));
+  dataStateChange = (event) => {  
+    console.log('eventdata',JSON.stringify(event.data));
     this.setState({
       dataResult: process(orders, event.data),
       dataState: event.data
@@ -163,7 +163,7 @@ class KendoGrid extends React.Component {
               "field": "orderDate",
               "operator": "eq",
               "value": Standard(event.target.value)
-            },
+            }
           ]
         },
         "sort": [
@@ -179,12 +179,69 @@ class KendoGrid extends React.Component {
             "field": "customerID"
           }
         ]
-      })
+      }),
+      // dataState : {
+      //   "filter": {
+      //     "logic": "or",
+      //     "filters": [
+      //       {
+      //         "field": "customerID",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "shipName",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "employeeID",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "freight",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "shipAddress.country",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "orderID",
+      //         "operator": "contains",
+      //         "value": event.target.value
+      //       },
+      //       {
+      //         "field": "orderDate",
+      //         "operator": "eq",
+      //         "value": Standard(event.target.value)
+      //       }
+      //     ]
+      //   },
+      //   "sort": [
+      //     {
+      //       "field": "orderDate",
+      //       "dir": "desc"
+      //     }
+      //   ],
+      //   "skip": 0,
+      //   "take": 20,
+      //   "group": [
+      //     {
+      //       "field": "customerID"
+      //     }
+      //   ]
+      // }
     })
   }
 
 
   render() {
+    let options = this.props;
+    console.log('options',options);
     return (
       <LocalizationProvider language={this.state.currentLocale.language}>
         <IntlProvider locale={this.state.currentLocale.locale} >
