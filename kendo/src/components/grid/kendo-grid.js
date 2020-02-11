@@ -8,7 +8,6 @@ import { IntlProvider, load, LocalizationProvider, loadMessages } from '@progres
 import likelySubtags from '../../utils/supplemental/likelySubtags.json';
 import currencyData from '../../utils/supplemental/currencyData.json';
 import weekData from '../../utils/supplemental/weekData.json';
-
 import numbers from '../../utils/es-AR/numbers.json';
 import currencies from '../../utils/es-AR/currencies.json';
 import caGregorian from '../../utils/es/ca-gregorian.json';
@@ -18,6 +17,7 @@ import '@progress/kendo-theme-default/dist/all.css';
 import orders from './../orders.json';
 import esMessages from './../es.json';
 import { process } from '@progress/kendo-data-query';
+// const fetch = require('node-fetch')
 loadMessages(esMessages, 'es-ES');
 load(
   likelySubtags,
@@ -28,9 +28,7 @@ load(
   caGregorian,
   dateFields,
   timeZoneNames
-);
-
-
+  );
 orders.forEach(o => {
   o.orderDate = new Date(o.orderDate);
   o.shippedDate = o.shippedDate === 'NULL' ? undefined : new Date(o.shippedDate);
@@ -52,6 +50,10 @@ class DetailComponent extends GridDetailRow {
     );
   }
 }
+
+
+
+
 
 class KendoGrid extends React.Component {
   locales = [
@@ -81,8 +83,16 @@ class KendoGrid extends React.Component {
       dataState: dataState,
       currentLocale: this.locales[0]
     };
-
+    
   }
+  // componentDidMount(){
+  // fetch('https://jsonplaceholder.typicode.com/posts').then((resp)=>
+  //     resp.json()
+  //   ).then((data)=>{
+  //     console.log(data);
+      
+  //   })
+  // }
 
 
   expandChange = (event) => {
@@ -104,8 +114,8 @@ class KendoGrid extends React.Component {
     this._pdfExport.save();
   }
 
-  dataStateChange = (event) => {  
-    console.log('eventdata',JSON.stringify(event.data));
+  dataStateChange = (event) => { 
+   
     this.setState({
       dataResult: process(orders, event.data),
       dataState: event.data
@@ -115,140 +125,88 @@ class KendoGrid extends React.Component {
 
   Search = (event) => {
     let Standard = (value) => {
-      var date = value.toString().split("-");
-      if (value.length > 6) {
-        var dobj = new Date(parseInt(date[2]), parseInt(date[0]) - 1, parseInt(date[1]));
-        console.log('date',dobj.toISOString().toString());
-        return dobj.toISOString().toString();
-      }
+      var date = value.toString();
+        return new Date(date);
     }
-
-
-    this.setState({
-      dataResult: process(orders, {
-        "filter": {
-          "logic": "or",
-          "filters": [
-            {
-              "field": "customerID",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "shipName",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "employeeID",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "freight",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "shipAddress.country",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "orderID",
-              "operator": "contains",
-              "value": event.target.value
-            },
-            {
-              "field": "orderDate",
-              "operator": "eq",
-              "value": Standard(event.target.value)
-            }
-          ]
-        },
-        "sort": [
+    const eventData = {
+      "filter": {
+        "logic": "or",
+        "filters": [
+          {
+            "field": "customerID",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "shipName",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "employeeID",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "freight",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "shipAddress.country",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "orderID",
+            "operator": "contains",
+            "value": event.target.value
+          },
           {
             "field": "orderDate",
-            "dir": "desc"
-          }
-        ],
-        "skip": 0,
-        "take": 20,
-        "group": [
+            "operator": "eq",
+            "value": Standard(event.target.value)
+          },
           {
-            "field": "customerID"
+            "field": "shippedDate",
+            "operator": "eq",
+            "value": Standard(event.target.value)
           }
+
         ]
-      }),
-      // dataState : {
-      //   "filter": {
-      //     "logic": "or",
-      //     "filters": [
-      //       {
-      //         "field": "customerID",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "shipName",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "employeeID",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "freight",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "shipAddress.country",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "orderID",
-      //         "operator": "contains",
-      //         "value": event.target.value
-      //       },
-      //       {
-      //         "field": "orderDate",
-      //         "operator": "eq",
-      //         "value": Standard(event.target.value)
-      //       }
-      //     ]
-      //   },
-      //   "sort": [
-      //     {
-      //       "field": "orderDate",
-      //       "dir": "desc"
-      //     }
-      //   ],
-      //   "skip": 0,
-      //   "take": 20,
-      //   "group": [
-      //     {
-      //       "field": "customerID"
-      //     }
-      //   ]
-      // }
+      },
+      "sort": [
+        {
+          "field": "orderDate",
+          "dir": "desc"
+        }
+      ],
+      "skip": 0,
+      "take": 20,
+      "group": [
+        {
+          "field": "customerID"
+        }
+      ]
+    }
+
+    this.setState({
+      dataResult: process(orders, eventData),
     })
   }
 
 
   render() {
-    let options = this.props;
-    console.log('options',options);
+    let options = this.props.options;
+    console.log('globalsearch',options.globalSearch);
     return (
       <LocalizationProvider language={this.state.currentLocale.language}>
         <IntlProvider locale={this.state.currentLocale.locale} >
           <div>
-            <input type="text" placeholder="Search" data={this.state.dataResult}
+            {(options.globalSearch)?
+            <input type="text" placeholder="Search in entire columns" data={this.state.dataResult}
               {...this.state.dataState} onChange={this.Search}
-            ></input>
+            ></input>:""}
             <ExcelExport
               data={orders}
               ref={(exporter) => { this._export = exporter; }}

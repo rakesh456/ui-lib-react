@@ -18,6 +18,7 @@
     "@progress/kendo-react-intl": "^3.9.0",
     "@progress/kendo-react-pdf": "^3.9.0",
     "@progress/kendo-theme-default": "^4.9.0",
+    "node-fetch": "^2.6.0",
     "react": "^16.9.0",
     "react-datepicker": "^2.9.6",
     "react-dom": "^16.12.0",
