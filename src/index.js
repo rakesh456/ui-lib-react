@@ -274,10 +274,10 @@ function resetRTEOptions(options) {
 Array.prototype.forEach.call(
     document.getElementsByTagName('fx-editor'),
     (el) => {
-        formGenRender(el);
+        fxEditorRender(el);
     })
 
-function formGenRender(el) {
+function fxEditorRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     console.log(options);
     options = (isUndefinedOrNull(options)) ? resetRTEOptions({}) : resetRTEOptions(options);
