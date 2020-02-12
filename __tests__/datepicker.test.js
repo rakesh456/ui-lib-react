@@ -1320,7 +1320,10 @@ describe('Check next and previous icon disabled or not based on lowerLimit and u
       showMonthSelection:false,
       showYearSelection:false
     });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 895bacb2a8a235d72376fd6e0ac98009d0d9417c
     expect(wrapper.find('svg').at(2).props().className).toMatch(/VS-DisabledIcon/)
   })
 

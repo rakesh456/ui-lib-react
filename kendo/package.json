@@ -1,0 +1,79 @@
+{
+  "name": "datepicker-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@devexpress/dx-core": "^2.3.1",
+    "@devexpress/dx-react-core": "^2.3.1",
+    "@devexpress/dx-react-grid": "^2.3.1",
+    "@progress/kendo-data-query": "^1.5.2",
+    "@progress/kendo-drawing": "^1.6.0",
+    "@progress/kendo-react-animation": "^3.9.0",
+    "@progress/kendo-react-data-tools": "^3.9.0",
+    "@progress/kendo-react-dateinputs": "^3.9.0",
+    "@progress/kendo-react-dropdowns": "^3.9.0",
+    "@progress/kendo-react-excel-export": "^3.9.0",
+    "@progress/kendo-react-grid": "^3.9.0",
+    "@progress/kendo-react-inputs": "^3.9.0",
+    "@progress/kendo-react-intl": "^3.9.0",
+    "@progress/kendo-react-pdf": "^3.9.0",
+    "@progress/kendo-theme-default": "^4.9.0",
+    "node-fetch": "^2.6.0",
+    "react": "^16.9.0",
+    "react-datepicker": "^2.9.6",
+    "react-dom": "^16.12.0",
+    "react-icons": "^3.7.0",
+    "react-scripts": "3.1.1",
+    "webpack": "4.39.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "ie 11",
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-engine-plugin": "^0.3.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.14.0",
+    "css-loader": "^3.2.0",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "mini-css-extract-plugin": "^0.8.0",
+    "react": "^16.9.0",
+    "rollup": "^1.20.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-css-porter": "^1.0.2",
+    "rollup-plugin-uglify": "^6.0.2",
+    "style-loader": "^1.0.0",
+    "webpack-cli": "^3.3.7",
+    "webpack-fix-style-only-entries": "^0.4.0"
+  }
+}

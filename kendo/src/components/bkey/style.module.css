@@ -1,0 +1,13 @@
+.sign{
+    display: flex;
+    justify-content: space-around;
+    
+    
+    
+}
+.plus{
+    cursor:pointer;
+    font-weight: 100;
+    background: none ;
+    border: none;
+}

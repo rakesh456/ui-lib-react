@@ -359,6 +359,9 @@ describe('Testing on function  getMonthDays',()=>{
     let year = new Date()
     let numDays = new Date(year.getFullYear(),year.getMonth()+1,0).getDate()
     let output = [30,29,31,numDays]
+    let d = new Date()
+    let currentDay = new Date(d.getFullYear(),d.getMonth()+1,0).getDate() 
+    let output = [30,29,31,currentDay]
     let messages = ['Passing valid month and year to the function it returns no. of days',
                     'Passing  2nd of month and leap year to the function return no. of days in months of feb i.e 29 ',
                     "Passing valid month and undefind year so that it will took default current year as its year to the function then function retruns no.days in month",
