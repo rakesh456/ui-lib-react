@@ -50,7 +50,7 @@ class FormGenerator extends React.PureComponent {
         {
             var element_type = this.props.options.elements[i].elementType;
             var label_name = this.props.options.elements[i].label.name;
-            var required = (this.props.options.elements[i].props.required === true)?'required': '';
+            var required = (this.props.options.elements[i].props.required === "required")?'required': '';
             //var id = this.props.options.elements[i].props.id;
             var placeholder_custom = "Enter your "+this.props.options.elements[i].label.name;
             if( label_name != '')
