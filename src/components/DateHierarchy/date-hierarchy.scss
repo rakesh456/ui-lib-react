@@ -47,6 +47,19 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
+.mrgL43{
+    margin-left: 43px !important;
+}
+
+.mrgL34{
+    margin-left: 34.4px !important;
+}
+
+.VS-NoResult{
+    text-align: center;
+    margin: 10px auto 0px;
+    display: block;;
+}
 
 .VS-Hidden{
     display: none;
@@ -61,7 +74,7 @@ $font-family: 'Roboto', sans-serif;
 .VS-Checkbox-Container{
     display: inline-block;
     position: relative;
-    padding-left: 24px;
+    padding-left: 23.5px;
     margin-bottom: 4px;
     cursor: pointer;
     font-size: 16px;
@@ -70,6 +83,14 @@ $font-family: 'Roboto', sans-serif;
     -ms-user-select: none;
     user-select: none;
     color: $secondary-two-dark
+}
+
+.VS-Checkbox-Container.VS-Action{
+    margin: 5px 0px;
+}
+
+.VS-Checkbox-Container.VS-ShowChild-Checkbox{
+    margin-left: -5px !important;
 }
 
 .VS-Checkbox-Container input {
@@ -108,7 +129,6 @@ $font-family: 'Roboto', sans-serif;
     display: block;
 }
 
-// .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial,
 .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
     left: 5px;
     top: 5px;
@@ -133,88 +153,91 @@ $font-family: 'Roboto', sans-serif;
     transform: rotate(45deg);
 }
 
-.VS-week-Plus-Minus,
-.VS-Plus-Minus,
+.VS-Week-Plus-Minus,
+.VS-Year-Plus-Minus,
 .VS-Month-Plus-Minus,
 .VS-Quarter-Plus-Minus{
     position: relative;
     border-radius: 5px;
     font-size: 22px;
-    padding: 5px;
+    padding: 5px 10.1px 5px 10.8px;
     font-weight: bold;
     color: #555;
     cursor: pointer;
     top: 2px;
 }
 
+.VS-Year-Plus-Minus{
+    padding: 5px 10.5px 5px 10.8px;
+}
+
+.VS-Week-Plus-Minus.VS-Minus,
+.VS-Year-Plus-Minus.VS-Minus,
+.VS-Month-Plus-Minus.VS-Minus,
+.VS-Quarter-Plus-Minus.VS-Minus{
+    padding: 5px 13px;
+}
+
 .VS-ExpandCollapseSign{
     padding: 5px;
 }
 
-.VS-DayRow{
-    list-style: none;
-    margin: 1px 44px;
-    right: 0;
-}
 
 .VS-MonthRow{
     list-style: none;
-    margin: 5px 16px;
+    margin: 5px 5px 5px 24px;
     right: 30;
 }
 
 .VS-QuarterRow{
     list-style: none;
-    margin: 8px 18px;
+    margin: 5px 5px 5px 25px;
 }
 
 .VS-YearRow{
     list-style: none ;
-    margin: 10px 20px;
+    margin: 5px 1px;
     border: grey
 }
 
 .VS-WeekRow{
     list-style: none;
-    margin: 2px 16px;
+    margin: 5px 24px;
     right: 30;
 }
 
 .VS-WeekDayRow{
     list-style: none;
-    margin: 2px 40px;
+    margin: 5px 10px 5px 60px;
     right: 30; 
 }
+
+.VS-DayRow{
+    list-style: none;
+    margin: 5px 10px 5px 56px;
+    right: 0;
+}
+
 .VS-Hierarchy{
   position: relative;
   background: #fff;
-  width: 305px;
+  width: 315px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
   padding-left: 0px;
   margin: 5px 20px;
   border: 1px solid #ddd;
-//   max-height: 465px;
 }
 
 .VS-Hierarchy #VS-Scrollbar{
-    max-height: 465px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
-.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight1{
-    max-height: 365px;
-}
-
-.VS-Hierarchy #VS-Scrollbar.VS-ScrollbarHeight2{
-    max-height: 430px;
-}
-
 .VS-Hierarchy-Searchbox{
     border: 1px solid #ddd;
-    width: 305px;
+    width: 315px;
     margin: -1px 0px 0px -1px;
 }
 
@@ -230,12 +253,15 @@ $font-family: 'Roboto', sans-serif;
     margin-top: 1px;
 }
 
-.VS-Hierarchy-Searchbox .VS-FilterIcon.VS-DisabledIcon{
+.VS-Hierarchy-Searchbox .VS-FilterIcon.VS-DisabledIcon,
+.VS-Hierarchy-Searchbox .VS-Clear-Filter .VS-CloseIcon.VS-DisabledIcon{
     color: #ddd;
 }
 
-.VS-Hierarchy-Searchbox .VS-FilterIcon{
+.VS-Hierarchy-Searchbox .VS-FilterIcon,
+.VS-Hierarchy-Searchbox .VS-Clear-Filter .VS-CloseIcon{
     color: $primary-one-dark;
+    // transform: scaleX(-1);
 }
 
 .VS-Hierarchy-Searchbox .VS-SeachIcon svg{
@@ -245,13 +271,21 @@ $font-family: 'Roboto', sans-serif;
     color: #ddd;
 }
 
+.VS-Clear-Filter .VS-CloseIcon{
+    position: absolute;
+    right: -2px;
+    top: 3.5px;
+    width: 9px;
+    color: #ddd;
+}
+
 .VS-Hierarchy-Searchbox .VS-IsSearching{
     width: 192px;
 }
 
 .VS-Hierarchy-Filter-List .VS-Checkbox-Container{
     list-style: none;
-    margin: 5px 22px;
+    margin: 8px 0px 4px;
     border: grey;
 }
 
@@ -397,7 +431,7 @@ $font-family: 'Roboto', sans-serif;
     height: 9px;
     width: 9px;
     margin-bottom: 0px;
-    margin-left:10px;
+    margin-left: 5px;
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
@@ -439,7 +473,7 @@ $font-family: 'Roboto', sans-serif;
     font-size:10px ;
 }
 
-.VS-refresh-tooltip{
+.VS-Clear-Tooltip, .VS-Cross-Tooltip{
     visibility: hidden;
     position: absolute;
     border:solid;
@@ -451,34 +485,30 @@ $font-family: 'Roboto', sans-serif;
     border-radius: 3px;
     padding: 2px 2px;
     width: 54px;
-    
+    right: 8px;
 }
 
-.VS-PullRight:hover .VS-refresh-tooltip {
+.VS-Clear-Tooltip{
+    right: 2px;
+}
+
+.VS-Clear-Filter:hover .VS-Clear-Tooltip {
     visibility: visible;
 }
 
-.VS_cross_tool_tip{
-    visibility: hidden;
-    position: absolute;
-    border:solid;
-    border-width: 1px;
-    background-color: white;
-    border-color: darkgray;
-    font-size:9px;
-    text-align: center;
-    border-radius: 3px;
-    padding: 2px 2px;
-    width:54px;
-}
-
-.VS-PullRight:hover .VS_cross_tool_tip{
+.VS-Close-Filter:hover .VS-Cross-Tooltip{
     visibility: visible;
 }
+
 
 .VS-HorizontalLine{
-    width: 220px;
+    width: 210px;
     border: 0.5px solid #ddd;
     margin-top: 2px;
     margin-bottom: 2px;
+    margin-left: 0px;
+}
+
+.VS-SearchBox::-ms-clear {
+    display: none;
 }

@@ -37,9 +37,7 @@ class Month extends React.PureComponent {
             return false;
         } else {
             const _month = getProperFormattedDate(lowerLimit, options).getMonth() + 1;
-            console.log(_month)
             const _year = getProperFormattedDate(lowerLimit, options).getFullYear();
-            console.log(_year)
             return (month === _month && year === _year);
         }
     }

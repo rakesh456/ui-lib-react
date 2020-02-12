@@ -1,184 +1,298 @@
-import React, { Component } from 'react';
-import '../../App.css';
-import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
-import { Grid, GridColumn as Column, GridDetailRow } from '@progress/kendo-react-grid';
+import React from 'react';
+import { Grid, GridColumn, GridDetailRow, GridToolbar } from '@progress/kendo-react-grid';
+import { DropDownList } from '@progress/kendo-react-dropdowns';
+import { GridPDFExport } from '@progress/kendo-react-pdf';
+import { ExcelExport } from '@progress/kendo-react-excel-export';
+import { IntlProvider, load, LocalizationProvider, loadMessages } from '@progress/kendo-react-intl';
+
+import likelySubtags from '../../utils/supplemental/likelySubtags.json';
+import currencyData from '../../utils/supplemental/currencyData.json';
+import weekData from '../../utils/supplemental/weekData.json';
+import numbers from '../../utils/es-AR/numbers.json';
+import currencies from '../../utils/es-AR/currencies.json';
+import caGregorian from '../../utils/es/ca-gregorian.json';
+import dateFields from '../../utils/es/dateFields.json';
+import timeZoneNames from '../../utils/es/timeZoneNames.json';
 import '@progress/kendo-theme-default/dist/all.css';
-import { filterBy } from '@progress/kendo-data-query';
-import { PagingState } from '@devexpress/dx-react-grid';
-import {
-  GridColumnMenuFilter
-} from '@progress/kendo-react-grid';
-import { CustomFilterUI } from '../customFilterUI';
+import orders from './../orders.json';
+import esMessages from './../es.json';
+import { process } from '@progress/kendo-data-query';
+// const fetch = require('node-fetch')
+loadMessages(esMessages, 'es-ES');
+load(
+  likelySubtags,
+  currencyData,
+  weekData,
+  numbers,
+  currencies,
+  caGregorian,
+  dateFields,
+  timeZoneNames
+  );
+orders.forEach(o => {
+  o.orderDate = new Date(o.orderDate);
+  o.shippedDate = o.shippedDate === 'NULL' ? undefined : new Date(o.shippedDate);
+});
 
 class DetailComponent extends GridDetailRow {
   render() {
-    const data = this.props.dataItem.details;
-    if (data) {
-      return (
-        <Grid data={data}>
-          <Column field="title" title="title" />
-          <Column field="date" title="date" format="{0:c}" />
-        </Grid>
-      );
-    }
+    const dataItem = this.props.dataItem;
     return (
-      <div style={{ height: "50px", width: '100%' }}>
-        <div style={{ position: 'absolute', width: '100%' }}>
-          <div className="k-loading-image" />
-        </div>
+      <div>
+        <section style={{ width: "200px", float: "left" }}>
+          <p><strong>Street:</strong> {dataItem.shipAddress.street}</p>
+          <p><strong>City:</strong> {dataItem.shipAddress.city}</p>
+          <p><strong>Country:</strong> {dataItem.shipAddress.country}</p>
+          <p><strong>Postal Code:</strong> {dataItem.shipAddress.postalCode}</p>
+        </section>
+        <Grid style={{ width: "500px" }} data={dataItem.details}></Grid>
       </div>
     );
   }
 }
 
-class KendoGrid extends React.Component {
-  baseUrl = 'http://68.183.84.35:8089/getTodos';
-  init = {};
 
+
+
+
+class KendoGrid extends React.Component {
+  locales = [
+    {
+      language: 'en-US',
+      locale: 'en'
+    },
+    {
+      language: 'es-ES',
+      locale: 'es'
+    }
+  ]
   constructor(props) {
     super(props);
-    this.state = {
-      categories: [],
-      filter: {
-        logic: "and",
-        filters: [
-        ]
-      },
-      filterable: {
-        mode: "row"
-      },
-      pageable: {
-        buttonCount: 5,
-        info: true,
-        type: 'numeric',
-        pageSizes: [5, 10, 15, 20, 50, 100],
-        previousNext: true
-      },
-      currentPageCount: 0,
-      totalRecords: 0,
-      pageSize: 20,
+    const dataState = {
       skip: 0,
-      take: 10,
-      columns: [{
-        field: "_id",
-        title: "ID"
-      }, {
-        field: "title",
-        title: "Title",
-        filterable: {
-          cell: {
-            operator: "contains",
-            suggestionOperator: "contains"
-          }
-        }
-      }, {
-        field: "date",
-        title: "DATE"
-      }]
-    };
-    this.expandChange = this.expandChange.bind(this);
-  }
-
-  expandChange(event) {
-    event.dataItem.expanded = event.value;
-    let categoryID = event.dataItem.CategoryID;
-    this.setState({ ...this.state });
-
-    if (!event.value || event.dataItem.details) {
-      return;
-    }
-
-    fetch(this.baseUrl, this.init)
-      .then(response => response.json())
-      .then(json => {
-        let data = this.state.categories.slice();
-        let index = data.findIndex(d => d.CategoryID === categoryID);
-        data[index].details = json.result;
-        this.setState({ categories: data });
-      });
-  }
-
-  componentDidMount() {
-    this.updateGridList({}, this.state.skip, this.state.take);
-  }
-
-  onFilterChange = (e) => {
-    console.log('e ', e);
-    let _filter = (e.filter) ? e.filter : {
-      logic: "and",
-      filters: [
-        { field: "title", operator: "contains", value: "" }
+      take: 20,
+      sort: [
+        { field: 'orderDate', dir: 'desc' }
+      ],
+      group: [
+        { field: 'customerID' }
       ]
     };
+    this.state = {
+      dataResult: process(orders, dataState),
+      dataState: dataState,
+      currentLocale: this.locales[0]
+    };
+    
+  }
+  // componentDidMount(){
+  // fetch('https://jsonplaceholder.typicode.com/posts').then((resp)=>
+  //     resp.json()
+  //   ).then((data)=>{
+  //     console.log(data);
+      
+  //   })
+  // }
 
-    this.setState({
-      filter: _filter,
-      skip: 0,
-      take: 10
-    });
-    this.updateGridList(_filter, 0, 10);
+
+  expandChange = (event) => {
+    const isExpanded =
+      event.dataItem.expanded === undefined ?
+        event.dataItem.aggregates : event.dataItem.expanded;
+    event.dataItem.expanded = !isExpanded;
+
+    this.setState({ ...this.state });
   }
 
-  pageChange = (event) => {
-    this.setState({
-      skip: event.page.skip,
-      take: event.page.take
-    });
-    this.updateGridList({}, event.page.skip, event.page.take);
+  _pdfExport;
+  exportExcel = () => {
+    this._export.save();
   }
 
-  updateGridList = (filter, skip, take) => {
-    let _filters = (filter && filter.filters) ? filter.filters : this.state.filter.filters;
-    let _skip = (skip) ? skip : this.state.skip;
-    let _take = (take) ? take : this.state.take;
+  _export;
+  exportPDF = () => {
+    this._pdfExport.save();
+  }
 
-    if (_filters) {
-      this.init = { method: 'POST', accept: 'application/json', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ 'filters': _filters, 'skip': _skip, 'take': _take }) };
-    } else {
-      this.init = { method: 'POST', accept: 'application/json', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ 'skip': _skip, 'take': _take }) };
+  dataStateChange = (event) => { 
+   
+    this.setState({
+      dataResult: process(orders, event.data),
+      dataState: event.data
+    });
+  }
+
+
+  Search = (event) => {
+    let Standard = (value) => {
+      var date = value.toString();
+        return new Date(date);
+    }
+    const eventData = {
+      "filter": {
+        "logic": "or",
+        "filters": [
+          {
+            "field": "customerID",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "shipName",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "employeeID",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "freight",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "shipAddress.country",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "orderID",
+            "operator": "contains",
+            "value": event.target.value
+          },
+          {
+            "field": "orderDate",
+            "operator": "eq",
+            "value": Standard(event.target.value)
+          },
+          {
+            "field": "shippedDate",
+            "operator": "eq",
+            "value": Standard(event.target.value)
+          }
+
+        ]
+      },
+      "sort": [
+        {
+          "field": "orderDate",
+          "dir": "desc"
+        }
+      ],
+      "skip": 0,
+      "take": 20,
+      "group": [
+        {
+          "field": "customerID"
+        }
+      ]
     }
 
-    console.log(' init ', this.init);
-
-    fetch(this.baseUrl, this.init)
-      .then(response => response.json())
-      .then(json => this.setState({ categories: json.result, totalRecords: json.totalRecords }));
+    this.setState({
+      dataResult: process(orders, eventData),
+    })
   }
 
+
   render() {
-    const titleFilter = { multi: true, search: true };
-
+    let options = this.props.options;
+    console.log('globalsearch',options.globalSearch);
     return (
-      <div>
-        {this.state.pageSizes}
-        <Grid
-          style={{ height: '620px' }}
-          data={this.state.categories}
-          filterable={this.state.filterable}
-          filter={this.state.filter}
-          onFilterChange={this.onFilterChange}
-          pageable={this.state.pageable}
-          total={this.state.totalRecords}
-          skip={this.state.skip}
-          take={this.state.take}
-          onPageChange={this.pageChange}
-          columns={this.state.columns}
-        >
+      <LocalizationProvider language={this.state.currentLocale.language}>
+        <IntlProvider locale={this.state.currentLocale.locale} >
+          <div>
+            {(options.globalSearch)?
+            <input type="text" placeholder="Search in entire columns" data={this.state.dataResult}
+              {...this.state.dataState} onChange={this.Search}
+            ></input>:""}
+            <ExcelExport
+              data={orders}
+              ref={(exporter) => { this._export = exporter; }}
+            >
+              <Grid
+                style={{ height: '700px' }}
+                sortable
+                filterable
+                groupable
+                reorderable
+                pageable={{ buttonCount: 4, pageSizes: true }}
 
-          <Column field="_id" title="ID" width="200px" />
-          <Column field={'title'}
-                  title={'Title'}
-                  filter={'string'}
-                  columnMenu={
-                      props =>
-                          <GridColumnMenuFilter
-                              {...props}
-                              filterUI={CustomFilterUI}
-                          />
-                  } />
-          <Column field="date" title="Date" width="240px" />
-        </Grid>
-      </div>
+                data={this.state.dataResult}
+                {...this.state.dataState}
+                onDataStateChange={this.dataStateChange}
+
+                filterOperators={{
+                  'text': [
+                    { text: 'grid.filterContainsOperator', operator: 'contains' },
+                    { text: 'grid.filterEqOperator', operator: 'eq' },
+                  ],
+                  'numeric': [
+                    { text: 'grid.filterEqOperator', operator: 'eq' }
+                  ],
+                  'date': [
+                    { text: 'grid.filterEqOperator', operator: 'eq' }
+                  ],
+                  'boolean': [
+                    { text: 'grid.filterEqOperator', operator: 'eq' }
+                  ]
+                }}
+
+                // onFilterChange={(e) => {
+                //     this.setState({
+                //         filter: e.filter
+                //     });
+                // }}
+
+                detail={DetailComponent}
+                expandField="expanded"
+                onExpandChange={this.expandChange}
+              >
+                <GridToolbar>
+                  Locale:&nbsp;&nbsp;&nbsp;
+                                <DropDownList
+                    value={this.state.currentLocale}
+                    textField="language"
+                    onChange={(e) => { this.setState({ currentLocale: e.target.value }); }}
+                    data={this.locales} />&nbsp;&nbsp;&nbsp;
+                                <button
+                    title="Export to Excel"
+                    className="k-button k-primary"
+                    onClick={this.exportExcel}
+                  >
+                    Export to Excel
+                                </button>&nbsp;
+                                <button className="k-button k-primary" onClick={this.exportPDF}>Export to PDF</button>
+                </GridToolbar>
+                <GridColumn field="customerID" width="200px" title="Customer Id" />
+                <GridColumn field="orderDate" filter="date" format="{0:D}" width="300px" />
+                <GridColumn field="shipName" width="280px" />
+                <GridColumn field="freight" filter="numeric" width="200px" />
+                <GridColumn field="shippedDate" filter="date" format="{0:D}" width="300px" />
+                <GridColumn field="employeeID" filter="numeric" width="200px" />
+                <GridColumn locked field="orderID" filterable={false} title="ID" width="90px" />
+              </Grid>
+            </ExcelExport>
+            <GridPDFExport
+              ref={(element) => { this._pdfExport = element; }}
+              margin="1cm" >
+              {
+                <Grid data={process(orders, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
+                  <GridColumn field="customerID" width="200px" />
+                  <GridColumn field="orderDate" filter="date" format="{0:D}" width="300px" />
+                  <GridColumn field="shipName" width="280px" />
+                  <GridColumn field="freight" filter="numeric" width="200px" />
+                  <GridColumn field="shippedDate" filter="date" format="{0:D}" width="300px" />
+                  <GridColumn field="employeeID" filter="numeric" width="200px" />
+                  <GridColumn locked field="orderID" filterable={false} title="ID" width="90px" />
+                </Grid>
+              }
+            </GridPDFExport>
+
+          </div>
+        </IntlProvider>
+      </LocalizationProvider>
     );
   }
 }

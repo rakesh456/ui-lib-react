@@ -5,7 +5,6 @@ import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
-import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 
 import {
     isUndefinedOrNull
@@ -23,8 +22,6 @@ import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
 import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
-import { FaVolumeControlPhone } from 'react-icons/lib/fa';
-
 
 (function () {
     if (typeof window.CustomEvent === "function") return false;
@@ -95,11 +92,6 @@ function tagSelectorRender(el) {
 
     function onKeyDownHandler() {
         let ev = new CustomEvent('keydown');
-        el.dispatchEvent(ev);
-    }
-
-    function onChangeHandler(){
-        let ev = new CustomEvent('change');
         el.dispatchEvent(ev);
     }
     

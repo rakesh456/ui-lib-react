@@ -1,9 +1,8 @@
-
 import React from 'react';
 
 export class CustomFilterUI extends React.Component {
-    onClick = (event, value) => {
-        console.log(' value ', value);
+    onChange = (event) => {
+        const value = event.target.value === 'null' ? null : event.target.value === 'true';
         const { firstFilterProps } = this.props;
 
         firstFilterProps.onChange({
@@ -18,18 +17,90 @@ export class CustomFilterUI extends React.Component {
         const value = firstFilterProps.value;
 
         return (
-            <div className="VS-FilterButtons">
-                <button onClick={(e) => this.onClick(e, 'contains')}>Contains</button>
-                <button onClick={(e) => this.onClick(e, 'notcontains')}>Does not contain</button>
-                <button onClick={(e) => this.onClick(e, 'equal')}>Is equal to</button>
-                <button onClick={(e) => this.onClick(e, 'notequal')}>Is not equal to</button>
-                <button onClick={(e) => this.onClick(e, 'starstwith')}>Starts with</button>
-                <button onClick={(e) => this.onClick(e, 'endswith')}>Ends with</button>
-                <button onClick={(e) => this.onClick(e, 'null')}>Is null</button>
-                <button onClick={(e) => this.onClick(e, 'notnull')}>Is not null</button>
-                <button onClick={(e) => this.onClick(e, 'empty')}>Is empty</button>
-                <button onClick={(e) => this.onClick(e, 'notempty')}>Is not empty</button>
+            <div>
+                <input
+                    name="contains"
+                    type="radio"
+                    value="contains"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-null">&nbsp;contains</label>
+                <br />
+                <input
+                    name="not contains"
+                    type="radio"
+                    value="not contains"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-true">&nbsp;not contains</label>
+                <br />
+                <input
+                    name="equal"
+                    type="radio"
+                    value="equal"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;equal</label>
+                <br />
+                <input
+                    name="not equal"
+                    type="radio"
+                    value="not equal"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;start with</label>
+                <br />
+                <input
+                    name="end with"
+                    type="radio"
+                    value="end with"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;end with</label>
+                <br />
+                <input
+                    name="null"
+                    type="radio"
+                    value="null"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;null</label>
+                <br />
+                <input
+                    name="not null"
+                    type="radio"
+                    value="not null"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;not null</label>
+                <br />
+                <input
+                    name="empty"
+                    type="radio"
+                    value="empty"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;empty</label>
+                <br />
+                <input
+                    name="not empty"
+                    type="radio"
+                    value="notempty"
+                    checked={value === true}
+                    onChange={this.onChange}
+                />
+                <label htmlFor="bool-false">&nbsp;not empty</label>
+                <input type="text" />
             </div>
         );
     }
 }
+

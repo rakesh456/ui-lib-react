@@ -70,8 +70,8 @@ class WeekDaysView extends React.PureComponent {
                 <div className="VS-WeekRow" key={'week' + weekIndex}>
                     {
                         (week.showChild) ?
-                            <span className="VS-week-Plus-Minus" onClick={() => this.toggleWeekChild(week, false)}>-</span> :
-                            <span className="VS-week-Plus-Minus" onClick={() => this.toggleWeekChild(week, true)} >+</span>
+                            <span className="VS-Week-Plus-Minus VS-Minus" onClick={() => this.toggleWeekChild(week, false)}>-</span> :
+                            <span className="VS-Week-Plus-Minus" onClick={() => this.toggleWeekChild(week, true)} >+</span>
                     }
 
                     <label className="VS-Checkbox-Container"><div className="VS-Tooltip">{week.week}<span className="VS-TooltiptextWeeks">{week.week+" "}{month.month+" "}{year.year}</span></div>
