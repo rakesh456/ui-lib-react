@@ -7,6 +7,7 @@ import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 import FormGenerator from './components/FormGenerator/form-generator';
+import RichTextEditor from './components/RichTextEditor/rich-text-editor';
 
 import {
     isUndefinedOrNull
@@ -260,6 +261,63 @@ function formGenRender(el) {
     // eslint-disable-next-line
     var FormGenComponentInstance = ReactDOM.render(
         FormGenComponentElement,
+        el
+    )
+}
+
+//mock function
+function resetRTEOptions(options) {
+
+    return { ...options };
+}
+
+Array.prototype.forEach.call(
+    document.getElementsByTagName('fx-editor'),
+    (el) => {
+        formGenRender(el);
+    })
+
+function formGenRender(el) {
+    let options = JSON.parse(el.getAttribute('data-options'));
+    console.log(options);
+    options = (isUndefinedOrNull(options)) ? resetRTEOptions({}) : resetRTEOptions(options);
+
+    el.getValues = function () {
+        return FxEditorComponentInstance.getValues();
+    }
+    
+    function onFocusHandler() {
+        let ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+    
+    function onChangeHandler() {
+        let ev = new CustomEvent("change");
+        el.dispatchEvent(ev);
+    }
+
+    function onBlurHandler() {
+        let ev = new CustomEvent("blur");
+        el.dispatchEvent(ev);
+    }
+
+    function onInputHandler(){
+        let ev = new CustomEvent("input");
+        el.dispatchEvent(ev);
+    }
+
+    el.refresh = function (){
+        return FxEditorComponentInstance.refresh();
+    }
+
+    var FxEditorComponentElement = <FxEditor options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+    el.setValues = function (json) {
+        FxEditorComponentInstance.setValues(json);
+    }
+
+    // eslint-disable-next-line
+    var FxEditorComponentInstance = ReactDOM.render(
+        FxEditorComponentElement,
         el
     )
 }
