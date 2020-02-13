@@ -1,18 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import KendoGrid from "./components/grid/kendo-grid";
+import FxGrid from "./components/grid/fx-grid";
 import BkeySearcher from "./components/bkey/bkey-searcher";
 import * as serviceWorker from './serviceWorker';
+import './components/grid/fx-grid.scss'
 
 Array.prototype.forEach.call(
-    document.getElementsByTagName('kendo-grid'),
+    document.getElementsByTagName('fx-grid'),
     (el) => {
         kendogridRender(el);
     })
 
 function kendogridRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-    var myComponentElement = <KendoGrid options={options} />;
+    var myComponentElement = <FxGrid options={options} />;
 
     ReactDOM.render(
         myComponentElement,

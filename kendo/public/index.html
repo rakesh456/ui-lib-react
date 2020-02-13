@@ -9,10 +9,11 @@
 </head>
 
 <body>
+    "gridColumns":[{"field":"name","filter:"text"},{"field":"username","filter":"text"}]
     <!-- <bkey-searcher></bkey-searcher> -->
     <h1>KendoReact Grid Component</h1>
     <p>data-options='{"globalSearch": true}'</p>
-    <kendo-grid data-options='{"globalSearch": true,"data-url":"https://jsonplaceholder.typicode.com/posts"}'></kendo-grid>
+    <fx-grid data-options='{"globalSearch": false, "dataUrl":"https://jsonplaceholder.typicode.com/users", "exportToExcel": false, "exportToPdf": false, "groupBy":"name", "showColumns":[{"field":"name","title":"name","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true},{"field":"id","title":"ID","filter":"numeric","width":"200px","format":"","lockedfield":"","filterable":true},{"field":"username","title":"USERNAME","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true},{"field":"email","title":"Email","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true}]}'></fx-grid>
 </body>
 
 </html>

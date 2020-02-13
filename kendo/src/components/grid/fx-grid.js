@@ -4,7 +4,6 @@ import { DropDownList } from '@progress/kendo-react-dropdowns';
 import { GridPDFExport } from '@progress/kendo-react-pdf';
 import { ExcelExport } from '@progress/kendo-react-excel-export';
 import { IntlProvider, load, LocalizationProvider, loadMessages } from '@progress/kendo-react-intl';
-
 import likelySubtags from '../../utils/supplemental/likelySubtags.json';
 import currencyData from '../../utils/supplemental/currencyData.json';
 import weekData from '../../utils/supplemental/weekData.json';
@@ -17,7 +16,6 @@ import '@progress/kendo-theme-default/dist/all.css';
 import orders from './../orders.json';
 import esMessages from './../es.json';
 import { process } from '@progress/kendo-data-query';
-// const fetch = require('node-fetch')
 loadMessages(esMessages, 'es-ES');
 load(
   likelySubtags,
@@ -28,34 +26,34 @@ load(
   caGregorian,
   dateFields,
   timeZoneNames
-  );
+);
 orders.forEach(o => {
   o.orderDate = new Date(o.orderDate);
   o.shippedDate = o.shippedDate === 'NULL' ? undefined : new Date(o.shippedDate);
 });
 
-class DetailComponent extends GridDetailRow {
-  render() {
-    const dataItem = this.props.dataItem;
-    return (
-      <div>
-        <section style={{ width: "200px", float: "left" }}>
-          <p><strong>Street:</strong> {dataItem.shipAddress.street}</p>
-          <p><strong>City:</strong> {dataItem.shipAddress.city}</p>
-          <p><strong>Country:</strong> {dataItem.shipAddress.country}</p>
-          <p><strong>Postal Code:</strong> {dataItem.shipAddress.postalCode}</p>
-        </section>
-        <Grid style={{ width: "500px" }} data={dataItem.details}></Grid>
-      </div>
-    );
-  }
-}
+// class DetailComponent extends GridDetailRow {
+//   render() {
+//     const address = this.props.address;
+//     return (
+//       <div>
+//         <section style={{ width: "200px", float: "left" }}>
+//           <p><strong>Street:</strong> {address.street}</p>
+//           <p><strong>City:</strong> {address.city}</p>
+//           <p><strong>Country:</strong> {address.country}</p>
+//           <p><strong>Postal Code:</strong> {address.postalCode}</p>
+//         </section>
+//         <Grid style={{ width: "500px" }} data={address.website}></Grid>
+//       </div>
+//     );
+//   }
+// }
 
 
 
 
 
-class KendoGrid extends React.Component {
+class FxGrid extends React.Component {
   locales = [
     {
       language: 'en-US',
@@ -70,12 +68,12 @@ class KendoGrid extends React.Component {
     super(props);
     const dataState = {
       skip: 0,
-      take: 20,
+      take: 10,
       sort: [
-        { field: 'orderDate', dir: 'desc' }
+        { field: "name", dir: 'desc' }
       ],
       group: [
-        { field: 'customerID' }
+        { field: this.props.options.groupBy }
       ]
     };
     this.state = {
@@ -83,17 +81,22 @@ class KendoGrid extends React.Component {
       dataState: dataState,
       currentLocale: this.locales[0]
     };
-    
   }
-  // componentDidMount(){
-  // fetch('https://jsonplaceholder.typicode.com/posts').then((resp)=>
+
+  //   const dataUrl = this.props.options.dataUrl.toString();
+  //   fetch(dataUrl).then((resp) =>
   //     resp.json()
-  //   ).then((data)=>{
-  //     console.log(data);
-      
+  //   ).then((orders) => {
+  //     console.log('state',this.dataState)
+  //     this.state = {
+  //       dataResult: process(orders, dataState),
+  //       dataState: dataState,
+  //       currentLocale: this.locales[0]
+  //     };
   //   })
   // }
-
+  // componentDidMount() {
+  // }
 
   expandChange = (event) => {
     const isExpanded =
@@ -114,8 +117,8 @@ class KendoGrid extends React.Component {
     this._pdfExport.save();
   }
 
-  dataStateChange = (event) => { 
-   
+  dataStateChange = (event) => {
+
     this.setState({
       dataResult: process(orders, event.data),
       dataState: event.data
@@ -126,7 +129,7 @@ class KendoGrid extends React.Component {
   Search = (event) => {
     let Standard = (value) => {
       var date = value.toString();
-        return new Date(date);
+      return new Date(date);
     }
     const eventData = {
       "filter": {
@@ -194,19 +197,25 @@ class KendoGrid extends React.Component {
       dataResult: process(orders, eventData),
     })
   }
+  renderGrid(column) {
+    console.log(column);
+    return (
+      <GridColumn field={column.field} width={column.width} filter={column.filter} title={column.title} format={column.format} filterable={column.filterable} locked field={column.lockedfield} />
+    )
+  }
 
 
   render() {
     let options = this.props.options;
-    console.log('globalsearch',options.globalSearch);
+    console.log('gridcoulmns', options.showColumns);
     return (
       <LocalizationProvider language={this.state.currentLocale.language}>
         <IntlProvider locale={this.state.currentLocale.locale} >
           <div>
-            {(options.globalSearch)?
-            <input type="text" placeholder="Search in entire columns" data={this.state.dataResult}
-              {...this.state.dataState} onChange={this.Search}
-            ></input>:""}
+            {(options.globalSearch) ?
+              <input className="VS-GlobalSearch" type="text" placeholder="Search in entire columns" data={this.state.dataResult}
+                {...this.state.dataState} onChange={this.Search}
+              ></input> : ""}
             <ExcelExport
               data={orders}
               ref={(exporter) => { this._export = exporter; }}
@@ -239,15 +248,9 @@ class KendoGrid extends React.Component {
                   ]
                 }}
 
-                // onFilterChange={(e) => {
-                //     this.setState({
-                //         filter: e.filter
-                //     });
-                // }}
-
-                detail={DetailComponent}
-                expandField="expanded"
-                onExpandChange={this.expandChange}
+              // detail={DetailComponent}
+              // expandField="expanded"
+              // onExpandChange={this.expandChange}
               >
                 <GridToolbar>
                   Locale:&nbsp;&nbsp;&nbsp;
@@ -256,22 +259,19 @@ class KendoGrid extends React.Component {
                     textField="language"
                     onChange={(e) => { this.setState({ currentLocale: e.target.value }); }}
                     data={this.locales} />&nbsp;&nbsp;&nbsp;
-                                <button
+                               {(options.exportToExcel) ? <button
                     title="Export to Excel"
                     className="k-button k-primary"
                     onClick={this.exportExcel}
                   >
                     Export to Excel
-                                </button>&nbsp;
-                                <button className="k-button k-primary" onClick={this.exportPDF}>Export to PDF</button>
+                                </button> : ""}
+                  {(options.exportToPdf) ?
+                    <button className="k-button k-primary" onClick={this.exportPDF}>Export to PDF</button> : ""}
                 </GridToolbar>
-                <GridColumn field="customerID" width="200px" title="Customer Id" />
-                <GridColumn field="orderDate" filter="date" format="{0:D}" width="300px" />
-                <GridColumn field="shipName" width="280px" />
-                <GridColumn field="freight" filter="numeric" width="200px" />
-                <GridColumn field="shippedDate" filter="date" format="{0:D}" width="300px" />
-                <GridColumn field="employeeID" filter="numeric" width="200px" />
-                <GridColumn locked field="orderID" filterable={false} title="ID" width="90px" />
+                {options.showColumns.forEach(column => {
+                  this.renderGrid(column);
+                })}
               </Grid>
             </ExcelExport>
             <GridPDFExport
@@ -279,13 +279,9 @@ class KendoGrid extends React.Component {
               margin="1cm" >
               {
                 <Grid data={process(orders, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
-                  <GridColumn field="customerID" width="200px" />
-                  <GridColumn field="orderDate" filter="date" format="{0:D}" width="300px" />
-                  <GridColumn field="shipName" width="280px" />
-                  <GridColumn field="freight" filter="numeric" width="200px" />
-                  <GridColumn field="shippedDate" filter="date" format="{0:D}" width="300px" />
-                  <GridColumn field="employeeID" filter="numeric" width="200px" />
-                  <GridColumn locked field="orderID" filterable={false} title="ID" width="90px" />
+                  {options.showColumns.forEach(column => {
+                    this.renderGrid(column);
+                  })}
                 </Grid>
               }
             </GridPDFExport>
@@ -297,4 +293,4 @@ class KendoGrid extends React.Component {
   }
 }
 
-export default KendoGrid;
+export default FxGrid;
