@@ -5,6 +5,8 @@ import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+import FormGenerator from './components/FormGenerator/form-generator';
 
 import {
     isUndefinedOrNull
@@ -181,8 +183,6 @@ function dateHierarchyRender(el) {
         el.dispatchEvent(ev);
     }
 
-
-
     el.getDates = function () {
         return HierarchyComponentInstance.getDates();
     }
@@ -199,6 +199,67 @@ function dateHierarchyRender(el) {
     // eslint-disable-next-line
     var HierarchyComponentInstance = ReactDOM.render(
         HierarchyComponentElement,
+        el
+    )
+}
+
+//mock function
+function resetFormGenOptions(options) {
+
+    return { ...options };
+}
+
+Array.prototype.forEach.call(
+    document.getElementsByTagName('form-gen'),
+    (el) => {
+        formGenRender(el);
+    })
+
+function formGenRender(el) {
+    let options = JSON.parse(el.getAttribute('data-options'));
+    console.log(options);
+    options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
+
+    el.getValues = function () {
+        return FormGenComponentInstance.getValues();
+    }
+    
+    function onFocusHandler() {
+        let ev = new CustomEvent('focus');
+        el.dispatchEvent(ev);
+    }
+    
+    function onChangeHandler() {
+        let ev = new CustomEvent("change");
+        el.dispatchEvent(ev);
+    }
+
+    function onBlurHandler() {
+        let ev = new CustomEvent("blur");
+        el.dispatchEvent(ev);
+    }
+
+    function onInputHandler(){
+        let ev = new CustomEvent("input");
+        el.dispatchEvent(ev);
+    }
+
+    el.getDates = function () {
+        return FormGenComponentInstance.getDates();
+    }
+
+    el.refresh = function (){
+        return FormGenComponentInstance.refresh();
+    }
+
+    var FormGenComponentElement = <FormGenerator options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+    el.setValues = function (json) {
+        FormGenComponentInstance.setValues(json);
+    }
+
+    // eslint-disable-next-line
+    var FormGenComponentInstance = ReactDOM.render(
+        FormGenComponentElement,
         el
     )
 }
