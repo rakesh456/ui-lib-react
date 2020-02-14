@@ -1,9 +1,14 @@
 .VS-GlobalSearch{
-    width: 30%;
+    width: 233px;
     padding: 8px 7px;
-    margin: 8px 0;
+    margin: 5px 0;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid lightgray;
     border-radius: 2px;
     box-sizing: border-box;
+}
+.VS-Parent{
+    background-color: #f6f6f6;
+    border: solid 1px;
+    border-color: lightgray;
 }

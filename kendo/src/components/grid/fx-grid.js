@@ -13,9 +13,10 @@ import caGregorian from '../../utils/es/ca-gregorian.json';
 import dateFields from '../../utils/es/dateFields.json';
 import timeZoneNames from '../../utils/es/timeZoneNames.json';
 import '@progress/kendo-theme-default/dist/all.css';
-import orders from './../orders.json';
+// import orders from './../orders.json';
 import esMessages from './../es.json';
-import { process } from '@progress/kendo-data-query';
+import { process, normalizeFilters } from '@progress/kendo-data-query';
+import { locales } from '../../utils/utils'
 loadMessages(esMessages, 'es-ES');
 load(
   likelySubtags,
@@ -27,10 +28,6 @@ load(
   dateFields,
   timeZoneNames
 );
-orders.forEach(o => {
-  o.orderDate = new Date(o.orderDate);
-  o.shippedDate = o.shippedDate === 'NULL' ? undefined : new Date(o.shippedDate);
-});
 
 // class DetailComponent extends GridDetailRow {
 //   render() {
@@ -50,53 +47,31 @@ orders.forEach(o => {
 // }
 
 
-
-
-
 class FxGrid extends React.Component {
-  locales = [
-    {
-      language: 'en-US',
-      locale: 'en'
-    },
-    {
-      language: 'es-ES',
-      locale: 'es'
-    }
-  ]
   constructor(props) {
     super(props);
-    const dataState = {
-      skip: 0,
-      take: 10,
-      sort: [
-        { field: "name", dir: 'desc' }
-      ],
-      group: [
-        { field: this.props.options.groupBy }
-      ]
-    };
+    const dataState = this.props.options.dataState;
     this.state = {
-      dataResult: process(orders, dataState),
+      dataResult: '',
       dataState: dataState,
-      currentLocale: this.locales[0]
+      currentLocale: locales[0],
+      json: ''
     };
+    const dataUrl = this.props.options.dataUrl;
+    fetch(dataUrl).then((resp) =>
+      resp.json()
+    ).then((data) => {
+      this.setState({
+        dataResult: process(data, dataState),
+        dataState: dataState,
+        currentLocale: locales[0],
+        json: data
+      });
+    })
   }
 
-  //   const dataUrl = this.props.options.dataUrl.toString();
-  //   fetch(dataUrl).then((resp) =>
-  //     resp.json()
-  //   ).then((orders) => {
-  //     console.log('state',this.dataState)
-  //     this.state = {
-  //       dataResult: process(orders, dataState),
-  //       dataState: dataState,
-  //       currentLocale: this.locales[0]
-  //     };
-  //   })
-  // }
-  // componentDidMount() {
-  // }
+
+
 
   expandChange = (event) => {
     const isExpanded =
@@ -120,7 +95,7 @@ class FxGrid extends React.Component {
   dataStateChange = (event) => {
 
     this.setState({
-      dataResult: process(orders, event.data),
+      dataResult: process(this.state.json, event.data),
       dataState: event.data
     });
   }
@@ -131,97 +106,86 @@ class FxGrid extends React.Component {
       var date = value.toString();
       return new Date(date);
     }
+    let columnField = this.props.options.showColumns.map(function (item) {
+      return item.field;
+    });
+    let dataState = this.props.options.dataState
+    let filters = (value) => {
+      let filterArray = [];
+      for (var i = 0; i < columnField.length; i++) {
+        if (this.props.options.showColumns[i].filter === "text") {
+          filterArray.push({
+            "field": columnField[i],
+            "operator": "contains",
+            "value": value
+          })
+        }
+        if (this.props.options.showColumns[i].filter === "numeric") {
+          filterArray.push({
+            "field": columnField[i],
+            "operator": "eq",
+            "value": value
+          })
+        }
+        if (this.props.options.showColumns[i].filter === "date") {
+          filterArray.push({
+            "field": columnField[i],
+            "operator": "eq",
+            "value": Standard(value)
+          })
+        }
+        if (this.props.options.showColumns[i].filter === "boolean") {
+          filterArray.push({
+            "field": columnField[i],
+            "operator": "contains",
+            "value": value
+          })
+        }
+      }
+      return filterArray
+    };
     const eventData = {
       "filter": {
         "logic": "or",
-        "filters": [
-          {
-            "field": "customerID",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "shipName",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "employeeID",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "freight",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "shipAddress.country",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "orderID",
-            "operator": "contains",
-            "value": event.target.value
-          },
-          {
-            "field": "orderDate",
-            "operator": "eq",
-            "value": Standard(event.target.value)
-          },
-          {
-            "field": "shippedDate",
-            "operator": "eq",
-            "value": Standard(event.target.value)
-          }
-
-        ]
+        "filters": filters(event.target.value)
       },
-      "sort": [
-        {
-          "field": "orderDate",
-          "dir": "desc"
-        }
-      ],
       "skip": 0,
       "take": 20,
+      "sort": [
+        { "field": "id", "dir": "desc" }
+      ],
       "group": [
-        {
-          "field": "customerID"
-        }
+        { "field": "id" }
       ]
     }
 
     this.setState({
-      dataResult: process(orders, eventData),
+      dataResult: process(this.state.json, eventData),
     })
   }
-  renderGrid(column) {
-    console.log(column);
+  renderGrid(column, Index) {
     return (
-      <GridColumn field={column.field} width={column.width} filter={column.filter} title={column.title} format={column.format} filterable={column.filterable} locked field={column.lockedfield} />
+      <GridColumn key={Index} field={column.field} width={column.width} title={column.title} filter={column.filter} data={column.data} />
     )
   }
 
 
   render() {
     let options = this.props.options;
-    console.log('gridcoulmns', options.showColumns);
     return (
       <LocalizationProvider language={this.state.currentLocale.language}>
         <IntlProvider locale={this.state.currentLocale.locale} >
-          <div>
+          <div className="VS-Parent">
             {(options.globalSearch) ?
               <input className="VS-GlobalSearch" type="text" placeholder="Search in entire columns" data={this.state.dataResult}
                 {...this.state.dataState} onChange={this.Search}
               ></input> : ""}
             <ExcelExport
-              data={orders}
+              data={this.state.json}
               ref={(exporter) => { this._export = exporter; }}
             >
               <Grid
-                style={{ height: '700px' }}
+                style={{ height: '700px'}}
                 sortable
                 filterable
                 groupable
@@ -235,7 +199,7 @@ class FxGrid extends React.Component {
                 filterOperators={{
                   'text': [
                     { text: 'grid.filterContainsOperator', operator: 'contains' },
-                    { text: 'grid.filterEqOperator', operator: 'eq' },
+                    { text: 'grid.filterEqOperator', operator: 'eq' }
                   ],
                   'numeric': [
                     { text: 'grid.filterEqOperator', operator: 'eq' }
@@ -248,9 +212,9 @@ class FxGrid extends React.Component {
                   ]
                 }}
 
-              // detail={DetailComponent}
-              // expandField="expanded"
-              // onExpandChange={this.expandChange}
+                // detail={DetailComponent}
+                // expandField="expanded"
+                // onExpandChange={this.expandChange}
               >
                 <GridToolbar>
                   Locale:&nbsp;&nbsp;&nbsp;
@@ -269,23 +233,22 @@ class FxGrid extends React.Component {
                   {(options.exportToPdf) ?
                     <button className="k-button k-primary" onClick={this.exportPDF}>Export to PDF</button> : ""}
                 </GridToolbar>
-                {options.showColumns.forEach(column => {
-                  this.renderGrid(column);
-                })}
+                {
+                  options.showColumns.map((column, Index) => this.renderGrid(column, Index))
+                }
               </Grid>
             </ExcelExport>
             <GridPDFExport
               ref={(element) => { this._pdfExport = element; }}
               margin="1cm" >
               {
-                <Grid data={process(orders, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
-                  {options.showColumns.forEach(column => {
-                    this.renderGrid(column);
-                  })}
+                <Grid data={process(this.state.json, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
+                  {
+                    options.showColumns.map((column, Index) => this.renderGrid(column, Index))
+                  }
                 </Grid>
               }
             </GridPDFExport>
-
           </div>
         </IntlProvider>
       </LocalizationProvider>

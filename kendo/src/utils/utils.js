@@ -21,3 +21,14 @@ export function  addDays(date, days) {
     result.setDate(result.getDate() + days);
     return result;
 }
+
+export const locales = [
+    {
+      language: 'en-US',
+      locale: 'en'
+    },
+    {
+      language: 'es-ES',
+      locale: 'es'
+    }
+  ]

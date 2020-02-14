@@ -2,18 +2,110 @@
 <html lang="en">
 
 <head>
-    <title>Grid Kendo</title>
-    <script>
+  <title>Grid Kendo</title>
+  <script>
 
-    </script>
+  </script>
 </head>
 
 <body>
-    "gridColumns":[{"field":"name","filter:"text"},{"field":"username","filter":"text"}]
-    <!-- <bkey-searcher></bkey-searcher> -->
-    <h1>KendoReact Grid Component</h1>
-    <p>data-options='{"globalSearch": true}'</p>
-    <fx-grid data-options='{"globalSearch": false, "dataUrl":"https://jsonplaceholder.typicode.com/users", "exportToExcel": false, "exportToPdf": false, "groupBy":"name", "showColumns":[{"field":"name","title":"name","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true},{"field":"id","title":"ID","filter":"numeric","width":"200px","format":"","lockedfield":"","filterable":true},{"field":"username","title":"USERNAME","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true},{"field":"email","title":"Email","filter":"text","width":"200px","format":"{0:D}","lockedfield":"","filterable":true}]}'></fx-grid>
+  data-options='{"globalSearch": true, "dataUrl":"https://jsonplaceholder.typicode.com/users",
+  "dataState": {
+  "skip": 0,
+  "take": 20,
+  "sort": [
+  { "field": "name", "dir": "desc" }
+  ],
+  "group": [
+  { "field": "name" }
+  ]
+  },
+  "exportToExcel": false,
+  "exportToPdf": false,
+  "showColumns":[
+  {
+  "field": "name",
+  "title": "Name",
+  "filter": "text",
+  "width": "200px",
+  "format": "{0:D}",
+  "filterable": true
+  },
+  {
+  "field": "username",
+  "title": "USERNAME",
+  "filter": "text",
+  "width": "200px",
+  "format": "",
+  "filterable": true
+  },
+  {
+  "field": "email",
+  "title": "Email",
+  "filter": "text",
+  "width": "200px",
+  "format": "{0:D}",
+  "filterable": true
+  },
+  {
+  "field": "phone",
+  "title": "PhoneNo",
+  "filter": "numeric",
+  "width": "200px",
+  "format": "{0:D}",
+  "filterable": true
+  }
+  ]}'
+  <h1>KendoReact Grid Component</h1>
+  <p>data-options='{"globalSearch": true}'</p>
+  <fx-grid data-options='{"globalSearch": true,
+    "dataUrl":"https://jsonplaceholder.typicode.com/photos",
+    "dataState": {
+        "skip": 0,
+        "take": 20,
+        "sort": [
+          { "field": "id", "dir": "asc" }
+          ],
+          "group": [
+          {"field": "albumId"}
+        ]
+      },
+      "exportToExcel": true,
+      "exportToPdf": true,
+      "showColumns":[
+      {
+        "field": "albumId",
+        "title": "albumId",
+        "filter": "text",
+        "width": "200px",
+        "format": "{0:D}",
+        "filterable": true
+      },
+      {
+        "field": "id",
+        "title": "ID",
+        "filter": "text",
+        "width": "200px",
+        "format": "",
+        "filterable": true
+      },
+      {
+        "field": "title",
+        "title": "Title",
+        "filter": "text",
+        "width": "200px",
+        "format": "{0:D}",
+        "filterable": true
+      },
+      {
+        "field": "url",
+        "title": "url",
+        "filter": "text",
+        "width": "200px",
+        "format": "{0:D}",
+        "filterable": true
+      }
+    ]}'></fx-grid>
 </body>
 
 </html>
