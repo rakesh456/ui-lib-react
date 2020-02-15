@@ -6,8 +6,9 @@ import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
-import compass from "react-icons/lib/fa/compass";
+const stateRegExZero = /\"state\":0/gi // eslint-disable-line
 const stateRegExOne = /\"state\":1/gi // eslint-disable-line
+const stateRegExMinus = /\"state\":-1/gi // eslint-disable-line
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
 const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line
@@ -825,7 +826,7 @@ class DatehierarchyView extends React.PureComponent {
         let { isSearching } = this.state;
         let isPartial = checkYears.some(checkPartialState);
         let isOne = checkYears.some(checkOneState);
-
+        
         let isShowAddToCurrentSelection = false;
         checkYears.forEach((yr) => {
             if (yr.state === 0) {                
@@ -870,8 +871,9 @@ class DatehierarchyView extends React.PureComponent {
 
     onSelectAllChange = ({ target }) => {
         let { years } = this.state;
+
         years.forEach((yr, index) => {
-            this.toggleYearCheck(yr, target.checked);
+            this.toggleYearCheck(yr, (target.checked === true)? 1 : 0);
         });
 
         this.setState({
@@ -1112,9 +1114,9 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        let { searchValue, filteredYears, lastFilterData, isSearching } = this.state;
+        let { searchValue, filteredYears, lastFilterData, isSearching, isSelectAll } = this.state;
 
-        if (isSearching === true || (lastFilterData && lastFilterData.length > 0)) {
+        if (isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) {
             let _lastFilterData = [...lastFilterData];
             let obj = {
                 'value': searchValue,
@@ -1162,7 +1164,7 @@ class DatehierarchyView extends React.PureComponent {
             };
     
             _lastFilterData.push(obj);
-    
+
             if (isExcludeFromSelection === true && _selections.length <= 0) {
                 this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
                     this.excludeFromSelection(years, (resultExclusion), (resultYears) => {
@@ -1240,35 +1242,45 @@ class DatehierarchyView extends React.PureComponent {
                         });
     
                     } else {
+
+                        filteredData = this.convertShowChild(filteredData, false);
+
                         this.setState({
                             isSearching: false,
                             isNoDataFound: false,
-                            searchValue: ""
+                            searchValue: "",
+                            years: [...JSON.parse(filteredData)],
+                            selectAllResultState: true
                         });
-    
+
                         this.updateSelectAllCheckboxHandler([...years], null, true);
                     }
                 } else if (_selections.length <= 0) {
-                    var newselections = filteredData.map(a => Object.assign({}, a));
-                    filteredData = this.convertShowChild(filteredData, false);
-                    
-                    this.setState({
-                        isSearching: false,
-                        isAddCurrentSelection: false,
-                        isExcludeFromSelection: false,
-                        isNoDataFound: false,
-                        searchValue: "",
-                        lastFilterData: _lastFilterData,
-                        listOfYears: [...yearList],
-                        selections: [...newselections],
-                        years: [...JSON.parse(filteredData)],
-                        selectAllResultState: true
+                    let newYears = (isAddCurrentSelection === true)? this.convertShowChild(years, false) : this.convertShowChild(yearList, false);
+
+                    this.addToCurrentSelection(JSON.parse(newYears), (filteredData), (resultYears) => {
+                        let newSelections = resultYears.map(a => Object.assign({}, a));
+                        resultYears = this.convertShowChild(resultYears, false);
+
+                        this.setState({
+                            isSearching: false,
+                            isAddCurrentSelection: false,
+                            isExcludeFromSelection: false,
+                            isNoDataFound: false,
+                            searchValue: "",
+                            lastFilterData: _lastFilterData,
+                            listOfYears: [...yearList],
+                            selections: [...newSelections],
+                            filterSum: 0,
+                            years: [...JSON.parse(resultYears)],
+                            selectAllResultState: true
+                        });
+
+                        this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                     });
-    
-                    this.updateSelectAllCheckboxHandler([...JSON.parse(filteredData)], null, true);
+
                 } else {
                     years = this.convertShowChild(years, false);
-
                     this.setState({
                         isSearching: false,
                         isAddCurrentSelection: false,
@@ -1380,8 +1392,8 @@ class DatehierarchyView extends React.PureComponent {
 
                     <span className={`VS-Clear-Filter ${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                         
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
-                        <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
                         <div className='VS-Clear-Tooltip'><span>Clear Filter</span></div>
 
                     </span>

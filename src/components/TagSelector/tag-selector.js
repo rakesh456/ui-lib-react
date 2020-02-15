@@ -45,6 +45,13 @@ class TagSelector extends React.PureComponent {
       style.zIndex = "1";
       this.setState({ style: style });
     }
+
+    let {showHierarchy, data} = this.props.options;
+    if(data && data.length > 0){
+      this.setState({
+        listItems: sortListingByType(showHierarchy, data)
+      });
+    }
   }
 
 
