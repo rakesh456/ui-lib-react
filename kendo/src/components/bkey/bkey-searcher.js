@@ -3,48 +3,21 @@ import '../../App.css';
 import "../../../node_modules/react-datepicker/dist/react-datepicker.css";
 import { Grid, GridColumn, GridCell } from '@progress/kendo-react-grid';
 import '@progress/kendo-theme-default/dist/all.css';
-// import countries from './../countries.json';
 import { process } from '@progress/kendo-data-query';
 import styles from './style.module.css'
 import { CommonDragLogic } from '@progress/kendo-react-grid/dist/npm/drag/CommonDragLogic';
-// const fetch = require('node-fetch')
-
-    
 
 class BkeySearcher extends React.Component {
     constructor(props) {
-        console.log("props", props.options.dataState);
-        
-        const dataState =  props.options.dataState
-        // const dataState = {this.setState(){
-
-            // }
-        //     skip: 0,
-        //     take: 20,
-        //     sort: [
-        //         { field: 'orderDate', dir: 'desc' }
-        //     ],
-        //     group: [
-        //     ]
-        // };
-        const filterDataState = props.options.filterDataState
-        // const filterDataState = {
-        //     skip: 0,
-        //     take: 20,
-        //     sort: [
-        //         { field: 'orderDate', dir: 'desc' }
-        //     ],
-        //     group: [
-        //     ]
-        // };
-        
         super(props);
+        const dataState =  props.options.dataState
+        const filterDataState = props.options.filterDataState        
         this.state = {
             showBelowGrid: false,
             dataState: dataState,
             filterDataState: filterDataState,
             data: "",
-            // dataResult: process(this.state.data, dataState),
+            masterData:[],
             filteredResult: [],
             filterList: [],
             columns: [
@@ -58,20 +31,27 @@ class BkeySearcher extends React.Component {
                 }
             ]
         };
-        fetch(this.props.options.dataUrl).then((resp)=>
-        resp.json()).then((data)=>{
-            console.log("data",data)
+        var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+        var myInit = { 
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'no-cors',
+        cache: 'default' 
+        };
+        
+        var myRequest = new Request(this.props.options.dataUrl, myInit);
+        console.log(myRequest)
+        fetch(myRequest.url).then((resp)=> resp.json()).then((data)=>{
             this.setState({
                 data: data,
                 dataResult: process(data, dataState),
             })
+            
         })
        
     }
    
-    componentDidMount(){
-       
-    }
     toggleBelowGrid = () => {
         this.setState({ showBelowGrid: !this.state.showBelowGrid });
     }
@@ -79,7 +59,7 @@ class BkeySearcher extends React.Component {
     addItemToFilterList = (item, isAdd) => {
         if (isAdd) {
             let result = this.state.filterList.filter((obj) => {
-                return obj.name === item.name
+                return obj[this.props.options.valueField] === item[this.props.options.valueField]
             });
             if (result.length <= 0) {
                 console.log()
@@ -126,8 +106,7 @@ class BkeySearcher extends React.Component {
     }
 
     dataStateChange = (data, event) => {
-       console.log(this.state.dataResult)
-       data.sort((a,b)=> (a.id > b.id)? 1:-1)
+       data.sort((a,b)=> (a[this.props.options.keyField] > b[this.props.options.keyField])? 1:-1)
         this.setState({
             dataResult: process(data, event.data),
             dataState: event.data
@@ -140,31 +119,89 @@ class BkeySearcher extends React.Component {
             filteredResult: process(data, event.data),
             filterDataState: event.data
         });
-        
-
     }
 
     plusSign = (props)=>{
         return (
-            <div className={styles.sign}>
+            
+            <td className={styles.sign}>
             <span className='key'>{props.dataItem.id}</span> <a className={styles.plus} onClick={(e) => {
                     this.addItemToFilterList(props.dataItem, true);
                 }}>+</a>
-            </div>
+            </td>
         );
 
     }
 
     crossSign = (props)=>{
         return (
-            <div className={styles.sign}>
+            <td className={styles.sign}>
             <span className='key'>{props.dataItem.id}</span> <a  className={styles.plus} onClick={(e) => {
                     this.addItemToFilterList(props.dataItem, false);
                 }}>x</a>
-            </div>
+            </td>
         );
     }
 
+    refresh(){
+        const dataState =  this.props.options.dataState
+        const filterDataState = this.props.options.filterDataState
+        if(this.state.filteredResult.data != undefined){
+            this.state.filteredResult.data.forEach((eachObj)=>{
+                this.state.data.push(eachObj)
+            })
+        }   
+        this.state.data.sort((a,b)=> a[this.props.options.keyField] > b[this.props.options.keyField] ? 1: -1 )
+        this.setState ({
+            showBelowGrid: false,
+            dataState: dataState,
+            filterDataState: filterDataState,
+            data: this.state.data,
+            dataResult: process(this.state.data, dataState),
+            filteredResult: [],
+            filterList: [],
+            columns: [
+                {
+                    title: "Preview ",
+                    template: '<input type="button" class="k-button info" name="info" value="Info" />',
+                    headerTemplate: '<label>  <input type="checkbox" id="checkAll"/>Print All</label>',
+                    filterable: false,
+                    sortable: false,
+                    width: 100
+                }
+            ]
+        }) 
+    }
+
+    resetData(){
+        fetch('http://dummy.restapiexample.com/api/v1/employees').then((resp)=> resp.json()).then((nextData)=>{
+            console.log(nextData.data)
+    
+        
+
+        this.setState ({
+            showBelowGrid: false,
+            dataState: this.props.options.dataState,
+            filterDataState: this.props.options.filterDataState,
+            data: nextData.data,
+            dataResult: process(this.state.data, this.props.options.dataState),
+            filteredResult: [],
+            filterList: [],
+            columns: [
+                {
+                    title: "Preview ",
+                    template: '<input type="button" class="k-button info" name="info" value="Info" />',
+                    headerTemplate: '<label>  <input type="checkbox" id="checkAll"/>Print All</label>',
+                    filterable: false,
+                    sortable: false,
+                    width: 100
+                }
+            ]
+        }) 
+
+    })
+        
+    }
     render() {
         return (
             <div className="VS-shape-rounded-fill VS-modal">
@@ -199,7 +236,6 @@ class BkeySearcher extends React.Component {
                                 //     this.addItemToFilterList(e.dataItem, true);
                                 // }}
                             >
-
                                 <GridColumn field= {this.props.options.valueField} title="Value" template="<button class='customEdit'>My Edit</button>" />
                                 <GridColumn field={this.props.options.keyField} title="Key" selectable="selectable" cell = {this.plusSign} />
                                 

@@ -10,11 +10,11 @@ import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
 const stateRegExOne = /\"state\":1/gi
 import compass from "react-icons/lib/fa/compass";
-const stateRegExOne = /\"state\":1/gi // eslint-disable-line
+// const stateRegExOne = /\"state\":1/gi // eslint-disable-line
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
-const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line
-const showChildRegExFalse = /\"showChild\":false/gi // eslint-disable-line
+// const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line
+// const showChildRegExFalse = /\"showChild\":false/gi // eslint-disable-line
 class DatehierarchyView extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -841,11 +841,8 @@ class DatehierarchyView extends React.PureComponent {
             } else {
                 selectAllState = selectAllState + yr.state;
                 isShowAddToCurrentSelection = true;
-            if (yr.state === 0) {                
-            } else {
-                selectAllState = selectAllState + yr.state;                
             }
-        });
+        }); 
 
         this.setState({
             isSelectAll: (selectAllState !== 0),
@@ -1220,10 +1217,10 @@ class DatehierarchyView extends React.PureComponent {
                             years: [...resultYears]
                         });
 
-                        this.updateSelectAllCheckboxHandler([...resultYears]);
-                            years: [...JSON.parse(resultYears)],
-                            selectAllResultState: true
-                        });
+                        // this.updateSelectAllCheckboxHandler([...resultYears]);
+                        //     years: [...JSON.parse(resultYears)],
+                        //     selectAllResultState: true
+                        // });
     
                         this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                     });
