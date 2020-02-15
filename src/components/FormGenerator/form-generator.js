@@ -14,7 +14,7 @@ class FormGenerator extends React.PureComponent {
         const formGenOptions = this.props.options.rows[0].rowElements[0].elementType;
         console.log('At the constructor',formGenOptions);
         this.state = {
-            countries: []
+            
             // formValid: false,
             // errorCount: null,
             
@@ -40,43 +40,54 @@ class FormGenerator extends React.PureComponent {
         const tags= [];
         for( var i = 0; i < len ; i++)
         {   
-            console.log("I:",i);
-            var label_name = this.props.options.rows[i].rowLabel.name;
+            
+             var label_name = this.props.options.rows[i].rowLabel.name;
             var rowElements_length = this.props.options.rows[i].rowElements.length;
             if( label_name != '')
             {
-                tags.push(<label htmlFor={id}>Your {label_name} is</label>)
+                tags.push(<label htmlFor={id}>{label_name} </label>)
             }
             for (var j = 0; j < rowElements_length; j++)
             {
-                console.log("j :",j);
-            var element_type = this.props.options.rows[i].rowElements[j].props.type;
-            
-            var required = this.props.options.rows[i].rowElements[j].props.required;
             var id = this.props.options.rows[i].rowElements[j].props.id;
-            var placeholder_custom = "Enter your "+label_name;
-            var title = this.props.options.rows[i].rowElements[j].props.title;
             console.log("If radio or not :",this.props.options.rows[i].rowElements[j].props.type)
             if((this.props.options.rows[i].rowElements[j].props.type) == "radio")
-            {              
+                     {              
+                        tags.push(<label htmlFor={this.props.options.rows[i].rowElements[j].props.id}><input type= "radio" name ={this.props.options.rows[i].rowElements[j].props.name} id={this.props.options.rows[i].rowElements[j].props.id} required></input>{this.props.options.rows[i].rowElements[j].elementLabel.name}</label>);
             
-            tags.push(<label htmlFor={this.props.options.rows[i].rowElements[j].props.id}><input type= "radio" id={this.props.options.rows[i].rowElements[j].props.id}></input>{this.props.options.rows[i].rowElements[j].elementLabel.name}</label>);
-            
-            }
+                     }
              else if ((this.props.options.rows[i].rowElements[j].elementType) == "select")
              {
+                    var items = this.props.options.rows[i].rowElements[j].options;
+                    items.unshift({ 
+                        "props":{ 
+                           "value":""
+                        },
+                        "optionLabel":"Select One"
+                     });
 
-                var options =''
-                for(var k = 0; k < this.props.options.rows[i].rowElements[j].options.length; k++)
-                {
-                    console.log("Inside select ",this.props.options.rows[i].rowElements[j].options[k].props.value);
-                    console.log("Inside select ",this.props.options.rows[i].rowElements[j].options[k].optionLabel);
-                options +=  <options value={this.props.options.rows[i].rowElements[j].options[k].props.value}> {this.props.options.rows[i].rowElements[j].options[k].optionLabel} </options>
-                }
-                     tags.push(<select>{options}</select>)
-            }
+                    tags.push(React.createElement(
+                        "select",
+                        this.props.options.rows[i].rowElements[j].props,
+                        items.map(item => React.createElement(
+                          "option",
+                          { value: item.props.value,
+                            selected : item.props.selected ? "selected" :""
+                        }, 
+                          item.optionLabel
+                        ))
+                      ));
+             }
+             else if ((this.props.options.rows[i].rowElements[j].elementType) == "textarea")
+             {
+                        tags.push(React.createElement(
+                        "textarea",
+                        this.props.options.rows[i].rowElements[j].props
+                    ));
+             }
             
-            else{
+            else
+            {
                     tags.push(React.createElement(this.props.options.rows[i].rowElements[j].elementType, this.props.options.rows[i].rowElements[j].props));    
             }
             
@@ -89,6 +100,7 @@ class FormGenerator extends React.PureComponent {
         <div className="wrapper">
             <form action ={this.props.options.form.props.action} method={this.props.options.form.props.method} className="form-wrapper" id="form">
                 {tags}
+                
                
                         <div className="col-5">
                         <button type="submit" form="form" value="Submit">Submit</button>

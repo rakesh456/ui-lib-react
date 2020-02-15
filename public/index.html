@@ -241,48 +241,193 @@
                }
             },
             "rows":[ 
-               { 
+         { 
                   "rowElements":[ 
                      { 
-                        "elementType":"select",
+                        "elementType":"input",
                         "props":{ 
-                           "id":"countries",
-                           "class":"vs-select"
-                        },
-                        "options":[ 
-                           { 
-                              "props":{ 
-                                 "value":"IN",
-                                 "selected":true
-                              },
-                              "optionLabel":"India"
-                           },
-                           { 
-                              "props":{ 
-                                 "value":"US",
-                                 "selected":true
-                              },
-                              "optionLabel":"USA"
-                           },
-                           { 
-                              "props":{ 
-                                 "value":"CA",
-                                 "selected":true
-                              },
-                              "optionLabel":"Canada"
-                           }
-                        ]
+                           "type":"text",
+                           "id":"id1",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Firstname"
+                        }
                      }
                   ],
                   "rowLabel":{ 
-                     "name":"Select Country",
+                     "name":"Firstname",
                      "props":{ 
                         "class":"vs-body-regular-primary"
                      }
                   }
-               }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"text",
+                           "id":"id2",
+                           "class":"vs-textbox",
+                           "title":"Lastname"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Lastname",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"email",
+                           "id":"id3",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Email"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Email",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"password",
+                           "id":"id4",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Password"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Password",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"radio",
+                           "id":"male",
+                           "name":"gender"
+                        },
+                        "elementLabel":{ 
+                           "name":"male",
+                           "props":{ 
+                              "class":"vs-radiobutton"
+                           }
+                        }
+                     },
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"radio",
+                           "id":"female",
+                           "name":"gender",
+                           "required" : "required"
+                        },
+                        "elementLabel":{ 
+                           "name":"female",
+                           "props":{ 
+                              "class":"vs-radiobutton"
+                           }
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"gender",
+                     "props":{ 
+                        "class":"vs-label"
+                     }
+                  }
+               },
+         
+         
+         
+               { 
+                "rowElements":[ 
+                   { 
+                      "elementType":"select",
+                      "props":{ 
+                         "id":"countries",
+                         "class":"vs-select",
+                         "required":"required"
+                      },
+                      "options":[ 
+                         { 
+                            "props":{ 
+                               "value":"IN"
+                            },
+                            "optionLabel":"India"
+                         },
+                         { 
+                            "props":{ 
+                               "value":"US" 
+                            },
+                            "optionLabel":"USA"
+                         },
+                         { 
+                            "props":{ 
+                               "value":"CA"
+                            },
+                            "optionLabel":"Canada"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{ 
+                   "name":"Select Country",
+                   "props":{ 
+                      "class":"vs-body-regular-primary"
+                   }
+                }
+             },
+         
+             { 
+                "rowElements":[ 
+                   { 
+                      "elementType":"textarea",
+                      "props":{ 
+                         "id":"id1",
+                         "name":"story",
+                         "rows":"5",
+                         "cols":"33",
+                         "maxlength":"500",
+                         "required" : "required",
+                         "class":"vs-select"
+                      }
+                   }
+                ],
+                "rowLabel":{ 
+                   "name":"Your Story:",
+                   "props":{ 
+                      "class":"vs-body-regular-primary"
+                   }
+                }
+             }
+         
             ]
          }
+         
+         
          '></form-gen>
     </div>
     <!-- <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
