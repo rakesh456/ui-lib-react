@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Datepicker React Component with Event</title>
+    <title>Form Generator</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <script>
 
@@ -240,14 +240,13 @@
 </head>
 
 <body>
-    <div class="col-50">
-        <h1 style="text-align: center;">Form Generator</h1>
-        <!-- <form-gen id='formGen1' data-options='{"formId": "id1"}'></form-gen> -->
+    <div>
+        <h1 style="text-align: center;">Form Generator</h1>        
         <form-gen id='formGen1' data-options='{ 
             "form":{ 
                "props":{ 
-                  "action":"<URL>",
-                  "method":"get/post"
+                  "action":"https://www.fintellix.com",
+                  "method":"post"
                }
             },
             "rows":[ 
@@ -257,8 +256,8 @@
                         "elementType":"input",
                         "props":{ 
                            "type":"text",
-                           "id":"id1",
-                           "class":"vs-textbox",
+                           "id":"firstname",
+                           "className":"vs-textbox",
                            "required":"required",
                            "title":"Firstname"
                         }
@@ -277,8 +276,8 @@
                         "elementType":"input",
                         "props":{ 
                            "type":"text",
-                           "id":"id2",
-                           "class":"vs-textbox",
+                           "id":"lastname",
+                           "className":"vs-textbox",
                            "title":"Lastname"
                         }
                      }
@@ -296,8 +295,8 @@
                         "elementType":"input",
                         "props":{ 
                            "type":"email",
-                           "id":"id3",
-                           "class":"vs-textbox",
+                           "id":"email",
+                           "className":"vs-textbox",
                            "required":"required",
                            "title":"Email"
                         }
@@ -316,8 +315,8 @@
                         "elementType":"input",
                         "props":{ 
                            "type":"password",
-                           "id":"id4",
-                           "class":"vs-textbox",
+                           "id":"password",
+                           "className":"vs-textbox",
                            "required":"required",
                            "title":"Password"
                         }
@@ -378,10 +377,16 @@
                       "elementType":"select",
                       "props":{ 
                          "id":"countries",
-                         "class":"vs-select",
+                         "className":"vs-select",
                          "required":"required"
                       },
                       "options":[ 
+                        { 
+                            "props":{ 
+                                "value":""
+                            },
+                            "optionLabel":"Select One"
+                        },
                          { 
                             "props":{ 
                                "value":"IN"
@@ -416,13 +421,13 @@
                    { 
                       "elementType":"textarea",
                       "props":{ 
-                         "id":"id1",
+                         "id":"story",
                          "name":"story",
                          "rows":"5",
                          "cols":"33",
-                         "maxlength":"500",
+                         "maxLength":"500",
                          "required" : "required",
-                         "class":"vs-select"
+                         "className":"vs-select"
                       }
                    }
                 ],
@@ -435,64 +440,8 @@
              }
          
             ]
-         }
-         
-         
-         '></form-gen>
-    </div>
-    <!-- <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
-    <div class="col-50">
-        <table>
-        <tr><td>
-            <h4>showQuarters = false & showWeeks = false</h4>
-            <date-hierarchy tabindex="1" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": false, "showWeeks": false, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' >
-            </date-hierarchy>        
-        </td>
-        <td>        
-            <h4>showQuarters = false & showWeeks = true</h4>
-            <date-hierarchy tabindex="2" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": false, "showWeeks": true, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
-            </date-hierarchy></td>
-            <td>        
-                <h4>showQuarters = true & showWeeks = false</h4>
-                <date-hierarchy tabindex="3" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": true, "showWeeks": false, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' >
-                </date-hierarchy></td>
-                <td>        
-                    <h4>showQuarters = true & showWeeks = true</h4>
-                    <date-hierarchy tabindex="4" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2020", "showQuarters": true, "showWeeks": true, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
-                    </date-hierarchy>
-                </td>
-        </tr>
-        </table>
-    </div> -->
-    
-    <div class="col-50">
-        <table>
-        <tr>
-        </tr>
-    <p>data-options={"lowerLimit": "2000", "upperLimit": "2025",
-        "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}</p>
-    <div class="col-100">
-        <div class="col-25">
-            <h4>showQuarters = true & showWeeks = true & height = 250px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": true, "height": "250", "disabledList":["q2/2000","w1/02/2000","w1/02/2021","01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = false & showWeeks = true & height = 300px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": true, "height": "300", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = true & showWeeks = false & height not set default = 200px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": false, "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = false & showWeeks = false & height = 100px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": false, "height": "300", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-    </div>
+         }'></form-gen>
+    </div>    
 </body>
 
 </html>
