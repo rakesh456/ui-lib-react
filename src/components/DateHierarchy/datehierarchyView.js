@@ -1,26 +1,25 @@
 import React from "react";
 import { Input } from "reactstrap";
-import { getListOfYears, getSearchObj, opposite } from "../../utils/datehierarchyutils";
-import { isUndefinedOrNull, isBlank } from "../../utils/utils";
+import { getListOfYears, opposite } from "../../utils/datehierarchyutils";
+import { isUndefinedOrNull } from "../../utils/utils";
 import FilterView from "./filterView";
 import YearDisplay from "./yearDisplay";
-import QuarterView from "./quarterView";
-import MonthView from "./monthView";
 import { FaSearch, FaClose, FaFilter } from 'react-icons/lib/fa';
 import * as CONSTANTS from '../../utils/constants'
-const stateRegExOne = /\"state\":1/gi
-const checkZeroState = obj => obj.state === 0;
+const stateRegExZero = /\"state\":0/gi // eslint-disable-line
+const stateRegExOne = /\"state\":1/gi // eslint-disable-line
+const stateRegExMinus = /\"state\":-1/gi // eslint-disable-line
 const checkOneState = obj => obj.state === 1;
 const checkPartialState = obj => obj.state === -1;
+const showChildRegExTrue = /\"showChild\":true/gi // eslint-disable-line
+const showChildRegExFalse = /\"showChild\":false/gi // eslint-disable-line
 class DatehierarchyView extends React.PureComponent {
     constructor(props) {
         super(props);
         let { options } = this.props;
 
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-        let searchObj = getSearchObj(options);
-        const result = searchObj.filter(searchElement => (searchElement.searchKey.includes("q")));
-        this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], initialSelections: [], exclusions: [], isNoDataFound: false, filterSum: 0, isShowAddToCurrentSelection: false };
+        this.state = { listOfYears: [...yearList], years: [...yearList], isSearching: false, searchValue: '', filteredYears: [], filteredData: [], isAddCurrentSelection: false, isExcludeFromSelection: false, isSelectAll: false, selectAllState: 0, lastFilterData: [], selections: [], initialSelections: [], exclusions: [], isNoDataFound: false, filterSum: 0, isShowAddToCurrentSelection: false, isSelectAllSearchResult: true };
     }
 
     getYears() {
@@ -732,70 +731,65 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     getValues() {
-        var t1 = performance.now();
         let getValues = [];
         let years = [...this.state.years];
         let { showQuarters, showWeeks } = this.props.options;
         years.forEach((year) => {
-            {
-                if (year.state === 1 || year.state === -1) {
-                    if (showQuarters === true) {
-                        year.quarters.forEach((quarter) => {
-                            if (quarter.state === true || quarter.state === -1 || quarter.state === 1) {
-                                quarter.months.forEach((month) => {
-                                    if (month.state === true || month.state === -1 || month.state === 1) {
-                                        if (showWeeks === true) {
-                                            month.weeks.forEach((week) => {
-                                                if (week.state === 1 || week.state === -1 || week.state === true) {
-                                                    week.days.forEach((day) => {
-                                                        if (day.state === 1 || day.state === true) {
-                                                            getValues.push(day.fullDate);
-                                                        }
-                                                    })
-                                                }
-                                            })
-                                        }
-                                        if (showWeeks === false) {
-                                            month.days.forEach((day) => {
-                                                if (day.state === true || day.state === 1) {
-                                                    getValues.push(day.fullDate);
-                                                }
-                                            })
-                                        }
+            if (year.state === 1 || year.state === -1) {
+                if (showQuarters === true) {
+                    year.quarters.forEach((quarter) => {
+                        if (quarter.state === true || quarter.state === -1 || quarter.state === 1) {
+                            quarter.months.forEach((month) => {
+                                if (month.state === true || month.state === -1 || month.state === 1) {
+                                    if (showWeeks === true) {
+                                        month.weeks.forEach((week) => {
+                                            if (week.state === 1 || week.state === -1 || week.state === true) {
+                                                week.days.forEach((day) => {
+                                                    if (day.state === 1 || day.state === true) {
+                                                        getValues.push(day.fullDate);
+                                                    }
+                                                })
+                                            }
+                                        })
                                     }
-                                })
-                            }
-                        })
-                    }
-                    if (showQuarters === false) {
-                        year.months.forEach((month) => {
-                            if (month.state === true || month.state === -1 || month.state === 1) {
-                                if (showWeeks === false) {
-                                    month.days.forEach((day) => {
-                                        if (day.state === true || day.state === 1) {
-                                            getValues.push(day.fullDate);
-                                        }
-                                    })
-                                }
-                            }
-                            if (showWeeks === true) {
-                                month.weeks.forEach((week) => {
-                                    if (week.state === 1 || week.state === -1 || week.state === true) {
-                                        week.days.forEach((day) => {
-                                            if (day.state === 1 || day.state === true) {
+                                    if (showWeeks === false) {
+                                        month.days.forEach((day) => {
+                                            if (day.state === true || day.state === 1) {
                                                 getValues.push(day.fullDate);
                                             }
                                         })
                                     }
+                                }
+                            })
+                        }
+                    })
+                }
+                if (showQuarters === false) {
+                    year.months.forEach((month) => {
+                        if (month.state === true || month.state === -1 || month.state === 1) {
+                            if (showWeeks === false) {
+                                month.days.forEach((day) => {
+                                    if (day.state === true || day.state === 1) {
+                                        getValues.push(day.fullDate);
+                                    }
                                 })
                             }
-                        })
-                    }
+                        }
+                        if (showWeeks === true) {
+                            month.weeks.forEach((week) => {
+                                if (week.state === 1 || week.state === -1 || week.state === true) {
+                                    week.days.forEach((day) => {
+                                        if (day.state === 1 || day.state === true) {
+                                            getValues.push(day.fullDate);
+                                        }
+                                    })
+                                }
+                            })
+                        }
+                    })
                 }
             }
         })
-        var t2 = performance.now();
-
         return getValues;
     }
 
@@ -821,50 +815,39 @@ class DatehierarchyView extends React.PureComponent {
         this.props.onChange();
     }
 
-    onUpdateFilterCheckboxHandler = (value, maxLevel, years) => {
-        
-        if(maxLevel === 1 && years){
-            let isPartial = years.some(checkPartialState);
-            let isOne = years.some(checkOneState);
-            if(isPartial === false && isOne === false){
-                this.setState({
-                    selectAllResultState: value,
-                    isSelectAllSearchResult: false
-                });
-            } else {
-                this.setState({
-                    selectAllResultState: value,
-                    isSelectAllSearchResult: true
-                });
-            }
-        } else {
-            this.setState({
-                selectAllResultState: value,
-                isSelectAllSearchResult: true
-            });
-        }
+    onUpdateSearchResultCheckboxHandler = (value) => {
+        this.setState({
+            isSelectAllSearchResult: value
+        });
     }
 
-    updateSelectAllCheckboxHandler = (checkYears) => {
-        let _isSelectAll = true;
+    updateSelectAllCheckboxHandler = (checkYears, isChecked, isClose) => {        
         let selectAllState = 0;
+        let { isSearching } = this.state;
+        let isPartial = checkYears.some(checkPartialState);
+        let isOne = checkYears.some(checkOneState);
+        
         let isShowAddToCurrentSelection = false;
         checkYears.forEach((yr) => {
-            if (yr.state === 0) {
-                _isSelectAll = false;
+            if (yr.state === 0) {                
             } else {
-                selectAllState = selectAllState + yr.state;
-                isShowAddToCurrentSelection = true;
+                selectAllState = selectAllState + yr.state;                
             }
         });
 
-        isShowAddToCurrentSelection = (isShowAddToCurrentSelection === true)? isShowAddToCurrentSelection : (selectAllState === 0)? true : false;
-
-        this.setState({
-            isSelectAll: (selectAllState !== 0),
-            selectAllState: selectAllState,
-            isShowAddToCurrentSelection: isShowAddToCurrentSelection
-        })
+        if(isSearching === false || isClose === true){
+            isShowAddToCurrentSelection = (isChecked === false)? false : (isShowAddToCurrentSelection === true)? true : (isPartial === false && isOne === false)? false : true;
+            this.setState({
+                isSelectAll: (isPartial === false && isOne === false) ? false : true,
+                selectAllState: selectAllState,
+                isShowAddToCurrentSelection: isShowAddToCurrentSelection
+            })
+        } else {
+            this.setState({
+                isSelectAll: (isPartial === false && isOne === false) ? false : true,
+                selectAllState: selectAllState
+            })
+        }
     }
 
     updateCurrentSelection = (checkYears) => {
@@ -888,8 +871,9 @@ class DatehierarchyView extends React.PureComponent {
 
     onSelectAllChange = ({ target }) => {
         let { years } = this.state;
+
         years.forEach((yr, index) => {
-            this.toggleYearCheck(yr, target.checked);
+            this.toggleYearCheck(yr, (target.checked === true)? 1 : 0);
         });
 
         this.setState({
@@ -1130,9 +1114,9 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        let { searchValue, filteredYears, lastFilterData, listOfYears, isSearching } = this.state;
+        let { searchValue, filteredYears, lastFilterData, isSearching, isSelectAll } = this.state;
 
-        if (isSearching === true || lastFilterData && lastFilterData.length > 0) {
+        if (isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) {
             let _lastFilterData = [...lastFilterData];
             let obj = {
                 'value': searchValue,
@@ -1146,11 +1130,10 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 isSearching: false,
                 searchValue: "",
-                lastFilterData: [],
-                searchValue: "",
                 years: [...yearList],
                 isAddCurrentSelection: false,
                 isExcludeFromSelection: false,
+                isShowAddToCurrentSelection: false,
                 isNoDataFound: false,
                 selections: [],
                 exclusions: [],
@@ -1158,58 +1141,37 @@ class DatehierarchyView extends React.PureComponent {
                 lastFilterData: [],
                 selectAllResultState: true
             });
-            this.updateSelectAllCheckboxHandler([...yearList]);
+            this.updateSelectAllCheckboxHandler([...yearList], false);
         }
     }
 
     closeFilter = () => {
-        let { searchValue, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years } = this.state;
+        let { searchValue, filteredData, lastFilterData, selections, exclusions, isAddCurrentSelection, isExcludeFromSelection, years, isSelectAllSearchResult } = this.state;
 
-        const { options } = this.props;
-        let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+        if(isSelectAllSearchResult === true){
 
-        let _selections = selections.map(a => Object.assign({}, a));
+            const { options } = this.props;
+            let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+    
+            let _selections = selections.map(a => Object.assign({}, a));
+    
+            let _exclusions = exclusions.map(a => Object.assign({}, a));
+    
+            let _lastFilterData = [...lastFilterData];
+            let obj = {
+                'value': searchValue,
+                'list': [...filteredData]
+            };
+    
+            _lastFilterData.push(obj);
 
-        let _exclusions = exclusions.map(a => Object.assign({}, a));
-
-        let _lastFilterData = [...lastFilterData];
-        let obj = {
-            'value': searchValue,
-            'list': [...filteredData]
-        };
-
-        _lastFilterData.push(obj);
-
-        if (isExcludeFromSelection === true && _selections.length <= 0) {
-            this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
-                this.excludeFromSelection(years, (resultExclusion), (resultYears) => {
-                    let _selections = resultYears.map(a => Object.assign({}, a));
-                    _exclusions = resultExclusion.map(a => Object.assign({}, a));
-                    this.setState({
-                        isSearching: false,
-                        isAddCurrentSelection: false,
-                        isExcludeFromSelection: false,
-                        isNoDataFound: false,
-                        searchValue: "",
-                        lastFilterData: _lastFilterData,
-                        listOfYears: [...yearList],
-                        exclusions: [..._exclusions],
-                        selections: [..._selections],
-                        filterSum: 0,
-                        years: [...resultYears],
-                        selectAllResultState: true
-                    });
-
-                    this.updateSelectAllCheckboxHandler([...resultYears]);
-                });
-            });
-        } else {
-
-            if (_selections.length >= 1) {
-
-                if (isAddCurrentSelection === true || _lastFilterData.length === 1) {
-                    this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
+            if (isExcludeFromSelection === true && _selections.length <= 0) {
+                this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
+                    this.excludeFromSelection(years, (resultExclusion), (resultYears) => {
                         let _selections = resultYears.map(a => Object.assign({}, a));
+                        _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                        resultYears = this.convertShowChild(resultYears, false);
+
                         this.setState({
                             isSearching: false,
                             isAddCurrentSelection: false,
@@ -1218,22 +1180,23 @@ class DatehierarchyView extends React.PureComponent {
                             searchValue: "",
                             lastFilterData: _lastFilterData,
                             listOfYears: [...yearList],
+                            exclusions: [..._exclusions],
                             selections: [..._selections],
                             filterSum: 0,
-                            years: [...resultYears],
+                            years: [...JSON.parse(resultYears)],
                             selectAllResultState: true
                         });
-
-                        this.updateSelectAllCheckboxHandler([...resultYears]);
+    
+                        this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                     });
-
-                } else if (isExcludeFromSelection === true || _lastFilterData.length === 1) {
-                    this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
-
-                        this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {
-                            console.log(resultYears, ' resultYears ');
+                });
+            } else {
+                if (_selections.length >= 1) {
+                    if (isAddCurrentSelection === true) {
+                        this.addToCurrentSelection(_selections, (filteredData), (resultYears) => {
                             let _selections = resultYears.map(a => Object.assign({}, a));
-                            _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                            resultYears = this.convertShowChild(resultYears, false);
+
                             this.setState({
                                 isSearching: false,
                                 isAddCurrentSelection: false,
@@ -1242,55 +1205,112 @@ class DatehierarchyView extends React.PureComponent {
                                 searchValue: "",
                                 lastFilterData: _lastFilterData,
                                 listOfYears: [...yearList],
-                                exclusions: [..._exclusions],
                                 selections: [..._selections],
                                 filterSum: 0,
-                                years: [...resultYears],
+                                years: [...JSON.parse(resultYears)],
                                 selectAllResultState: true
                             });
-
-                            this.updateSelectAllCheckboxHandler([...resultYears]);
+    
+                            this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                         });
+    
+                    } else if (isExcludeFromSelection === true) {
+                        this.addToCurrentSelection(_exclusions, (filteredData), (resultExclusion) => {
+    
+                            this.excludeFromSelection(_selections, (resultExclusion), (resultYears) => {
+                                let _selections = resultYears.map(a => Object.assign({}, a));
+                                _exclusions = resultExclusion.map(a => Object.assign({}, a));
+                                resultYears = this.convertShowChild(resultYears, false);
+
+                                this.setState({
+                                    isSearching: false,
+                                    isAddCurrentSelection: false,
+                                    isExcludeFromSelection: false,
+                                    isNoDataFound: false,
+                                    searchValue: "",
+                                    lastFilterData: _lastFilterData,
+                                    listOfYears: [...yearList],
+                                    exclusions: [..._exclusions],
+                                    selections: [..._selections],
+                                    filterSum: 0,
+                                    years: [...JSON.parse(resultYears)],
+                                    selectAllResultState: true
+                                });
+    
+                                this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
+                            });
+                        });
+    
+                    } else {
+
+                        filteredData = this.convertShowChild(filteredData, false);
+
+                        this.setState({
+                            isSearching: false,
+                            isNoDataFound: false,
+                            searchValue: "",
+                            years: [...JSON.parse(filteredData)],
+                            selectAllResultState: true
+                        });
+
+                        this.updateSelectAllCheckboxHandler([...years], null, true);
+                    }
+                } else if (_selections.length <= 0) {
+                    let newYears = (isAddCurrentSelection === true)? this.convertShowChild(years, false) : this.convertShowChild(yearList, false);
+
+                    this.addToCurrentSelection(JSON.parse(newYears), (filteredData), (resultYears) => {
+                        let newSelections = resultYears.map(a => Object.assign({}, a));
+                        resultYears = this.convertShowChild(resultYears, false);
+
+                        this.setState({
+                            isSearching: false,
+                            isAddCurrentSelection: false,
+                            isExcludeFromSelection: false,
+                            isNoDataFound: false,
+                            searchValue: "",
+                            lastFilterData: _lastFilterData,
+                            listOfYears: [...yearList],
+                            selections: [...newSelections],
+                            filterSum: 0,
+                            years: [...JSON.parse(resultYears)],
+                            selectAllResultState: true
+                        });
+
+                        this.updateSelectAllCheckboxHandler([...JSON.parse(resultYears)], null, true);
                     });
 
                 } else {
+                    years = this.convertShowChild(years, false);
                     this.setState({
                         isSearching: false,
+                        isAddCurrentSelection: false,
+                        isExcludeFromSelection: false,
                         isNoDataFound: false,
-                        searchValue: ""
+                        searchValue: "",
+                        years: [...JSON.parse(years)],
+                        selectAllResultState: true
                     });
-
-                    this.updateSelectAllCheckboxHandler([...years]);
                 }
-            } else if (_selections.length <= 0) {
-                var _newselections = filteredData.map(a => Object.assign({}, a));
-                this.setState({
-                    isSearching: false,
-                    isAddCurrentSelection: false,
-                    isExcludeFromSelection: false,
-                    isNoDataFound: false,
-                    searchValue: "",
-                    lastFilterData: _lastFilterData,
-                    listOfYears: [...yearList],
-                    selections: [..._newselections],
-                    years: [...filteredData],
-                    selectAllResultState: true
-                });
-
-                this.updateSelectAllCheckboxHandler([...filteredData]);
-            } else {
-                this.setState({
-                    isSearching: false,
-                    isAddCurrentSelection: false,
-                    isExcludeFromSelection: false,
-                    isNoDataFound: false,
-                    searchValue: "",
-                    years: [...years],
-                    selectAllResultState: true
-                });
             }
-        }
+        } else {
+            years = this.convertShowChild(years, false);
 
+            this.setState({
+                isSearching: false,
+                isAddCurrentSelection: false,
+                isExcludeFromSelection: false,
+                isNoDataFound: false,
+                searchValue: "",
+                years: [...JSON.parse(years)],
+                selectAllResultState: true,
+                isSelectAllSearchResult: true
+            });
+            this.updateSelectAllCheckboxHandler([...JSON.parse(years)], null, true);
+        }
+    }
+
+    convertShowChild = (data, flag) => {
+        return (flag === false)? JSON.stringify(data).replace(showChildRegExTrue, '"showChild":false') : JSON.stringify(data).replace(showChildRegExFalse, '"showChild":true');
     }
 
     getCheckBoxClass = () => {
@@ -1311,14 +1331,14 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     checkSelectAllValues = () => {
-        const { years, selectAllState, isSelectAll } = this.state;
+        const { years, selectAllState } = this.state;
         return (selectAllState === years.length);
     }
 
     refresh() {
         let { options } = this.props;
         let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
-        let { searchValue, filteredYears, lastFilterData, listOfYears, years } = this.state;
+        let { searchValue, filteredYears, lastFilterData, listOfYears } = this.state;
 
         if (lastFilterData && lastFilterData.length > 0) {
             let _lastFilterData = [...lastFilterData];
@@ -1332,15 +1352,13 @@ class DatehierarchyView extends React.PureComponent {
                 isSearching: false,
                 searchValue: "",
                 lastFilterData: [],
-                searchValue: "",
                 years: [...this.state.listOfYears],
                 isAddCurrentSelection: false,
                 isExcludeFromSelection: false,
                 isNoDataFound: false,
                 selections: [],
                 exclusions: [],
-                filterSum: 0,
-                lastFilterData: []
+                filterSum: 0
             });
             this.updateSelectAllCheckboxHandler([...listOfYears]);
         } else {
@@ -1351,56 +1369,65 @@ class DatehierarchyView extends React.PureComponent {
         }
     }
 
+    getHierarchyHeight = () => {
+        const { height } = this.props.options;
+        return (!isUndefinedOrNull(height) && height >= 200)? height + 'px' : "200px";
+    }
+    
+    getScrollHeight = () => {
+        const { height } = this.props.options;
+        return (!isUndefinedOrNull(height) && height >= 200)? (height - 64) + 'px' : "136px";
+    }
+
     render() {
         const { options } = this.props;
-        const { isSearching, searchValue, years, listOfYears, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, filteredData, isNoDataFound, isShowAddToCurrentSelection } = this.state;
+        const { isSearching, searchValue, years, listOfYears, isSelectAll, lastFilterData, isAddCurrentSelection, isExcludeFromSelection, exclusions, isShowAddToCurrentSelection } = this.state;
         return (
-            <div className="VS-Hierarchy" options={options}>
+            <div className="VS-Hierarchy" options={options} style={{minHeight: this.getHierarchyHeight(), maxHeight: this.getHierarchyHeight()}}>
                 <div className="VS-Hierarchy-Searchbox">
                     <span className={this.getSeachIconAlignClass()}>
                         <FaSearch className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK}`} />
                     </span>
                     <Input className={this.getInputClass()} type="text" value={searchValue} placeholder="Search.." onChange={this.onChangeHandler.bind(this, searchValue)} onClick={this.onFocus} onBlur={this.onBlur} onInput={this.onInput} />
 
-                    <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
-
-                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0)) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
-                        {
-                            (isSearching === true) ? <div className='VS-refresh-tooltip'><span>Clear</span></div> : ""
-                        }
+                    <span className={`VS-Clear-Filter ${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                        
+                        <FaFilter className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_FILTER_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON} ${(isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) ? '' : CONSTANTS.CLASSES.VS_DISABLED_ICON}`} onClick={() => this.clearFilter()} />
+                        <div className='VS-Clear-Tooltip'><span>Clear Filter</span></div>
 
                     </span>
                     {
                         (isSearching === true) ?
-                            <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
+                            <span className={`VS-Close-Filter ${CONSTANTS.CLASSES.VS_PULL_RIGHT}`}>
                                 <FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.closeFilter()} />
-                                <div className='VS_cross_tool_tip'>
+                                <div className='VS-Cross-Tooltip'>
                                     <span>Close</span>
                                 </div>
                             </span> : ''
                     }
                 </div>
-                <div className="VS-Hierarchy-Filter-List VS-YearRow mrgL30">
+                <div className="VS-Hierarchy-Filter-List mrgL34">
                     {
                         (isSearching === false) ?
                             (this.checkSelectAllValues()) ?
-                                <label className="VS-Checkbox-Container">Select All
+                                <label className="VS-Checkbox-Container VS-Action">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
                                     <span className="VS-Check-Checkmark"></span>
                                 </label> :
-                                <label className="VS-Checkbox-Container">Select All
+                                <label className="VS-Checkbox-Container VS-Action">Select All
                                         <input className="VS-Checkbox" type="checkbox" checked={isSelectAll} onChange={(e) => this.onSelectAllChange(e)}></input>
                                     <span className="VS-Check-Checkmark VS-Check-Partial"></span>
                                 </label> :
                             ''
                     }
                 </div>
-                <div className={this.getScrollbarClass()}>
+                <div>
                     {
                         (isSearching === true) ?
-                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler} onUpdateFilterCheckbox={this.onUpdateFilterCheckboxHandler} onAddToSelectionAndExcludeFromSelectionChange={this.onAddToSelectionAndExcludeFromSelectionChangeHandler} exclusions={exclusions} isShowAddToCurrentSelection={isShowAddToCurrentSelection}></FilterView> :
+                            <FilterView options={options} isFilterView={true} searchValue={searchValue} listOfYears={listOfYears} years={years} onChangeQuarter={this.onChangeQuarterHandler} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onFilteredDataChange={this.onFilteredDataChangeHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler} onUpdateSearchResultCheckbox={this.onUpdateSearchResultCheckboxHandler} onAddToSelectionAndExcludeFromSelectionChange={this.onAddToSelectionAndExcludeFromSelectionChangeHandler} exclusions={exclusions} isShowAddToCurrentSelection={isShowAddToCurrentSelection}></FilterView> :
 
-                            <div id="VS-Scrollbar">
+                            <div id="VS-Scrollbar" style={{minHeight: this.getScrollHeight(), maxHeight: this.getScrollHeight()}}>
                                 <YearDisplay options={options} isFilterView={false} years={years} onChangeQuarter={this.onChangeQuarterHandler} isAddCurrentSelection={isAddCurrentSelection} isExcludeFromSelection={isExcludeFromSelection} onChangeMonth={this.onChangeMonthHandler} onChangeDay={this.onChangeDayHandler} onChangeWeek={this.onChangeWeekHandler} onChangeWeekDay={this.onChangeWeekDayHandler} onUpdateSelectAllCheckbox={this.updateSelectAllCheckboxHandler}></YearDisplay>
                             </div>
                     }

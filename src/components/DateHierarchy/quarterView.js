@@ -53,7 +53,7 @@ class QuarterView extends React.PureComponent {
                 <div className="VS-QuarterRow" key={'quarter' + quarterIndex}>
                     {
                         (quarter.showChild) ?
-                            <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
+                            <span className="VS-Quarter-Plus-Minus VS-Minus" onClick={() => this.toggleQuarterChild(quarter, false)}>-</span> :
                             <span className="VS-Quarter-Plus-Minus" onClick={() => this.toggleQuarterChild(quarter, true)}>+</span>
                     }
                     <label className="VS-Checkbox-Container">

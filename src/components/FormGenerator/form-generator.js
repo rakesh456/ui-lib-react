@@ -1,49 +1,20 @@
 import React from "react";
-import tag from "react-icons/lib/fa/tag";
 import './style.css';
 
-import ReactDOM from "react-dom";
- 
-
 class FormGenerator extends React.PureComponent {
-
-    constructor(props) {
-        super(props);
-        // const formGenOptions = this.props;
-        // const formGenOptions = this.props.options.rows[4].rowElements[0].props.title;
-        const formGenOptions = this.props.options.rows[0].rowElements[0].elementType;
-        console.log('At the constructor',formGenOptions);
-        this.state = {
-            
-            // formValid: false,
-            // errorCount: null,
-            
-        };
-        
-        
-    }    
-    componentDidMount() {
-
-        
-    }
-
-    componentDidUpdate() {}
 
     render() {
         console.log('Options at Render func. for test',this.props.options.rows.length);
         console.log('Options at Render func. for test',Object.keys(this.props.options.rows).length);
         var len = this.props.options.rows.length;
-        var count = 0;
-        
-        const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
         
         const tags= [];
         for( var i = 0; i < len ; i++)
         {   
             
-             var label_name = this.props.options.rows[i].rowLabel.name;
+            var label_name = this.props.options.rows[i].rowLabel.name;
             var rowElements_length = this.props.options.rows[i].rowElements.length;
-            if( label_name != '')
+            if( label_name !== '')
             {
                 tags.push(<label htmlFor={id}>{label_name} </label>)
             }
