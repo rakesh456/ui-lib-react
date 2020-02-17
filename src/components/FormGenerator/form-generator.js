@@ -1,87 +1,106 @@
 import React from "react";
 import tag from "react-icons/lib/fa/tag";
 import './style.css';
-var ReactDOM = require('react-dom');
+
+import ReactDOM from "react-dom";
+ 
 
 class FormGenerator extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const formGenOptions = this.props;
+        // const formGenOptions = this.props;
+        // const formGenOptions = this.props.options.rows[4].rowElements[0].props.title;
+        const formGenOptions = this.props.options.rows[0].rowElements[0].elementType;
         console.log('At the constructor',formGenOptions);
         this.state = {
+            
             // formValid: false,
             // errorCount: null,
             
         };
         
+        
+    }    
+    componentDidMount() {
+
+        
     }
-    
-//     requiredFeild = (event) =>
-//     {
-//         event.preventDefault();
-//         const {name,value} = event.target;
-//         let errors = this.state.errors;
-
-//         errors.reqfield = value.length < 1 ? 'Value is required': '';
-
-//     this.setState({errors, [name]: value});
-// }
-
-
-    
-
-    
-    componentDidMount() {}
 
     componentDidUpdate() {}
 
     render() {
-        console.log('Options at Render func. for test',this.props.options.elements.length);
-        console.log('Options at Render func. for test',Object.keys(this.props.options.elements).length);
-        var len = Object.keys(this.props.options.elements).length;
+        console.log('Options at Render func. for test',this.props.options.rows.length);
+        console.log('Options at Render func. for test',Object.keys(this.props.options.rows).length);
+        var len = this.props.options.rows.length;
+        var count = 0;
+        
         const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-        // handleChange = (event) => 
-        // {
-
-        // }
+        
         const tags= [];
-        for( var i =0; i< len ; i++)
-        {
-            var element_type = this.props.options.elements[i].elementType;
-            var label_name = this.props.options.elements[i].label.name;
-            var required = this.props.options.elements[i].props.required;
-            var id = this.props.options.elements[i].props.id;
-            var placeholder_custom = "Enter your "+this.props.options.elements[i].label.name;
+        for( var i = 0; i < len ; i++)
+        {   
+            
+             var label_name = this.props.options.rows[i].rowLabel.name;
+            var rowElements_length = this.props.options.rows[i].rowElements.length;
             if( label_name != '')
             {
-            tags.push(<label htmlFor={this.props.options.elements[i].props.id}>Your {this.props.options.elements[i].label.name} is</label>)
-            // tags.push(":")
+                tags.push(<label htmlFor={id}>{label_name} </label>)
+            }
+            for (var j = 0; j < rowElements_length; j++)
+            {
+            var id = this.props.options.rows[i].rowElements[j].props.id;
+            console.log("If radio or not :",this.props.options.rows[i].rowElements[j].props.type)
+            if((this.props.options.rows[i].rowElements[j].props.type) == "radio")
+                     {              
+                        tags.push(<label htmlFor={this.props.options.rows[i].rowElements[j].props.id}><input type= "radio" name ={this.props.options.rows[i].rowElements[j].props.name} id={this.props.options.rows[i].rowElements[j].props.id} required></input>{this.props.options.rows[i].rowElements[j].elementLabel.name}</label>);
             
-            }
-            if (element_type == 'input' && required == 'true')
+                     }
+             else if ((this.props.options.rows[i].rowElements[j].elementType) == "select")
+             {
+                    var items = this.props.options.rows[i].rowElements[j].options;
+                    items.unshift({ 
+                        "props":{ 
+                           "value":""
+                        },
+                        "optionLabel":"Select One"
+                     });
+
+                    tags.push(React.createElement(
+                        "select",
+                        this.props.options.rows[i].rowElements[j].props,
+                        items.map(item => React.createElement(
+                          "option",
+                          { value: item.props.value,
+                            selected : item.props.selected ? "selected" :""
+                        }, 
+                          item.optionLabel
+                        ))
+                      ));
+             }
+             else if ((this.props.options.rows[i].rowElements[j].elementType) == "textarea")
+             {
+                        tags.push(React.createElement(
+                        "textarea",
+                        this.props.options.rows[i].rowElements[j].props
+                    ));
+             }
+            
+            else
             {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title}  id={this.props.options.elements[i].props.id} required></input>)
+                    tags.push(React.createElement(this.props.options.rows[i].rowElements[j].elementType, this.props.options.rows[i].rowElements[j].props));    
             }
-            else if(element_type =='email' && required =='true')
-            {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom}  title={this.props.options.elements[i].props.title} id={this.props.options.elements[i].props.id} pattern='/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i' required></input>)
-            }
-            else if (element_type == 'input')
-            {
-                tags.push(<input type = {this.props.options.elements[i].props.type} placeholder={placeholder_custom} title={this.props.options.elements[i].props.title} id={this.props.options.elements[i].props.id}></input>)
-            }
-            // if (errors.id.length > 0) 
-            //   tags.push(<span className='error'>{errors.fullName}</span>)
-            console.log("The values are",this.props.options.elements[i].props.id.value);
-            tags.push(<br></br>)
+            
         }
-    
+        tags.push(<br></br>)
+        
+    }
 
         return (
         <div className="wrapper">
             <form action ={this.props.options.form.props.action} method={this.props.options.form.props.method} className="form-wrapper" id="form">
                 {tags}
+                
                
                         <div className="col-5">
                         <button type="submit" form="form" value="Submit">Submit</button>
@@ -94,10 +113,10 @@ class FormGenerator extends React.PureComponent {
     }
 }
 
+
+
+
 export default FormGenerator;
 
 
 
-
-{/* <input type="submit" value="Submit" class="col-6" ></input>
-<input type="reset" value="Reset" class="col-6"></input> */}
