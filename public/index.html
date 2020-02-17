@@ -240,7 +240,208 @@
 </head>
 
 <body>
-    <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
+
+    <div class="col-50">
+        <h1 style="text-align: center;">Form Generator</h1>
+        <!-- <form-gen id='formGen1' data-options='{"formId": "id1"}'></form-gen> -->
+        <form-gen id='formGen1' data-options='{ 
+            "form":{ 
+               "props":{ 
+                  "action":"<URL>",
+                  "method":"get/post"
+               }
+            },
+            "rows":[ 
+         { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"text",
+                           "id":"id1",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Firstname"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Firstname",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"text",
+                           "id":"id2",
+                           "class":"vs-textbox",
+                           "title":"Lastname"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Lastname",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"email",
+                           "id":"id3",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Email"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Email",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"password",
+                           "id":"id4",
+                           "class":"vs-textbox",
+                           "required":"required",
+                           "title":"Password"
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Password",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               },
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"radio",
+                           "id":"male",
+                           "name":"gender"
+                        },
+                        "elementLabel":{ 
+                           "name":"male",
+                           "props":{ 
+                              "class":"vs-radiobutton"
+                           }
+                        }
+                     },
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"radio",
+                           "id":"female",
+                           "name":"gender",
+                           "required" : "required"
+                        },
+                        "elementLabel":{ 
+                           "name":"female",
+                           "props":{ 
+                              "class":"vs-radiobutton"
+                           }
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"gender",
+                     "props":{ 
+                        "class":"vs-label"
+                     }
+                  }
+               },
+         
+         
+         
+               { 
+                "rowElements":[ 
+                   { 
+                      "elementType":"select",
+                      "props":{ 
+                         "id":"countries",
+                         "class":"vs-select",
+                         "required":"required"
+                      },
+                      "options":[ 
+                         { 
+                            "props":{ 
+                               "value":"IN"
+                            },
+                            "optionLabel":"India"
+                         },
+                         { 
+                            "props":{ 
+                               "value":"US" 
+                            },
+                            "optionLabel":"USA"
+                         },
+                         { 
+                            "props":{ 
+                               "value":"CA"
+                            },
+                            "optionLabel":"Canada"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{ 
+                   "name":"Select Country",
+                   "props":{ 
+                      "class":"vs-body-regular-primary"
+                   }
+                }
+             },
+         
+             { 
+                "rowElements":[ 
+                   { 
+                      "elementType":"textarea",
+                      "props":{ 
+                         "id":"id1",
+                         "name":"story",
+                         "rows":"5",
+                         "cols":"33",
+                         "maxlength":"500",
+                         "required" : "required",
+                         "class":"vs-select"
+                      }
+                   }
+                ],
+                "rowLabel":{ 
+                   "name":"Your Story:",
+                   "props":{ 
+                      "class":"vs-body-regular-primary"
+                   }
+                }
+             }
+         
+            ]
+         }
+         
+         
+         '></form-gen>
+    </div>
+    <!-- <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
     <div class="col-50">
         <table>
         <tr><td>
@@ -258,40 +459,17 @@
                 </date-hierarchy></td>
                 <td>        
                     <h4>showQuarters = true & showWeeks = true</h4>
-                    <date-hierarchy tabindex="4" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2020", "showQuarters": true, "showWeeks": true, "disabledList":["Q1/2020","01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
+
+                    <date-hierarchy tabindex="4" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2020", "showQuarters": true, "showWeeks": true, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
                     </date-hierarchy>
                 </td>
         </tr>
         </table>
-    </div>
-    
+    </div> -->
     <div class="col-50">
         <table>
         <tr>
         </tr>
-    <p>data-options={"lowerLimit": "2000", "upperLimit": "2025",
-        "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}</p>
-    <div class="col-100">
-        <div class="col-25">
-            <h4>showQuarters = true & showWeeks = true & height = 250px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": true, "height": "250", "disabledList":["q2/2000","w1/02/2000","w1/02/2021","01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = false & showWeeks = true & height = 300px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": true, "height": "300", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = true & showWeeks = false & height not set default = 200px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": false, "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
-        <div class="col-25">
-            <h4>showQuarters = false & showWeeks = false & height = 100px</h4>
-            <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": false, "height": "300", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'>
-            </date-hierarchy>
-        </div>
     </div>
 </body>
 

@@ -20,7 +20,7 @@ class ItemsList extends React.PureComponent {
     componentDidUpdate(prevProps) {
         let element = document.querySelector('.VS-ItemIndexed');
         if(!isUndefinedOrNull(element)){
-            element.scrollIntoView({behavior: "smooth", block: "end"});
+            element.scrollIntoView({behavior: "auto", block: "end"});
         }
     }
 

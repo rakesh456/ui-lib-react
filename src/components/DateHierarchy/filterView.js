@@ -755,7 +755,7 @@ class FilterView extends React.PureComponent {
                     }
                     {
                         (isNoDataFound === false && isShowAddToCurrentSelection === true) ?
-                            <label className="VS-Checkbox-Container VS-Action">Add To Current Selection
+                            <label className="VS-Checkbox-Container VS-Action">Add To Previous Selection
                             <input className="VS-Checkbox" type="checkbox" checked={isAddCurrentSelection} onChange={(e) => this.onAddCurrentSelectionChange(e)}></input>
                                 <span className={this.getCheckBoxClass()}></span>
                             </label>
