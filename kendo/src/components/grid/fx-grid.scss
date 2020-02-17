@@ -7,8 +7,13 @@
     border-radius: 2px;
     box-sizing: border-box;
 }
+.VS-SearchLabel{
+    margin:6px;
+    color: lightslategray;
+}
 .VS-Parent{
     background-color: #f6f6f6;
     border: solid 1px;
     border-color: lightgray;
+    max-width: max-content;
 }

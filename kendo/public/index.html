@@ -59,51 +59,52 @@
   <h1>KendoReact Grid Component</h1>
   <p>data-options='{"globalSearch": true}'</p>
   <fx-grid data-options='{"globalSearch": true,
-    "dataUrl":"https://jsonplaceholder.typicode.com/photos",
+    "dataUrl":"https://www.jstigers.com/json/orders.json",
+    "detailedColumn":"detail",
     "dataState": {
         "skip": 0,
         "take": 20,
         "sort": [
-          { "field": "id", "dir": "asc" }
+          { "field": "orderID", "dir": "asc" }
           ],
           "group": [
-          {"field": "albumId"}
+          {"field": "orderID"}
         ]
       },
       "exportToExcel": true,
       "exportToPdf": true,
       "showColumns":[
       {
-        "field": "albumId",
-        "title": "albumId",
+        "field": "customerID",
+        "title": "customerID",
         "filter": "text",
-        "width": "200px",
-        "format": "{0:D}",
-        "filterable": true
+        "width": "200px"
       },
       {
-        "field": "id",
-        "title": "ID",
-        "filter": "text",
-        "width": "200px",
-        "format": "",
-        "filterable": true
+        "field": "orderID",
+        "title": "orderID",
+        "filter": "numeric",
+        "width": "200px"
       },
       {
-        "field": "title",
-        "title": "Title",
-        "filter": "text",
+        "field": "orderDate",
+        "title": "orderDate",
+        "filter": "date",
         "width": "200px",
-        "format": "{0:D}",
-        "filterable": true
+        "format": "{0:D}"
       },
       {
-        "field": "url",
-        "title": "url",
+        "field": "shipName",
+        "title": "shipName",
         "filter": "text",
+        "width": "200px"
+      },
+      {
+        "field": "shippedDate",
+        "title": "shippedDate",
+        "filter": "date",
         "width": "200px",
-        "format": "{0:D}",
-        "filterable": true
+        "format": "{0:D}"
       }
     ]}'></fx-grid>
 </body>

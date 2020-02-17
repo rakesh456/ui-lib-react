@@ -13,7 +13,7 @@ import caGregorian from '../../utils/es/ca-gregorian.json';
 import dateFields from '../../utils/es/dateFields.json';
 import timeZoneNames from '../../utils/es/timeZoneNames.json';
 import '@progress/kendo-theme-default/dist/all.css';
-// import orders from './../orders.json';
+import orders from './../orders.json';
 import esMessages from './../es.json';
 import { process, normalizeFilters } from '@progress/kendo-data-query';
 import { locales } from '../../utils/utils'
@@ -28,48 +28,62 @@ load(
   dateFields,
   timeZoneNames
 );
+orders.forEach(o => {
+  o.orderDate = new Date(o.orderDate);
+  o.shippedDate = o.shippedDate === 'NULL' ? undefined : new Date(o.shippedDate);
+});
 
-// class DetailComponent extends GridDetailRow {
-//   render() {
-//     const address = this.props.address;
-//     return (
-//       <div>
-//         <section style={{ width: "200px", float: "left" }}>
-//           <p><strong>Street:</strong> {address.street}</p>
-//           <p><strong>City:</strong> {address.city}</p>
-//           <p><strong>Country:</strong> {address.country}</p>
-//           <p><strong>Postal Code:</strong> {address.postalCode}</p>
-//         </section>
-//         <Grid style={{ width: "500px" }} data={address.website}></Grid>
-//       </div>
-//     );
-//   }
-// }
+class DetailComponent extends GridDetailRow {
+  constructor(props){
+    super(props);
+
+  }
+  // renderdetailedColumn=(column, Index)=>{
+  //   return(
+  //     <p><strong>Street:</strong> {dataItem.shipAddress.street}</p>
+  //   )
+  // }
+  render() {
+    console.log("this.props",this.props);
+    const dataItem = this.props.dataItem;
+    return (
+      <div>
+        <Grid style={{ width: "500px" }} data={dataItem.details}></Grid>
+      </div>
+    );
+  }
+}
 
 
 class FxGrid extends React.Component {
   constructor(props) {
     super(props);
     const dataState = this.props.options.dataState;
-    this.state = {
-      dataResult: '',
-      dataState: dataState,
-      currentLocale: locales[0],
-      json: ''
-    };
-    const dataUrl = this.props.options.dataUrl;
-    fetch(dataUrl).then((resp) =>
-      resp.json()
-    ).then((data) => {
-      this.setState({
-        dataResult: process(data, dataState),
-        dataState: dataState,
-        currentLocale: locales[0],
-        json: data
-      });
-    })
-  }
+    // this.state = {
+    //   dataResult: '',
+    //   dataState: dataState,
+    //   currentLocale: locales[0],
+    //   json: ''
+    // };
 
+    // const dataUrl = this.props.options.dataUrl;
+    // fetch(dataUrl, {
+    // }).then((resp) =>
+    //   resp.json()
+    // ).then((data) => {
+    //   this.setState({
+    //     dataResult: process(data, dataState),
+    //     dataState: dataState,
+    //     currentLocale: locales[0],
+    //     json: data
+    //   });
+    // })
+    this.state = {
+      dataResult: process(orders, dataState),
+      dataState: dataState,
+      currentLocale: locales[0]
+    };
+  }
 
 
 
@@ -95,7 +109,8 @@ class FxGrid extends React.Component {
   dataStateChange = (event) => {
 
     this.setState({
-      dataResult: process(this.state.json, event.data),
+      // dataResult: process(this.state.json, event.data),
+      dataResult: process(orders, event.data),
       dataState: event.data
     });
   }
@@ -152,15 +167,16 @@ class FxGrid extends React.Component {
       "skip": 0,
       "take": 20,
       "sort": [
-        { "field": "id", "dir": "desc" }
+        { "field": "orderDate", "dir": "desc" }
       ],
       "group": [
-        { "field": "id" }
+        { "field": "orderDate" }
       ]
     }
 
     this.setState({
-      dataResult: process(this.state.json, eventData),
+      // dataResult: process(this.state.json, eventData),
+      dataResult: process(orders, eventData),
     })
   }
   renderGrid(column, Index) {
@@ -177,20 +193,27 @@ class FxGrid extends React.Component {
         <IntlProvider locale={this.state.currentLocale.locale} >
           <div className="VS-Parent">
             {(options.globalSearch) ?
-              <input className="VS-GlobalSearch" type="text" placeholder="Search in entire columns" data={this.state.dataResult}
+              <label className="VS-SearchLabel" >Search:<input className="VS-GlobalSearch" type="text" placeholder="Search in entire columns" data={this.state.dataResult}
                 {...this.state.dataState} onChange={this.Search}
-              ></input> : ""}
+              ></input></label> : ""}
             <ExcelExport
-              data={this.state.json}
+              // data={this.state.json}
+              data={orders}
+
               ref={(exporter) => { this._export = exporter; }}
             >
               <Grid
-                style={{ height: '700px'}}
+                style={{ height: '700px' }}
                 sortable
                 filterable
                 groupable
+                resizeable
                 reorderable
                 pageable={{ buttonCount: 4, pageSizes: true }}
+                selectedField="selected"
+                // onSelectionChange={this.selectionChange}
+                // onHeaderSelectionChange={this.headerSelectionChange}
+                onRowClick={this.rowClick}
 
                 data={this.state.dataResult}
                 {...this.state.dataState}
@@ -212,9 +235,9 @@ class FxGrid extends React.Component {
                   ]
                 }}
 
-                // detail={DetailComponent}
-                // expandField="expanded"
-                // onExpandChange={this.expandChange}
+                detail={DetailComponent}
+                expandField="expanded"
+                onExpandChange={this.expandChange}
               >
                 <GridToolbar>
                   Locale:&nbsp;&nbsp;&nbsp;
@@ -242,7 +265,8 @@ class FxGrid extends React.Component {
               ref={(element) => { this._pdfExport = element; }}
               margin="1cm" >
               {
-                <Grid data={process(this.state.json, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
+                // <Grid data={process(this.state.json, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
+                <Grid data={process(orders, { skip: this.state.dataState.skip, take: this.state.dataState.take })} >
                   {
                     options.showColumns.map((column, Index) => this.renderGrid(column, Index))
                   }
