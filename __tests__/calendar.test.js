@@ -42,7 +42,6 @@ describe("Testing on function isYearFormat",()=>{
 
 //Test for isValidQQYYYYValue
 describe('Testing on function isValidQQYYYYValue',()=>{
-   
     let input = ["Q2/2000","Q3/2019",'Q5/2019','Q3/899',undefined,null,""]
     let output = [true,true,false,false,false,false,false]
     let messages = ['passing the correct format of date then function return true',
@@ -67,7 +66,6 @@ describe('Testing on function isValidDDMMYYYYValue',()=>{
     test('testing',()=>{
         expect(isValidDDMMYYYYValue(date)).toEqual(true)
     })
-
     let input = ["02/04/2019","123/12/2019",'2019/03/08',undefined,null,""]
     let output = [true,false,false,false,false,false]
     let messages = ['passing the correct format of date then function return true',
@@ -86,7 +84,6 @@ describe('Testing on function isValidDDMMYYYYValue',()=>{
 
 //Test for isValidMMYYYYValue
 describe('Testing on function isValidMMYYYYValue',()=>{
-
     let input = ["04/2019","23/12/2019",'2019/03/08',undefined,null,""]
     let output = [true,false,false,false,false,false]
     let messages = ['passing the correct format of date then function return true',
@@ -101,7 +98,6 @@ describe('Testing on function isValidMMYYYYValue',()=>{
             .toEqual(output[i])
         })
     }
-    
 })
 
 //Test for isValidYYYYValue
@@ -360,6 +356,9 @@ describe('Testing on function zeroPad',()=>{
 describe('Testing on function  getMonthDays',()=>{
     let inputMonth = [4,2,8,undefined]
     let inputYear = [2019,2020,undefined,undefined]
+    let year = new Date()
+    let numDays = new Date(year.getFullYear(),year.getMonth()+1,0).getDate()
+    let output = [30,29,31,numDays]
     let d = new Date()
     let currentDay = new Date(d.getFullYear(),d.getMonth()+1,0).getDate() 
     let output = [30,29,31,currentDay]
