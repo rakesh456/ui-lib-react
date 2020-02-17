@@ -1,76 +1,114 @@
 import React from "react";
+import tag from "react-icons/lib/fa/tag";
 import './style.css';
+
+import ReactDOM from "react-dom";
+ 
 
 class FormGenerator extends React.PureComponent {
 
-    render() {
-        var options  = this.props.options;
-        var noOfRows = options.rows.length;        
-        var tags     = [];
+    constructor(props) {
+        super(props);
+    
+        const formGenOptions = this.props.options.rows[0].rowElements[0].elementType;
+        console.log('At the constructor',formGenOptions);
+        this.state = {
+          data : props.options ? props.options : ''
+        };
+    
+        
+    }    
+    componentDidMount() {} 
 
-        /*  Iterate on rows */
-        for(let i = 0; i < noOfRows ; i++) {   
+    componentDidUpdate() {}
+
+
+    setJsonData(data)
+    {
+        this.setState.data = data;
+    }
+    
+    render() {
+        console.log('Options at Render func. for test',this.props.options.rows.length);
+        console.log('Options at Render func. for test',Object.keys(this.props.options.rows).length);
+        var len = this.props.options.rows.length;
+        var count = 0;
+        
+        const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
+        
+        const tags= [];
+        for( var i = 0; i < len ; i++)
+        {   
             
-            let labelText       = options.rows[i].rowLabel.name?options.rows[i].rowLabel.name : "Your Input";
-            let noOfRowElements = options.rows[i].rowElements.length;
+             var label_name = this.props.options.rows[i].rowLabel.name;
+            var rowElements_length = this.props.options.rows[i].rowElements.length;
+            if( label_name != '')
+            {
+                tags.push(<label htmlFor={id}>{label_name} </label>)
+            }
+            for (var j = 0; j < rowElements_length; j++)
+            {
+            var id = this.props.options.rows[i].rowElements[j].props.id;
+            console.log("If radio or not :",this.props.options.rows[i].rowElements[j].props.type)
+            if((this.props.options.rows[i].rowElements[j].props.type) == "radio")
+                     {              
+                        tags.push(<label htmlFor={this.props.options.rows[i].rowElements[j].props.id}><input type= "radio" name ={this.props.options.rows[i].rowElements[j].props.name} id={this.props.options.rows[i].rowElements[j].props.id} required></input>{this.props.options.rows[i].rowElements[j].elementLabel.name}</label>);
             
-            /* Iterate on row elements */
-            for (let j = 0; j < noOfRowElements; j++) {
-                let elementID     = options.rows[i].rowElements[j].props.id;
-                let elementType   = options.rows[i].rowElements[j].props.type;
-                let elementProps  = options.rows[i].rowElements[j].props;
-                let labelKey      = elementID + "label";
-                let labelKeyOuter = labelKey + "Outer";
-                elementProps.key  = elementID;
-                
-                tags.push(<label htmlFor={elementID} key={labelKeyOuter}>{labelText} </label>);
- 
-                if (elementType === "radio") {              
-                    tags.push(<label htmlFor={elementID} key={labelKey}><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input>{options.rows[i].rowElements[j].elementLabel.name}</label>);                    
-                }
-                else if (elementType === "select")
-                {
-                    let items = options.rows[i].rowElements[j].options;
-                    
+                     }
+             else if ((this.props.options.rows[i].rowElements[j].elementType) == "select")
+             {
+                    var items = this.props.options.rows[i].rowElements[j].options;
                     tags.push(React.createElement(
                         "select",
-                        options.rows[i].rowElements[j].props,
+                        this.props.options.rows[i].rowElements[j].props,
                         items.map(item => React.createElement(
-                            "option",
-                            { value: item.props.value,
-                            selected : item.props.selected ? "selected" :"",
-                            key: item.props.value
+                          "option",
+                          { value: item.props.value,
+                            selected : item.props.selected ? "selected" :""
                         }, 
-                            item.optionLabel
+                          item.optionLabel
                         ))
-                        ));
-                }
-                else if (elementType === "textarea")
-                {
-                    tags.push(React.createElement(
-                    "textarea",
-                    elementProps
+                      ));
+             }
+             else if ((this.props.options.rows[i].rowElements[j].elementType) == "textarea")
+             {
+                        tags.push(React.createElement(
+                        "textarea",
+                        this.props.options.rows[i].rowElements[j].props
                     ));
-                }            
-                else
-                {
-                    tags.push(React.createElement(options.rows[i].rowElements[j].elementType, options.rows[i].rowElements[j].props));    
-                }            
-        }        
+             }
+            
+            else
+            {
+                    tags.push(React.createElement(this.props.options.rows[i].rowElements[j].elementType, this.props.options.rows[i].rowElements[j].props));    
+            }
+            
+        }
+        tags.push(<br></br>)
+        
     }
+
         return (
+        <div>
         <div className="wrapper">
-            <form action ={options.form.props.action} method={options.form.props.method} className="form-wrapper" id="form">
-                {tags}               
+            <h3> Form generated from the incoming JSON data</h3>
+            <form action ={this.props.options.form.props.action} method={this.props.options.form.props.method} className="form-wrapper" id="form">
+                {tags}
                         <div className="col-5">
-                        <button type="submit" form="form" value="Submit">Submit</button>
+                        <button type="submit" form="form" value="Submit" className="VS-FormGen-Submit">Submit</button>
                         <button type="reset" form="form" value="Reset">Reset</button>
                         </div>
-                    
-                </form>
-      </div>
+             </form>
+ 
+       </div>
+            
+       </div>
         )
     }
 }
 
+
+
+
 export default FormGenerator;
+

@@ -190,6 +190,8 @@ function dateHierarchyRender(el) {
     el.refresh = function (){
         return HierarchyComponentInstance.refresh();
     }
+    
+    
 
     var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     el.setValues = function (json) {
@@ -252,6 +254,9 @@ function formGenRender(el) {
         return FormGenComponentInstance.refresh();
     }
 
+    el.setJsonData = function (json) {
+        FormGenComponentInstance.setJsonData(json);
+    }
     var FormGenComponentElement = <FormGenerator options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     el.setValues = function (json) {
         FormGenComponentInstance.setValues(json);
