@@ -1,21 +1,211 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html><html lang="en"><head><title>Datepicker React Component with Event</title><link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"><script type="text/javascript" src="countries.js"></script><script>function onInputHandler() {
+            console.log('onInputHandler called ');
+        }
 
-<head>
-    <title>Date Hierarchy component using React</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="bundle.css">
-    <script>
-</script>
-</head>
+        function onFocusHandler() {
+            console.log('onFocusHandler called ');
+        }
 
-<body>
+        function onChangeHandler() {
+            console.log('onChangeHandler called ');
+        }
 
-    <h2>Date Hierarchy Component using React Component</h2>
-        
-    <p>data-options='{"lowerLimit": "2019", "upperLimit": "2025", "showWeeks": "true"}' </p>
-  <date-hierarchy id='datehierarchy' data-options='{"lowerLimit": "2019", "upperLimit": "2025", "showWeeks": "true"}'></date-hierarchy>
+        function onBlurHandler() {
+            console.log('onBlurHandler called ');
+        }
 
- <script src="bundle.js"></script>
-</body>
-</html>
+        function onKeyDownHandler() {
+            console.log('onKeyDownHandler called ');
+        }
+
+        function onKeyUpHandler() {
+            console.log('onKeyUpHandler called ');
+        }
+
+        function onDoubleClickHandler() {
+            console.log('onDoubleClickHandler called ');
+        }
+
+        function onMouseDownHandler() {
+            console.log('onMouseDownHandler called ');
+        }
+
+        function onMouseUpHandler() {
+            console.log('onMouseUpHandler called ');
+        }
+
+        function onMouseEnterHandler() {
+            console.log('onMouseEnterHandler called ');
+        }
+
+        function onMouseLeaveHandler() {
+            console.log('onMouseLeaveHandler called ');
+        }
+
+        function onMouseMoveHandler() {
+            console.log('onMouseMoveHandler called ');
+        }
+
+        function onMouseOverHandler() {
+            console.log('onMouseOverHandler called ');
+        }
+
+        function onMouseOutHandler() {
+            console.log('onMouseOutHandler called ');
+        }
+
+        function onWheelHandler() {
+            console.log('onWheelHandler called ');
+        }
+
+        function setValue(id, value) {
+            let element = document.getElementById(id);
+            element.setValue(value);
+        }
+
+        function refresh(id) {
+            let element = document.getElementById(id);
+            element.refresh();
+        }
+
+        function getStartDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getStartDate();
+            let element2 = document.getElementById(divId);
+            if (element2) {
+                element2.innerHTML = 'Get Start Date : ' + dateValue;
+            }
+        }
+
+        function getEndDate(id, divId) {
+            let element = document.getElementById(id);
+            let dateValue = element.getEndDate();
+            let element2 = document.getElementById(divId);
+            if (element2) {
+                element2.innerHTML = 'Get End Date : ' + dateValue;
+            }
+        }
+
+        function addDatepickerNew(id) {
+            let element = document.getElementById(id);
+
+        }
+
+        window.onload = bodyOnload;
+
+        function bodyOnload() {
+            let element = document.getElementById('datepicker1');
+            let elementDiv = document.getElementById('display2');
+        }
+
+        function reloadDatepicker(id) {
+            let element = document.getElementById(id);
+            let options = JSON.parse(element.getAttribute('data-options'));
+            options.isDisabled = true;
+            element.setAttribute('data-options', JSON.stringify(options));
+            element.reload();
+        }
+
+        function updateToDate(from, to) {
+            let fromElement = document.getElementById(from);
+            let element = document.getElementById(to);
+            let _value = fromElement.getValue();
+
+            // {"displayFormat": "MM/DD/YYYY", "defaultDate": "11/25/2000", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "05/25/2018", "upperLimit": "07/25/2000", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2000", "11/29/2000", "11/13/2019", "11/14/2019", "06/2016", "2015"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}
+            element.setDataOption({ "lowerLimit": "12/01/2019" });
+        }
+
+        function displayValue(id, divId) {
+            let element = document.getElementById('datepicker3');
+
+            element.setDataOption("lowerLimit", "18/12/2019");
+
+            let dateValue = element.getValue();
+            let element2 = document.getElementById(divId);
+
+            if (element2) {
+                element2.innerHTML = 'From displayValue function : ' + dateValue;
+            }
+        }
+
+        function submitForm() {
+            var form = document.forms["myform"];
+        }
+
+        function getSelectedValuesById(id) {
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedValues');
+            let selectedValues = tagElement1.getSelectedValues();
+            divElement.innerHTML = 'Selected Values : ' + JSON.stringify(selectedValues);
+            console.log(' selectedValues ', selectedValues);
+        }
+
+        function getSelectedCounterById(id) {
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('SelectedCounter');
+            let selectedCounter = tagElement1.getSelectedCounter();
+            divElement.innerHTML = 'Selected Counter : ' + selectedCounter;
+            console.log(' selectedCounter ', selectedCounter);
+        }
+
+        function refreshTagSelector(id) {
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.refresh();
+        }
+
+        function remove(id, id2) {
+            let tagElement1 = document.getElementById(id);
+            tagElement1.remove({ "key": "AL", "value": "Albania" });
+
+            let tagElement2 = document.getElementById(id2);
+            tagElement2.remove({ "key": "Surat", "value": "Surat" });
+        }
+
+        function appendNewElementById(id) {
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.appendNewElement({ "key": "Test", "value": "BPO" });
+        }
+
+        function setSelectedItems(id) {
+            let tagElement1 = document.getElementById(id);
+            let selectedCounter = tagElement1.setSelectedItems([{ "value": "Albania", "key": "AL" }, { "value": "Turkey", "key": "TR" }]);
+
+            let tagElement2 = document.getElementById('tagselector2');
+            let selectedCounter1 = tagElement2.setSelectedItems([{ "key": "Adoni", "value": "Adoni" }]);
+        }
+
+        function getNewlyAddedById(id) {
+            let tagElement1 = document.getElementById(id);
+            let divElement = document.getElementById('NewlyAddedElements');
+            let newlyAddedElements = tagElement1.getNewlyAdded();
+            divElement.innerHTML = 'Newly Added Elements : ' + JSON.stringify(newlyAddedElements);
+        }
+
+        function onSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
+
+        function onDeSelectHandler(e) {
+            console.log('Tag selector onSelect called ', e.detail);
+        }
+
+        function onNotFoundHandler(e) {
+            console.log('onNotFound called ');
+        }
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+        </script>
+        <style>.div-buttons{display:block;margin:10px}.col-100{width:100%}.col-50{width:50%;float:left}.col-25{width:25%;float:left}.col-45{width:45%;float:left}</style><link href="/rakesh456/ui-lib-react/static/css/main.84f0e769.chunk.css" rel="stylesheet"></head><body><div><fx-editor></fx-editor></div><div class="col-50"><table><tr></tr></table></div><script>!function(l){function e(e){for(var r,t,n=e[0],o=e[1],u=e[2],i=0,a=[];i<n.length;i++)t=n[i],Object.prototype.hasOwnProperty.call(f,t)&&f[t]&&a.push(f[t][0]),f[t]=0;for(r in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(s&&s(e);a.length;)a.shift()();return p.push.apply(p,u||[]),c()}function c(){for(var e,r=0;r<p.length;r++){for(var t=p[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==f[u]&&(n=!1)}n&&(p.splice(r--,1),e=i(i.s=t[0]))}return e}var t={},f={1:0},p=[];function i(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return l[e].call(r.exports,r,r.exports,i),r.l=!0,r.exports}i.m=l,i.c=t,i.d=function(e,r,t){i.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},i.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},i.t=function(r,e){if(1&e&&(r=i(r)),8&e)return r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(i.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof r)for(var n in r)i.d(t,n,function(e){return r[e]}.bind(null,n));return t},i.n=function(e){var r=e&&e.__esModule?function(){return e.default}:function(){return e};return i.d(r,"a",r),r},i.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},i.p="/rakesh456/ui-lib-react/";var r=window["webpackJsonp@rakeshjst/ui-lib-react"]=window["webpackJsonp@rakeshjst/ui-lib-react"]||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var o=0;o<r.length;o++)e(r[o]);var s=n;c()}([])</script><script src="/rakesh456/ui-lib-react/static/js/2.1be7c30f.chunk.js"></script><script src="/rakesh456/ui-lib-react/static/js/main.3ad25faa.chunk.js"></script></body></html>

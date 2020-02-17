@@ -7,7 +7,7 @@ import datepickerRender from "./components/Datepicker/datepickerrender";
 import TagSelector from "./components/TagSelector/tag-selector";
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 import FormGenerator from './components/FormGenerator/form-generator';
-import RichTextEditor from './components/RichTextEditor/rich-text-editor';
+import FxEditor from './components/RichTextEditor/rich-text-editor';
 
 import {
     isUndefinedOrNull
