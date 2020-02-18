@@ -13,24 +13,34 @@ class FormGenerator extends React.PureComponent {
             
             let labelText       = options.rows[i].rowLabel.name?options.rows[i].rowLabel.name : "Your Input";
             let noOfRowElements = options.rows[i].rowElements.length;
+            let labelKey = labelText + noOfRowElements; 
+            tags.push(<label key={labelKey}>{labelText}</label>);
             
             /* Iterate on row elements */
             for (let j = 0; j < noOfRowElements; j++) {
                 let elementID     = options.rows[i].rowElements[j].props.id;
-                let elementType   = options.rows[i].rowElements[j].props.type;
+                let elementType   = options.rows[i].rowElements[j].elementType;
                 let elementProps  = options.rows[i].rowElements[j].props;
                 let labelKey      = elementID + "label";
                 let labelKeyOuter = labelKey + "Outer";
                 elementProps.key  = elementID;
-                
-                tags.push(<label htmlFor={elementID} key={labelKeyOuter}>{labelText} </label>);
+                // tags.push(<label htmlFor={elementID} key={labelKeyOuter}>{labelText} </label>);
  
-                if (elementType === "radio") {              
-                    tags.push(<label htmlFor={elementID} key={labelKey}><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input>{options.rows[i].rowElements[j].elementLabel.name}</label>);                    
+                if (elementType === "input") {  
+                    if (elementProps.type ==="radio"){
+                        tags.push(<label htmlFor={elementID} key={labelKey}><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input>{options.rows[i].rowElements[j].elementLabel.name}</label>);
+                    }    
+                    else{
+                        tags.push(React.createElement(options.rows[i].rowElements[j].elementType, options.rows[i].rowElements[j].props)); 
+                    }          
+                                         
                 }
                 else if (elementType === "select")
                 {
+                    
                     let items = options.rows[i].rowElements[j].options;
+                    
+                    
                     
                     tags.push(React.createElement(
                         "select",
@@ -52,18 +62,19 @@ class FormGenerator extends React.PureComponent {
                     elementProps
                     ));
                 }            
-                else
-                {
-                    tags.push(React.createElement(options.rows[i].rowElements[j].elementType, options.rows[i].rowElements[j].props));    
-                }            
-        }        
+                       
+        }  
+        tags.push(<br></br>)      
     }
         return (
         <div className="wrapper">
+            <h1>Your form</h1>
             <form action ={options.form.props.action} method={options.form.props.method} className="form-wrapper" id="form">
                 {tags}               
-                        <div className="col-5">
+                        <div className="col-6">
                         <button type="submit" form="form" value="Submit">Submit</button>
+                        </div>
+                        <div>
                         <button type="reset" form="form" value="Reset">Reset</button>
                         </div>
                     
