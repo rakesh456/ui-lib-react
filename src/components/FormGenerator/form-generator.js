@@ -68,12 +68,9 @@ class FormGenerator extends React.PureComponent {
             <h1>Your form</h1>
             <form action ={options.form.props.action} method={options.form.props.method} className="form-wrapper" id="form">
                 {tags}               
-                        <div className="col-6">
+                        
                         <button type="submit" form="form" value="Submit">Submit</button>
-                        </div>
-                        <div>
                         <button type="reset" form="form" value="Reset">Reset</button>
-                        </div>
                     
                 </form>
       </div>
