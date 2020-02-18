@@ -24,8 +24,7 @@ class FormGenerator extends React.PureComponent {
                 let labelKey      = elementID + "label";
                 let labelKeyOuter = labelKey + "Outer";
                 elementProps.key  = elementID;
-                // tags.push(<label htmlFor={elementID} key={labelKeyOuter}>{labelText} </label>);
- 
+
                 if (elementType === "input") {  
                     if (elementProps.type ==="radio"){
                         tags.push(<label htmlFor={elementID} key={labelKey}><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input>{options.rows[i].rowElements[j].elementLabel.name}</label>);
@@ -39,9 +38,7 @@ class FormGenerator extends React.PureComponent {
                 {
                     
                     let items = options.rows[i].rowElements[j].options;
-                    
-                    
-                    
+                
                     tags.push(React.createElement(
                         "select",
                         options.rows[i].rowElements[j].props,
