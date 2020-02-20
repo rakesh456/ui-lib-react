@@ -1,5 +1,5 @@
 import React from "react";
-import './css/vs.css';
+import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
 
 
@@ -18,6 +18,39 @@ class FormGenerator extends React.PureComponent {
             let noOfRowElements = options.rows[i].rowElements.length;
             let labelKey = labelText + noOfRowElements; 
             
+            if (noOfRowElements > 1)
+            {
+                var genderoptions1 = options.rows[i].rowElements;
+                
+                console.log("Gender options are", genderoptions1);
+                tags.push(React.createElement(
+                    "div",
+                    {className : "vs-gc-lbl-comp"},
+                    React.createElement(
+                        "div",
+                        {},
+                        React.createElement(
+                            "label",
+                            {className : "vs-label"},
+                            labelText,
+                        )
+                    ), 
+                    React.createElement(
+                        "div",
+                        {},
+                        genderoptions1.map(item => React.createElement(
+                            "label",
+                            {},
+                            item.elementLabel.name,
+                            React.createElement(
+                                "input",
+                                item.props
+                                ),
+                                
+                        )), React.createElement("br", {})
+                    )
+                ));
+            }
             
             /* Iterate on row elements */
             for (let j = 0; j < noOfRowElements; j++) {
@@ -27,78 +60,19 @@ class FormGenerator extends React.PureComponent {
                 let labelKey      = elementID + "label";
                 let labelKeyOuter = labelKey + "Outer";
                 elementProps.key  = elementID;
-                // tags.push(<label htmlFor={elementID} key={labelKeyOuter}>{labelText} </label>);
+                
  
                 if (elementType === "input") {  
-                    if (elementProps.type ==="radio"){
-                        // var name = {options.rows[i].rowElements[j].props.name};
-                        var props = options.rows[i].rowElements[j].elementLabel.props;
-                        var radioname = options.rows[i].rowElements[j].elementLabel.name;
-                        var radioprops =options.rows[i].rowElements[j].props;
-                        let elementLabel = options.rows[i].rowElements[j].elementLabel.name;
-                        // tags.push(<div className="vs-gc-lbl-comp"><div><label htmlFor={elementID} key={labelKey} className="vs-radiobutton"><div><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input></div>{options.rows[i].rowElements[j].elementLabel.name}</label></div></div>);
-                        // tags.push(<label htmlFor={elementID} key={labelKey}><input type= "radio" name ={options.rows[i].rowElements[j].props.name} id={elementID} required></input>{options.rows[i].rowElements[j].elementLabel.name}</label>);
+                    if (elementProps.type != "radio"){
+                        tags.push(<div class="vs-gc-lbl-comp"><div><label className="vs-body-regular-primary">{labelText}</label></div><div><input type={elementProps.type} className={elementProps.className} id={elementProps.id} title={elementProps.title}></input></div></div>)
 
-                        tags.push(<div className="vs-gc-lbl-comp">
-                            <div> <label className="vs-label">{labelText}</label></div>
-                            <div><label></label></div>
-                        </div>)
-                        
-                        
-                        tags.push(React.createElement(
-                                "div",
-                                {className : "vs-gc-lbl-comp"}, 
-                                React.createElement(
-                                    "div",
-                                    {},
-                                    React.createElement(
-                                        "label",
-                                        {className : "vs-label"},
-                                        labelText
-                                    )
-                                ),
-                                React.createElement(
-                                    "div",
-                                    {},
-                                    React.createElement(
-                                        "label",
-                                        props,
-                                        radioname,
-                                        React.createElement(
-                                            "input",
-                                            radioprops
-                                        )
-
-                                        
-                                    )
-
-                                )
-                                                                
-                            )
-
-
-                        );
-
-
-
-
-                    }    
-                    else{
-                        // tags.push(React.createElement(options.rows[i].rowElements[j].elementType, options.rows[i].rowElements[j].props)); 
-                        // tags.push(React.createElement("div", {class : "vs-gc-lbl-comp"}, React.createElement("div", React.createElement("input",options.rows[i].rowElements[j].props))); 
-                    
-                    tags.push(<div class="vs-gc-lbl-comp"><div><label className="vs-body-regular-primary">{labelText}</label></div><div><input type={elementProps.type} className={elementProps.className} id={elementProps.id} title={elementProps.title}></input></div></div>)
-                    }          
-                                         
+                    }                           
                 }
                 else if (elementType === "select")
                 {
                     
                     let items = options.rows[i].rowElements[j].options;
-                    
-                    
-
-
+                
                         tags.push(React.createElement(
                             "div",
                             {className : "vs-gc-lbl-comp"},
@@ -131,64 +105,44 @@ class FormGenerator extends React.PureComponent {
                                     )
 
                             )
-                            
-
-
-
-
-
-
-
                         ));
                         
                 }
                 else if (elementType === "textarea")
                 {
-                    // tags.push(React.createElement(
-                    // "textarea",
-                    // elementProps
-                    // ));
-
-
-
                     tags.push(React.createElement(
                         "div",
-                        
                         {className : "vs-gc-lbl-comp"},
-                       React.createElement(
+                        React.createElement(
                            "div",
                            {},
                            React.createElement(
                                "label",
                                {className : "vs-body-regular-primary"},
                                labelText)),
-                     React.createElement(
-                        "div",
-                        {},
-                        React.createElement("textarea", elementProps)
+                                React.createElement(
+                                     "div",
+                                     {},
+                                     React.createElement("textarea", elementProps)
                         )
 
-                           )
-                       );
+                    )
+                 );
                     
                 }      
                 else if (elementType === "datepicker")   
                 {
-
-                    
                     console.log(JSON.parse(elementProps['data-options']));
                     tags.push(<DatePicker options= {JSON.parse(elementProps['data-options'])}></DatePicker>); 
-                
                 }   
                        
-        }  
+        } 
         tags.push(<br></br>)      
     }
         return (
         <div>
                 
             <h1>Your form</h1>
-        {/* <form action ={options.form.props.action} method={options.form.props.method} className="form-wrapper" id="form"> */}
                 {tags}                           
                 
       </div>
