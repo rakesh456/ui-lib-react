@@ -260,210 +260,214 @@
 </head>
 
 <body>
-    <!-- <h1 style="text-align: center; font-family: Arial, Helvetica, sans-serif;">Form Generator <span style="font-weight: lighter;">|</span> From user's JSON Data.</h1> 
-    <textarea style=" display: block; margin-left: auto; margin-right: auto;" id="userjson" rows="10" cols="100"></textarea>
-    <button type="submit" value="submit"  class="TextAreaButton TextAreaButton1">Submit</button> -->
+    
     <div>   
           
-        <form-gen id='formGen1' data-options='{ 
-            "form":{ 
-               "props":{ 
-                  "action":"https://www.fintellix.com",
-                  "method":"post"
+        <form-gen id='formGen1' data-options='	{ 
+         "form":{ 
+            "props":{ 
+               "action":"https://www.fintellix.com",
+               "method":"post"
+            }
+         },
+         "rows":[      
+     
+         { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"vs-textbox",
+                        "required":"required",
+                        "title":"Firstname"
+                     }
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Firstname",
+                  "props":{ 
+                     "class":"vs-body-regular-primary"
+                  }
                }
             },
-            "rows":[ 
-         { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"text",
-                           "id":"firstname",
-                           "className":"vs-textbox",
-                           "required":"required",
-                           "title":"Firstname"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Firstname",
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"vs-textbox",
+                        "title":"Lastname"
                      }
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"text",
-                           "id":"lastname",
-                           "className":"vs-textbox",
-                           "title":"Lastname"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Lastname",
+               ],
+               "rowLabel":{ 
+                  "name":"Lastname",
+                  "props":{ 
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
+                        "type":"email",
+                        "id":"email",
+                        "className":"vs-textbox",
+                        "required":"required",
+                        "title":"Email"
                      }
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"email",
-                           "id":"email",
-                           "className":"vs-textbox",
-                           "required":"required",
-                           "title":"Email"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Email",
+               ],
+               "rowLabel":{ 
+                  "name":"Email",
+                  "props":{ 
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
+                        "type":"password",
+                        "id":"password",
+                        "className":"vs-textbox",
+                        "required":"required",
+                        "title":"Password"
                      }
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"password",
-                           "id":"password",
-                           "className":"vs-textbox",
-                           "required":"required",
-                           "title":"Password"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Password",
-                     "props":{ 
-                        "class":"vs-body-regular-primary"
-                     }
+               ],
+               "rowLabel":{ 
+                  "name":"Password",
+                  "props":{ 
+                     "class":"vs-body-regular-primary"
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"radio",
-                           "id":"male",
-                           "name":"gender"
-                        },
-                        "elementLabel":{ 
-                           "name":"male",
-                           "props":{ 
-                              "class":"vs-radiobutton"
-                           }
-                        }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender"
+                        
                      },
-                     { 
-                        "elementType":"input",
+                     "elementLabel":{ 
+                        "name":"male",
                         "props":{ 
-                           "type":"radio",
-                           "id":"female",
-                           "name":"gender",
-                           "required" : "required"
-                        },
-                        "elementLabel":{ 
-                           "name":"female",
-                           "props":{ 
-                              "class":"vs-radiobutton"
-                           }
+                           
                         }
                      }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Gender",
+                  },
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-label"
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+      
+                        "required" : "required"
+                     },
+                     "elementLabel":{ 
+                        "name":"female",
+                        "props":{ 
+                           
+                        }
                      }
                   }
-               },
-         
-         
-         
-               { 
-                "rowElements":[ 
-                   { 
-                      "elementType":"select",
-                      "props":{ 
-                         "id":"countries",
-                         "className":"vs-select",
-                         "required":"required"
+               ],
+               "rowLabel":{ 
+                  "name":"Gender",
+                  "props":{ 
+                     "class":"vs-label"
+                  }
+               }
+            },
+      
+      
+      
+            { 
+             "rowElements":[ 
+                { 
+                   "elementType":"select",
+                   "props":{ 
+                      "id":"countries",
+                      "className":"vs-select",
+                      "required":"required"
+                   },
+                   "options":[ 
+                     { 
+                         "props":{ 
+                             "value":""
+                         },
+                         "optionLabel":"Select One"
+                     },
+                      { 
+                         "props":{ 
+                            "value":"IN"
+                         },
+                         "optionLabel":"India"
                       },
-                      "options":[ 
-                        { 
-                            "props":{ 
-                                "value":""
-                            },
-                            "optionLabel":"Select One"
-                        },
-                         { 
-                            "props":{ 
-                               "value":"IN"
-                            },
-                            "optionLabel":"India"
+                      { 
+                         "props":{ 
+                            "value":"US" 
                          },
-                         { 
-                            "props":{ 
-                               "value":"US" 
-                            },
-                            "optionLabel":"USA"
+                         "optionLabel":"USA"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"CA"
                          },
-                         { 
-                            "props":{ 
-                               "value":"CA"
-                            },
-                            "optionLabel":"Canada"
-                         }
-                      ]
-                   }
-                ],
-                "rowLabel":{ 
-                   "name":"Select Country",
-                   "props":{ 
-                      "class":"vs-body-regular-primary"
-                   }
-                }
-             },
-         
-             { 
-                "rowElements":[ 
-                   { 
-                      "elementType":"textarea",
-                      "props":{ 
-                         "id":"story",
-                         "name":"story",
-                         "rows":"5",
-                         "cols":"33",
-                         "maxLength":"500",
-                         "required" : "required",
-                         "className":"vs-select"
+                         "optionLabel":"Canada"
                       }
-                   }
-                ],
-                "rowLabel":{ 
-                   "name":"Your Story:",
-                   "props":{ 
-                      "class":"vs-body-regular-primary"
-                   }
+                   ]
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Select Country",
+                "props":{ 
+                   "class":"vs-body-regular-primary"
                 }
              }
-         
-            ]
-         }'></form-gen>
+          },
+      
+          { 
+             "rowElements":[ 
+                { 
+                   "elementType":"textarea",
+                   "props":{ 
+                      "id":"story",
+                      "name":"story",
+                      "rows":"5",
+                      "cols":"33",
+                      "maxLength":"500",
+                      "required" : "required",
+                      "className":"vs-textarea"
+                   }
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Your Story:",
+                "props":{ 
+                   "class":"vs-body-regular-primary"
+                }
+             }
+          }
+      
+         ]
+      }
+
+      
+      '></form-gen>
     </div>    
 </body>
 
