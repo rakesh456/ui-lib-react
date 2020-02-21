@@ -1,7 +1,12 @@
 import React from "react";
 import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
+import * as CONSTANTS from '../../utils/constants'
 
+//`${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`
+// `${CONSTANTS.CLASSES.VS_DROPDOWN}`
+// `${CONSTANTS.CLASSES.VS_TEXTBOX}`
+// `${CONSTANTS.CLASSES.VS_LABEL}`
 
 class FormGenerator extends React.PureComponent {
 
@@ -17,25 +22,25 @@ class FormGenerator extends React.PureComponent {
             let labelKey = labelText + noOfRowElements;
 
             if (noOfRowElements > 1) {
-                var genderoptions1 = options.rows[i].rowElements;
+                var optionsInRows = options.rows[i].rowElements;
 
-                console.log("Gender options are", genderoptions1);
+                
                 tags.push(React.createElement(
                     "div",
-                    { className: "vs-gc-lbl-comp" },
+                    { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`},
                     React.createElement(
                         "div",
                         {},
                         React.createElement(
                             "label",
-                            { className: "vs-label" },
+                            { className: `${CONSTANTS.CLASSES.VS_LABEL}`},
                             labelText,
                         )
                     ),
                     React.createElement(
                         "div",
                         {},
-                        genderoptions1.map(item => React.createElement(
+                        optionsInRows.map(item => React.createElement(
                             "label",
                             {},
                             item.elementLabel.name,
@@ -61,8 +66,25 @@ class FormGenerator extends React.PureComponent {
 
                 if (elementType === "input") {
                     if (elementProps.type != "radio") {
-                        tags.push(<div class="vs-gc-lbl-comp"><div><label className="vs-body-regular-primary">{labelText}</label></div><div><input type={elementProps.type} className={elementProps.className} id={elementProps.id} title={elementProps.title}></input></div></div>)
-
+                     tags.push(React.createElement(
+                         "div",
+                         {className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`},
+                         React.createElement(
+                             "div",
+                             {},
+                             React.createElement(
+                                 "label",
+                                 {className : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}`},
+                                 labelText)),
+                                 React.createElement(
+                                     "div",
+                                     {},
+                                     React.createElement(
+                                         "input",
+                                         elementProps,
+                                     )
+                                 )
+                     ));   
                     }
                 }
                 else if (elementType === "select") {
@@ -71,20 +93,20 @@ class FormGenerator extends React.PureComponent {
 
                     tags.push(React.createElement(
                         "div",
-                        { className: "vs-gc-lbl-comp" },
+                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}` },
                         React.createElement(
                             "div",
                             {},
                             React.createElement(
                                 "label",
-                                { className: "vs-body-regular-primary" },
+                                { className: `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                 labelText
                             )
                         ),
                         React.createElement(
                             "div",
                             {
-                                className: "vs-dropdown"
+                                className: `${CONSTANTS.CLASSES.VS_DROPDOWN}`
                             },
 
                             React.createElement(
@@ -108,13 +130,13 @@ class FormGenerator extends React.PureComponent {
                 else if (elementType === "textarea") {
                     tags.push(React.createElement(
                         "div",
-                        { className: "vs-gc-lbl-comp" },
+                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}` },
                         React.createElement(
                             "div",
                             {},
                             React.createElement(
                                 "label",
-                                { className: "vs-body-regular-primary" },
+                                { className: `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                 labelText)),
                         React.createElement(
                             "div",
@@ -127,7 +149,6 @@ class FormGenerator extends React.PureComponent {
 
                 }
                 else if (elementType === "datepicker") {
-                    console.log(JSON.parse(elementProps['data-options']));
                     tags.push(<DatePicker options={JSON.parse(elementProps['data-options'])}></DatePicker>);
                 }
 
