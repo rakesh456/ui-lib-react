@@ -2,11 +2,9 @@ import React from "react";
 import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
 import * as CONSTANTS from '../../utils/constants'
+import TagSelector from '../../components/TagSelector/tag-selector';
+import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
 
-//`${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`
-// `${CONSTANTS.CLASSES.VS_DROPDOWN}`
-// `${CONSTANTS.CLASSES.VS_TEXTBOX}`
-// `${CONSTANTS.CLASSES.VS_LABEL}`
 
 class FormGenerator extends React.PureComponent {
 
@@ -78,7 +76,7 @@ class FormGenerator extends React.PureComponent {
                                  labelText)),
                                  React.createElement(
                                      "div",
-                                     {},
+                                     {contentEditable: "true"},
                                      React.createElement(
                                          "input",
                                          elementProps,
@@ -148,8 +146,8 @@ class FormGenerator extends React.PureComponent {
                     );
 
                 }
-                else if (elementType === "datepicker") {
-                    tags.push(<DatePicker options={JSON.parse(elementProps['data-options'])}></DatePicker>);
+                else if (elementType === "datehierarchy") {
+                    tags.push(<DateHierarchy options={JSON.parse(elementProps['data-options'])}></DateHierarchy>);
                 }
 
             }
@@ -157,7 +155,7 @@ class FormGenerator extends React.PureComponent {
             
         }
         return (
-            tags
+            <form> {tags}</form>
         )
     }
 

@@ -370,7 +370,7 @@ class DatePicker extends React.PureComponent {
             selectedYear: (this.state.isInvalidDate)? "" : this.state.selectedYear
         });
 
-        this.props.onFocus();
+        // this.props.onFocus();
     }
     
     onBlur = () => {

@@ -263,211 +263,37 @@
     
     <div>   
           
-        <form-gen id='formGen1' data-options='	{ 
-         "form":{ 
-            "props":{ 
-               "action":"https://www.fintellix.com",
-               "method":"post"
-            }
-         },
-         "rows":[      
-     
-         { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"text",
-                        "id":"firstname",
-                        "className":"vs-textbox asdfasdf",
-                        "value": "Gianna",
-                        
-                        "title":"Firstname"
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Firstname",
-                  "props":{ 
-                     "class":"vs-body-regular-primary"
-                  }
-               }
-            },
-            { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"text",
-                        "id":"lastname",
-                        "className":"vs-textbox asdfasdf",
-                        "title":"Lastname"
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Lastname",
-                  "props":{ 
-                     "class":"vs-body-regular-primary"
-                  }
-               }
-            },
-            { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"email",
-                        "id":"email",
-                        "className":"vs-textbox",
-                        
-                        "title":"Email"
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Email",
-                  "props":{ 
-                     "class":"vs-body-regular-primary"
-                  }
-               }
-            },
-            { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"password",
-                        "id":"password",
-                        "className":"vs-textbox",
-                        
-                        "title":"Password"
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Password",
-                  "props":{ 
-                     "class":"vs-body-regular-primary"
-                  }
-               }
-            },
-            { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"radio",
-                        "id":"male",
-                        "name":"gender"
-                        
-                     },
-                     "elementLabel":{ 
-                        "name":"male",
-                        "props":{ 
-                            
-                           
-                        }
-                     }
-                  },
-                  { 
-                     "elementType":"input",
-                     "props":{ 
-                        "type":"radio",
-                        "id":"female",
-                        "name":"gender"
-      
-                        
-                     },
-                     "elementLabel":{ 
-                        "name":"female",
-                        "props":{ 
-                           
-                        }
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Gender",
-                  "props":{ 
-                     "class":"vs-label"
-                  }
-               }
-            },
-      
-      
-      
-            { 
-             "rowElements":[ 
-                { 
-                   "elementType":"select",
-                   "props":{ 
-                      "id":"countries",
-                      "className":"vs-select",
-                      "required":"required"
-                   },
-                   "options":[ 
-                     { 
-                         "props":{ 
-                             "value":""
-                         },
-                         "optionLabel":"Select One"
-                     },
-                      { 
-                         "props":{ 
-                            "value":"IN"
-                         },
-                         "optionLabel":"India"
-                      },
-                      { 
-                         "props":{ 
-                            "value":"US" 
-                         },
-                         "optionLabel":"USA"
-                      },
-                      { 
-                         "props":{ 
-                            "value":"CA"
-                         },
-                         "optionLabel":"Canada"
-                      }
-                   ]
+        <form-gen id='formGen1' data-options='	{
+            "form": {
+                "props": {
+                    "action": "<URL>",
+                    "method": "get/post"
                 }
-             ],
-             "rowLabel":{ 
-                "name":"Select Country",
-                "props":{ 
-                   "class":"vs-body-regular-primary"
+            },
+            "rows": [{
+                "rowElements": [{
+                    "elementType": "datehierarcy",
+                    "props": {
+                        "id": "datehierarchyID",
+                        "name": "datehierarchy",
+                        "data-options": "",
+                        "onFocus": "onFocusHandler()",
+                        "onKeyDown": "onKeyDownHandler()",
+                        "onSelect": "onSelectHandler(e)",
+                        "onDeSelect": "onDeSelectHandler(e)",
+                        "onNotFound": "onNotFoundHandler()"
+                    }
+                }],
+                "rowLabel": {
+                    "name": "Select Date(s):",
+                    "props": {
+                        "class": "vs-body-regular-primary"
+                    }
                 }
-             }
-          },
-      
-          { 
-             "rowElements":[ 
-                { 
-                   "elementType":"textarea",
-                   "props":{ 
-                      "id":"story",
-                      "name":"story",
-                      "rows":"5",
-                      "cols":"33",
-                      "maxLength":"500",
-                      
-                      "className":"vs-textarea"
-                   }
-                }
-             ],
-             "rowLabel":{ 
-                "name":"Your Story:",
-                "props":{ 
-                   "class":"vs-body-regular-primary"
-                }
-             }
-          }
-      
-         ]
-      }
-
+            }]
+        }
+        
+         
       
       '></form-gen>
     </div>    
