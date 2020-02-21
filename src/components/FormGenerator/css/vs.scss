@@ -70,7 +70,7 @@ $font-normal: 'normal';
 
 @font-face {
   font-family: $font-family;
-  font-style: normal;
+  font-style: $font-normal;
   font-weight: 300;
   src: url("../fonts/roboto/roboto-v18-latin-300.woff");
   /* IE9 Compat Modes */

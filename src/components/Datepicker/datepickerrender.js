@@ -69,7 +69,7 @@ function datepickerRender(el) {
     }
 
     el.getValue = function () {
-        return el.getAttribute('selected-date');
+        return myComponentInstance.getSelectedValue();
     }
 
     el.setValue = function (date) {

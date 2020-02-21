@@ -4,9 +4,12 @@ import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
+import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
 import TagSelector from "./components/TagSelector/tag-selector";
 import FormGenerator from './components/FormGenerator/form-generator';
 import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+import FormGenerator from './components/FormGenerator/form-generator';
 
 import {
     isUndefinedOrNull
@@ -23,7 +26,8 @@ import {
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
-
+import './components/QueryBuilder/query-builder.scss';
+import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
 
 (function () {
     if (typeof window.CustomEvent === "function") return false;
@@ -44,6 +48,13 @@ Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),
     (el) => {
         datepickerRender(el);
+    })
+window.addReactDatepicker = datepickerRender;
+
+Array.prototype.forEach.call(
+    document.getElementsByTagName('query-builder'),
+    (el) => {
+        queryBuilderRender(el);
     })
 window.addReactDatepicker = datepickerRender;
 
