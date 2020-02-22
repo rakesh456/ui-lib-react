@@ -263,39 +263,25 @@
     
     <div>   
           
-        <form-gen id='formGen1' data-options='	{
-            "form": {
-                "props": {
-                    "action": "<URL>",
-                    "method": "get/post"
-                }
-            },
-            "rows": [{
-                "rowElements": [{
-                    "elementType": "datehierarcy",
-                    "props": {
-                        "id": "datehierarchyID",
-                        "name": "datehierarchy",
-                        "data-options": "",
-                        "onFocus": "onFocusHandler()",
-                        "onKeyDown": "onKeyDownHandler()",
-                        "onSelect": "onSelectHandler(e)",
-                        "onDeSelect": "onDeSelectHandler(e)",
-                        "onNotFound": "onNotFoundHandler()"
-                    }
-                }],
-                "rowLabel": {
-                    "name": "Select Date(s):",
-                    "props": {
-                        "class": "vs-body-regular-primary"
-                    }
-                }
-            }]
-        }
-        
-         
-      
-      '></form-gen>
+        <form-gen id='formGen1' data-options='{ 
+                        "rows":[ 
+                            { 
+                              "rowElements":[ 
+                                 { 
+                                    "elementType":"input",
+                                    "props":{ 
+                                       "type":"text",
+                                       "id":"id1",
+                                       "class":"vs-textbox",
+                                       "required":"required",
+                                       "title":"Firstname"
+                                    }
+                                 }
+                              ]                  
+                           }
+                        ]
+                      }'>
+        </form-gen>
     </div>    
 </body>
 

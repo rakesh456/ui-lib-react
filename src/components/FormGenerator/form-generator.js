@@ -11,11 +11,12 @@ class FormGenerator extends React.PureComponent {
     renderForm = () => {
         var options = this.props.options;
         var noOfRows = options.rows.length;
+        var formTag  = options.form?true:false;
         var tags = [];
         /*  Iterate on rows */
         for (let i = 0; i < noOfRows; i++) {
 
-            let labelText = options.rows[i].rowLabel.name ? options.rows[i].rowLabel.name : "Your Input";
+            let labelText = options.rows[i].rowLabel.name ? options.rows[i].rowLabel.name : "";
             let noOfRowElements = options.rows[i].rowElements.length;
             let labelKey = labelText + noOfRowElements;
 
@@ -154,9 +155,14 @@ class FormGenerator extends React.PureComponent {
             tags.push(<br></br>)
             
         }
-        return (
-            <form> {tags}</form>
-        )
+        if (formTag)
+            return (
+                <form> {tags}</form>
+            )
+        else
+            return (
+                {tags}
+            )
     }
 
     render() {
