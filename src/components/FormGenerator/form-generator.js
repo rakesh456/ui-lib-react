@@ -155,10 +155,20 @@ class FormGenerator extends React.PureComponent {
             tags.push(<br></br>)
             
         }
-        if (formTag)
+        if (formTag) {
+            tags.push(React.createElement(
+                "input",
+                {"type": "submit"}
+            ));
             return (
-                <form> {tags}</form>
+                // <form> {tags}</form>
+                React.createElement(
+                    'form',
+                    options.form.props,
+                    tags
+                )
             )
+        }
         else
             return (
                 {tags}

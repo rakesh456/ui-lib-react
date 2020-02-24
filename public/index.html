@@ -257,6 +257,11 @@
 }
 
     </style>
+    <script>
+    function myMethod() {
+        alert("Hi");
+    }
+    </script>
 </head>
 
 <body>
@@ -264,23 +269,38 @@
     <div>   
           
         <form-gen id='formGen1' data-options='{ 
-                        "rows":[ 
-                            { 
-                              "rowElements":[ 
-                                 { 
-                                    "elementType":"input",
-                                    "props":{ 
-                                       "type":"text",
-                                       "id":"id1",
-                                       "class":"vs-textbox",
-                                       "required":"required",
-                                       "title":"Firstname"
-                                    }
-                                 }
-                              ]                  
-                           }
-                        ]
-                      }'>
+            "form":{ 
+               "props":{ 
+                  "action":"https://www.jstigers.com",
+                  "method":"post",
+                  "onsubmit":"myMethod()",
+                  "name": "name1",
+                  "target": "_blank"
+               }
+            },
+            "rows":[ 
+               { 
+                  "rowElements":[ 
+                     { 
+                        "elementType":"input",
+                        "props":{ 
+                           "type":"text",
+                           "id":"name",
+                           "class":"vs-textbox",
+                           "value":""
+                        }
+                     }
+                  ],
+                  "rowLabel":{ 
+                     "name":"Username",
+                     "props":{ 
+                        "class":"vs-body-regular-primary"
+                     }
+                  }
+               }
+            ]
+         }
+         '>
         </form-gen>
     </div>    
 </body>
