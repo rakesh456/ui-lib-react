@@ -9,7 +9,7 @@ import TagSelector from "./components/TagSelector/tag-selector";
 import FormGenerator from './components/FormGenerator/form-generator';
 import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
 import DateHierarchy from './components/DateHierarchy/date-hierarchy';
-import FormGenerator from './components/FormGenerator/form-generator';
+// import FormGenerator from './components/FormGenerator/form-generator';
 
 import {
     isUndefinedOrNull
@@ -27,7 +27,7 @@ import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
 import './components/QueryBuilder/query-builder.scss';
-import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+// import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
 
 (function () {
     if (typeof window.CustomEvent === "function") return false;
@@ -228,9 +228,10 @@ Array.prototype.forEach.call(
 
 function formGenRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-    console.log(options);
+    
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
-
+    console.log('options', options);
+    
     el.getValues = function () {
         return FormGenComponentInstance.getValues();
     }

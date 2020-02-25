@@ -59,5 +59,6 @@ export const CLASSES = {
     VS_LABEL: 'vs-label',
     VS_TEXTBOX: 'vs-textbox',
     VS_DROPDOWN: 'vs-dropdown',
-    VS_BODY_REGULAR_PRIMARY: 'vs_body_regular_primary'
+    VS_BODY_REGULAR_PRIMARY: 'vs_body_regular_primary',
+    
 }
