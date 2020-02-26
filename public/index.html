@@ -269,34 +269,212 @@
     <div>   
           
         <form-gen id='formGen1' data-options='
-        { 
-         "form":{ 
-            "props":{ 
-               "action":"<URL>",
-               "method":"get/post"
-            }
-         },
-         "rows":[ 
+       
+ { 
+   "form":{ 
+      "props":{ 
+         "action":"https://www.fintellix.com",
+         "method":"post"
+      }
+   },
+   "rows":[ 
+   { 
+         "rowElements":[ 
             { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"datepicker",
-                     "props":{ 
-                        "id":"id",
-                        "name":"datepicker",
-                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2027\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}"                        
-                     }
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Select Date:",
+               "elementType":"input",
+               "props":{ 
+                  "type":"text",
+                  "id":"firstname",
+                  "className":"vs-textbox ",
+                  "required":"required",
+                  "title":"Firstname",
+                  "placeholder": "Your input"
+               }
+            }
+         ],
+         "rowLabel":{ 
+            "name":"Firstname",
+            "props":{ 
+               "className":"vs-body-regular-primary"
+            }
+         }
+      },
+      { 
+         "rowElements":[ 
+            { 
+               "elementType":"input",
+               "props":{ 
+                  "type":"text",
+                  "id":"lastname",
+                  "className":"vs-textbox",
+                  "title":"Lastname",
+                  "placeholder": "Your input"
+               }
+            }
+         ],
+         "rowLabel":{ 
+            "name":"Lastname",
+            "props":{ 
+               "className":"vs-body-regular-primary"
+            }
+         }
+      },
+      { 
+         "rowElements":[ 
+            { 
+               "elementType":"input",
+               "props":{ 
+                  "type":"email",
+                  "id":"email",
+                  "className" : "vs-email",
+                  "required":"required",
+                  "title":"Email",
+                  "placeholder": "Your input"
+               }
+            }
+         ],
+         "rowLabel":{ 
+            "name":"Email",
+            "props":{ 
+               "className":"vs-body-regular-primary"
+            }
+         }
+      },
+      { 
+         "rowElements":[ 
+            { 
+               "elementType":"input",
+               "props":{ 
+                  "type":"password",
+                  "id":"password",
+                  "className":"vs-textbox",
+                  "required":"required",
+                  "title":"Password",
+                  "placeholder": "Your input"
+               }
+            }
+         ],
+         "rowLabel":{ 
+            "name":"Password",
+            "props":{ 
+               "className":"vs-body-regular-primary"
+            }
+         }
+      },
+      { 
+         "rowElements":[ 
+            { 
+               "elementType":"input",
+               "props":{ 
+                  "type":"checkbox",
+                  "id":"male",
+                  "name":"gender"
+                  
+               },
+               "elementLabel":{ 
+                  "name":"male",
                   "props":{ 
-                     "class":"vs-body-regular-primary"
+                     "className":"vs-checkbox"
+                  }
+               }
+            },
+            { 
+               "elementType":"input",
+               "props":{ 
+                  "type":"checkbox",
+                  "id":"female",
+                  "name":"gender",
+                  "required" : "required"
+               },
+               "elementLabel":{ 
+                  "name":"female",
+                  "props":{ 
+                     "className":"vs-checkbox"
                   }
                }
             }
-         ]
-      }
+         ],
+         "rowLabel":{ 
+            "name":"Gender",
+            "props":{ 
+               "class":"vs-label"
+            }
+         }
+      },
+
+
+
+      { 
+       "rowElements":[ 
+          { 
+             "elementType":"select",
+             "props":{ 
+                "id":"countries",
+                "className":"vs-select",
+                "required":"required"
+             },
+             "options":[ 
+               { 
+                   "props":{ 
+                       "value":""
+                   },
+                   "optionLabel":"Select One"
+               },
+                { 
+                   "props":{ 
+                      "value":"IN"
+                   },
+                   "optionLabel":"India"
+                },
+                { 
+                   "props":{ 
+                      "value":"US" 
+                   },
+                   "optionLabel":"USA"
+                },
+                { 
+                   "props":{ 
+                      "value":"CA"
+                   },
+                   "optionLabel":"Canada"
+                }
+             ]
+          }
+       ],
+       "rowLabel":{ 
+          "name":"Select Country",
+          "props":{ 
+             "class":"vs-body-regular-primary"
+          }
+       }
+    },
+
+    { 
+       "rowElements":[ 
+          { 
+             "elementType":"textarea",
+             "props":{ 
+                "id":"story",
+                "name":"story",
+                "rows":"5",
+                "cols":"33",
+                "maxLength":"500",
+                "required" : "required",
+                "className":"vs-textarea",
+                "placeholder": "Your input"
+             }
+          }
+       ],
+       "rowLabel":{ 
+          "name":"Your Story:",
+          "props":{ 
+             "className":"vs-body-regular-primary"
+          }
+       }
+    }
+
+   ]
+}
        
         '></form-gen>
     </div>        
