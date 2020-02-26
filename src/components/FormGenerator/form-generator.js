@@ -45,12 +45,16 @@ class FormGenerator extends React.PureComponent {
                             {},
                             optionsInRows.map(item => React.createElement(
                                 "label",
-                                {},
+                                item.elementLabel ? item.elementLabel.props: '',
                                 item.elementLabel ? item.elementLabel.name : '',
+                                
                                 React.createElement(
                                     "input",
                                     item.props
-                                ),
+                                ), React.createElement(
+                                    "span",
+                                    {className : (item.props.type == "checkbox")? "vs-checkmark" : "vs-radio-dot" }
+                                )
 
                             ))
                         ), 
@@ -63,6 +67,7 @@ class FormGenerator extends React.PureComponent {
                     let elementID = options.rows[i].rowElements[j].props.id;
                     let elementType = options.rows[i].rowElements[j].elementType;
                     let elementProps = options.rows[i].rowElements[j].props;
+                    
                     let labelKey = elementID + "label";
                     let labelKeyOuter = labelKey + "Outer";
                     
@@ -154,6 +159,10 @@ class FormGenerator extends React.PureComponent {
                         )
                         );
 
+                    }
+                    else if (elementType == 'datepicker')
+                    {
+                        tags.push(<DatePicker options = {elementProps.data-options}> </DatePicker>)
                     }
                    else 
                    {

@@ -4848,6 +4848,36 @@ div span.fileName i {
 .vs-label.white {
   color: #FFFFFF; }
 
+/* Email */
+
+.vs-email {
+  height: 40px;
+  width: 100%;
+  border: 1px solid #E6E9EB;
+  margin: 8px 8px 0px 0px;
+  outline: none;
+  padding: 8px;
+  box-sizing: border-box;
+  transition: .3s;
+  box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  font-family: "Roboto", Arial, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-stretch: normal;
+  font-weight: 400;
+  line-height: 1.71;
+  letter-spacing: normal;
+  margin: 0;
+  border-style: solid;
+  border-width: 1px;
+  background-color: #FFFFFF;
+  color: #00263A;
+  border-color: #EEEEEE; }
+
+
+
+
 /*Textbox*/
 .vs-textbox {
   height: 40px;
