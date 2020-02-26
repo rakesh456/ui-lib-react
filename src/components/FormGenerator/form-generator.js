@@ -3,12 +3,19 @@ import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
 import * as CONSTANTS from '../../utils/constants'
 import { isBlank, isUndefinedOrNull } from '../../utils/utils'
+import {
+    resetOptions,
+    formatOptions    
+} from "../../utils/calendar";
+
 import TagSelector from '../../components/TagSelector/tag-selector';
 import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
 
 
 class FormGenerator extends React.PureComponent {
-
+    
+    /* Wrappers for Datepicker */
+    dummyWrapper() {}
     renderForm = () => {
         if (Object.keys(this.props.options) != 0) 
         {
@@ -16,9 +23,8 @@ class FormGenerator extends React.PureComponent {
             var noOfRows = options.rows.length;
             var tags = [];
 
-
+            
             /*  Iterate on Radio and Checkbox */
-
             
             for (var i = 0; i < noOfRows; i++) {
                 
@@ -162,7 +168,10 @@ class FormGenerator extends React.PureComponent {
                     }
                     else if (elementType == 'datepicker')
                     {
-                        tags.push(<DatePicker options = {elementProps.data-options}> </DatePicker>)
+                        let options = JSON.parse(elementProps['data-options']);
+                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        options = formatOptions(options);
+                        tags.push(<DatePicker options={options} onFocus={this.dummyWrapper} onSelect={this.dummyWrapper} onBlur={this.dummyWrapper}/>)
                     }
                    else 
                    {
