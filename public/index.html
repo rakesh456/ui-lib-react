@@ -258,7 +258,8 @@
 
     </style>
     <script>
-    function myMethod() {
+      
+    function submitForm() {
         alert("Hi");
     }
     </script>
@@ -268,8 +269,8 @@
     <h1 style="text-align: center; font-family: cursive;">Form Generator</h1>
     <div>   
           
+        <!-- <form-gen id='formGen1' onSubmit="submitForm()" data-options=' -->
         <form-gen id='formGen1' data-options='
-       
  { 
    "form":{ 
       "props":{ 
@@ -286,10 +287,14 @@
                   "type":"text",
                   "id":"firstname",
                   "className":"vs-textbox ",
-                  "required":"required",
                   "title":"Firstname",
                   "placeholder": "Your input"
-               }
+               },
+
+               "eventHandlers": [{
+                  "event": "change",
+                  "handler": "submitForm"
+              }]
             }
          ],
          "rowLabel":{ 
@@ -327,10 +332,14 @@
                   "type":"email",
                   "id":"email",
                   "className" : "vs-email",
-                  "required":"required",
                   "title":"Email",
                   "placeholder": "Your input"
-               }
+               },
+
+               "eventHandlers": [{
+                  "event": "change",
+                  "handler": "submitForm"
+              }]
             }
          ],
          "rowLabel":{ 
@@ -348,10 +357,14 @@
                   "type":"password",
                   "id":"password",
                   "className":"vs-textbox",
-                  "required":"required",
                   "title":"Password",
                   "placeholder": "Your input"
-               }
+               },
+
+               "eventHandlers": [{
+                  "event": "change",
+                  "handler": "submitForm"
+              }]
             }
          ],
          "rowLabel":{ 
@@ -366,7 +379,7 @@
             { 
                "elementType":"input",
                "props":{ 
-                  "type":"checkbox",
+                  "type":"radio",
                   "id":"male",
                   "name":"gender"
                   
@@ -374,14 +387,18 @@
                "elementLabel":{ 
                   "name":"male",
                   "props":{ 
-                     "className":"vs-checkbox"
+                     "className":"vs-radiobutton"
                   }
-               }
+               },
+               "eventHandlers": [{
+                  "event": "change",
+                  "handler": "submitForm"
+              }]
             },
             { 
                "elementType":"input",
                "props":{ 
-                  "type":"checkbox",
+                  "type":"radio",
                   "id":"female",
                   "name":"gender",
                   "required" : "required"
@@ -389,9 +406,13 @@
                "elementLabel":{ 
                   "name":"female",
                   "props":{ 
-                     "className":"vs-checkbox"
+                     "className":"vs-radiobutton"
                   }
-               }
+               },
+               "eventHandlers": [{
+                  "event": "change",
+                  "handler": "submitForm"
+              }]
             }
          ],
          "rowLabel":{ 
@@ -413,6 +434,10 @@
                 "className":"vs-select",
                 "required":"required"
              },
+             "eventHandlers": [{
+               "event": "change",
+               "handler": "submitForm"
+           }],
              "options":[ 
                { 
                    "props":{ 
@@ -441,6 +466,7 @@
              ]
           }
        ],
+       
        "rowLabel":{ 
           "name":"Select Country",
           "props":{ 
@@ -462,7 +488,11 @@
                 "required" : "required",
                 "className":"vs-textarea",
                 "placeholder": "Your input"
-             }
+             },
+             "eventHandlers": [{
+               "event": "change",
+               "handler": "submitForm"
+           }]
           }
        ],
        "rowLabel":{ 
