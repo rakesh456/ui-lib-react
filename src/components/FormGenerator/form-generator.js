@@ -27,14 +27,15 @@ class FormGenerator extends React.PureComponent {
     renderForm = () => {
         if (Object.keys(this.props.options) != 0) 
         {
+            
             var options = this.props.options;
+            var formProps = options.form ? options.form.props : '';
             var noOfRows = options.rows.length;
             var tags = [];
             options.rows.forEach(element => {
                 console.log("Inside Form Gen",element.rowElements)
                 
             });
-
             
             /*  Iterate on Radio and Checkbox */
             
@@ -187,21 +188,33 @@ class FormGenerator extends React.PureComponent {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
-                        tags.push(<DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/>)
+                        tags.push(
+                        <div className = 'vs-gc-lbl-comp'> 
+                        <div><label className = "vs-label">{labelText}</label></div>
+                        <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div>
+                        </div>)
                     }
                     else if (elementType == 'datehierarchy')
                     {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
-                        tags.push(<DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/>)
+                        tags.push(
+                        <div className ='vs-gc-lbl-comp'> 
+                        <div><label className='vs-label'>{labelText}</label></div>
+                        <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div>
+                        </div>)
                     }
                     else if (elementType == 'tagselector')
                     {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
-                        tags.push(<TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/>)
+                        tags.push(
+                        <div className ='vs-gc-lbl-comp'>
+                        <div><label className='vs-label'>{labelText}</label></div>
+                        <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div>
+                        </div>)
                     }
                     
                    else 
@@ -232,11 +245,32 @@ class FormGenerator extends React.PureComponent {
 
             }); //the i loop ends here
             return (
-
-                
-                (options.form) ? <form onSubmit={this.myMethod()}> {tags}<button type="button" value="submit" >Submit</button><button type="reset" value="reset">Reset</button></form> : <div> {tags}</div>
-
-
+                (options.form) 
+                    ?
+                    React.createElement(
+                    "div",
+                    {},
+                    React.createElement(
+                        "form",
+                        {formProps},
+                        tags,
+                        React.createElement(
+                            "button",
+                            {className: 'vs-button vs-primary-one-outline',
+                            value: 'submit',
+                            type: 'button'
+                        },
+                        "Submit"),
+                        React.createElement(
+                            "button",
+                            {type: 'reset',
+                            className: 'vs-button vs-primary-one-outline',
+                            value: 'reset'
+                        },
+                        "Reset"
+                        )))
+                 : 
+                 <div> {tags}</div>
             )
         }
         else {
