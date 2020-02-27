@@ -226,9 +226,13 @@ Array.prototype.forEach.call(
         formGenRender(el);
     })
 
+    function myFunc() {
+        alert("Event listener");
+    }
+
 function formGenRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
-    
+   
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
     console.log('options', options);
     
@@ -241,6 +245,11 @@ function formGenRender(el) {
         el.dispatchEvent(ev);
     }
     
+    function submitHandler() {
+        let ev = new CustomEvent('submit');
+        el.dispatchEvent(ev);
+    }
+
     function onChangeHandler() {
         let ev = new CustomEvent("change");
         el.dispatchEvent(ev);
@@ -264,16 +273,43 @@ function formGenRender(el) {
         return FormGenComponentInstance.refresh();
     }
 
-    var FormGenComponentElement = <FormGenerator options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+
+
+    var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     el.setValues = function (json) {
         FormGenComponentInstance.setValues(json);
     }
+
+    
 
     // eslint-disable-next-line
     var FormGenComponentInstance = ReactDOM.render(
         FormGenComponentElement,
         el
     )
+        
+    /* Custom event Listeners provided by the user*/
+   
+    options.rows.forEach( (option) =>
+    {   
+        // If options are present
+        if(option){
+            option.rowElements.forEach((element) => {
+                var ID = element.props.id;
+                // If event listener is given by the user
+                if(element.eventHandlers)
+                {
+                element.eventHandlers.forEach((eventHandler)=>
+                {
+                  document.getElementById(ID).addEventListener(eventHandler.event, window[eventHandler.handler]);   
+                });
+            }
+                  
+            });
+        }
+    
+    
+    });
 }
 
 serviceWorker.unregister();
