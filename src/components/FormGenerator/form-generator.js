@@ -203,7 +203,7 @@ class FormGenerator extends React.PureComponent {
             return (
 
                 
-                (options.form) ? <form> {tags}<button type="submit" value="submit">Submit</button><button type="reset" value="reset">Reset</button></form> : <div> {tags}</div>
+                (options.form) ? <form> {tags}<button type="submit" value="submit" onclick="myMethod()">Submit</button><button type="reset" value="reset">Reset</button></form> : <div> {tags}</div>
 
 
             )
