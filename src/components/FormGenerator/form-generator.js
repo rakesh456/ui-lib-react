@@ -23,6 +23,16 @@ class FormGenerator extends React.PureComponent {
     dateHierarchyWrapper() {}
     // Wrapper for Tag Selector
     tagSelectorWrapper() {}
+
+    changeToClassName(props) {
+        if (props["class"]) {
+            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + props["class"]?  " " + props["class"]: "";
+            delete props["class"];
+        }
+        else 
+            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + "99";
+        return props;
+    }
     
     renderForm = () => {
         if (Object.keys(this.props.options) != 0) 
@@ -30,10 +40,15 @@ class FormGenerator extends React.PureComponent {
             
             var options = this.props.options;
             var formProps = options.form ? options.form.props : '';
+            options.rows.forEach((row) => {
+                
+            })
+
+
             var noOfRows = options.rows.length;
             var tags = [];
             options.rows.forEach(element => {
-                console.log("Inside Form Gen",element.rowElements)
+                //console.log("Inside Form Gen",element.rowElements)
                 
             });
             
@@ -64,7 +79,12 @@ class FormGenerator extends React.PureComponent {
                         React.createElement(
                             "div",
                             {},
-                            optionsInRows.map(item => React.createElement(
+                            optionsInRows.map((item) => { 
+                                
+                                Object.assign(item.props, this.changeToClassName(item.props));
+                                console.log("line 85", item.props);
+
+                                React.createElement(
                                 "label",
                                 item.elementLabel ? item.elementLabel.props: '',
                                 item.elementLabel ? item.elementLabel.name : '',
@@ -77,7 +97,7 @@ class FormGenerator extends React.PureComponent {
                                     {className : (item.props.type == "checkbox")? "vs-checkmark" : "vs-radio-dot" }
                                 )
 
-                            ))
+                            )})                            
                         ), 
                         React.createElement("span", {className: errorId})
                     ));
@@ -96,8 +116,16 @@ class FormGenerator extends React.PureComponent {
                     
                     elementProps.key = elementID;
 
+                    
 
                     if (elementType === "input") {
+                        if (elementProps["class"] !== undefined) {
+                            elementProps["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + elementProps["class"]?  " " + elementProps["class"]: "";
+                            delete elementProps["class"];
+                        }
+                        else 
+                            elementProps["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}`;
+
                         if (elementProps.type != "radio" && elementProps.type !="checkbox") {
                             tags.push(React.createElement(
                                 "div",
