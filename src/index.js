@@ -235,8 +235,7 @@ function formGenRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
    
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
-    console.log('options', options);
-    
+        
     el.getValues = function () {
         return FormGenComponentInstance.getValues();
     }
@@ -274,14 +273,10 @@ function formGenRender(el) {
         return FormGenComponentInstance.refresh();
     }
 
-
-
     var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     el.setValues = function (json) {
         FormGenComponentInstance.setValues(json);
-    }
-
-    
+    }    
 
     // eslint-disable-next-line
     var FormGenComponentInstance = ReactDOM.render(
@@ -290,10 +285,13 @@ function formGenRender(el) {
     )
         
     /* Custom event Listeners provided by the user */
-    console.log(options.form);
-
-    if (options.form !== undefined) {
-        console.log("Form is there")
+    if (options.form !== undefined && options.form.props !== undefined
+         && options.form.props.id != undefined) {                 
+             if (options.form.eventHandlers) {
+                 options.form.eventHandlers.forEach((eventHandler) => {
+                    document.getElementById(options.form.props.id).addEventListener(eventHandler.event, window[eventHandler.handler]);   
+                 })
+             }
     }
     
     options.rows.forEach( (option) =>

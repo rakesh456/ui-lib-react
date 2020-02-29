@@ -1,8 +1,8 @@
 import React from "react";
-import './css/vs.css';
+import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
 import * as CONSTANTS from '../../utils/constants'
-import { isBlank, isUndefinedOrNull } from '../../utils/utils'
+import { isUndefinedOrNull } from '../../utils/utils'
 import {
     resetOptions,
     formatOptions    
@@ -12,10 +12,7 @@ import TagSelector from '../../components/TagSelector/tag-selector';
 import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
 
 
-class FormGenerator extends React.PureComponent {
-    
-    
-    
+class FormGenerator extends React.PureComponent {   
     
     /* Wrappers for Datepicker */
     datePickerWrapper() {}
@@ -24,39 +21,17 @@ class FormGenerator extends React.PureComponent {
     // Wrapper for Tag Selector
     tagSelectorWrapper() {}
 
-    changeToClassName(props) {
-        if (props["class"]) {
-            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + props["class"]?  " " + props["class"]: "";
-            delete props["class"];
-        }
-        else 
-            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + "99";
-        return props;
-    }
-    
     renderForm = () => {
-        if (Object.keys(this.props.options) != 0) 
-        {
+        if (Object.keys(this.props.options) !== 0) 
+        {            
+            let options = this.props.options;
+            let formProps = options.form ? options.form.props : '';
+            formProps["key"] = options.form.id?"form"+options.form.id:"form1";
+            let tags = [];
             
-            var options = this.props.options;
-            var formProps = options.form ? options.form.props : '';
-            options.rows.forEach((row) => {
-                
-            })
-
-
-            var noOfRows = options.rows.length;
-            var tags = [];
-            options.rows.forEach(element => {
-                //console.log("Inside Form Gen",element.rowElements)
-                
-            });
-            
-            /*  Iterate on Radio and Checkbox */
-            
+            /*  Iterate on Radio and Checkbox */            
             options.rows.forEach((option, index) => 
-            {
-                
+            {                
                 let labelText = option.rowLabel ? option.rowLabel.name : "";
                 let noOfRowElements = option.rowElements.length;
                 let labelKey = labelText + noOfRowElements;
@@ -89,7 +64,7 @@ class FormGenerator extends React.PureComponent {
                                     item.props
                                 ), React.createElement(
                                     "span",
-                                    {className : (item.props.type == "checkbox")? "vs-checkmark" : "vs-radio-dot" }
+                                    {className : (item.props.type === "checkbox")? "vs-checkmark" : "vs-radio-dot" }
                                 )
 
                             ))                            
@@ -100,28 +75,18 @@ class FormGenerator extends React.PureComponent {
 
                 /* Iterate on row elements */
                 option.rowElements.forEach((rowElement, index) => 
-                // for (let j = 0; j < noOfRowElements; j++) 
                 {
                     let elementID = rowElement.props.id;
                     let elementType = rowElement.elementType;
                     let elementProps = rowElement.props;
                     let inx = 'divnew'+index;
                     let labelKey = elementID + "label";
-                    let labelKeyOuter = labelKey + "Outer";
-                    
-                    elementProps.key = elementID;
+                    let labelKeyOuter = labelKey + "Outer";                    
+                    elementProps.key = elementID;         
+                    elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
 
-                    
-
-                    if (elementType === "input") {
-                        // if (elementProps["class"] !== undefined) {
-                        //     elementProps["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + elementProps["class"]?  " " + elementProps["class"]: "";
-                        //     delete elementProps["class"];
-                        // }
-                        // else 
-                        //     elementProps["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}`;
-
-                        if (elementProps.type != "radio" && elementProps.type !="checkbox") {
+                    if (elementType === "input") {                        
+                        if (elementProps.type !== "radio" && elementProps.type !== "checkbox") {    
                             tags.push(React.createElement(
                                 "div",
                                 { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
@@ -145,9 +110,7 @@ class FormGenerator extends React.PureComponent {
                         }
                     }
                     else if (elementType === "select") {
-
                         let items = rowElement.options;
-
                         tags.push(React.createElement(
                             "div",
                             { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
@@ -172,8 +135,7 @@ class FormGenerator extends React.PureComponent {
                                     items.map(item => React.createElement(
                                         "option",
                                         {
-                                            value: item.props.value,
-                                            selected: item.props.selected ? "selected" : "",
+                                            value: item.props.value,                                            
                                             key: item.props.value
                                         },
                                         item.optionLabel
@@ -183,7 +145,6 @@ class FormGenerator extends React.PureComponent {
                             ),
                             React.createElement("span", {className: errorId})
                         ));
-
                     }
                     else if (elementType === "textarea") {
                         tags.push(React.createElement(
@@ -204,9 +165,8 @@ class FormGenerator extends React.PureComponent {
 
                         )
                         );
-
                     }
-                    else if (elementType == 'datepicker')
+                    else if (elementType === 'datepicker')
                     {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
@@ -217,7 +177,7 @@ class FormGenerator extends React.PureComponent {
                         <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div>
                         </div>)
                     }
-                    else if (elementType == 'datehierarchy')
+                    else if (elementType === 'datehierarchy')
                     {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
@@ -228,7 +188,7 @@ class FormGenerator extends React.PureComponent {
                         <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div>
                         </div>)
                     }
-                    else if (elementType == 'tagselector')
+                    else if (elementType === 'tagselector')
                     {
                         let options = JSON.parse(elementProps['data-options']);
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
@@ -259,14 +219,12 @@ class FormGenerator extends React.PureComponent {
                                 ),
                                 React.createElement("span", {className: errorId})
                                )
-                           );
-                       
+                           );                       
                    }
 
-                }); // the j loop ends here
-                // tags.push(<br></br>)
-
-            }); //the i loop ends here
+                }); // Iteration on row elements ends here
+                
+            }); // Iteration on rows ends here
             return (
                 (options.form) 
                     ?
@@ -275,20 +233,19 @@ class FormGenerator extends React.PureComponent {
                     {},
                     React.createElement(
                         "form",
-                        {formProps},
+                        formProps,
                         tags,
                         React.createElement(
                             "button",
                             {className: 'vs-button vs-primary-one-outline',
                             value: 'submit',
-                            type: 'button'
-                        },
+                            type: 'button'},
                         "Submit"),
                         React.createElement(
                             "button",
-                            {type: 'reset',
-                            className: 'vs-button vs-primary-one-outline',
-                            value: 'reset'
+                            {className: 'vs-button vs-primary-one-outline',
+                            value: 'reset',
+                            type: 'reset'
                         },
                         "Reset"
                         )))
@@ -302,30 +259,6 @@ class FormGenerator extends React.PureComponent {
                 ""
             )
         }
-
-        // if (formTag) {
-        //     tags.push(React.createElement(
-        //         "input",
-        //         {"type": "submit"}
-        //     ));
-        //     return (
-        //         // <form> {tags}</form>
-        //         React.createElement(
-        //             'form',
-        //             options.form.props,
-        //             tags
-        //         )
-        //     )
-        // }
-        // else
-        //     return (
-        //         {tags}
-        //     )
-
-    }
-
-    myMethod = () => {
-        this.props.onSubmit();
     }
 
     render() {
@@ -336,6 +269,4 @@ class FormGenerator extends React.PureComponent {
         )
     }
 }
-
-
 export default FormGenerator;
