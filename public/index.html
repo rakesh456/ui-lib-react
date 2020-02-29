@@ -265,12 +265,16 @@
         alert(event.type + " event detected on element ID: " + event.srcElement.id + ".");
     }
 
+    function skundSubmitForm(event) {
+       alert("Form Submit Captured");
+    }
+
     </script>
 </head>
 
 <body>
     <h1>Form Generator Output</h1>
-    <div style="border: solid 1px black; margin: 5px; width:50%; align:">   
+    <div>   
           
         <!-- <form-gen id='formGen1' onSubmit="submitForm()" data-options=' -->
         <form-gen id='formGen1' data-options='
@@ -283,7 +287,7 @@
             },
             "eventHandlers": [{
                "event": "submit",
-               "handler": "submitForm"
+               "handler": "skundSubmitForm"
            }]
          },
          "rows":[ 
@@ -416,13 +420,13 @@
                      "props":{ 
                         "type":"radio",
                         "id":"male",
-                        "name":"gender"                        
-                        
+                        "name":"gender",
+                        "className": "male-class"
                      },
                      "elementLabel":{ 
                         "name":"male",
                         "props":{ 
-                           "className":"my-rbutton-classM"
+                           "className":"vs-radiobutton1"
                         }
                      },
                      "eventHandlers": [{
@@ -441,7 +445,7 @@
                      "elementLabel":{ 
                         "name":"female",
                         "props":{ 
-                           "className":"my-rbutton-classF"
+                           "className":"vs-radiobutton2"
                         }
                      },
                      "eventHandlers": [{
@@ -604,8 +608,9 @@
                   "name": "profileImage",
                   "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
                   "alt": "Smiley face", 
-                  "width": "575px", 
-                  "height": "345px"
+                  "width": "100px", 
+                  "height": "50px",
+                  "className": "myImageClass"
                }
             }],
             "rowLabel": {
@@ -614,7 +619,7 @@
                   "class": "vs-body-regular-primary"
                }
             }
-         }    
+         }  
       
       
       ]

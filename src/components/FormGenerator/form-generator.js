@@ -35,16 +35,30 @@ class FormGenerator extends React.PureComponent {
                 let labelText = option.rowLabel ? option.rowLabel.name : "";
                 let noOfRowElements = option.rowElements.length;
                 let labelKey = labelText + noOfRowElements;
-                let errorId = labelText ? labelText+'_error' : '';
-                let inx = 'div'+index;
+                let errorId = labelText ? labelText.replace(" ", "").replace(":","") +'_error' : '';
+                let inx = 'rowDiv'+index;
+                let keyRowLabel = 'rowLabelDiv'+index;
+                let keyRowElement = 'rowElementDiv' + index;
+                
                 if (noOfRowElements > 1) {
                     var optionsInRows = option.rowElements;
+
+
+                    optionsInRows.forEach((item, optionIndex) => {
+                        item.elementLabel.props["className"] = item.elementLabel.props["className"]?CONSTANTS.CLASSES.VS_RADIOBUTTON + " " + item.elementLabel.props["className"]:CONSTANTS.CLASSES.VS_RADIOBUTTON;
+
+                        // item.props["className"] = item.props["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + 
+                        // " " + item.props["className"] : CONSTANTS.CLASSES.VS_TEXTBOX;
+                        // item.props["key"] = "rowElementDiv" + optionIndex + "" + index;
+                    })
+
+
                     tags.push(React.createElement(
                         "div",
                         { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx}},
                         React.createElement(
                             "div",
-                            {},
+                            {key: {keyRowLabel}},
                             React.createElement(
                                 "label",
                                 { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
@@ -53,7 +67,7 @@ class FormGenerator extends React.PureComponent {
                         ),
                         React.createElement(
                             "div",
-                            {},
+                            {key: keyRowElement},
                             optionsInRows.map(item => React.createElement(
                                 "label",
                                 item.elementLabel ? item.elementLabel.props: '',
@@ -64,12 +78,12 @@ class FormGenerator extends React.PureComponent {
                                     item.props
                                 ), React.createElement(
                                     "span",
-                                    {className : (item.props.type === "checkbox")? "vs-checkmark" : "vs-radio-dot" }
+                                    {className : (item.props.type === "checkbox")? CONSTANTS.CLASSES.VS_CHECK_MARK : CONSTANTS.CLASSES.VS_RADIO_DOT}
                                 )
 
                             ))                            
                         ), 
-                        React.createElement("span", {className: errorId})
+                        React.createElement("span", {id: errorId})
                     ));
                 }
 
@@ -81,31 +95,36 @@ class FormGenerator extends React.PureComponent {
                     let elementProps = rowElement.props;
                     let inx = 'divnew'+index;
                     let labelKey = elementID + "label";
-                    let labelKeyOuter = labelKey + "Outer";                    
-                    elementProps.key = elementID;         
-                    elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
+                    let labelKeyOuter = labelKey + "Outer";    
+                    let keyRowLabel = 'rowLabelDiv'+index;
+                    let keyRowElement = 'rowElementDiv' + index;
 
-                    if (elementType === "input") {                        
+                    elementProps.key = elementID;    
+                    
+
+                    if (elementType === "input") {   
+                        elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
+                                             
                         if (elementProps.type !== "radio" && elementProps.type !== "checkbox") {    
                             tags.push(React.createElement(
                                 "div",
                                 { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
                                 React.createElement(
                                     "div",
-                                    {},
+                                    {key: keyRowLabel},
                                     React.createElement(
                                         "label",
                                         { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                         labelText)),
                                 React.createElement(
                                     "div",
-                                    {},
+                                    {key: keyRowElement},
                                     React.createElement(
                                         "input",
                                         elementProps,
                                     )
                                 ),
-                                React.createElement("span", {className: errorId})
+                                React.createElement("span", {id: errorId})
                             ));
                         }
                     }
@@ -116,7 +135,7 @@ class FormGenerator extends React.PureComponent {
                             { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
                             React.createElement(
                                 "div",
-                                {},
+                                {key: keyRowLabel},
                                 React.createElement(
                                     "label",
                                     { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
@@ -126,7 +145,8 @@ class FormGenerator extends React.PureComponent {
                             React.createElement(
                                 "div",
                                 {
-                                    className: `${CONSTANTS.CLASSES.VS_DROPDOWN}`
+                                    className: `${CONSTANTS.CLASSES.VS_DROPDOWN}`,
+                                    key: keyRowElement
                                 },
 
                                 React.createElement(
@@ -143,25 +163,27 @@ class FormGenerator extends React.PureComponent {
                                 )
 
                             ),
-                            React.createElement("span", {className: errorId})
+                            React.createElement("span", {id: errorId})
                         ));
                     }
                     else if (elementType === "textarea") {
+                        elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTAREA + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTAREA;
+
                         tags.push(React.createElement(
                             "div",
                             { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
                             React.createElement(
                                 "div",
-                                {},
+                                {key: keyRowLabel},
                                 React.createElement(
                                     "label",
                                     { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                     labelText)),
                             React.createElement(
                                 "div",
-                                {},
+                                {key: keyRowElement},
                                 React.createElement("textarea", elementProps)
-                            ),React.createElement("span", {className: errorId})
+                            ),React.createElement("span", {id: elementProps.name})
 
                         )
                         );
@@ -207,17 +229,17 @@ class FormGenerator extends React.PureComponent {
                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
                            React.createElement(
                                "div",
-                               {},
+                               {key: keyRowLabel},
                                React.createElement(
                                 "label",
                                 { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                 labelText)),
                                 React.createElement(
                                     "div",
-                                    {},
+                                    {key: keyRowElement},
                                     React.createElement(elementType,elementProps)
                                 ),
-                                React.createElement("span", {className: errorId})
+                                React.createElement("span", {id: elementProps.name})
                                )
                            );                       
                    }
@@ -230,7 +252,7 @@ class FormGenerator extends React.PureComponent {
                     ?
                     React.createElement(
                     "div",
-                    {},
+                    {key: "formDiv"},
                     React.createElement(
                         "form",
                         formProps,
@@ -239,7 +261,7 @@ class FormGenerator extends React.PureComponent {
                             "button",
                             {className: 'vs-button vs-primary-one-outline',
                             value: 'submit',
-                            type: 'button'},
+                            type: 'submit'},
                         "Submit"),
                         React.createElement(
                             "button",
