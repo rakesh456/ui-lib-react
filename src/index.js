@@ -289,6 +289,14 @@ function formGenRender(el) {
     )
         
     /* Custom event Listeners provided by the user*/
+    if (options.form !== undefined && options.form.props !== undefined
+        && options.form.props.id != undefined) {                 
+            if (options.form.eventHandlers) {
+                options.form.eventHandlers.forEach((eventHandler) => {
+                   document.getElementById(options.form.props.id).addEventListener(eventHandler.event, window[eventHandler.handler]);   
+                })
+            }
+   }
    
     options.rows.forEach( (option) =>
     {   
@@ -296,7 +304,7 @@ function formGenRender(el) {
         if(option){
             option.rowElements.forEach((element) => {
                 var ID = element.props.id;
-                // If event listener is given by the user
+                // If custom event listener is given by the user
                 if(element.eventHandlers)
                 {
                 element.eventHandlers.forEach((eventHandler)=>
