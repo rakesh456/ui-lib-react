@@ -36,6 +36,7 @@ class FormGenerator extends React.PureComponent {
                 let noOfRowElements = option.rowElements.length;
                 let labelKey = labelText + noOfRowElements;
                 let errorId = labelText ? labelText.replace(" ", "").replace(":","") +'_error' : '';
+                console.log('errorId',errorId);
                 let inx = 'rowDiv'+index;
                 let keyRowLabel = 'rowLabelDiv'+index;
                 let keyRowElement = 'rowElementDiv' + index;
@@ -83,7 +84,7 @@ class FormGenerator extends React.PureComponent {
 
                             ))                            
                         ), 
-                        React.createElement("span", {id: errorId})
+                        React.createElement("span", {id: labelText ? labelText+'_error': 'missingID_error'})
                     ));
                 }
 
@@ -98,6 +99,7 @@ class FormGenerator extends React.PureComponent {
                     let labelKeyOuter = labelKey + "Outer";    
                     let keyRowLabel = 'rowLabelDiv'+index;
                     let keyRowElement = 'rowElementDiv' + index;
+                    let elementError = elementID ? elementID+ '_error' : 'missingID_error';
 
                     elementProps.key = elementID;    
                     
@@ -124,7 +126,7 @@ class FormGenerator extends React.PureComponent {
                                         elementProps,
                                     )
                                 ),
-                                React.createElement("span", {id: errorId})
+                                React.createElement("span", {id: elementError})
                             ));
                         }
                     }
@@ -163,7 +165,7 @@ class FormGenerator extends React.PureComponent {
                                 )
 
                             ),
-                            React.createElement("span", {id: errorId})
+                            React.createElement("span", {id: elementError})
                         ));
                     }
                     else if (elementType === "textarea") {
@@ -183,7 +185,7 @@ class FormGenerator extends React.PureComponent {
                                 "div",
                                 {key: keyRowElement},
                                 React.createElement("textarea", elementProps)
-                            ),React.createElement("span", {id: elementProps.name})
+                            ),React.createElement("span", {id: elementError})
 
                         )
                         );
@@ -239,7 +241,7 @@ class FormGenerator extends React.PureComponent {
                                     {key: keyRowElement},
                                     React.createElement(elementType,elementProps)
                                 ),
-                                React.createElement("span", {id: elementProps.name})
+                                React.createElement("span", {id: elementError})
                                )
                            );                       
                    }
