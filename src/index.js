@@ -231,6 +231,7 @@ Array.prototype.forEach.call(
     }
 
 function formGenRender(el) {
+    try {
     let options = JSON.parse(el.getAttribute('data-options'));
    
     options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
@@ -288,8 +289,13 @@ function formGenRender(el) {
         el
     )
         
-    /* Custom event Listeners provided by the user*/
-   
+    /* Custom event Listeners provided by the user */
+    console.log(options.form);
+
+    if (options.form !== undefined) {
+        console.log("Form is there")
+    }
+    
     options.rows.forEach( (option) =>
     {   
         // If options are present
@@ -310,6 +316,9 @@ function formGenRender(el) {
     
     
     });
+ } catch(error) {
+     console.error(error);
+ }
 }
 
 serviceWorker.unregister();

@@ -261,8 +261,9 @@
 
 // Test function for the custom event listener given by the user.
 
-    function submitForm() {
+    function submitForm(event) {
         alert("Hi");
+        console.log(event.srcElement.value);
     }
 
     </script>
@@ -277,9 +278,13 @@
         { 
          "form":{ 
             "props":{ 
-               "action":"https://www.fintellix.com",
-               "method":"post"
-            }
+               "action":"https://www.jstigers.com",
+               "method":"get"
+            },
+            "eventHandlers": [{
+               "event": "submit",
+               "handler": "submitForm"
+           }]
          },
          "rows":[ 
          { 
@@ -289,9 +294,10 @@
                      "props":{ 
                         "type":"text",
                         "id":"firstname",
-                        "className":"vs-textbox ",
+                        "class":"vs-textbox",
                         "title":"Firstname",
-                        "placeholder": "Your input"
+                        "placeholder": "Your input",
+                        "required": "required"
                      },
       
                      "eventHandlers": [{
@@ -303,7 +309,7 @@
                "rowLabel":{ 
                   "name":"Firstname",
                   "props":{ 
-                     "className":"vs-body-regular-primary"
+                     "class":"vs-body-regular-primary"
                   }
                }
             },
@@ -314,16 +320,17 @@
                      "props":{ 
                         "type":"text",
                         "id":"lastname",
-                        "className":"vs-textbox",
+                        "class":"vs-textbox",
                         "title":"Lastname",
-                        "placeholder": "Your input"
+                        "placeholder": "Your input",
+                        "required": "required"
                      }
                   }
                ],
                "rowLabel":{ 
                   "name":"Lastname",
                   "props":{ 
-                     "className":"vs-body-regular-primary"
+                     "class":"vs-body-regular-primary"
                   }
                }
             },
@@ -334,7 +341,7 @@
                      "props":{ 
                         "type":"email",
                         "id":"email",
-                        "className" : "vs-email",
+                        "class" : "vs-email",
                         "title":"Email",
                         "placeholder": "Your input"
                      },
@@ -348,7 +355,7 @@
                "rowLabel":{ 
                   "name":"Email",
                   "props":{ 
-                     "className":"vs-body-regular-primary"
+                     "class":"vs-body-regular-primary"
                   }
                }
             },
@@ -359,7 +366,7 @@
                      "props":{ 
                         "type":"password",
                         "id":"password",
-                        "className":"vs-textbox",
+                        "class":"vs-textbox",
                         "title":"Password",
                         "placeholder": "Your input"
                      },
@@ -373,7 +380,7 @@
                "rowLabel":{ 
                   "name":"Password",
                   "props":{ 
-                     "className":"vs-body-regular-primary"
+                     "class":"vs-body-regular-primary"
                   }
                }
             },
@@ -384,7 +391,7 @@
                      "props":{ 
                         "type":"radio",
                         "id":"male",
-                        "name":"gender"
+                        "name":"gender"                        
                         
                      },
                      "elementLabel":{ 
@@ -409,7 +416,7 @@
                      "elementLabel":{ 
                         "name":"female",
                         "props":{ 
-                           "className":"vs-radiobutton"
+                           "class":"vs-radiobutton"
                         }
                      },
                      "eventHandlers": [{
@@ -434,7 +441,7 @@
                    "elementType":"select",
                    "props":{ 
                       "id":"countries",
-                      "className":"vs-select",
+                      "class":"vs-select",
                       "required":"required"
                    },
                    "eventHandlers": [{
@@ -501,7 +508,7 @@
              "rowLabel":{ 
                 "name":"Your Story:",
                 "props":{ 
-                   "className":"vs-body-regular-primary"
+                   "class":"vs-body-regular-primary"
                 }
              }
           },

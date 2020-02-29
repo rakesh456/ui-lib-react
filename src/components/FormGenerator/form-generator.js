@@ -1,5 +1,5 @@
 import React from "react";
-import './css/vs.scss';
+import './css/vs.css';
 import DatePicker from '../../components/Datepicker/index';
 import * as CONSTANTS from '../../utils/constants'
 import { isBlank, isUndefinedOrNull } from '../../utils/utils'
