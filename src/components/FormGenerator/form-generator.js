@@ -24,15 +24,15 @@ class FormGenerator extends React.PureComponent {
     // Wrapper for Tag Selector
     tagSelectorWrapper() {}
 
-    changeToClassName(props) {
-        if (props["class"]) {
-            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + props["class"]?  " " + props["class"]: "";
-            delete props["class"];
-        }
-        else 
-            props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + "99";
-        return props;
-    }
+    // changeToClassName(props) {
+    //     if (props["class"]) {
+    //         props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + props["class"]?  " " + props["class"]: "";
+    //         delete props["class"];
+    //     }
+    //     else 
+    //         props["className"] = `${CONSTANTS.CLASSES.VS_TEXTBOX}` + "99";
+    //     return props;
+    // }
     
     renderForm = () => {
         if (Object.keys(this.props.options) != 0) 
@@ -53,6 +53,7 @@ class FormGenerator extends React.PureComponent {
             });
             
             /*  Iterate on Radio and Checkbox */
+            // It starts from here
             
             options.rows.forEach((option, index) => 
             {
@@ -66,7 +67,7 @@ class FormGenerator extends React.PureComponent {
                     var optionsInRows = option.rowElements;
                     tags.push(React.createElement(
                         "div",
-                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx}},
+                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : Math.random()*100},
                         React.createElement(
                             "div",
                             {},
@@ -79,10 +80,10 @@ class FormGenerator extends React.PureComponent {
                         React.createElement(
                             "div",
                             {},
-                            optionsInRows.map((item) => { 
+                            optionsInRows.map(item =>  
                                 
-                                Object.assign(item.props, this.changeToClassName(item.props));
-                                console.log("line 85", item.props);
+                                // Object.assign(item.props, this.changeToClassName(item.props));
+                                // console.log("line 85", item.props);
 
                                 React.createElement(
                                 "label",
@@ -97,7 +98,7 @@ class FormGenerator extends React.PureComponent {
                                     {className : (item.props.type == "checkbox")? "vs-checkmark" : "vs-radio-dot" }
                                 )
 
-                            )})                            
+                            ))                            
                         ), 
                         React.createElement("span", {className: errorId})
                     ));
@@ -129,7 +130,7 @@ class FormGenerator extends React.PureComponent {
                         if (elementProps.type != "radio" && elementProps.type !="checkbox") {
                             tags.push(React.createElement(
                                 "div",
-                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`,key : Math.random()*100},
                                 React.createElement(
                                     "div",
                                     {},
@@ -155,7 +156,7 @@ class FormGenerator extends React.PureComponent {
 
                         tags.push(React.createElement(
                             "div",
-                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : Math.random()*100 },
                             React.createElement(
                                 "div",
                                 {},
@@ -193,7 +194,7 @@ class FormGenerator extends React.PureComponent {
                     else if (elementType === "textarea") {
                         tags.push(React.createElement(
                             "div",
-                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`,key : Math.random()*100 },
                             React.createElement(
                                 "div",
                                 {},
@@ -217,7 +218,7 @@ class FormGenerator extends React.PureComponent {
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
                         tags.push(
-                        <div className = 'vs-gc-lbl-comp'> 
+                        <div className = 'vs-gc-lbl-comp' key= 'Math.random()*100'> 
                         <div><label className = "vs-label">{labelText}</label></div>
                         <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div>
                         </div>)
@@ -228,7 +229,7 @@ class FormGenerator extends React.PureComponent {
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
                         tags.push(
-                        <div className ='vs-gc-lbl-comp'> 
+                        <div className ='vs-gc-lbl-comp' key= 'Math.random()*100'> 
                         <div><label className='vs-label'>{labelText}</label></div>
                         <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div>
                         </div>)
@@ -239,7 +240,7 @@ class FormGenerator extends React.PureComponent {
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
                         tags.push(
-                        <div className ='vs-gc-lbl-comp'>
+                        <div className ='vs-gc-lbl-comp' key= 'Math.random()*100'>
                         <div><label className='vs-label'>{labelText}</label></div>
                         <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div>
                         </div>)
@@ -249,7 +250,7 @@ class FormGenerator extends React.PureComponent {
                    {
                        tags.push(React.createElement(
                            "div",
-                           { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                           { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : Math.random()*100},
                            React.createElement(
                                "div",
                                {},
