@@ -317,7 +317,8 @@ class DatehierarchyView extends React.PureComponent {
                 years: [...years]
             });
 
-            this.forceUpdate();
+            this.updateSelectAllCheckboxHandler([...years]);
+            this.updateCurrentSelection([...years]);
         }
         else {
             day.state = 0;
@@ -357,6 +358,8 @@ class DatehierarchyView extends React.PureComponent {
             this.setState({
                 years: [...years]
             });
+            this.updateSelectAllCheckboxHandler([...years]);
+            this.updateCurrentSelection([...years]);
         }
     }
 

@@ -46,7 +46,7 @@ class QuarterView extends React.PureComponent {
     renderQuarter = (quarter, year, quarterIndex) => {
         let { options, isFilterView } = this.props;
         let quarterName = (quarter && quarter.quarter) ? quarter.quarter : '';
-        if (isFilterView === true && quarter.match === 0) {
+        if ((isFilterView === true && quarter.match === 0) || (!quarter.months || quarter.months.length <= 0)) {
             return ("")
         } else {
             return (
