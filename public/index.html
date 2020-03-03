@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Datepicker React Component with Event</title>
+    <title>Form Generator</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <script>
 
@@ -236,241 +236,726 @@
             width: 25%;
             float: left;
         }
+        .TextAreaButton {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+}
+
+        .TextAreaButton1 {
+        background-color: white; 
+        color: black; 
+        border: 2px solid #4CAF50;
+}
+
     </style>
+    <script>
+
+// Test function for the custom event listener given by the user.
+
+    function submitForm(event) {
+        alert(event.type + " event detected on element ID: " + event.srcElement.id + ".");
+    }
+
+    function skundSubmitForm(event) {
+       alert("Form Submit Captured");
+    }
+
+    </script>
 </head>
 
 <body>
-
-    <div class="col-50">
-        <h1 style="text-align: center;">Form Generator</h1>
-        <!-- <form-gen id='formGen1' data-options='{"formId": "id1"}'></form-gen> -->
-        <form-gen id='formGen1' data-options='{ 
-            "form":{ 
-               "props":{ 
-                  "action":"<URL>",
-                  "method":"get/post"
+    <h1>Form Generator Output</h1>
+    <div>   
+          
+        <!-- <form-gen id='formGen1' onSubmit="submitForm()" data-options=' -->
+        <form-gen id='formGen1' data-options='
+        { 
+         "form":{ 
+            "props":{ 
+               "id": "form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"               
+            },
+            "eventHandlers": [{
+               "event": "submit",
+               "handler": "skundSubmitForm"
+           }]
+         },
+         "rows":[ 
+         { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Firstname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
                }
             },
-            "rows":[ 
-         { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"text",
-                           "id":"id1",
-                           "class":"vs-textbox",
-                           "required":"required",
-                           "title":"Firstname"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Firstname",
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder": "Your input",
+                        "required": "required"
                      }
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"text",
-                           "id":"id2",
-                           "class":"vs-textbox",
-                           "title":"Lastname"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Lastname",
-                     "props":{ 
-                        "class":"vs-body-regular-primary"
-                     }
+               ],
+               "rowLabel":{ 
+                  "name":"Lastname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"email",
-                           "id":"id3",
-                           "class":"vs-textbox",
-                           "required":"required",
-                           "title":"Email"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Email",
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
-                     }
+                        "type":"email",
+                        "id":"email",
+                        "className" : "email-class",
+                        "title":"Email",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"password",
-                           "id":"id4",
-                           "class":"vs-textbox",
-                           "required":"required",
-                           "title":"Password"
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"Password",
+               ],
+               "rowLabel":{ 
+                  "name":"Email",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-body-regular-primary"
-                     }
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
                   }
-               },
-               { 
-                  "rowElements":[ 
-                     { 
-                        "elementType":"input",
+               ],
+               "rowLabel":{ 
+                  "name":"Password",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"file",
+                        "id":"file",
+                        "className":"file-class",
+                        "title":"Upload File",
+                        "placeholder": "Select File"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Upload Your File",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender",
+                        "className": "male-class"
+                     },
+                     "elementLabel":{ 
+                        "name":"male",
                         "props":{ 
-                           "type":"radio",
-                           "id":"male",
-                           "name":"gender"
-                        },
-                        "elementLabel":{ 
-                           "name":"male",
-                           "props":{ 
-                              "class":"vs-radiobutton"
-                           }
+                           "className":"vs-radiobutton1"
                         }
                      },
-                     { 
-                        "elementType":"input",
-                        "props":{ 
-                           "type":"radio",
-                           "id":"female",
-                           "name":"gender",
-                           "required" : "required"
-                        },
-                        "elementLabel":{ 
-                           "name":"female",
-                           "props":{ 
-                              "class":"vs-radiobutton"
-                           }
-                        }
-                     }
-                  ],
-                  "rowLabel":{ 
-                     "name":"gender",
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  },
+                  { 
+                     "elementType":"input",
                      "props":{ 
-                        "class":"vs-label"
-                     }
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required" : "required"
+                     },
+                     "elementLabel":{ 
+                        "name":"female",
+                        "props":{ 
+                           "className":"vs-radiobutton2"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
                   }
-               },
-         
-         
-         
-               { 
-                "rowElements":[ 
-                   { 
-                      "elementType":"select",
-                      "props":{ 
-                         "id":"countries",
-                         "class":"vs-select",
-                         "required":"required"
+               ],
+               "rowLabel":{ 
+                  "name":"Gender",
+                  "props":{ 
+                     "className":"vs-label"
+                  }
+               }
+            },
+      
+      
+      
+            { 
+             "rowElements":[ 
+                { 
+                   "elementType":"select",
+                   "props":{ 
+                      "id":"countries",
+                      "className":"my-select-class",
+                      "required":"required",
+                      "defaultValue":"IN"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }],
+                   "options":[ 
+                     { 
+                         "props":{ 
+                             "value":""
+                         },
+                         "optionLabel":"Select One"
+                     },
+                      { 
+                         "props":{ 
+                            "value":"IN"
+                         },
+                         "optionLabel":"India"
                       },
-                      "options":[ 
-                         { 
-                            "props":{ 
-                               "value":"IN"
-                            },
-                            "optionLabel":"India"
+                      { 
+                         "props":{ 
+                            "value":"US" 
                          },
-                         { 
-                            "props":{ 
-                               "value":"US" 
-                            },
-                            "optionLabel":"USA"
+                         "optionLabel":"USA"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"CA"
                          },
-                         { 
-                            "props":{ 
-                               "value":"CA"
-                            },
-                            "optionLabel":"Canada"
-                         }
-                      ]
-                   }
-                ],
-                "rowLabel":{ 
-                   "name":"Select Country",
-                   "props":{ 
-                      "class":"vs-body-regular-primary"
-                   }
-                }
-             },
-         
-             { 
-                "rowElements":[ 
-                   { 
-                      "elementType":"textarea",
-                      "props":{ 
-                         "id":"id1",
-                         "name":"story",
-                         "rows":"5",
-                         "cols":"33",
-                         "maxlength":"500",
-                         "required" : "required",
-                         "class":"vs-select"
+                         "optionLabel":"Canada"
                       }
-                   }
-                ],
-                "rowLabel":{ 
-                   "name":"Your Story:",
-                   "props":{ 
-                      "class":"vs-body-regular-primary"
-                   }
+                   ]
+                }
+             ],
+             
+             "rowLabel":{ 
+                "name":"Select Country",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
                 }
              }
-         
-            ]
-         }
-         
-         
-         '></form-gen>
-    </div>
-    <!-- <p>data-options={"lowerLimit": "2020", "upperLimit": "2022", "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}</p>
-    <div class="col-50">
-        <table>
-        <tr><td>
-            <h4>showQuarters = false & showWeeks = false</h4>
-            <date-hierarchy tabindex="1" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": false, "showWeeks": false, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' >
-            </date-hierarchy>        
-        </td>
-        <td>        
-            <h4>showQuarters = false & showWeeks = true</h4>
-            <date-hierarchy tabindex="2" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": false, "showWeeks": true, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
-            </date-hierarchy></td>
-            <td>        
-                <h4>showQuarters = true & showWeeks = false</h4>
-                <date-hierarchy tabindex="3" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2022", "showQuarters": true, "showWeeks": false, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' >
-                </date-hierarchy></td>
-                <td>        
-                    <h4>showQuarters = true & showWeeks = true</h4>
+          },
+      
+          { 
+             "rowElements":[ 
+                { 
+                   "elementType":"textarea",
+                   "props":{ 
+                      "id":"story",
+                      "name":"story",
+                      "rows":"5",
+                      "cols":"33",
+                      "maxLength":"500",
+                      "required" : "required",
+                      "className":"my-textarea",
+                      "placeholder": "Your input"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }]
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Your Story:",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+            "rowElements":[ 
+               { 
+                  "elementType":"datepicker",
+                  "props":{ 
+                     "id":"id",
+                     "name":"datepicker",
+                     "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                     "className": "my-datepicker-class"
+                  }
+               }
+            ],
+            "rowLabel":{ 
+               "name":"Select Date:",
+               "props":{ 
+                  "className":"vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "tagselector",
+               "props": {
+                  "id": "tagselectorID",
+                  "name": "tagselector",
+                  "data-options": "{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select a Tag:",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "datehierarchy",
+               "props": {
+                  "id": "datehierarchyID",
+                  "name": "datehierarchy",
+                  "data-options": "{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select Date(s):",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
 
-                    <date-hierarchy tabindex="4" id='datehierarchy' data-options='{"lowerLimit": "2020", "upperLimit": "2020", "showQuarters": true, "showWeeks": true, "disabledList":["01/01/2020","02/01/2020","09/05/2020", "8/01/2020", "11/11/2022"]}' ></td>
-                    </date-hierarchy>
-                </td>
-        </tr>
-        </table>
-    </div> -->
-    <div class="col-50">
-        <table>
-        <tr>
-        </tr>
-    </div>
+         {
+            "rowElements": [{
+               "elementType": "img",
+               "props": {
+                  "id": "imgID",
+                  "name": "profileImage",
+                  "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
+                  "alt": "Smiley face", 
+                  "width": "100px", 
+                  "height": "50px",
+                  "className": "myImageClass"
+               }
+            }],
+            "rowLabel": {
+               "name": "Image:",
+               "props": {
+                  "class": "vs-body-regular-primary"
+               }
+            }
+         }  
+      
+      
+      ]
+      }
+      
+      
+       
+             
+             
+       
+        '></form-gen>
+    </div>   
+    <br>
+    <b>Above form is generated using below data-options</b>
+    <pre style="box-sizing:border-box; word-wrap: break-word;">
+
+      data-options='
+        { 
+         "form":{ 
+            "props":{ 
+               "id": "form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"               
+            },
+            "eventHandlers": [{
+               "event": "submit",
+               "handler": "submitForm"
+           }]
+         },
+         "rows":[ 
+         { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Firstname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     }
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Lastname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"email",
+                        "id":"email",
+                        "className" : "email-class",
+                        "title":"Email",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Email",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Password",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender"                        
+                        
+                     },
+                     "elementLabel":{ 
+                        "name":"male",
+                        "props":{ 
+                           "className":"my-rbutton-classM"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  },
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required" : "required"
+                     },
+                     "elementLabel":{ 
+                        "name":"female",
+                        "props":{ 
+                           "className":"my-rbutton-classF"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Gender",
+                  "props":{ 
+                     "className":"vs-label"
+                  }
+               }
+            },
+      
+      
+      
+            { 
+             "rowElements":[ 
+                { 
+                   "elementType":"select",
+                   "props":{ 
+                      "id":"countries",
+                      "className":"my-select-class",
+                      "required":"required",
+                      "defaultValue":"IN"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }],
+                   "options":[ 
+                     { 
+                         "props":{ 
+                             "value":""
+                         },
+                         "optionLabel":"Select One"
+                     },
+                      { 
+                         "props":{ 
+                            "value":"IN"
+                         },
+                         "optionLabel":"India"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"US" 
+                         },
+                         "optionLabel":"USA"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"CA"
+                         },
+                         "optionLabel":"Canada"
+                      }
+                   ]
+                }
+             ],
+             
+             "rowLabel":{ 
+                "name":"Select Country",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+             "rowElements":[ 
+                { 
+                   "elementType":"textarea",
+                   "props":{ 
+                      "id":"story",
+                      "name":"story",
+                      "rows":"5",
+                      "cols":"33",
+                      "maxLength":"500",
+                      "required" : "required",
+                      "className":"my-textarea",
+                      "placeholder": "Your input"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }]
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Your Story:",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+            "rowElements":[ 
+               { 
+                  "elementType":"datepicker",
+                  "props":{ 
+                     "id":"id",
+                     "name":"datepicker",
+                     "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                     "className": "my-datepicker-class"
+                  }
+               }
+            ],
+            "rowLabel":{ 
+               "name":"Select Date:",
+               "props":{ 
+                  "className":"vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "tagselector",
+               "props": {
+                  "id": "tagselectorID",
+                  "name": "tagselector",
+                  "data-options": "{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select a Tag:",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "datehierarchy",
+               "props": {
+                  "id": "datehierarchyID",
+                  "name": "datehierarchy",
+                  "data-options": "{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select Date(s):",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+
+         {
+            "rowElements": [{
+               "elementType": "img",
+               "props": {
+                  "id": "imgID",
+                  "name": "profileImage",
+                  "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
+                  "alt": "Smiley face", 
+                  "width": "575px", 
+                  "height": "345px"
+               }
+            }],
+            "rowLabel": {
+               "name": "Image:",
+               "props": {
+                  "class": "vs-body-regular-primary"
+               }
+            }
+         }
+      ]
+      }'
+    </pre>     
 </body>
 
 </html>

@@ -6,8 +6,10 @@ import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
 import TagSelector from "./components/TagSelector/tag-selector";
-import DateHierarchy from './components/DateHierarchy/date-hierarchy';
 import FormGenerator from './components/FormGenerator/form-generator';
+import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+import DateHierarchy from './components/DateHierarchy/date-hierarchy';
+// import FormGenerator from './components/FormGenerator/form-generator';
 
 import {
     isUndefinedOrNull
@@ -25,7 +27,7 @@ import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
 import './components/QueryBuilder/query-builder.scss';
-import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+// import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
 
 (function () {
     if (typeof window.CustomEvent === "function") return false;
@@ -224,11 +226,16 @@ Array.prototype.forEach.call(
         formGenRender(el);
     })
 
-function formGenRender(el) {
-    let options = JSON.parse(el.getAttribute('data-options'));
-    console.log(options);
-    options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
+    function myFunc() {
+        alert("Event listener");
+    }
 
+function formGenRender(el) {
+    try {
+    let options = JSON.parse(el.getAttribute('data-options'));
+   
+    options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
+        
     el.getValues = function () {
         return FormGenComponentInstance.getValues();
     }
@@ -238,6 +245,11 @@ function formGenRender(el) {
         el.dispatchEvent(ev);
     }
     
+    function submitHandler() {
+        let ev = new CustomEvent('submit');
+        el.dispatchEvent(ev);
+    }
+
     function onChangeHandler() {
         let ev = new CustomEvent("change");
         el.dispatchEvent(ev);
@@ -261,16 +273,50 @@ function formGenRender(el) {
         return FormGenComponentInstance.refresh();
     }
 
-    var FormGenComponentElement = <FormGenerator options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
+    var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
     el.setValues = function (json) {
         FormGenComponentInstance.setValues(json);
-    }
+    }    
 
     // eslint-disable-next-line
     var FormGenComponentInstance = ReactDOM.render(
         FormGenComponentElement,
         el
     )
+        
+    /* Custom event Listeners provided by the user */
+    if (options.form !== undefined && options.form.props !== undefined
+         && options.form.props.id != undefined) {                 
+             if (options.form.eventHandlers) {
+                 options.form.eventHandlers.forEach((eventHandler) => {
+                    document.getElementById(options.form.props.id).addEventListener(eventHandler.event, window[eventHandler.handler]);   
+                 })
+             }
+    }
+    
+    options.rows.forEach( (option) =>
+    {   
+        // If options are present
+        if(option){
+            option.rowElements.forEach((element) => {
+                var ID = element.props.id;
+                // If event listener is given by the user
+                if(element.eventHandlers)
+                {
+                element.eventHandlers.forEach((eventHandler)=>
+                {
+                  document.getElementById(ID).addEventListener(eventHandler.event, window[eventHandler.handler]);   
+                });
+            }
+                  
+            });
+        }
+    
+    
+    });
+ } catch(error) {
+     console.error(error);
+ }
 }
 
 serviceWorker.unregister();
