@@ -54,4 +54,15 @@ export const CLASSES = {
     VS_SELECT_BUTTON: 'VS-SelectButton',
     VS_CLEAR_BUTTON: 'VS-ClearButton',
     VS_CALENDAR_BUTTON: 'VS-CalendarButtons',
+    //Classes for Form Generator
+    VS_GC_LBL_COMP: 'vs-gc-lbl-comp',
+    VS_LABEL: 'vs-label',
+    VS_TEXTBOX: 'vs-textbox',
+    VS_DROPDOWN: 'vs-dropdown',
+    VS_BODY_REGULAR_PRIMARY: 'vs_body_regular_primary',
+    VS_RADIOBUTTON: 'vs-radiobutton',
+    VS_RADIO_DOT: 'vs-radio-dot',
+    VS_CHECK_MARK: 'vs-checkmark',
+    VS_TEXTAREA: 'vs-textarea',
+    
 }

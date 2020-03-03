@@ -1,122 +1,296 @@
 import React from "react";
-import tag from "react-icons/lib/fa/tag";
-import './style.css';
+import './css/vs.scss';
+import DatePicker from '../../components/Datepicker/index';
+import * as CONSTANTS from '../../utils/constants'
+import { isUndefinedOrNull } from '../../utils/utils'
+import {
+    resetOptions,
+    formatOptions    
+} from "../../utils/calendar";
 
-import ReactDOM from "react-dom";
- 
+import TagSelector from '../../components/TagSelector/tag-selector';
+import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
 
-class FormGenerator extends React.PureComponent {
 
-    constructor(props) {
-        super(props);
-        // const formGenOptions = this.props;
-        // const formGenOptions = this.props.options.rows[4].rowElements[0].props.title;
-        const formGenOptions = this.props.options.rows[0].rowElements[0].elementType;
-        console.log('At the constructor',formGenOptions);
-        this.state = {
+class FormGenerator extends React.PureComponent {   
+    
+    /* Wrappers for Datepicker */
+    datePickerWrapper() {}
+    // Wrapper for Date Hierarchy
+    dateHierarchyWrapper() {}
+    // Wrapper for Tag Selector
+    tagSelectorWrapper() {}
+
+    renderForm = () => {
+        if (Object.keys(this.props.options) !== 0) 
+        {            
+            let options = this.props.options;
+            let formProps = options.form ? options.form.props : '';
+            formProps["key"] = options.form.id?"form"+options.form.id:"form1";
+            let tags = [];
             
-            // formValid: false,
-            // errorCount: null,
-            
-        };
-        
-        
-    }    
-    componentDidMount() {
+            /*  Iterate on Radio and Checkbox */            
+            options.rows.forEach((option, index) => 
+            {                
+                let labelText = option.rowLabel ? option.rowLabel.name : "";
+                let noOfRowElements = option.rowElements.length;
+                let labelKey = labelText + noOfRowElements;
+                let errorId = labelText ? labelText.replace(" ", "").replace(":","") +'_error' : '';
+                console.log('errorId',errorId);
+                let inx = 'rowDiv'+index;
+                let keyRowLabel = 'rowLabelDiv'+index;
+                let keyRowElement = 'rowElementDiv' + index;
+                
+                if (noOfRowElements > 1) {
+                    var optionsInRows = option.rowElements;
 
-        
-    }
 
-    componentDidUpdate() {}
+                    optionsInRows.forEach((item, optionIndex) => {
+                        item.elementLabel.props["className"] = item.elementLabel.props["className"]?CONSTANTS.CLASSES.VS_RADIOBUTTON + " " + item.elementLabel.props["className"]:CONSTANTS.CLASSES.VS_RADIOBUTTON;
 
-    render() {
-        console.log('Options at Render func. for test',this.props.options.rows.length);
-        console.log('Options at Render func. for test',Object.keys(this.props.options.rows).length);
-        var len = this.props.options.rows.length;
-        var count = 0;
-        
-        const validEmailRegex = RegExp(/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i);
-        
-        const tags= [];
-        for( var i = 0; i < len ; i++)
-        {   
-            
-             var label_name = this.props.options.rows[i].rowLabel.name;
-            var rowElements_length = this.props.options.rows[i].rowElements.length;
-            if( label_name != '')
-            {
-                tags.push(<label htmlFor={id}>{label_name} </label>)
-            }
-            for (var j = 0; j < rowElements_length; j++)
-            {
-            var id = this.props.options.rows[i].rowElements[j].props.id;
-            console.log("If radio or not :",this.props.options.rows[i].rowElements[j].props.type)
-            if((this.props.options.rows[i].rowElements[j].props.type) == "radio")
-                     {              
-                        tags.push(<label htmlFor={this.props.options.rows[i].rowElements[j].props.id}><input type= "radio" name ={this.props.options.rows[i].rowElements[j].props.name} id={this.props.options.rows[i].rowElements[j].props.id} required></input>{this.props.options.rows[i].rowElements[j].elementLabel.name}</label>);
-            
-                     }
-             else if ((this.props.options.rows[i].rowElements[j].elementType) == "select")
-             {
-                    var items = this.props.options.rows[i].rowElements[j].options;
-                    items.unshift({ 
-                        "props":{ 
-                           "value":""
-                        },
-                        "optionLabel":"Select One"
-                     });
+                        // item.props["className"] = item.props["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + 
+                        // " " + item.props["className"] : CONSTANTS.CLASSES.VS_TEXTBOX;
+                        // item.props["key"] = "rowElementDiv" + optionIndex + "" + index;
+                    })
+
 
                     tags.push(React.createElement(
-                        "select",
-                        this.props.options.rows[i].rowElements[j].props,
-                        items.map(item => React.createElement(
-                          "option",
-                          { value: item.props.value,
-                            selected : item.props.selected ? "selected" :""
-                        }, 
-                          item.optionLabel
-                        ))
-                      ));
-             }
-             else if ((this.props.options.rows[i].rowElements[j].elementType) == "textarea")
-             {
-                        tags.push(React.createElement(
-                        "textarea",
-                        this.props.options.rows[i].rowElements[j].props
+                        "div",
+                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx}},
+                        React.createElement(
+                            "div",
+                            {key: {keyRowLabel}},
+                            React.createElement(
+                                "label",
+                                { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                labelText,
+                            )
+                        ),
+                        React.createElement(
+                            "div",
+                            {key: keyRowElement},
+                            optionsInRows.map(item => React.createElement(
+                                "label",
+                                item.elementLabel ? item.elementLabel.props: '',
+                                item.elementLabel ? item.elementLabel.name : '',
+                                
+                                React.createElement(
+                                    "input",
+                                    item.props
+                                ), React.createElement(
+                                    "span",
+                                    {className : (item.props.type === "checkbox")? CONSTANTS.CLASSES.VS_CHECK_MARK : CONSTANTS.CLASSES.VS_RADIO_DOT}
+                                )
+
+                            ))                            
+                        ), 
+                        React.createElement("span", {id: labelText ? labelText+'_error': 'missingID_error'})
                     ));
-             }
-            
-            else
-            {
-                    tags.push(React.createElement(this.props.options.rows[i].rowElements[j].elementType, this.props.options.rows[i].rowElements[j].props));    
-            }
-            
+                }
+
+                /* Iterate on row elements */
+                option.rowElements.forEach((rowElement, index) => 
+                {
+                    let elementID = rowElement.props.id;
+                    let elementType = rowElement.elementType;
+                    let elementProps = rowElement.props;
+                    let inx = 'divnew'+index;
+                    let labelKey = elementID + "label";
+                    let labelKeyOuter = labelKey + "Outer";    
+                    let keyRowLabel = 'rowLabelDiv'+index;
+                    let keyRowElement = 'rowElementDiv' + index;
+                    let elementError = elementID ? elementID+ '_error' : 'missingID_error';
+
+                    elementProps.key = elementID;    
+                    
+
+                    if (elementType === "input") {   
+                        elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
+                                             
+                        if (elementProps.type !== "radio" && elementProps.type !== "checkbox") {    
+                            tags.push(React.createElement(
+                                "div",
+                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                                React.createElement(
+                                    "div",
+                                    {key: keyRowLabel},
+                                    React.createElement(
+                                        "label",
+                                        { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                        labelText)),
+                                React.createElement(
+                                    "div",
+                                    {key: keyRowElement},
+                                    React.createElement(
+                                        "input",
+                                        elementProps,
+                                    )
+                                ),
+                                React.createElement("span", {id: elementError})
+                            ));
+                        }
+                    }
+                    else if (elementType === "select") {
+                        let items = rowElement.options;
+                        tags.push(React.createElement(
+                            "div",
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            React.createElement(
+                                "div",
+                                {key: keyRowLabel},
+                                React.createElement(
+                                    "label",
+                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                    labelText
+                                )
+                            ),
+                            React.createElement(
+                                "div",
+                                {
+                                    className: `${CONSTANTS.CLASSES.VS_DROPDOWN}`,
+                                    key: keyRowElement
+                                },
+
+                                React.createElement(
+                                    "select",
+                                    rowElement.props,
+                                    items.map(item => React.createElement(
+                                        "option",
+                                        {
+                                            value: item.props.value,                                            
+                                            key: item.props.value
+                                        },
+                                        item.optionLabel
+                                    ))
+                                )
+
+                            ),
+                            React.createElement("span", {id: elementError})
+                        ));
+                    }
+                    else if (elementType === "textarea") {
+                        elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTAREA + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTAREA;
+
+                        tags.push(React.createElement(
+                            "div",
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            React.createElement(
+                                "div",
+                                {key: keyRowLabel},
+                                React.createElement(
+                                    "label",
+                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                    labelText)),
+                            React.createElement(
+                                "div",
+                                {key: keyRowElement},
+                                React.createElement("textarea", elementProps)
+                            ),React.createElement("span", {id: elementError})
+
+                        )
+                        );
+                    }
+                    else if (elementType === 'datepicker')
+                    {
+                        let options = JSON.parse(elementProps['data-options']);
+                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        options = formatOptions(options);
+                        tags.push(
+                        <div className = 'vs-gc-lbl-comp'> 
+                        <div><label className = "vs-label">{labelText}</label></div>
+                        <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div>
+                        </div>)
+                    }
+                    else if (elementType === 'datehierarchy')
+                    {
+                        let options = JSON.parse(elementProps['data-options']);
+                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        options = formatOptions(options);
+                        tags.push(
+                        <div className ='vs-gc-lbl-comp'> 
+                        <div><label className='vs-label'>{labelText}</label></div>
+                        <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div>
+                        </div>)
+                    }
+                    else if (elementType === 'tagselector')
+                    {
+                        let options = JSON.parse(elementProps['data-options']);
+                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        options = formatOptions(options);
+                        tags.push(
+                        <div className ='vs-gc-lbl-comp'>
+                        <div><label className='vs-label'>{labelText}</label></div>
+                        <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div>
+                        </div>)
+                    }
+                    
+                   else 
+                   {
+                       tags.push(React.createElement(
+                           "div",
+                           { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                           React.createElement(
+                               "div",
+                               {key: keyRowLabel},
+                               React.createElement(
+                                "label",
+                                { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                labelText)),
+                                React.createElement(
+                                    "div",
+                                    {key: keyRowElement},
+                                    React.createElement(elementType,elementProps)
+                                ),
+                                React.createElement("span", {id: elementError})
+                               )
+                           );                       
+                   }
+
+                }); // Iteration on row elements ends here
+                
+            }); // Iteration on rows ends here
+            return (
+                (options.form) 
+                    ?
+                    React.createElement(
+                    "div",
+                    {key: "formDiv"},
+                    React.createElement(
+                        "form",
+                        formProps,
+                        tags,
+                        React.createElement(
+                            "button",
+                            {className: 'vs-button vs-primary-one-outline',
+                            value: 'submit',
+                            type: 'submit'},
+                        "Submit"),
+                        React.createElement(
+                            "button",
+                            {className: 'vs-button vs-primary-one-outline',
+                            value: 'reset',
+                            type: 'reset'
+                        },
+                        "Reset"
+                        )))
+                 : 
+                 <div> {tags}</div>
+            )
         }
-        tags.push(<br></br>)
-        
+        else {
+            
+            return (
+                ""
+            )
+        }
     }
 
+    render() {
         return (
-        <div className="wrapper">
-            <form action ={this.props.options.form.props.action} method={this.props.options.form.props.method} className="form-wrapper" id="form">
-                {tags}
-                
-               
-                        <div className="col-5">
-                        <button type="submit" form="form" value="Submit">Submit</button>
-                        <button type="reset" form="form" value="Reset">Reset</button>
-                        </div>
-                    
-                </form>
-      </div>
+            <div>
+                {this.renderForm()}
+            </div>
         )
     }
 }
-
-
-
-
 export default FormGenerator;
-
-
-
