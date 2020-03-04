@@ -130,8 +130,8 @@ $font-family: 'Roboto', sans-serif;
 }
 
 .VS-Checkbox-Container .VS-Check-Checkmark.VS-Check-Partial:after {
-    left: 4px;
-    top: 4px;
+    left: 5px;
+    top: 5px;
     width: 0px;
     height: 0px;
     border: solid #2196F3;
@@ -144,8 +144,8 @@ $font-family: 'Roboto', sans-serif;
 .VS-Checkbox-Container .VS-Check-Checkmark:after {
     left: 5px;
     top: 2px;
-    width: 5px;
-    height: 9px;
+    width: 3px;
+    height: 7px;
     border: solid #2196F3;
     border-width: 0 3px 3px 0;
     -webkit-transform: rotate(45deg);

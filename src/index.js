@@ -1,33 +1,11 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
+import formGeneratorRender from "./components/FormGenerator/formgeneratorrender";
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
-import TagSelector from "./components/TagSelector/tag-selector";
-import FormGenerator from './components/FormGenerator/form-generator';
-import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
-import DateHierarchy from './components/DateHierarchy/date-hierarchy';
-// import FormGenerator from './components/FormGenerator/form-generator';
-
-import {
-    isUndefinedOrNull
-} from "../src/utils/utils";
-
-import {
-    resetTagSelectorOptions
-} from "../src/utils/tagselectorutils";
-
-import {
-    resetDateHierarchyOptions
-} from "./utils/datehierarchyutils";
-
-import './components/Datepicker/date-picker.scss';
-import './components/TagSelector/tag-selector.scss';
-import './components/DateHierarchy/date-hierarchy.scss';
-import './components/QueryBuilder/query-builder.scss';
-// import DatehierarchyView from './components/DateHierarchy/datehierarchyView';
+import tagSelectorRender from "./components/TagSelector/tagselectorrender";
+import dateHierarchyRender from "./components/DateHierarchy/datehierarchyrender";
 
 (function () {
     if (typeof window.CustomEvent === "function") return false;
@@ -44,6 +22,7 @@ import './components/QueryBuilder/query-builder.scss';
     window.CustomEvent = CustomEvent;
 })();
 
+// Datepicker render 
 Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),
     (el) => {
@@ -51,272 +30,37 @@ Array.prototype.forEach.call(
     })
 window.addReactDatepicker = datepickerRender;
 
+// Tag-selector render 
+Array.prototype.forEach.call(
+    document.getElementsByTagName('tag-selector'),
+    (el) => {
+        tagSelectorRender(el);
+    })
+window.addTagSelector = tagSelectorRender;
+
+// Date-hierarchy render
+Array.prototype.forEach.call(
+    document.getElementsByTagName('date-hierarchy'),
+    (el) => {
+        dateHierarchyRender(el);
+    })
+window.addDateHierarchyRender = dateHierarchyRender;
+
+// Form generator render 
+Array.prototype.forEach.call(
+    document.getElementsByTagName('form-gen'),
+    (el) => {
+        formGeneratorRender(el);
+    })
+
+window.addFormGenerator = formGeneratorRender;
+
+// Query builder render 
 Array.prototype.forEach.call(
     document.getElementsByTagName('query-builder'),
     (el) => {
         queryBuilderRender(el);
     })
 window.addReactDatepicker = datepickerRender;
-
-function trigger(elem, name, e) {
-    // eslint-disable-next-line
-    let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
-    func.call(elem, e);
-}
-
-Array.prototype.forEach.call(
-    document.getElementsByTagName('tag-selector'),
-    (el) => {
-        tagSelectorRender(el);
-    })
-
-function tagSelectorRender(el) {
-    let options = JSON.parse(el.getAttribute('data-options'));
-
-    options = (isUndefinedOrNull(options)) ? resetTagSelectorOptions({}) : resetTagSelectorOptions(options);
-
-    function callOnSelectedEvent(selectedItem, el) {
-        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
-        trigger(el, 'onSelect', ev);
-        el.dispatchEvent(ev);
-    }
-
-    function callOnDeSelectedEvent(selectedItem, el) {
-        let ev = new CustomEvent("change", { 'detail': { 'item': selectedItem } });
-        trigger(el, 'onDeSelect', ev);
-        el.dispatchEvent(ev);
-    }
-
-    function callOnNotFoundEvent(el) {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onNotFound', ev);
-        el.dispatchEvent(ev);
-    }
-
-    function onFocusHandler() {
-        let ev = new CustomEvent('focus');
-        el.dispatchEvent(ev);
-    }
-
-    function onBlurHandler() {
-        let ev = new CustomEvent('blur');
-        el.dispatchEvent(ev);
-    }
-
-    function onKeyDownHandler() {
-        let ev = new CustomEvent('keydown');
-        el.dispatchEvent(ev);
-    }
-    
-    function onSelectHandler(selectedItem) {
-        callOnSelectedEvent(selectedItem, el);
-    }
-
-    function onDeSelectHandler(selectedItem) {
-        callOnDeSelectedEvent(selectedItem, el);
-    }
-
-    function onNotFoundHandler(selectedItem) {
-        callOnNotFoundEvent(el);
-    }
-
-    el.getNewlyAdded = function () {
-        return tagComponentInstance.getNewlyAdded();
-    }
-
-    el.getSelectedValues = function () {
-        return tagComponentInstance.getSelectedValues();
-    }
-
-    el.getSelectedCounter = function () {
-        return tagComponentInstance.getSelectedCounter();
-    }
-
-    el.appendNewElement = function (obj) {
-        tagComponentInstance.appendNewElement(obj);
-    }
-
-    el.remove = function (item) {
-        tagComponentInstance.removeListItem(item);
-    }
-
-    el.setJsonData = function (json) {
-        tagComponentInstance.setJsonData(json);
-    }
-
-    el.setSelectedItems = function (json) {
-        tagComponentInstance.setSelectedItems(json);
-    }
-
-    el.refresh = function () {
-        tagComponentInstance.refresh();
-    }
-
-    let tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} />;
-
-    let tagComponentInstance = ReactDOM.render(
-        tagComponentElement,
-        el
-    )
-}
-
-Array.prototype.forEach.call(
-    document.getElementsByTagName('date-hierarchy'),
-    (el) => {
-        dateHierarchyRender(el);
-    })
-
-function dateHierarchyRender(el) {
-    let options = JSON.parse(el.getAttribute('data-options'));
-    options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
-
-    el.getValues = function () {
-        return HierarchyComponentInstance.getValues();
-    }
-    
-    function onFocusHandler() {
-        let ev = new CustomEvent('focus');
-        el.dispatchEvent(ev);
-    }
-    
-    function onChangeHandler() {
-        let ev = new CustomEvent("change");
-        el.dispatchEvent(ev);
-    }
-
-    function onBlurHandler() {
-        let ev = new CustomEvent("blur");
-        el.dispatchEvent(ev);
-    }
-
-    function onInputHandler(){
-        let ev = new CustomEvent("input");
-        el.dispatchEvent(ev);
-    }
-
-    el.getDates = function () {
-        return HierarchyComponentInstance.getDates();
-    }
-    // fun
-    el.refresh = function (){
-        return HierarchyComponentInstance.refresh();
-    }
-
-    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
-    el.setValues = function (json) {
-        HierarchyComponentInstance.setValues(json);
-    }
-
-    // eslint-disable-next-line
-    var HierarchyComponentInstance = ReactDOM.render(
-        HierarchyComponentElement,
-        el
-    )
-}
-
-//mock function
-function resetFormGenOptions(options) {
-
-    return { ...options };
-}
-
-Array.prototype.forEach.call(
-    document.getElementsByTagName('form-gen'),
-    (el) => {
-        formGenRender(el);
-    })
-
-    function myFunc() {
-        alert("Event listener");
-    }
-
-function formGenRender(el) {
-    try {
-    let options = JSON.parse(el.getAttribute('data-options'));
-   
-    options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);
-        
-    el.getValues = function () {
-        return FormGenComponentInstance.getValues();
-    }
-    
-    function onFocusHandler() {
-        let ev = new CustomEvent('focus');
-        el.dispatchEvent(ev);
-    }
-    
-    function submitHandler() {
-        let ev = new CustomEvent('submit');
-        el.dispatchEvent(ev);
-    }
-
-    function onChangeHandler() {
-        let ev = new CustomEvent("change");
-        el.dispatchEvent(ev);
-    }
-
-    function onBlurHandler() {
-        let ev = new CustomEvent("blur");
-        el.dispatchEvent(ev);
-    }
-
-    function onInputHandler(){
-        let ev = new CustomEvent("input");
-        el.dispatchEvent(ev);
-    }
-
-    el.getDates = function () {
-        return FormGenComponentInstance.getDates();
-    }
-
-    el.refresh = function (){
-        return FormGenComponentInstance.refresh();
-    }
-
-    var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput ={onInputHandler}/>
-    el.setValues = function (json) {
-        FormGenComponentInstance.setValues(json);
-    }    
-
-    // eslint-disable-next-line
-    var FormGenComponentInstance = ReactDOM.render(
-        FormGenComponentElement,
-        el
-    )
-        
-    /* Custom event Listeners provided by the user */
-    if (options.form !== undefined && options.form.props !== undefined
-         && options.form.props.id != undefined) {                 
-             if (options.form.eventHandlers) {
-                 options.form.eventHandlers.forEach((eventHandler) => {
-                    document.getElementById(options.form.props.id).addEventListener(eventHandler.event, window[eventHandler.handler]);   
-                 })
-             }
-    }
-    
-    options.rows.forEach( (option) =>
-    {   
-        // If options are present
-        if(option){
-            option.rowElements.forEach((element) => {
-                var ID = element.props.id;
-                // If event listener is given by the user
-                if(element.eventHandlers)
-                {
-                element.eventHandlers.forEach((eventHandler)=>
-                {
-                  document.getElementById(ID).addEventListener(eventHandler.event, window[eventHandler.handler]);   
-                });
-            }
-                  
-            });
-        }
-    
-    
-    });
- } catch(error) {
-     console.error(error);
- }
-}
 
 serviceWorker.unregister();

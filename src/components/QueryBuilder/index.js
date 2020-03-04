@@ -2,10 +2,6 @@ import React from "react";
 import OperatorDropdown from "./operator-dropdown";
 import OperationDropdown from "./operation-dropdown";
 import FieldDropdown from "./fields-dropdown";
-import * as CONSTANTS from '../../utils/constants'
-import {
-    isUndefinedOrNull
-} from "../../utils/utils";
 
 class QueryBuilder extends React.PureComponent {
 
@@ -42,7 +38,6 @@ class QueryBuilder extends React.PureComponent {
     }
 
     render() {
-        const { fields } = this.props.options;
         return (
             <div>
                 <fieldset>

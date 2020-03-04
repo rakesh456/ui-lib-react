@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import QueryBuilder from "./index";
-import {
-    isUndefinedOrNull
-} from "../../utils/utils";
+import './query-builder.scss';
 
 function queryBuilderRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
@@ -13,7 +11,7 @@ function queryBuilderRender(el) {
 
     let myComponentElement = <QueryBuilder options={options} />;
 
-    let myComponentInstance = ReactDOM.render(
+    ReactDOM.render(
         myComponentElement,
         el
     )

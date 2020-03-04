@@ -1,5 +1,4 @@
 import React from "react";
-import DatehierarchyView from "./datehierarchyView";
 
 class DateHierarchy extends React.PureComponent {
     constructor(props) {
