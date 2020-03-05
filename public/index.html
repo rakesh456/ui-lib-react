@@ -262,7 +262,8 @@
 // Test function for the custom event listener given by the user.
 
     function submitForm(event) {
-        alert(event.type + " event detected on element ID: " + event.srcElement.id + ".");
+      //  console.log("Name", event.srcElement.id);
+        console.log(event.type + " event detected on element ID: " + event.srcElement.id + ".");
     }
 
     function skundSubmitForm(event) {
@@ -278,6 +279,392 @@
           
         <!-- <form-gen id='formGen1' onSubmit="submitForm()" data-options=' -->
         <form-gen id='formGen1' data-options='
+        {
+         "form":{
+            "props":{
+               "id":"form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"
+            },
+            "eventHandlers":[
+               {
+                  "event":"submit",
+                  "handler":"skundSubmitForm"
+               }
+            ]
+         },
+         "rows":[
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Firstname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Lastname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"email",
+                        "id":"email",
+                        "className":"email-class",
+                        "title":"Email",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Email",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Password",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"file",
+                        "id":"file",
+                        "className":"file-class",
+                        "title":"Upload File",
+                        "placeholder":"Select File"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Upload Your File",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender",
+                        "className":"male-class"
+                     },
+                     "elementLabel":{
+                        "name":"male",
+                        "props":{
+                           "className":"vs-radiobutton1"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  },
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required":"required"
+                     },
+                     "elementLabel":{
+                        "name":"female",
+                        "props":{
+                           "className":"vs-radiobutton2"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Gender",
+                  "props":{
+                     "className":"vs-label"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"select",
+                     "props":{
+                        "id":"countries",
+                        "className":"vs-dropdown",
+                        "required":"required",
+                        "defaultValue":"IN"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ],
+                     "options":[
+                        {
+                           "props":{
+                              "value":""
+                           },
+                           "optionLabel":"Select One"
+                        },
+                        {
+                           "props":{
+                              "value":"IN"
+                           },
+                           "optionLabel":"India"
+                        },
+                        {
+                           "props":{
+                              "value":"US"
+                           },
+                           "optionLabel":"USA"
+                        },
+                        {
+                           "props":{
+                              "value":"CA"
+                           },
+                           "optionLabel":"Canada"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Country",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"textarea",
+                     "props":{
+                        "id":"story",
+                        "name":"story",
+                        "rows":"5",
+                        "cols":"33",
+                        "maxLength":"500",
+                        "required":"required",
+                        "className":"my-textarea",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Your Story:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datepicker",
+                     "props":{
+                        "id":"datepickerID",
+                        "name":"datepicker",
+                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                        "className":"my-datepicker-class"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"tagselector",
+                     "props":{
+                        "id":"tagselectorID",
+                        "name":"tagselector",
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"blur",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select a Tag:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datehierarchy",
+                     "props":{
+                        "id":"hierarchyID",
+                        "name":"datehierarchy",
+                        "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date(s):",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"img",
+                     "props":{
+                        "id":"imgID",
+                        "name":"profileImage",
+                        "src":"https://www.prlog.org/12405743-fintellix-logo.png",
+                        "alt":"Smiley face",
+                        "width":"100px",
+                        "height":"50px",
+                        "className":"myImageClass"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Image:",
+                  "props":{
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            }
+         ]
+      }
+             
+             
+       
+        '></form-gen>
+    </div>   
+    <br>
+    <b>Above form is generated using below data-options</b>
+    <pre style="box-sizing:border-box; word-wrap: break-word;">
+
+      data-options='
         { 
          "form":{ 
             "props":{ 
@@ -287,7 +674,7 @@
             },
             "eventHandlers": [{
                "event": "submit",
-               "handler": "skundSubmitForm"
+               "handler": "submitForm"
            }]
          },
          "rows":[ 
@@ -393,40 +780,15 @@
                   { 
                      "elementType":"input",
                      "props":{ 
-                        "type":"file",
-                        "id":"file",
-                        "className":"file-class",
-                        "title":"Upload File",
-                        "placeholder": "Select File"
-                     },
-      
-                     "eventHandlers": [{
-                        "event": "change",
-                        "handler": "submitForm"
-                    }]
-                  }
-               ],
-               "rowLabel":{ 
-                  "name":"Upload Your File",
-                  "props":{ 
-                     "className":"vs-body-regular-primary"
-                  }
-               }
-            },
-            { 
-               "rowElements":[ 
-                  { 
-                     "elementType":"input",
-                     "props":{ 
                         "type":"radio",
                         "id":"male",
-                        "name":"gender",
-                        "className": "male-class"
+                        "name":"gender"                        
+                        
                      },
                      "elementLabel":{ 
                         "name":"male",
                         "props":{ 
-                           "className":"vs-radiobutton1"
+                           "className":"my-rbutton-classM"
                         }
                      },
                      "eventHandlers": [{
@@ -445,7 +807,7 @@
                      "elementLabel":{ 
                         "name":"female",
                         "props":{ 
-                           "className":"vs-radiobutton2"
+                           "className":"my-rbutton-classF"
                         }
                      },
                      "eventHandlers": [{
@@ -470,7 +832,7 @@
                    "elementType":"select",
                    "props":{ 
                       "id":"countries",
-                      "className":"vs-dropdown",
+                      "className":"my-select-class",
                       "required":"required",
                       "defaultValue":"IN"
                    },
@@ -608,9 +970,8 @@
                   "name": "profileImage",
                   "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
                   "alt": "Smiley face", 
-                  "width": "100px", 
-                  "height": "50px",
-                  "className": "myImageClass"
+                  "width": "575px", 
+                  "height": "345px"
                }
             }],
             "rowLabel": {
@@ -619,10 +980,1753 @@
                   "class": "vs-body-regular-primary"
                }
             }
-         }  
-      
-      
+         }
       ]
+      }'
+    </pre>     
+</body>
+        {
+         "form":{
+            "props":{
+               "id":"form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"
+            },
+            "eventHandlers":[
+               {
+                  "event":"submit",
+                  "handler":"skundSubmitForm"
+               }
+            ]
+         },
+         "rows":[
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Firstname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Lastname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"email",
+                        "id":"email",
+                        "className":"email-class",
+                        "title":"Email",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Email",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Password",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"file",
+                        "id":"file",
+                        "className":"file-class",
+                        "title":"Upload File",
+                        "placeholder":"Select File"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Upload Your File",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender",
+                        "className":"male-class"
+                     },
+                     "elementLabel":{
+                        "name":"male",
+                        "props":{
+                           "className":"vs-radiobutton1"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  },
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required":"required"
+                     },
+                     "elementLabel":{
+                        "name":"female",
+                        "props":{
+                           "className":"vs-radiobutton2"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Gender",
+                  "props":{
+                     "className":"vs-label"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"select",
+                     "props":{
+                        "id":"countries",
+                        "className":"vs-dropdown",
+                        "required":"required",
+                        "defaultValue":"IN"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ],
+                     "options":[
+                        {
+                           "props":{
+                              "value":""
+                           },
+                           "optionLabel":"Select One"
+                        },
+                        {
+                           "props":{
+                              "value":"IN"
+                           },
+                           "optionLabel":"India"
+                        },
+                        {
+                           "props":{
+                              "value":"US"
+                           },
+                           "optionLabel":"USA"
+                        },
+                        {
+                           "props":{
+                              "value":"CA"
+                           },
+                           "optionLabel":"Canada"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Country",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"textarea",
+                     "props":{
+                        "id":"story",
+                        "name":"story",
+                        "rows":"5",
+                        "cols":"33",
+                        "maxLength":"500",
+                        "required":"required",
+                        "className":"my-textarea",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Your Story:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datepicker",
+                     "props":{
+                        "id":"id",
+                        "name":"datepicker",
+                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                        "className":"my-datepicker-class"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"tagselector",
+                     "props":{
+                        "id":"tagselectorID",
+                        "name":"tagselector",
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select a Tag:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datehierarchy",
+                     "props":{
+                        "id":"datehierarchyID",
+                        "name":"datehierarchy",
+                        "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date(s):",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"img",
+                     "props":{
+                        "id":"imgID",
+                        "name":"profileImage",
+                        "src":"https://www.prlog.org/12405743-fintellix-logo.png",
+                        "alt":"Smiley face",
+                        "width":"100px",
+                        "height":"50px",
+                        "className":"myImageClass"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Image:",
+                  "props":{
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            }
+          
+        ] 
+      }
+      
+      
+       
+             
+             
+       
+        '></form-gen>
+    </div>   
+    <br>
+    <b>Above form is generated using below data-options</b>
+    <pre style="box-sizing:border-box; word-wrap: break-word;">
+
+      data-options='
+        { 
+         "form":{ 
+            "props":{ 
+               "id": "form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"               
+            },
+            "eventHandlers": [{
+               "event": "submit",
+               "handler": "submitForm"
+           }]
+         },
+         "rows":[ 
+         { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Firstname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     }
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Lastname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"email",
+                        "id":"email",
+                        "className" : "email-class",
+                        "title":"Email",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Email",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Password",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender"                        
+                        
+                     },
+                     "elementLabel":{ 
+                        "name":"male",
+                        "props":{ 
+                           "className":"my-rbutton-classM"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  },
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required" : "required"
+                     },
+                     "elementLabel":{ 
+                        "name":"female",
+                        "props":{ 
+                           "className":"my-rbutton-classF"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Gender",
+                  "props":{ 
+                     "className":"vs-label"
+                  }
+               }
+            },
+      
+      
+      
+            { 
+             "rowElements":[ 
+                { 
+                   "elementType":"select",
+                   "props":{ 
+                      "id":"countries",
+                      "className":"my-select-class",
+                      "required":"required",
+                      "defaultValue":"IN"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }],
+                   "options":[ 
+                     { 
+                         "props":{ 
+                             "value":""
+                         },
+                         "optionLabel":"Select One"
+                     },
+                      { 
+                         "props":{ 
+                            "value":"IN"
+                         },
+                         "optionLabel":"India"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"US" 
+                         },
+                         "optionLabel":"USA"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"CA"
+                         },
+                         "optionLabel":"Canada"
+                      }
+                   ]
+                }
+             ],
+             
+             "rowLabel":{ 
+                "name":"Select Country",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+             "rowElements":[ 
+                { 
+                   "elementType":"textarea",
+                   "props":{ 
+                      "id":"story",
+                      "name":"story",
+                      "rows":"5",
+                      "cols":"33",
+                      "maxLength":"500",
+                      "required" : "required",
+                      "className":"my-textarea",
+                      "placeholder": "Your input"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }]
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Your Story:",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+            "rowElements":[ 
+               { 
+                  "elementType":"datepicker",
+                  "props":{ 
+                     "id":"id",
+                     "name":"datepicker",
+                     "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                     "className": "my-datepicker-class"
+                  }
+               }
+            ],
+            "rowLabel":{ 
+               "name":"Select Date:",
+               "props":{ 
+                  "className":"vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "tagselector",
+               "props": {
+                  "id": "tagselectorID",
+                  "name": "tagselector",
+                  "data-options": "{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select a Tag:",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "datehierarchy",
+               "props": {
+                  "id": "datehierarchyID",
+                  "name": "datehierarchy",
+                  "data-options": "{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select Date(s):",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+
+         {
+            "rowElements": [{
+               "elementType": "img",
+               "props": {
+                  "id": "imgID",
+                  "name": "profileImage",
+                  "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
+                  "alt": "Smiley face", 
+                  "width": "575px", 
+                  "height": "345px"
+               }
+            }],
+            "rowLabel": {
+               "name": "Image:",
+               "props": {
+                  "class": "vs-body-regular-primary"
+               }
+            }
+         }
+      ]
+      }'
+    </pre>     
+</body>
+        {
+         "form":{
+            "props":{
+               "id":"form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"
+            },
+            "eventHandlers":[
+               {
+                  "event":"submit",
+                  "handler":"skundSubmitForm"
+               }
+            ]
+         },
+         "rows":[
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Firstname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Lastname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"email",
+                        "id":"email",
+                        "className":"email-class",
+                        "title":"Email",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Email",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Password",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"file",
+                        "id":"file",
+                        "className":"file-class",
+                        "title":"Upload File",
+                        "placeholder":"Select File"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Upload Your File",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender",
+                        "className":"male-class"
+                     },
+                     "elementLabel":{
+                        "name":"male",
+                        "props":{
+                           "className":"vs-radiobutton1"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  },
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required":"required"
+                     },
+                     "elementLabel":{
+                        "name":"female",
+                        "props":{
+                           "className":"vs-radiobutton2"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Gender",
+                  "props":{
+                     "className":"vs-label"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"select",
+                     "props":{
+                        "id":"countries",
+                        "className":"vs-dropdown",
+                        "required":"required",
+                        "defaultValue":"IN"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ],
+                     "options":[
+                        {
+                           "props":{
+                              "value":""
+                           },
+                           "optionLabel":"Select One"
+                        },
+                        {
+                           "props":{
+                              "value":"IN"
+                           },
+                           "optionLabel":"India"
+                        },
+                        {
+                           "props":{
+                              "value":"US"
+                           },
+                           "optionLabel":"USA"
+                        },
+                        {
+                           "props":{
+                              "value":"CA"
+                           },
+                           "optionLabel":"Canada"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Country",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"textarea",
+                     "props":{
+                        "id":"story",
+                        "name":"story",
+                        "rows":"5",
+                        "cols":"33",
+                        "maxLength":"500",
+                        "required":"required",
+                        "className":"my-textarea",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Your Story:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datepicker",
+                     "props":{
+                        "id":"id",
+                        "name":"datepicker",
+                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                        "className":"my-datepicker-class"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"tagselector",
+                     "props":{
+                        "id":"tagselectorID",
+                        "name":"tagselector",
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select a Tag:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datehierarchy",
+                     "props":{
+                        "id":"datehierarchyID",
+                        "name":"datehierarchy",
+                        "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date(s):",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"img",
+                     "props":{
+                        "id":"imgID",
+                        "name":"profileImage",
+                        "src":"https://www.prlog.org/12405743-fintellix-logo.png",
+                        "alt":"Smiley face",
+                        "width":"100px",
+                        "height":"50px",
+                        "className":"myImageClass"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Image:",
+                  "props":{
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            }
+          
+        ] 
+      }
+      
+      
+       
+             
+             
+       
+        '></form-gen>
+    </div>   
+    <br>
+    <b>Above form is generated using below data-options</b>
+    <pre style="box-sizing:border-box; word-wrap: break-word;">
+
+      data-options='
+        { 
+         "form":{ 
+            "props":{ 
+               "id": "form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"               
+            },
+            "eventHandlers": [{
+               "event": "submit",
+               "handler": "submitForm"
+           }]
+         },
+         "rows":[ 
+         { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Firstname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder": "Your input",
+                        "required": "required"
+                     }
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Lastname",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"email",
+                        "id":"email",
+                        "className" : "email-class",
+                        "title":"Email",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Email",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder": "Your input"
+                     },
+      
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Password",
+                  "props":{ 
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            { 
+               "rowElements":[ 
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender"                        
+                        
+                     },
+                     "elementLabel":{ 
+                        "name":"male",
+                        "props":{ 
+                           "className":"my-rbutton-classM"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  },
+                  { 
+                     "elementType":"input",
+                     "props":{ 
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required" : "required"
+                     },
+                     "elementLabel":{ 
+                        "name":"female",
+                        "props":{ 
+                           "className":"my-rbutton-classF"
+                        }
+                     },
+                     "eventHandlers": [{
+                        "event": "change",
+                        "handler": "submitForm"
+                    }]
+                  }
+               ],
+               "rowLabel":{ 
+                  "name":"Gender",
+                  "props":{ 
+                     "className":"vs-label"
+                  }
+               }
+            },
+      
+      
+      
+            { 
+             "rowElements":[ 
+                { 
+                   "elementType":"select",
+                   "props":{ 
+                      "id":"countries",
+                      "className":"my-select-class",
+                      "required":"required",
+                      "defaultValue":"IN"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }],
+                   "options":[ 
+                     { 
+                         "props":{ 
+                             "value":""
+                         },
+                         "optionLabel":"Select One"
+                     },
+                      { 
+                         "props":{ 
+                            "value":"IN"
+                         },
+                         "optionLabel":"India"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"US" 
+                         },
+                         "optionLabel":"USA"
+                      },
+                      { 
+                         "props":{ 
+                            "value":"CA"
+                         },
+                         "optionLabel":"Canada"
+                      }
+                   ]
+                }
+             ],
+             
+             "rowLabel":{ 
+                "name":"Select Country",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+             "rowElements":[ 
+                { 
+                   "elementType":"textarea",
+                   "props":{ 
+                      "id":"story",
+                      "name":"story",
+                      "rows":"5",
+                      "cols":"33",
+                      "maxLength":"500",
+                      "required" : "required",
+                      "className":"my-textarea",
+                      "placeholder": "Your input"
+                   },
+                   "eventHandlers": [{
+                     "event": "change",
+                     "handler": "submitForm"
+                 }]
+                }
+             ],
+             "rowLabel":{ 
+                "name":"Your Story:",
+                "props":{ 
+                   "className":"vs-body-regular-primary"
+                }
+             }
+          },
+      
+          { 
+            "rowElements":[ 
+               { 
+                  "elementType":"datepicker",
+                  "props":{ 
+                     "id":"id",
+                     "name":"datepicker",
+                     "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                     "className": "my-datepicker-class"
+                  }
+               }
+            ],
+            "rowLabel":{ 
+               "name":"Select Date:",
+               "props":{ 
+                  "className":"vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "tagselector",
+               "props": {
+                  "id": "tagselectorID",
+                  "name": "tagselector",
+                  "data-options": "{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select a Tag:",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+      
+      
+      {
+            "rowElements": [{
+               "elementType": "datehierarchy",
+               "props": {
+                  "id": "datehierarchyID",
+                  "name": "datehierarchy",
+                  "data-options": "{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"                  
+               }
+            }],
+            "rowLabel": {
+               "name": "Select Date(s):",
+               "props": {
+                  "className": "vs-body-regular-primary"
+               }
+            }
+         },
+
+         {
+            "rowElements": [{
+               "elementType": "img",
+               "props": {
+                  "id": "imgID",
+                  "name": "profileImage",
+                  "src": "https://www.prlog.org/12405743-fintellix-logo.png", 
+                  "alt": "Smiley face", 
+                  "width": "575px", 
+                  "height": "345px"
+               }
+            }],
+            "rowLabel": {
+               "name": "Image:",
+               "props": {
+                  "class": "vs-body-regular-primary"
+               }
+            }
+         }
+      ]
+      }'
+    </pre>     
+</body>
+        {
+         "form":{
+            "props":{
+               "id":"form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"
+            },
+            "eventHandlers":[
+               {
+                  "event":"submit",
+                  "handler":"skundSubmitForm"
+               }
+            ]
+         },
+         "rows":[
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Firstname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Lastname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"email",
+                        "id":"email",
+                        "className":"email-class",
+                        "title":"Email",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Email",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"password",
+                        "id":"password",
+                        "className":"password-class",
+                        "title":"Password",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Password",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"file",
+                        "id":"file",
+                        "className":"file-class",
+                        "title":"Upload File",
+                        "placeholder":"Select File"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Upload Your File",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"male",
+                        "name":"gender",
+                        "className":"male-class"
+                     },
+                     "elementLabel":{
+                        "name":"male",
+                        "props":{
+                           "className":"vs-radiobutton1"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  },
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"radio",
+                        "id":"female",
+                        "name":"gender",
+                        "required":"required"
+                     },
+                     "elementLabel":{
+                        "name":"female",
+                        "props":{
+                           "className":"vs-radiobutton2"
+                        }
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Gender",
+                  "props":{
+                     "className":"vs-label"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"select",
+                     "props":{
+                        "id":"countries",
+                        "className":"vs-dropdown",
+                        "required":"required",
+                        "defaultValue":"IN"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ],
+                     "options":[
+                        {
+                           "props":{
+                              "value":""
+                           },
+                           "optionLabel":"Select One"
+                        },
+                        {
+                           "props":{
+                              "value":"IN"
+                           },
+                           "optionLabel":"India"
+                        },
+                        {
+                           "props":{
+                              "value":"US"
+                           },
+                           "optionLabel":"USA"
+                        },
+                        {
+                           "props":{
+                              "value":"CA"
+                           },
+                           "optionLabel":"Canada"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Country",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"textarea",
+                     "props":{
+                        "id":"story",
+                        "name":"story",
+                        "rows":"5",
+                        "cols":"33",
+                        "maxLength":"500",
+                        "required":"required",
+                        "className":"my-textarea",
+                        "placeholder":"Your input"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Your Story:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datepicker",
+                     "props":{
+                        "id":"id",
+                        "name":"datepicker",
+                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }]}",
+                        "className":"my-datepicker-class"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"tagselector",
+                     "props":{
+                        "id":"tagselectorID",
+                        "name":"tagselector",
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select a Tag:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datehierarchy",
+                     "props":{
+                        "id":"datehierarchyID",
+                        "name":"datehierarchy",
+                        "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date(s):",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"img",
+                     "props":{
+                        "id":"imgID",
+                        "name":"profileImage",
+                        "src":"https://www.prlog.org/12405743-fintellix-logo.png",
+                        "alt":"Smiley face",
+                        "width":"100px",
+                        "height":"50px",
+                        "className":"myImageClass"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"change",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Image:",
+                  "props":{
+                     "class":"vs-body-regular-primary"
+                  }
+               }
+            }
+          
+        ] 
       }
       
       

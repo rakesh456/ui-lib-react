@@ -38,9 +38,9 @@ function datepickerRender(el) {
     }
 
     function callOnSelectedEvent(_date, el) {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onChange', ev);
-        el.dispatchEvent(ev);
+        // let ev = new CustomEvent("change");
+        // trigger(el, 'onChange', ev);
+        // el.dispatchEvent(ev);
     }
     
     function onFocusHandler() {
