@@ -263,7 +263,7 @@
 
     function submitForm(event) {
       //  console.log("Name", event.srcElement.id);
-        console.log(event.type + " event detected on element ID: " + event.srcElement.id + ".");
+        alert(event.type + " event detected on element ID: " + event.srcElement.id + ".");
     }
 
     function skundSubmitForm(event) {
@@ -564,7 +564,7 @@
                      },
                      "eventHandlers":[
                         {
-                           "event":"change",
+                           "event":"blur",
                            "handler":"submitForm"
                         }
                      ]
