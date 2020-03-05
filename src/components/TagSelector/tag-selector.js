@@ -479,7 +479,7 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
       // this.props.onDeSelect(item);
     } else {
-      this.props.onDeSelect(this.state.selectedItems);
+      // this.props.onDeSelect(this.state.selectedItems);
       this.setState({ selectedItems: [] });
     }
   }

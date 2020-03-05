@@ -124,9 +124,9 @@ class FormGenerator extends React.PureComponent {
                                     React.createElement(
                                         "input",
                                         elementProps,
-                                    )
-                                ),
-                                React.createElement("span", {id: elementError})
+                                        
+                                    ), React.createElement("span", {id: elementError})
+                                )
                             ));
                         }
                     }
@@ -162,10 +162,10 @@ class FormGenerator extends React.PureComponent {
                                         },
                                         item.optionLabel
                                     ))
-                                )
+                                ), React.createElement("span", {id: elementError})
 
-                            ),
-                            React.createElement("span", {id: elementError})
+                            )
+                            
                         ));
                     }
                     else if (elementType === "textarea") {
