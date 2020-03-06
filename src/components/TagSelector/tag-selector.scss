@@ -231,6 +231,7 @@ tag-selector{
     padding: 8px 0px 8px 10px;
     margin-bottom: 1px;
     color: $secondary-two-dark;
+    box-sizing: content-box;
     cursor: pointer;
     list-style: none;
     height: 20px;
@@ -305,7 +306,7 @@ tag-selector{
 }
 
 .VS-AutoCompleteItem.VS-ExtraWidth{
-    max-width: 90%;
+    max-width: 100%;
 }
 
 .VS-AutoCompleteItem .VS-AutoCompleteItem-Span{

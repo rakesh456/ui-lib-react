@@ -7,6 +7,16 @@ import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
 import tagSelectorRender from "./components/TagSelector/tagselectorrender";
 import dateHierarchyRender from "./components/DateHierarchy/datehierarchyrender";
 
+import {
+    isUndefinedOrNull
+} from "../src/utils/utils";
+
+import './components/Datepicker/date-picker.scss';
+import './components/TagSelector/tag-selector.scss';
+import './components/DateHierarchy/date-hierarchy.scss';
+import './components/QueryBuilder/query-builder.scss';
+
+
 (function () {
     if (typeof window.CustomEvent === "function") return false;
 
@@ -46,6 +56,8 @@ Array.prototype.forEach.call(
     })
 window.addDateHierarchyRender = dateHierarchyRender;
 
+serviceWorker.unregister();
+
 // Form generator render 
 Array.prototype.forEach.call(
     document.getElementsByTagName('form-gen'),
@@ -62,5 +74,3 @@ Array.prototype.forEach.call(
         queryBuilderRender(el);
     })
 window.addReactDatepicker = datepickerRender;
-
-serviceWorker.unregister();
