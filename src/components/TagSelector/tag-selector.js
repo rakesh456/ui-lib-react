@@ -13,7 +13,7 @@ import { CountryService } from "../../services/CountryService";
 class TagSelector extends React.PureComponent {
   constructor(props) {
     super(props);
-    const { maxItemCounter } = this.props.options;
+    const { maxItemCounter, readOnly, canRemoveAll } = this.props.options;
     this.state = {
       shouldListOpen: false,
       listItems: [],
@@ -27,6 +27,8 @@ class TagSelector extends React.PureComponent {
       hierarchyParentKey: "",
       hierarchySelectedItem: null,
       hierarchyParentLength: 0,
+      readOnly: (readOnly === true),
+      canRemoveAll: (canRemoveAll === false)? false : true,
       searchValue:''
     };
     this.countryservice = new CountryService();
@@ -477,7 +479,7 @@ class TagSelector extends React.PureComponent {
       this.setState({ selectedItems: selectedItems });
       // this.props.onDeSelect(item);
     } else {
-      this.props.onDeSelect(this.state.selectedItems);
+      // this.props.onDeSelect(this.state.selectedItems);
       this.setState({ selectedItems: [] });
     }
   }
@@ -492,7 +494,7 @@ class TagSelector extends React.PureComponent {
   };
 
   renderRemoveIcon(item, index) {
-    const { canRemoveAll, readOnly } = this.props.options;
+    const { canRemoveAll, readOnly } = this.state;
     return canRemoveAll === true && readOnly === false ? (
       <span
         className="VS-AutoCompleteItem-Icon pi pi-fw pi-times"
@@ -508,8 +510,7 @@ class TagSelector extends React.PureComponent {
   }
 
   renderSelectedItems() {
-    const { selectedItems, maxItemCounter } = this.state;
-    const { readOnly } = this.props.options;
+    const { selectedItems, maxItemCounter, readOnly } = this.state;
     return (
       <ul>
         {selectedItems && selectedItems.length > 0 ? (
@@ -566,10 +567,11 @@ class TagSelector extends React.PureComponent {
       hierarchySelectedItem
     } = this.state;
     const { options } = this.props;
-    const { readOnly } = this.props.options;
+    const { readOnly } = this.state;
     const _uuid = guid();
     let _selectedInput = this.renderSelectedItems();
     const readOnlyClass = readOnly === true ? "VS-ReadOnly" : "";
+
     return (
       <div className="VS-App">
         <div id={`${_uuid}`}></div>

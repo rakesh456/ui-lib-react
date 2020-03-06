@@ -81,9 +81,9 @@ class FormGenerator extends React.PureComponent {
                                     {className : (item.props.type === "checkbox")? CONSTANTS.CLASSES.VS_CHECK_MARK : CONSTANTS.CLASSES.VS_RADIO_DOT}
                                 )
 
-                            ))                            
-                        ), 
-                        React.createElement("span", {id: labelText ? labelText+'_error': 'missingID_error'})
+                            , React.createElement("span", {id: labelText ? labelText+'_error': 'missingID_error'})))                            
+                        )
+                        
                     ));
                 }
 
@@ -123,9 +123,9 @@ class FormGenerator extends React.PureComponent {
                                     React.createElement(
                                         "input",
                                         elementProps,
-                                    )
-                                ),
-                                React.createElement("span", {id: elementError})
+                                        
+                                    ), React.createElement("span", {id: elementError})
+                                )
                             ));
                         }
                     }
@@ -161,10 +161,10 @@ class FormGenerator extends React.PureComponent {
                                         },
                                         item.optionLabel
                                     ))
-                                )
+                                ), React.createElement("span", {id: elementError})
 
-                            ),
-                            React.createElement("span", {id: elementError})
+                            )
+                            
                         ));
                     }
                     else if (elementType === "textarea") {
@@ -183,8 +183,8 @@ class FormGenerator extends React.PureComponent {
                             React.createElement(
                                 "div",
                                 {key: keyRowElement},
-                                React.createElement("textarea", elementProps)
-                            ),React.createElement("span", {id: elementError})
+                                React.createElement("textarea", elementProps),React.createElement("span", {id: elementError})
+                            )
 
                         )
                         );
@@ -197,18 +197,22 @@ class FormGenerator extends React.PureComponent {
                         tags.push(
                         <div className = 'vs-gc-lbl-comp'> 
                         <div><label className = "vs-label">{labelText}</label></div>
-                        <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div>
+                        {/* <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div> */}
+                        <div><date-picker data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></date-picker></div>
                         </div>)
                     }
                     else if (elementType === 'datehierarchy')
                     {
                         let options = JSON.parse(elementProps['data-options']);
+                        let ID = elementProps.id ? elementProps.id : '';
+                        let elementName = elementProps.name ? elementProps.name : '';
                         options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
                         options = formatOptions(options);
                         tags.push(
                         <div className ='vs-gc-lbl-comp'> 
                         <div><label className='vs-label'>{labelText}</label></div>
-                        <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div>
+                        {/* <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div> */}
+                            <div><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}> </date-hierarchy> </div>
                         </div>)
                     }
                     else if (elementType === 'tagselector')
@@ -219,7 +223,8 @@ class FormGenerator extends React.PureComponent {
                         tags.push(
                         <div className ='vs-gc-lbl-comp'>
                         <div><label className='vs-label'>{labelText}</label></div>
-                        <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div>
+                        {/* <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div> */}
+                        <div><tag-selector data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></tag-selector> </div>
                         </div>)
                     }
                     
@@ -238,9 +243,9 @@ class FormGenerator extends React.PureComponent {
                                 React.createElement(
                                     "div",
                                     {key: keyRowElement},
-                                    React.createElement(elementType,elementProps)
-                                ),
-                                React.createElement("span", {id: elementError})
+                                    React.createElement(elementType,elementProps),
+                                    React.createElement("span", {id: elementError})
+                                )
                                )
                            );                       
                    }
