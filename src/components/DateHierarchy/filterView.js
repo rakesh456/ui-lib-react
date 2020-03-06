@@ -702,6 +702,9 @@ class FilterView extends React.PureComponent {
             selectAllResultState: !isZero,
             isSelectAllSearchResult: (isPartial === false && isOne === false) ? false : true
         });
+        
+        this.props.onFilteredDataChange([...this.state.filteredYears]);
+        this.props.onUpdateSearchResultCheckbox(!(isPartial === false && isOne === false));
     }
 
     getScrollbarClass() {

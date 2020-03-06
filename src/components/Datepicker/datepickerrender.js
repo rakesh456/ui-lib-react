@@ -20,6 +20,7 @@ import {
     getConvertedDate
 } from "../../utils/calendar";
 
+import './date-picker.scss';
 
 function trigger(elem, name, e) {
      // eslint-disable-next-line

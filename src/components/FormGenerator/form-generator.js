@@ -1,6 +1,6 @@
 import React from "react";
-import './css/vs.scss';
 import DatePicker from '../../components/Datepicker/index';
+
 import * as CONSTANTS from '../../utils/constants'
 import { isUndefinedOrNull } from '../../utils/utils'
 import {
@@ -36,7 +36,6 @@ class FormGenerator extends React.PureComponent {
                 let noOfRowElements = option.rowElements.length;
                 let labelKey = labelText + noOfRowElements;
                 let errorId = labelText ? labelText.replace(" ", "").replace(":","") +'_error' : '';
-                console.log('errorId',errorId);
                 let inx = 'rowDiv'+index;
                 let keyRowLabel = 'rowLabelDiv'+index;
                 let keyRowElement = 'rowElementDiv' + index;
@@ -292,7 +291,7 @@ class FormGenerator extends React.PureComponent {
 
     render() {
         return (
-            <div>
+            <div className="VS-Form-Generator-Wrapper">
                 {this.renderForm()}
             </div>
         )

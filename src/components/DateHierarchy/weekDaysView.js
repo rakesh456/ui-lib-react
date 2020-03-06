@@ -61,9 +61,9 @@ class WeekDaysView extends React.PureComponent {
     }
 
     renderWeeks = (week, month, quarter, year, weekIndex) => {
-        let { isFilterView } = this.props;
+        let { isFilterView, options } = this.props;
 
-        if (isFilterView === true && week.match === 0) {
+        if ((isFilterView === true && week.match === 0) || (options.showWeeks === true && week.days.length <= 0)) {
             return ("")
         } else {
             return (
