@@ -466,7 +466,7 @@ test("Check remove button enabled or not when canRemoveAll is true", () => {
     ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
   );
   const classNames = removeButtonWrapper.prop("className");
-  expect(classNames).toMatch(/VS-Disabled/);
+  expect(classNames).toMatch("VS-AutoCompleteItem-Icon pi pi-fw pi-times");
 });
 
 
