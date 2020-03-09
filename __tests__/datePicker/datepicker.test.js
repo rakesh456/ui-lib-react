@@ -1,11 +1,11 @@
-import DatePicker from "../src/components/Datepicker/index";
-import Week from "../src/components/Datepicker/calendar-date/week";
-import Month from "../src/components/Datepicker/calendar-date/month";
-import DEFAULT_OPTIONS from "../src/utils/constants";
+import DatePicker from "../../src/components/Datepicker/index";
+import Week from "../../src/components/Datepicker/calendar-date/week";
+import Month from "../../src/components/Datepicker/calendar-date/month";
+import DEFAULT_OPTIONS from "../../src/utils/constants";
 import React from "react";
 import { mount, shallow } from "enzyme";
 import ReactDOM from "react-dom";
-import CalendarDate from "../src/components/Datepicker/calendar-date/index";
+import CalendarDate from "../../src/components/Datepicker/calendar-date/index";
 import desktop from "react-icons/lib/fa/desktop";
 
 // 1. Datepicker renders without crashing

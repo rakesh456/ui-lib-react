@@ -1,6 +1,6 @@
 
-import { isValidJsonFormat, sortListingByType, resetTagSelectorOptions } from '../src/utils/tagselectorutils';
-import { DEFAULT_OPTIONS } from '../src/utils/tagselectorutils';
+import { isValidJsonFormat, sortListingByType, resetTagSelectorOptions } from '../../src/utils/tagselectorutils';
+import { DEFAULT_OPTIONS } from '../../src/utils/tagselectorutils';
 
 
 // 1. Test for resetTagSelectorOptions

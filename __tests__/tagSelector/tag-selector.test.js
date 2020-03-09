@@ -1,8 +1,8 @@
-import TagSelector from "../src/components/TagSelector/tag-selector";
-import ItemsList from "../src/components/TagSelector/tag-items-list.js";
+import TagSelector from "../../src/components/TagSelector/tag-selector";
+import ItemsList from "../../src/components/TagSelector/tag-items-list.js";
 import React from "react";
 import ReactDOM from "react-dom";
-import { DEFAULT_OPTIONS } from "../src/utils/tagselectorutils";
+import { DEFAULT_OPTIONS } from "../../src/utils/tagselectorutils";
 import { shallow, mount } from "enzyme";
 import renderer from "react-test-renderer";
 import { placeholder } from "@babel/types";
