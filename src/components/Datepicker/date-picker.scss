@@ -17,6 +17,7 @@ $complementary-two: #e6edf3;
 $complementary-three: #ccdbe7;
 $complementary-four: #80a5c3;
 $complementary-five: #bbbbbb;
+$complementary-six: #ccccbd73;
 $text-black: #000000;
 $text-white: #ffffff;
 $text-tertiary: #bbbcbd;
@@ -187,10 +188,13 @@ date-picker{
     font-size: 10px;
 }
 
+.VS-DisabledDay{
+    color: $complementary-six
+}
+
 .VS-Day .VS-DayCurrent,
-.VS-DisabledDay,
 .VS-NextPrevDay{
-    color: $complementary-five;
+    color: $text-tertiary;
 }
 
 .VS-Year, .VS-MonthQuarter{

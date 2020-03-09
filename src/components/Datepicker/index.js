@@ -21,9 +21,6 @@ import {
     getProperFormattedDate,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
-    checkDateInBetween,
-    getNewUpdateValueByArrow,
-    getDefaultQQMMYYYYDateByFormat,
     currentFormatToYYYYMMDD,
     getMonthIndex,
     isValidFormattedDate,
@@ -32,20 +29,16 @@ import {
     checkAllowedChars,
     isLeft,
     isRight,
-    getYYYYForLowerLimit,
-    getYYYYForUpperLimit,
     currentFormatToYYYYMMDDNew,
-    dateIsInDisabledList
+    dateIsInDisabledList,
+    DEFAULT_OPTIONS
 } from "../../utils/calendar";
 import {
     getDateByFormat,
     guid,
     ARROW_KEYS,
     ARROWS,
-    dateToMMYYYY,
-    dateToYear,
     isValidDate,
-    isUndefinedOrNull,
     compareObjects
 } from "../../utils/utils";
 
@@ -53,7 +46,7 @@ class DatePicker extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const datePickerOptions = this.props.options;
+        const datePickerOptions = {...this.props.options};
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
         this.state = { selectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false , isDisabled: false, isDisabledFull: false, options: datePickerOptions};
     }
@@ -63,15 +56,22 @@ class DatePicker extends React.PureComponent {
         document.addEventListener('click', this.closeCalendar);
         const dimensions = (this.el)? this.el.getBoundingClientRect() : {};
         const style = {};
+        const options = {...this.props.options};
+        const calendarLocation = (options.calendarLocation && options.calendarLocation === 'up')? 'up' : 'down';
+
         style.left = '0px';
         style.right = dimensions.right;
-        style.top = '100%';
+        if(calendarLocation === 'up'){
+            style.bottom = '100%';
+        } else {
+            style.top = '100%';
+        }
         style.zIndex = '1';
         this.setState({ style: style });
 
         window.addEventListener("resize", this.updateDimensions);
 
-        const datePickerOptions = this.props.options;
+        const datePickerOptions = {...this.props.options};
         const displayFormat = (datePickerOptions)? datePickerOptions.displayFormat : '';
         const _date = this.getDefaultDate();
         const _selectedYear = this.getDefaultYear();
@@ -119,31 +119,21 @@ class DatePicker extends React.PureComponent {
         }
     }
     
-    getStartDate() {
-        const {lowerLimit, displayFormat} = this.state.options;
-        if(isUndefinedOrNull(lowerLimit)){
-            return "";
+    getDataOptions(items){
+        let options = {...this.state.options};
+        let datePickerOptions = {...this.props.options};
+        let finalOption = {...DEFAULT_OPTIONS, ...datePickerOptions, ...options};
+
+        let newObj = {};
+        if(items && items.length > 0){
+            items.forEach((item) => {
+                if(item && finalOption[item]){
+                    newObj[item] = finalOption[item];
+                }
+            });
+            return newObj;
         } else {
-            if(isCalendarFormat(displayFormat)){
-                return getDateByFormat(lowerLimit, displayFormat);
-            } else {
-                const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(this.state.options);
-                return (displayFormat === "YYYY")? lowerYearLimit : (lowerMonthLimit + '/' + lowerYearLimit);
-            }
-        }
-    }
-    
-    getEndDate() {
-        const {upperLimit, displayFormat} = this.state.options;
-        if(isUndefinedOrNull(upperLimit)){
-            return "";
-        } else {
-            if(isCalendarFormat(displayFormat)){
-                return getDateByFormat(upperLimit, displayFormat);
-            } else {
-                const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(this.state.options);
-                return (displayFormat === "YYYY")? upperYearLimit : (upperMonthLimit + '/' + upperYearLimit);
-            }
+            return finalOption;
         }
     }
     
@@ -154,36 +144,38 @@ class DatePicker extends React.PureComponent {
             return "";
         } else if(typeof(defaultDate) !== "undefined"){
             let _isValid = false;
-
+            
             let _date = currentFormatToYYYYMMDDNew(defaultDate, options);
             let _valid = (isValidDate(_date));
-                _isValid = (_valid)? isValidOutsideRangeDate(_date, options) : _valid; 
+            _isValid = (_valid)? isValidOutsideRangeDate(_date, options) : _valid; 
             return (_isValid)? defaultDate : '';
         } else {
-            let _lowerDate = getProperFormattedDate(options.lowerLimit, options);
-            let _upperLimit = getProperFormattedDate(options.upperLimit, options);
-            let { displayFormat } = options;
-            let _date = (_lowerDate >= new Date())? _lowerDate : new Date();
-            _date = (_upperLimit <= new Date())? _lowerDate : _date;
+            return '';
+
+            // let _lowerDate = getProperFormattedDate(options.lowerLimit, options);
+            // let _upperLimit = getProperFormattedDate(options.upperLimit, options);
+            // let { displayFormat } = options;
+            // let _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+            // _date = (_upperLimit <= new Date())? _lowerDate : _date;
             
-            if(!isValidDate(_lowerDate) && isValidDate(_upperLimit)){
-                _date = (_upperLimit <= new Date())? _upperLimit : _date;
-            } else if(!isValidDate(_upperLimit) && isValidDate(_lowerDate)){
-                _date = (_lowerDate >= new Date())? _lowerDate : new Date();
-            }
+            // if(!isValidDate(_lowerDate) && isValidDate(_upperLimit)){
+            //     _date = (_upperLimit <= new Date())? _upperLimit : _date;
+            // } else if(!isValidDate(_upperLimit) && isValidDate(_lowerDate)){
+            //     _date = (_lowerDate >= new Date())? _lowerDate : new Date();
+            // }
             
-            let _dateIn = checkDateInBetween(new Date(), isValidDate(_lowerDate)? _lowerDate : null, isValidDate(_upperLimit)? _upperLimit : null);
+            // let _dateIn = checkDateInBetween(new Date(), isValidDate(_lowerDate)? _lowerDate : null, isValidDate(_upperLimit)? _upperLimit : null);
             
-            let updatedDate = null;
-            if(_dateIn){
-                updatedDate = (isValidOutsideRangeDate(_date, options))? _date : getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
-            } else {
-                let _dt = getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
-                updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
-            }
+            // let updatedDate = null;
+            // if(_dateIn){
+            //     updatedDate = (isValidOutsideRangeDate(_date, options))? _date : getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+            // } else {
+            //     let _dt = getNewUpdateDateByArrow(_date, true, options, displayFormat, _lowerDate, _upperLimit, ARROWS.right, false, false);
+            //     updatedDate = (isValidOutsideRangeDate(_date, options))? _date : _dt
+            // }
             
-            let _valid = isValidOutsideRangeDate(updatedDate, options);
-            return (_valid)? updatedDate : null;
+            // let _valid = isValidOutsideRangeDate(updatedDate, options);
+            // return (_valid)? updatedDate : null;
         }
             
     }
@@ -208,19 +200,20 @@ class DatePicker extends React.PureComponent {
             }
             return (_isValid)? defaultDate : '';
         } else {
-            const options = (this.props.options)? this.props.options : {};
-            let { displayFormat, lowerLimit, upperLimit, disabledList } = options;
-            let _val = getDefaultQQMMYYYYDateByFormat(options);
-            const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
+            return '';
+            // const options = (this.props.options)? this.props.options : {};
+            // let { displayFormat, lowerLimit, upperLimit, disabledList } = options;
+            // let _val = getDefaultQQMMYYYYDateByFormat(options);
+            // const updatedValue = getNewUpdateValueByArrow(_val, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, false);
             
-            let _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
+            // let _valid = (displayFormat === 'MM/YYYY')? isValidOutsideRangeDateMonthYear(updatedValue, options) : (displayFormat === 'QQ/YYYY')? isValidOutsideRangeDateQQYear(updatedValue, options) : (displayFormat === 'YYYY')? isValidOutsideRangeDateYear(updatedValue, options)  : false;
     
-            let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
+            // let _updatedUpperLimit = (displayFormat === 'MM/YYYY')? dateToMMYYYY(upperLimit) : (displayFormat === 'YYYY')? dateToYear(upperLimit) : (displayFormat === 'QQ/YYYY')? upperLimit : '';
     
-            let _returnValue = ((_valid)? updatedValue : _updatedUpperLimit).toString();
-            let isInDisabledList = (disabledList && disabledList.indexOf(_returnValue) > -1);
+            // let _returnValue = ((_valid)? updatedValue : _updatedUpperLimit).toString();
+            // let isInDisabledList = (disabledList && disabledList.indexOf(_returnValue) > -1);
     
-            return (isInDisabledList)? null : _returnValue;
+            // return (isInDisabledList)? null : _returnValue;
         }
     }
     // Component explicit methods end
@@ -367,7 +360,7 @@ class DatePicker extends React.PureComponent {
             shouldCalendarOpen: true,
             newSelectedYear: "",
             selectedDate: (this.state.isInvalidRangeDate || this.state.isInvalidDate)? getDateByFormat(_date, displayFormat) : _selectedDate,
-            selectedYear: (this.state.isInvalidDate)? "" : this.state.selectedYear
+            selectedYear: (this.state.isInvalidDate)? this.getDefaultYear() : this.state.selectedYear
         });
 
         this.props.onFocus();
@@ -607,7 +600,7 @@ class DatePicker extends React.PureComponent {
         const currentDateMonth = getSelectedMonthFromDate(selectedDate, options);
         const currentDateYear = getSelectedYearFromDate(selectedDate, options);
 
-        let isDisabled = ((options && options.isDisabled === true) || (isCalendarFormat(displayFormat) && selectedDate === null) || (isYearFormat(displayFormat) && selectedYear === null));
+        let isDisabled = ((options && options.isDisabled === true) || (options.lowerLimit && options.upperLimit && isCalendarFormat(displayFormat) && selectedDate === null) || (options.lowerLimit && options.upperLimit && isYearFormat(displayFormat) && selectedYear === null))? true : false;
         let _lowerDate = (options)? getProperFormattedDate(options.lowerLimit, options) : "";
         const isDisabledFull = (options)? (options.lowerLimit === options.upperLimit && dateIsInDisabledList(_lowerDate, options)) : false;
         isDisabled = (isDisabledFull === true)? true : isDisabled;
@@ -656,11 +649,11 @@ class DatePicker extends React.PureComponent {
                                 : ''
                         }
                         {
-                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.props.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
+                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.state.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
 
                         }
                         {
-                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} style={this.props.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
+                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} style={this.state.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
                         }
                     </div>
                 </header>
