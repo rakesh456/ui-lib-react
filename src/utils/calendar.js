@@ -772,12 +772,12 @@ export const getNewUpdateValueByArrow = (value, isRecursive, options, displayFor
 
 // Function to check value is left or not
 export const isLeft = (value) => {
-    return (value.toLowerCase()) === 'left';
+    return ( value && ( value.toLowerCase()) === 'left');
 }
 
 // Function to check value is right or not
 export const isRight = (value) => {
-    return (value.toLowerCase()) === 'right';
+    return ( value && (value.toLowerCase()) === 'right');
 }
 
 // Function to return number of character allowed by display format

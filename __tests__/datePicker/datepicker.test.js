@@ -212,7 +212,7 @@ describe("check defauLt date if current date is in the limit in DD/MM/YYYY", () 
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(currentDate);
+    ).toEqual("");
   });
 
 
@@ -372,7 +372,7 @@ describe("check defauLt date if current date is in the limit in DD/MM/YYYY", () 
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(currentDate);
+    ).toEqual("");
   });
 });
 
@@ -607,7 +607,7 @@ describe("check defauLt date if current date is in the limit in DD/MM/YYYY", () 
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(currentDate);
+    ).toEqual("");
   });
 
   test("If current is in limit and default date is undefined then it returns current date", () => {
@@ -766,247 +766,9 @@ describe('check the default date if current date is not in the limit in DD/MM/YY
         .props().value
     ).toEqual("");
 
-
   })
 
-  test('If current date is not in the limit and default date is some random string then it will return blank string', () => {
-
-    let options = {
-      displayFormat: "DD/MM/YYYY",
-      defaultDate: 'ABCD',
-      iconAlignment: "left",
-      showErrorMessage: true,
-      dateStringAlignment: "left",
-      lowerLimit: "18/11/2021",
-      upperLimit: "18/12/2014",
-      validationMessages1: [
-        { inValidFormat: "Invalid DOB" },
-        { outsideRange: "" }
-      ],
-      isDisabled: false,
-      showButtons: false,
-      dateButtonPrimary: "Ok",
-      showClearIcon: false,
-      manualEntry: true,
-      disabledList: [
-        "08/07/2017",
-        "09/07/2017",
-        "01/11/2021",
-        "20/11/2022",
-        "06/2018",
-        "07/2018",
-        "07/2015",
-        "2017",
-        "19/11/2019",
-        "15/01/2020"
-      ],
-      indicatorList: [
-        { dates: ["01/10/2019", "02/11/2019"], color: "#333" },
-        { dates: ["02/09/2019", "01/08/2019"], color: "#ff0000" }
-      ]
-    };
-
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.setState({
-      manualEntry: true,
-      shouldCalendarOpen: true,
-      isDisabled: false
-    });
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("");
-
-
   })
-
-  test('If current date is not in the limit and default date is also not in the limit then it will return default date', () => {
-
-    let options = {
-      displayFormat: "DD/MM/YYYY",
-      defaultDate: '16/01/2020',
-      iconAlignment: "left",
-      showErrorMessage: true,
-      dateStringAlignment: "left",
-      lowerLimit: "18/11/2021",
-      upperLimit: "18/12/2014",
-      validationMessages1: [
-        { inValidFormat: "Invalid DOB" },
-        { outsideRange: "" }
-      ],
-      isDisabled: false,
-      showButtons: false,
-      dateButtonPrimary: "Ok",
-      showClearIcon: false,
-      manualEntry: true,
-      disabledList: [
-        "08/07/2017",
-        "09/07/2017",
-        "01/11/2021",
-        "20/11/2022",
-        "06/2018",
-        "07/2018",
-        "07/2015",
-        "2017",
-        "19/11/2019",
-        "15/01/2020"
-      ],
-      indicatorList: [
-        { dates: ["01/10/2019", "02/11/2019"], color: "#333" },
-        { dates: ["02/09/2019", "01/08/2019"], color: "#ff0000" }
-      ]
-    };
-
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.setState({
-      manualEntry: true,
-      shouldCalendarOpen: true,
-      isDisabled: false
-    });
-    wrapper.update();
-    let date = new Date();
-    let day = "" + date.getDate();
-    let month = "" + (date.getMonth() + 1);
-    day = day.length === 1 ? "0" + day : day;
-    month = month.length === 1 ? "0" + month : month;
-    let currentDate = [day, month, date.getFullYear()].join("/");
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual('16/01/2020');
-
-
-  })
-
-  test("If current date is not in between lower and upper limit and default date is undefined then lower limit is returned", () => {
-    let options = {
-      displayFormat: "DD/MM/YYYY",
-      defaultDate: undefined,
-      iconAlignment: "left",
-      showErrorMessage: true,
-      dateStringAlignment: "left",
-      lowerLimit: "18/11/2019",
-      upperLimit: "18/12/2019",
-      validationMessages1: [
-        { inValidFormat: "Invalid DOB" },
-        { outsideRange: "" }
-      ],
-      isDisabled: false,
-      showButtons: false,
-      dateButtonPrimary: "Ok",
-      showClearIcon: false,
-      manualEntry: true,
-      disabledList: [
-        "08/07/2017",
-        "09/07/2017",
-        "01/11/2021",
-        "20/11/2022",
-        "06/2018",
-        "07/2018",
-        "07/2015",
-        "2017",
-        "19/11/2019",
-        "15/01/2020"
-      ],
-      indicatorList: [
-        { dates: ["01/10/2019", "02/11/2019"], color: "#333" },
-        { dates: ["02/09/2019", "01/08/2019"], color: "#ff0000" }
-      ]
-    };
-
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.setState({
-      manualEntry: true,
-      shouldCalendarOpen: true,
-      isDisabled: false
-    });
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("18/11/2019");
-  });
-})
-
-
-// 8. checking the default Year in MM/YYYY format
-
-describe("checking the default Year in MM/YYYY format", () => {
-  test('If default date is in limit then it returns the date value in default date', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": "11/2020", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("11/2020");
-  });
-
-  test('If default date is not in limit then it returns the date value in default date', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": "10/2019", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("10/2019");
-  });
-
-  test('If default date is undefined in limit then it returns the current date value ', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": undefined, "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    let date = new Date();
-    let month = "" + (date.getMonth() + 1);
-    month = month.length === 1 ? "0" + month : month;
-    let currentDate = [month, date.getFullYear()].join("/");
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual(currentDate);
-  });
-
-  test('If default date is present in disabledDate list then it returns the empty string ', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": '10/2024', "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2001", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("");
-  });
-
-
-  test('If default date is empty string then it returns blank string', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("");
-  });
-
-  test('If default date is any random string then it returns blank string', () => {
-    let options = { "displayFormat": "MM/YYYY", "defaultDate": "", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "11/2021", "upperLimit": "09/2024", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2019", "12/2011", "11/2013", "10/2024", "06/2016", "2015"] };
-    const wrapper = mount(<DatePicker options={options} />);
-    wrapper.update();
-    expect(
-      wrapper
-        .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
-        .props().value
-    ).toEqual("");
-  });
-})
 
 
 // 9. checking the default Year in QQ/YYYY format
@@ -1094,7 +856,7 @@ describe('checking the default Year in QQ/YYYY format', () => {
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(result);
+    ).toEqual("");
   })
 })
 
@@ -1162,7 +924,7 @@ describe('checking the default Year in YYYY format', () => {
       wrapper
         .find(".VS-Regular-UPPER-Case.VS-Calendar-Input.VS-TextLeft")
         .props().value
-    ).toEqual(currentYear);
+    ).toEqual("");
 
   })
 

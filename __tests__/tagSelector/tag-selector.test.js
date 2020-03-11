@@ -436,9 +436,8 @@ test("Check selected items using maxItemCounter in non-hierarchial data ", () =>
     .find(".VS-LiItems")
     .at(2)
     .simulate("click");
-
   const selectedWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+    ".VS-AutoCompleteItem-New .VS-AutoCompleteItem-Span"
   );
   expect(selectedWrapper.text()).toEqual("3 SELECTED");
 });
@@ -463,7 +462,7 @@ test("Check remove button enabled or not when canRemoveAll is true", () => {
   instant.setSelectedItems([{ key: "Albania", value: "AL" }]);
   wrapper.update();
   const removeButtonWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Icon"
+    ".VS-AutoCompleteItem-New .VS-AutoCompleteItem-Icon"
   );
   const classNames = removeButtonWrapper.prop("className");
   expect(classNames).toMatch("VS-AutoCompleteItem-Icon pi pi-fw pi-times");
@@ -907,7 +906,7 @@ test("Check selected items using maxItemCounter in hierarchial data", () => {
     .simulate("click");
 
   const selectedWrapper = wrapper.find(
-    ".VS-AutoCompleteItem .VS-AutoCompleteItem-Span"
+    ".VS-AutoCompleteItem-New .VS-AutoCompleteItem-Span"
   );
   expect(selectedWrapper.text()).toEqual("3 SELECTED");
 });
