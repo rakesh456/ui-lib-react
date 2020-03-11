@@ -88,7 +88,6 @@ class ItemsList extends React.PureComponent {
     }
 
     renderHeirarchyItems() {
-        const { allowNewValue } = this.props.options;
         const { filteredlistItems, listItems } = this.props;
 
         return (
