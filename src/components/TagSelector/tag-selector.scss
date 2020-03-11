@@ -142,6 +142,7 @@ tag-selector{
 }
 
 
+
 .VS-Tag-Input-Border ul{
     height: auto;
     max-height: 224px;
@@ -235,6 +236,25 @@ tag-selector{
     cursor: pointer;
     list-style: none;
     height: 20px;
+}
+
+.VS-AutoCompleteItem-New {
+    max-width: 256px;
+    cursor: default;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    padding: 8px 0px 8px 16px !important;
+    white-space: nowrap;
+    position: relative;
+    margin-right: 2px;
+    margin-top: 1px !important;
+    border: 0 none;
+    font-size: .9em;
+    background: $secondary-three-bright !important;
+    color: #fff !important;
+    border-radius: 3px !important;
+    font-weight: bold;
 }
 
 .VS-AutoCompleteItem {

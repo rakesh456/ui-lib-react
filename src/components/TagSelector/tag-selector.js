@@ -519,7 +519,7 @@ class TagSelector extends React.PureComponent {
 						selectedItems.map((item, index) => {
 							return (
 								<li key={index + "_data"}>
-									<span key={index + "_item"} className="VS-AutoCompleteItem">
+									<span key={index + "_item"} className="VS-AutoCompleteItem-New">
 										<span className="VS-AutoCompleteItem-Span">
 											{item.value}
 										</span>{" "}
@@ -530,7 +530,7 @@ class TagSelector extends React.PureComponent {
 						})
 					) : (
 							<li>
-								<span className="VS-AutoCompleteItem VS-ExtraWidth">
+								<span className="VS-AutoCompleteItem-New VS-ExtraWidth">
 									<span className="VS-AutoCompleteItem-Span">
 										{selectedItems.length} SELECTED
                 </span>

@@ -221,3 +221,7 @@ export const sortBy = fn => (a, b) => {
     const fb = fn(b)
     return -(fa < fb) || +(fa > fb)
 }
+
+export const cloneData = (data) => {
+    return JSON.parse(JSON.stringify(data));
+}
