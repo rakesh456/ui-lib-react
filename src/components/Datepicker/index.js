@@ -39,7 +39,8 @@ import {
     ARROW_KEYS,
     ARROWS,
     isValidDate,
-    compareObjects
+    compareObjects,
+    isUndefinedOrNull
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -455,78 +456,79 @@ class DatePicker extends React.PureComponent {
     
             lowerLimit = (lowerLimit)? ((isValidDate(lowerLimit))? lowerLimit : null) : null;
             upperLimit = (upperLimit)? ((isValidDate(upperLimit))? upperLimit : null) : null;
-    
-            if (evt.ctrlKey || evt.metaKey) {
-                switch (evt.keyCode) {
-                    case ARROWS.left:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
+            if(!isUndefinedOrNull(this.state.selectedDate)){
+                if (evt.ctrlKey || evt.metaKey) {
+                    switch (evt.keyCode) {
+                        case ARROWS.left:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.right:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.up:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.down:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
                     }
-                    case ARROWS.right:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    case ARROWS.up:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    case ARROWS.down:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-                
-            } else if (evt.shiftKey) {
-                switch (evt.keyCode) {
-                    case ARROWS.left:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, false, true);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    case ARROWS.right:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, true);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    case ARROWS.up:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, false, true);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    case ARROWS.down:{
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, false, true);
-                        this.setState({ selectedDate: updatedDate });
-                        this.props.onSelect(updatedDate);
-                        break;
-                    }
-                    default: {
-                        break;
-                    }
-                }
-            } else {
-                if(charCode === CONSTANTS.KEY_CODES.ESCAPE_KEY){
-                    this.setState({ shouldCalendarOpen: false });
-                }
-        
-                if(ARROW_KEYS.indexOf(charCode) !== -1){
-                    const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
                     
-                    this.setState({ selectedDate: updatedDate });
-                    this.props.onSelect(updatedDate);
+                } else if (evt.shiftKey) {
+                    switch (evt.keyCode) {
+                        case ARROWS.left:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, false, true);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.right:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, true);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.up:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, false, true);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        case ARROWS.down:{
+                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, false, true);
+                            this.setState({ selectedDate: updatedDate });
+                            this.props.onSelect(updatedDate);
+                            break;
+                        }
+                        default: {
+                            break;
+                        }
+                    }
+                } else {
+                    if(charCode === CONSTANTS.KEY_CODES.ESCAPE_KEY){
+                        this.setState({ shouldCalendarOpen: false });
+                    }
+            
+                    if(ARROW_KEYS.indexOf(charCode) !== -1){
+                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
+                        
+                        this.setState({ selectedDate: updatedDate });
+                        this.props.onSelect(updatedDate);
+                    }
                 }
             }
         }

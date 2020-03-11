@@ -100,9 +100,9 @@ export function getDefaultQQMMYYYYDateByFormat(options){
 // Get date by options
 export function checkValueByDisplayFormat(date, options, callback){
     if(options.displayFormat && isYearFormat(options.displayFormat)){
-        if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
-            callback(date, false, false);
-        } else {
+        // if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
+        //     callback(date, false, false);
+        // } else {
             if(isQQYYYYFormat(options.displayFormat)){
                 let _date = dateToQQYYYY(date);
                 let _validFormat = isValidQQYYYYValue(_date, options); 
@@ -121,7 +121,7 @@ export function checkValueByDisplayFormat(date, options, callback){
             } else {
                 callback("", true, false);
             }
-        }
+        //}
     } else {
         if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);
