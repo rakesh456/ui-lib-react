@@ -4,14 +4,12 @@ import {
     guid,
     isUndefinedOrNull
 } from "../../utils/utils";
-import { CountryService } from '../../services/CountryService';
 
 class ItemsList extends React.PureComponent {
     constructor(props) {
         super(props);
         const { maxItemCounter } = this.props.options;
         this.state = { selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [] };
-        this.countryservice = new CountryService();
     }
 
     componentDidMount() {

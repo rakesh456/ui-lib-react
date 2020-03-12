@@ -8,7 +8,6 @@ import {
 	sortListingByType,
 	isValidJsonFormat
 } from "../../utils/tagselectorutils";
-import { CountryService } from "../../services/CountryService";
 
 class TagSelector extends React.PureComponent {
 	constructor(props) {
@@ -31,7 +30,6 @@ class TagSelector extends React.PureComponent {
 			canRemoveAll: (canRemoveAll === false) ? false : true,
 			searchValue: ''
 		};
-		this.countryservice = new CountryService();
 	}
 
 	updateDimensions() { }
