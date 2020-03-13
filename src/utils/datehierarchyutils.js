@@ -1,4 +1,4 @@
-export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 4, "showQuarters": true, 'showWeeks': false, 'disabledList': [] };
+export const DEFAULT_OPTIONS = { 'lowerLimit': new Date().getFullYear(), 'upperLimit': new Date().getFullYear() + 4, "showQuarters": true, 'showWeeks': false, 'disabledList': [], 'expandResults': true };
 
 export const MONTH_NAMES = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 

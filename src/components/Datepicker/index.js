@@ -443,7 +443,9 @@ class DatePicker extends React.PureComponent {
                 }
             }
         }
-        this.setState({ shouldCalendarOpen: false});
+        setTimeout(() => {
+            this.setState({ shouldCalendarOpen: false});
+        }, 100);
         this.props.onBlur();
     }
     

@@ -106,10 +106,9 @@ class FilterView extends React.PureComponent {
         const { options } = this.props;
         let listOfYears = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
 
-        let { showWeeks, showQuarters } = this.props.options;
+        let { showWeeks, showQuarters, expandResults } = this.props.options;
         let _years = listOfYears.map(a => Object.assign({}, a));
-
-
+        
         if (!isUndefinedOrNull(searchValue)) {
             let searchResult = [];
 
@@ -363,7 +362,9 @@ class FilterView extends React.PureComponent {
                             let matchQuarters = _years[yearIndex]['quarters'];
                             let isMathcOne = JSON.stringify(matchQuarters).match(matchRegExOne);
                             _years[yearIndex]['match'] = (isMathcOne === null) ? 0 : 1;
-                            _years[yearIndex]['showChild'] = true;
+                            if(expandResults === true){
+                              _years[yearIndex]['showChild'] = true;
+                            }
                         }
                     }
                 } else {
@@ -507,7 +508,9 @@ class FilterView extends React.PureComponent {
                             let isMathcOne = JSON.stringify(matchMonths).match(matchRegExOne);
 
                             _years[yearIndex]['match'] = (isMathcOne === null) ? 0 : 1;
-                            _years[yearIndex]['showChild'] = true;
+                            if(expandResults === true){
+                              _years[yearIndex]['showChild'] = true;
+                            }
                         }
                     }
                 }
