@@ -82,6 +82,14 @@ class QuarterView extends React.PureComponent {
         }
     }
 
+    renderAllQuarters = (yearObj, quarters) => {
+        let quarterHtml = [];
+        quarters.forEach((quarter, quarterIndex) => {
+            quarterHtml.push(this.renderQuarter(quarter, yearObj, quarterIndex));
+        });
+        return quarterHtml;
+    }
+
     render() {
         const { options } = this.props;
         let year = this.props.year;
@@ -92,7 +100,6 @@ class QuarterView extends React.PureComponent {
                 }
             </div>
         )
-
     }
 }
 export default QuarterView;

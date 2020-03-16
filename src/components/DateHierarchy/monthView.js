@@ -102,6 +102,14 @@ class MonthView extends React.PureComponent {
             )
         }
     }
+    
+    renderAllMonths = (quarter, year) => {
+        let monthHtml = [];
+        quarter.months.forEach((month, monthIndex) => {
+            monthHtml.push(this.renderMonth(month, quarter, year, monthIndex));
+        });
+        return monthHtml;
+    }
 
     render() {
         const { options } = this.props;
@@ -110,6 +118,7 @@ class MonthView extends React.PureComponent {
             let quarter = this.props.quarter;
             return (
                 <div options={options}>
+                    {/* {this.renderAllMonths(quarter, year)} */}
                     {quarter.months.map((month, monthIndex) => this.renderMonth(month, quarter, year, monthIndex))}
                 </div>
             )

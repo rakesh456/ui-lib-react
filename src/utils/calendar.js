@@ -100,9 +100,9 @@ export function getDefaultQQMMYYYYDateByFormat(options){
 // Get date by options
 export function checkValueByDisplayFormat(date, options, callback){
     if(options.displayFormat && isYearFormat(options.displayFormat)){
-        if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
-            callback(date, false, false);
-        } else {
+        // if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
+        //     callback(date, false, false);
+        // } else {
             if(isQQYYYYFormat(options.displayFormat)){
                 let _date = dateToQQYYYY(date);
                 let _validFormat = isValidQQYYYYValue(_date, options); 
@@ -121,7 +121,7 @@ export function checkValueByDisplayFormat(date, options, callback){
             } else {
                 callback("", true, false);
             }
-        }
+        //}
     } else {
         if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);
@@ -772,12 +772,12 @@ export const getNewUpdateValueByArrow = (value, isRecursive, options, displayFor
 
 // Function to check value is left or not
 export const isLeft = (value) => {
-    return (value.toLowerCase()) === 'left';
+    return ( value && ( value.toLowerCase()) === 'left');
 }
 
 // Function to check value is right or not
 export const isRight = (value) => {
-    return (value.toLowerCase()) === 'right';
+    return ( value && (value.toLowerCase()) === 'right');
 }
 
 // Function to return number of character allowed by display format

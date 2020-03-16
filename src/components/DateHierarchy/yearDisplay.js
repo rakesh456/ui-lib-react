@@ -318,11 +318,20 @@ class YearDisplay extends React.PureComponent {
         return (flag === true) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
+    renderAllYears = (years) => {
+        let yearHtml = [];
+        years.forEach((year, index) => {
+            yearHtml.push(this.renderYear(year, index));
+        });
+        return yearHtml;
+    }
+
     render() {
         const { options, years } = this.props;
         return (
             <div options={options}>
                 <div>
+                    {/* {this.renderAllYears(years)} */}
                     {(years)?years.map((year, index) => this.renderYear(year, index)):''}
                 </div>
             </div>
