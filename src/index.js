@@ -4,6 +4,8 @@ import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import tagSelectorRender from "./components/TagSelector/tagselectorrender";
 import dateHierarchyRender from "./components/DateHierarchy/datehierarchyrender";
+import formGeneratorRender from "./components/FormGenerator/formgeneratorrender";
+import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
@@ -47,5 +49,22 @@ Array.prototype.forEach.call(
         dateHierarchyRender(el);
     })
 window.addDateHierarchyRender = dateHierarchyRender;
+
+// Form generator render 
+Array.prototype.forEach.call(
+    document.getElementsByTagName('form-gen'),
+    (el) => {
+        formGeneratorRender(el);
+    })
+
+window.addFormGenerator = formGeneratorRender;
+
+// Query builder render 
+Array.prototype.forEach.call(
+    document.getElementsByTagName('query-builder'),
+    (el) => {
+        queryBuilderRender(el);
+    })
+window.addReactDatepicker = datepickerRender;
 
 serviceWorker.unregister();

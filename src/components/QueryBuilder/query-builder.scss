@@ -1,0 +1,90 @@
+$primary-one-light: #e6f0f6;
+$primary-one-dark: #006ba6;
+$primary-one-bright: #1a7aaf;
+$primary-two-light: #eeeeef;
+$primary-two-bright: #76797b;
+$primary-two-dark: #54585a;
+$primary-three-dark: #000080;
+$secondary-one-light: #f3f8e6;
+$secondary-one-bright: #9dca33;
+$secondary-one-dark: #84bd00;
+$secondary-two-bright: #335161;
+$secondary-three-bright: #78909C;
+$secondary-four-bright: #5D717C;
+$secondary-two-light: #e6e9eb;
+$secondary-two-dark: #00263a;
+$grey-one: #ececec;
+$complementary-one: #f8f8f9;
+$complementary-two: #e6edf3;
+$complementary-three: #ccdbe7;
+$complementary-four: #80a5c3;
+$complementary-five: #bbbbbb;
+$text-black: #000000;
+$text-white: #ffffff;
+$text-tertiary: #bbbcbd;
+$cg-aqua-10: #ecf9f7;
+$cg-aqua-30: #c6ece6;
+$cg-aqua-50: #a0e0d6;
+$cg-aqua-70: #79d4c5;
+$cg-aqua: #40c1ac;
+$cg-crimson-10: #fbeae8;
+$cg-crimson-30: #f4bfbb;
+$cg-crimson-60: #e97f77;
+$cg-crimson-80: #e15449;
+$cg-crimson-90: #de3e33;
+$cg-navy-10: #b3c9db;
+$cg-navy-80: #336f9f;
+$cg-navy-90: #1a5d93;
+$cg-navy: #004b87;
+$gui-slate: #78909c;
+$gui-green: #00b16a;
+$gui-mango: #ffb900;
+$gui-gold: #fff1d2;
+$gui-snow: #fafafa;
+$gui-blue: #069abc;
+$gui-white: #fffffe;
+$gui-no-data: #eeeeee;
+$gui-error-red: #fd462a;
+$font-family: 'Roboto', sans-serif;
+
+.VS-Hidden{
+    display: none;
+    visibility: hidden;
+}
+
+.VS-Show{
+    display: block;
+}
+
+.VS-MrgT5{
+    margin-top: 5px;
+}
+
+.VS-TextCenter{
+    text-align: center;
+}
+
+.VS-TextLeft{
+    text-align: left;
+}
+
+.VS-TextRight{
+    text-align: right;
+}
+
+.VS-PullRight{
+    float: right;
+}
+
+.VS-PullLeft{
+    float: left;
+}
+
+.VS-TextDark{
+    color: #333;
+}
+
+.VS-Query-Dropdown{
+    margin: 5px;
+    padding: 3px;
+}
