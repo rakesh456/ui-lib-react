@@ -892,6 +892,10 @@ class DatehierarchyView extends React.PureComponent {
             this.toggleYearCheck(yr, (target.checked === true)? 1 : 0);
         });
 
+        if(target.checked === false){
+            this.clearFilter();
+        }
+
         this.setState({
             isSelectAll: target.checked
         });
@@ -1130,19 +1134,12 @@ class DatehierarchyView extends React.PureComponent {
     }
 
     clearFilter = () => {
-        let { searchValue, filteredYears, lastFilterData, isSearching, isSelectAll } = this.state;
+        let { lastFilterData, isSearching, isSelectAll } = this.state;
 
         if (isSearching === true || (lastFilterData && lastFilterData.length > 0) || isSelectAll === true) {
-            let _lastFilterData = [...lastFilterData];
-            let obj = {
-                'value': searchValue,
-                'list': filteredYears
-            };
-
-            _lastFilterData.push(obj);
-
             let { options } = this.props;
             let yearList = getListOfYears(options.lowerLimit, options.upperLimit, options.showWeeks, options.showQuarters, options.disabledList);
+
             this.setState({
                 isSearching: false,
                 searchValue: "",
@@ -1258,7 +1255,6 @@ class DatehierarchyView extends React.PureComponent {
                         });
     
                     } else {
-
                         filteredData = this.convertShowChild(filteredData, false);
 
                         this.setState({
@@ -1269,10 +1265,11 @@ class DatehierarchyView extends React.PureComponent {
                             selectAllResultState: true
                         });
 
-                        this.updateSelectAllCheckboxHandler([...years], null, true);
+                        this.updateSelectAllCheckboxHandler([...JSON.parse(filteredData)], null, true);
                     }
                 } else if (_selections.length <= 0) {
                     let newYears = (isAddCurrentSelection === true)? this.convertShowChild(years, false) : this.convertShowChild(yearList, false);
+                    
 
                     this.addToCurrentSelection(JSON.parse(newYears), (filteredData), (resultYears) => {
                         let newSelections = resultYears.map(a => Object.assign({}, a));
@@ -1310,7 +1307,7 @@ class DatehierarchyView extends React.PureComponent {
             }
         } else {
             years = this.convertShowChild(years, false);
-
+            
             this.setState({
                 isSearching: false,
                 isAddCurrentSelection: false,
