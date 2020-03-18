@@ -7,9 +7,12 @@ import * as CONSTANTS from '../../../utils/constants'
 
 import {
     convertYYYYMMDD,
+    getDateByFormatNew,
+    isValidDate
 } from "../../../utils/utils";
 import {
     currentFormatToYYYYMMDDNew,
+    checkDateInBetween,
     isDate
 } from "../../../utils/calendar";
 
@@ -19,8 +22,12 @@ class CalendarDate extends React.PureComponent {
 
         this.datePickerOptions = this.props.options;
         
-        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) : new Date();
+        const { lowerLimit, upperLimit } = this.datePickerOptions;
 
+        const _validate = checkDateInBetween(new Date(2020, (11), 1), isValidDate(lowerLimit)? lowerLimit : null, isValidDate(upperLimit)? upperLimit : null);
+        
+        const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) :  ((this.datePickerOptions && lowerLimit && _validate === false) ? new Date(getDateByFormatNew(lowerLimit, this.datePickerOptions.displayFormat)) :  new Date());
+        
         this.state = { month: selectedDate.getMonth() + 1, year: selectedDate.getFullYear() };
         this.el = document.createElement('div');
     }

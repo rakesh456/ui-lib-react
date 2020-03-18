@@ -181,13 +181,15 @@ export const getProperFormattedDate = (date, options) => {
 
 // Function to get month from date
 export const getSelectedMonthFromDate = (date, options) => {
-    const _date = new Date(currentFormatToYYYYMMDDNew(date, options));
+    let _dt = !isUndefinedOrNull(date)? date : (!isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
     return (_date)? _date.getMonth() + 1 : 0;
 }
 
 // Function to get year from date
 export const getSelectedYearFromDate = (date, options, isMonthYear) => {
-    const _date = new Date(currentFormatToYYYYMMDDNew(date, options));
+    let _dt = !isUndefinedOrNull(date)? date : (!isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
     return _date.getFullYear();
 }
 
@@ -464,8 +466,8 @@ export const checkDateInBetween = (date, from, to) => {
             return true;
         } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
-        } else if(isDate(from) && isDate(_to)){
-            let  _fromDt = new Date(from);
+        } else if(isDate(_from) && isDate(_to)){
+            let  _fromDt = new Date(_from);
             if(date.getTime() >= _fromDt.getTime() && date.getTime() <= _to.getTime()){
                 return true;
             } else {
