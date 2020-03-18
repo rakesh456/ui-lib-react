@@ -1,9 +1,8 @@
 import React, { Fragment } from "react";
 import { FaCaretLeft, FaCaretRight } from 'react-icons/lib/fa';
 import {
+    QUARTERS_NAMES,
     isEqual,
-    isCalendarFormat,
-    MONTH_SHORT_NAMES,
     CURRENT_YEAR,
     getMonthIndex,
     isMMYYYYFormat,
@@ -17,7 +16,7 @@ import {
 } from "../../../utils/utils";
 import * as CONSTANTS from '../../../utils/constants'
 
-class MonthsView extends React.PureComponent {
+class QuartersView extends React.PureComponent {
     constructor(props) {
         super(props);
         const { options, showHeaderSelection } = this.props;
@@ -44,43 +43,35 @@ class MonthsView extends React.PureComponent {
         this.setState({ isDisabledNext: (year >= upperYearLimit) ? true : false, isDisabledPrev: (year <= lowerYearLimit) ? true : false, year: year });
     }
     
-    getMonths = () => {
-        return splitArray(MONTH_SHORT_NAMES, 3);
+    onSelectQuarterHandler = (quarter) => {
+        this.props.onSelectQuarter(quarter);
     }
     
-    onSelectMonthHandler = (month) => {
-        this.props.onSelectMonth(month);
+    getQuarters = () => {
+        return splitArray(QUARTERS_NAMES, 2);
     }
 
-    getCalendarMonthClass = () => {
-        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_FOR_MONTH}`;
+    getCalendarQuartersClass = () => {
+        return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_FOR_QUARTER}`;
     }
     
-    checkMMIsEnabled = (qqmm, year) => {
+    checkQQIsEnabled = (qqmm, year) => {
         const {options} = this.props;
-        let {disabledList, displayFormat} = options;
+        const {disabledList, displayFormat} = options;
         const { lowerMonthLimit, lowerYearLimit } = getYYYYForLowerLimit(options);
         const { upperMonthLimit, upperYearLimit } = getYYYYForUpperLimit(options);
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
-        
+
         if(qqmm && year){
             qqmm = (isMMYYYYFormat(displayFormat))? getMonthIndex(qqmm.toString()) : qqmm;
             const _val = qqmm + '/' + year;
-            const _monthNumber = (isCalendarFormat(displayFormat))? parseInt(getMonthIndex(qqmm)) : parseInt(qqmm);
+
+            let _q = parseInt(qqmm.charAt(1));
+            let _lowerQ = (lowerMonthLimit)? parseInt(lowerMonthLimit.charAt(1)) : 0;
+            let _upperQ = (upperMonthLimit)? parseInt(upperMonthLimit.charAt(1)) : 0;
 
             // Disabled lower limit and upper limit month
-            if(((parseInt(currentDateYear) === lowerYearLimit && _monthNumber < parseInt(lowerMonthLimit)) || (parseInt(currentDateYear) === upperYearLimit && _monthNumber > parseInt(upperMonthLimit)))){
-                return false;
-            }
-
-            // Disabled month if current year in disabled list
-            if(disabledList.indexOf(currentDateYear.toString()) !== -1){
-                return false;
-            }
-            
-            // const _monthNumber = parseInt(getMonthIndex(qqmm));
-            const _qmy = _monthNumber + '/' + currentDateYear;
-            if(disabledList.indexOf(_qmy.toString()) !== -1 || disabledList.indexOf('0' + _qmy.toString()) !== -1){
+            if(((parseInt(currentDateYear) === lowerYearLimit && _q < parseInt(_lowerQ)) || (parseInt(currentDateYear) === upperYearLimit && _q > parseInt(_upperQ)))){
                 return false;
             }
 
@@ -90,24 +81,29 @@ class MonthsView extends React.PureComponent {
         }
     }
 
-    renderMonthValue = (month, index) => {
+    renderQuarterValue = (quarter, index) => {
         const { lowerMonthLimit, upperMonthLimit, lowerYearLimit, upperYearLimit, year, currentDateYear } = this.state;
-        const isEnabled = this.checkMMIsEnabled(month, year);
-        const activeClass = (isEqual(MONTH_SHORT_NAMES[this.props.currentDateMMMQQ - 1], month) && isEqual(year, currentDateYear) && isEnabled) ? 'VS-Active' : '';
+        const _l = (lowerMonthLimit)? parseInt(lowerMonthLimit.charAt(1)) : 1;
+        const _u = (upperMonthLimit)? parseInt(upperMonthLimit.charAt(1)) : 4;
+        const _q = parseInt(quarter.charAt(1));
+        const isEnabled = this.checkQQIsEnabled(quarter, year);
+
+        const activeClass = (isEqual(this.props.currentDateMMMQQ, quarter) && isEqual(year, currentDateYear) && isEnabled) ? 'VS-Active' : '';
+        
         return (
             <Fragment key={guid()}>
                 {
-                    ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && lowerMonthLimit > getMonthIndex(month)) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && upperMonthLimit < getMonthIndex(month)) || (!isEnabled)) ?
-                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{month}</span>:
-                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER}`} onClick={() => this.onSelectMonthHandler(month)}>{month}</span>
+                    ((lowerMonthLimit && lowerYearLimit && lowerYearLimit === year && _q < _l) || (upperMonthLimit && upperYearLimit && upperYearLimit === year && _q > _u) || (!isEnabled)) ?
+                        <span className={`${CONSTANTS.CLASSES.VS_MONTH_QUARTER} ${CONSTANTS.CLASSES.VS_DISABLED}`}>{quarter}</span>:
+                        <span className={`${activeClass} ${CONSTANTS.CLASSES.VS_MONTH_QUARTER}`} onClick={() => this.onSelectQuarterHandler(quarter)}>{quarter}</span>
                 }
             </Fragment>
         );
     }
 
-    renderMonthRow = (months, index) => {
-        const rows = months.map((date, index1) => {
-            return this.renderMonthValue(date, index1)
+    renderQuarterRow = (quarters, index) => {
+        const rows = quarters.map((date, index1) => {
+            return this.renderQuarterValue(date, index1)
         });
 
         return (
@@ -118,8 +114,9 @@ class MonthsView extends React.PureComponent {
     render() {
         const { showHeaderSelection, isDisabledPrev, isDisabledNext } = this.state;
         const currentDateYear = (this.props.currentDateYear)? this.props.currentDateYear : CURRENT_YEAR;
+        
         return (
-            <div className={this.getCalendarMonthClass()} style={this.props.style}>
+            <div className={this.getCalendarQuartersClass()} style={this.props.style}>
                 {
                     (showHeaderSelection)? 
                         <div className={`${CONSTANTS.CLASSES.VS_CALENDAR_MONTH} ${CONSTANTS.CLASSES.VS_TEXT_CENTER}`}>
@@ -137,11 +134,11 @@ class MonthsView extends React.PureComponent {
                         </div> : ''
                 }
                 <Fragment>
-                    {this.getMonths().map((row, index) => this.renderMonthRow(row, index))}
+                    {this.getQuarters().map((row, index) => this.renderQuarterRow(row, index))}
                 </Fragment>
             </div>
         );
     }
 }
 
-export default MonthsView;
+export default QuartersView;

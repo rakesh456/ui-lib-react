@@ -181,13 +181,13 @@ export const getProperFormattedDate = (date, options) => {
 
 // Function to get month from date
 export const getSelectedMonthFromDate = (date, options) => {
-    const _date = new Date(currentFormatToYYYYMMDD(date, options));
-    return _date.getMonth();
+    const _date = new Date(currentFormatToYYYYMMDDNew(date, options));
+    return (_date)? _date.getMonth() + 1 : 0;
 }
 
 // Function to get year from date
-export const getSelectedYearFromDate = (date, options) => {
-    const _date = new Date(currentFormatToYYYYMMDD(date, options));
+export const getSelectedYearFromDate = (date, options, isMonthYear) => {
+    const _date = new Date(currentFormatToYYYYMMDDNew(date, options));
     return _date.getFullYear();
 }
 
@@ -196,12 +196,58 @@ export const currentFormatToYYYYMMDD = (date, options) => {
     return convertYYYYMMDD(getDateByFormat(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
+export const reverseFormatOptions = (options) => {
+    let  newOptions = {...options}
+    newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
+    let  displayFormat = newOptions['displayFormat'];
+    
+    if(options.lowerLimit){
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat))? options.lowerLimit : (getDateByFormatNew(options.lowerLimit, displayFormat));
+    }
+    
+    if(options.upperLimit){
+        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat))? options.upperLimit : (getDateByFormatNew(options.upperLimit, displayFormat));
+    }
+    
+    if(options.disabledList && options.disabledList.length > 0){
+        if(isYYYFormat(displayFormat)){
+            newOptions['disabledList'] = [...options.disabledList] 
+        } else {
+            let _array = [];
+            options.disabledList.forEach((ele) => {
+                if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele) || isMMYYYYFormat(displayFormat))){
+                    _array.push(ele)
+                } else if(isCalendarFormat(displayFormat)){
+                    _array.push(getDateByFormatNew(ele, displayFormat));
+                }
+            });
+            newOptions['disabledList'] = [..._array] 
+        }
+    }
+
+    if(options.indicatorList && options.indicatorList.length > 0){
+        let _array = [];
+        options.indicatorList.forEach((ele) => {
+            let  _dates = [];
+            if(ele && ele.dates && ele.dates.length > 0){
+                ele.dates.forEach((date) => {
+                    _dates.push(getDateByFormatNew(date, displayFormat));
+                });
+            }
+            _array.push({'dates': _dates, 'color': ele.color});
+        });
+        newOptions['indicatorList'] = [..._array] 
+    }
+    
+    return newOptions;
+}
+
 // Function to format options
 export const formatOptions = (options) => {
     let  newOptions = {...options}
     newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
     let  displayFormat = newOptions['displayFormat'];
-
+    
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
     }
@@ -209,7 +255,7 @@ export const formatOptions = (options) => {
     if(options.upperLimit){
         newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.upperLimit));
     }
-
+    
     if(options.disabledList && options.disabledList.length > 0){
         if(isYYYFormat(displayFormat)){
             newOptions['disabledList'] = [...options.disabledList] 
@@ -242,7 +288,7 @@ export const formatOptions = (options) => {
         });
         newOptions['indicatorList'] = [..._array] 
     }
-
+    
     return newOptions;
 }
 
@@ -614,7 +660,7 @@ export const isEqual = (val1, val2) => {
 
 // Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
-    let  _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
+    let  _msg = (isInvalidDate === true)? 'Invalid Date' : ((isInvalidRangeDate === true)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){
        return _msg;
@@ -623,8 +669,10 @@ export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInval
     validationMessages.forEach((msg) => {
         if(!isBlank(msg['inValidFormat']) && isInvalidDate){
             _msg = msg['inValidFormat'];
-        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate && _msg === ''){
+        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate){
             _msg = msg['outsideRange'];
+        } else if(isBlank(_msg)){
+            _msg = 'Invalid';
         }
     });
     return _msg;

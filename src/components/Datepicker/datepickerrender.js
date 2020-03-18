@@ -17,7 +17,8 @@ import {
     isValidMMYYYYValue,
     isValidQQYYYYValue,
     isValidYYYYValue,
-    getConvertedDate
+    getConvertedDate,
+    reverseFormatOptions
 } from "../../utils/calendar";
 
 import './date-picker.scss';
@@ -93,7 +94,7 @@ function datepickerRender(el) {
     }
     
     el.setDataOptions = function (updatedOptions) {
-        let newOptions = {...options};
+        let newOptions = {...reverseFormatOptions(myComponentInstance.getDataOptions())};
         let key;
         let isChanged = false;
         if(!isUndefinedOrNull(updatedOptions)){
@@ -143,14 +144,13 @@ function datepickerRender(el) {
                 }
             }
             if(isChanged === true){
-                myComponentInstance.setState({ options: {...newOptions}});
+                myComponentInstance.setState({ options: {...formatOptions(options)}});
             }
         }
     }
 
     el.reload = function () {
     }
-
 
     el.addEventListener('mousedown', (e) => { 
         if(e.target.tagName !== 'INPUT'){

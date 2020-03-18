@@ -18,6 +18,7 @@ import {
     isValidOutsideRangeDateQQYear,
     getSelectedYearFromDate,
     getSelectedMonthFromDate,
+    getSelectedYear,
     getProperFormattedDate,
     getInvalidDateMessage,
     getNewUpdateDateByArrow,
@@ -31,6 +32,7 @@ import {
     isRight,
     currentFormatToYYYYMMDDNew,
     dateIsInDisabledList,
+    reverseFormatOptions,
     DEFAULT_OPTIONS
 } from "../../utils/calendar";
 import {
@@ -40,7 +42,7 @@ import {
     ARROWS,
     isValidDate,
     compareObjects,
-    isUndefinedOrNull
+    isUndefinedOrNull    
 } from "../../utils/utils";
 
 class DatePicker extends React.PureComponent {
@@ -124,7 +126,6 @@ class DatePicker extends React.PureComponent {
         let options = { ...this.state.options };
         let datePickerOptions = { ...this.props.options };
         let finalOption = { ...DEFAULT_OPTIONS, ...datePickerOptions, ...options };
-
         let newObj = {};
         if (items && items.length > 0) {
             items.forEach((item) => {
@@ -132,9 +133,10 @@ class DatePicker extends React.PureComponent {
                     newObj[item] = finalOption[item];
                 }
             });
-            return newObj;
+
+            return reverseFormatOptions(newObj);
         } else {
-            return finalOption;
+            return reverseFormatOptions(finalOption);
         }
     }
 
@@ -260,7 +262,6 @@ class DatePicker extends React.PureComponent {
     goToSelectMonthYear = () => {
         this.setState({ showMonthSelection: true });
     }
-
 
     onSelectMonthHandler = (month) => {
         const { options } = this.state;
@@ -638,8 +639,8 @@ class DatePicker extends React.PureComponent {
         const showClearIcon = (options && options.showClearIcon === true);
         const showErrorMessage = (options && options.showErrorMessage === true);
         const _uuid = guid();
-        const currentDateMonth = getSelectedMonthFromDate(selectedDate, options);
-        const currentDateYear = getSelectedYearFromDate(selectedDate, options);
+        const currentDateMMMQQ = (isCalendar === true)?  getSelectedMonthFromDate(selectedDate, options) : getSelectedYear(selectedYear);
+        const currentDateYear = (isCalendar === true)? getSelectedYearFromDate(selectedDate, options) : getSelectedYear(selectedYear);
 
         let isDisabled = ((options && options.isDisabled === true) || (options.lowerLimit && options.upperLimit && isCalendarFormat(displayFormat) && selectedDate === null) || (options.lowerLimit && options.upperLimit && isYearFormat(displayFormat) && selectedYear === null)) ? true : false;
         let _lowerDate = (options) ? getProperFormattedDate(options.lowerLimit, options) : "";
@@ -690,11 +691,11 @@ class DatePicker extends React.PureComponent {
                                 : ''
                         }
                         {
-                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMonth={currentDateMonth} currentDateYear={currentDateYear} style={this.state.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
+                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === true && showYearSelection === false) ? <MonthsView options={options} currentDateMMMQQ={currentDateMMMQQ} currentDateYear={currentDateYear} style={this.state.style} onSelectMonth={this.onSelectMonthHandler} showHeaderSelection={true} goToSelectYear={this.onGoToSelectYearHandler} goToPrevYear={this.goToPrevYearHandler} goToNextYear={this.goToNextYearHandler}></MonthsView> : ''
 
                         }
                         {
-                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMonth={currentDateMonth} style={this.state.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
+                            (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === true) ? <YearsView options={options} currentDateMMMQQ={currentDateMMMQQ} style={this.state.style} onSelectYear={this.onSelectYearHandler} showHeaderSelection={true} selectedValue={currentDateYear}></YearsView> : ''
                         }
                     </div>
                 </header>
