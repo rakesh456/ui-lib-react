@@ -7,7 +7,7 @@ describe("Get Default options using defautOptions(options)",()=>{
     
     test("Checking Default option if data options are empty ",()=>{
         
-        expect(DEFAULT_OPTIONS).toEqual({"disabledList": [], "lowerLimit": new Date().getFullYear(), "showQuarters": true, "showWeeks": false, "upperLimit": new Date().getFullYear() + 4})
+        expect(DEFAULT_OPTIONS).toEqual({"disabledList": [], "lowerLimit": new Date().getFullYear(), "showQuarters": true, "showWeeks": false, "upperLimit": new Date().getFullYear() + 4, "expandResults": true})
         
     })
 })
