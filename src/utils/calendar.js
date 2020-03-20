@@ -200,8 +200,7 @@ export const currentFormatToYYYYMMDD = (date, options) => {
 
 export const reverseFormatOptions = (options) => {
     let  newOptions = {...options}
-    newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
-    let  displayFormat = newOptions['displayFormat'];
+    let  displayFormat = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
     
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.lowerLimit, displayFormat) : dateToMMYYYY(options.lowerLimit)));
