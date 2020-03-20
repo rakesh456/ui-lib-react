@@ -204,11 +204,11 @@ export const reverseFormatOptions = (options) => {
     let  displayFormat = newOptions['displayFormat'];
     
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat))? options.lowerLimit : (getDateByFormatNew(options.lowerLimit, displayFormat));
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.lowerLimit, displayFormat) : dateToMMYYYY(options.lowerLimit)));
     }
     
     if(options.upperLimit){
-        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat) || isMMYYYYFormat(displayFormat))? options.upperLimit : (getDateByFormatNew(options.upperLimit, displayFormat));
+        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.upperLimit, displayFormat) : dateToMMYYYY(options.upperLimit)));
     }
     
     if(options.disabledList && options.disabledList.length > 0){
@@ -217,8 +217,10 @@ export const reverseFormatOptions = (options) => {
         } else {
             let _array = [];
             options.disabledList.forEach((ele) => {
-                if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele) || isMMYYYYFormat(displayFormat))){
+                if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
+                } else if(isMMYYYYFormat(displayFormat)){
+                    _array.push(dateToMMYYYY(ele));
                 } else if(isCalendarFormat(displayFormat)){
                     _array.push(getDateByFormatNew(ele, displayFormat));
                 }
@@ -251,7 +253,7 @@ export const formatOptions = (options) => {
     let  displayFormat = newOptions['displayFormat'];
     
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
     }
     
     if(options.upperLimit){
