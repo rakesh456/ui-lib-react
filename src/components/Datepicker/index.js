@@ -256,7 +256,7 @@ class DatePicker extends React.PureComponent {
     }
 
     onClearButtonClickHandler = () => {
-        this.setState({ selectedDate: "", shouldCalendarOpen: false });
+        this.setState({ selectedDate: "", selectedYear: "", shouldCalendarOpen: false });
     }
 
     goToSelectMonthYear = () => {
@@ -471,6 +471,16 @@ class DatePicker extends React.PureComponent {
         const charCode = (evt.which) ? evt.which : evt.keyCode;
         const { options } = this.state;
         let { displayFormat, lowerLimit, upperLimit } = options;
+
+        if(ARROWS.left === charCode){
+            this.props.onKeyLeft();
+        } else if(ARROWS.right === charCode){
+            this.props.onKeyRight();
+        } else if(ARROWS.down === charCode){
+            this.props.onKeyDown();
+        } else if(ARROWS.up === charCode){
+            this.props.onKeyUp();
+        }
 
         if (charCode === CONSTANTS.KEY_CODES.ESCAPE || charCode === CONSTANTS.KEY_CODES.TAB_KEY) {
             this.setState({ shouldCalendarOpen: false });

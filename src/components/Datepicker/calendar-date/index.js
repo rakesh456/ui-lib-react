@@ -25,7 +25,7 @@ class CalendarDate extends React.PureComponent {
         const { lowerLimit, upperLimit } = this.datePickerOptions;
 
         const _validate = checkDateInBetween(new Date(2020, (11), 1), isValidDate(lowerLimit)? lowerLimit : null, isValidDate(upperLimit)? upperLimit : null);
-        
+
         const selectedDate = (this.props && this.props.selectedDate) ? new Date(convertYYYYMMDD(this.props.selectedDate, this.datePickerOptions)) :  ((this.datePickerOptions && lowerLimit && _validate === false) ? new Date(getDateByFormatNew(lowerLimit, this.datePickerOptions.displayFormat)) :  new Date());
         
         this.state = { month: selectedDate.getMonth() + 1, year: selectedDate.getFullYear() };
