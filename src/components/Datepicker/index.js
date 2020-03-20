@@ -338,7 +338,7 @@ class DatePicker extends React.PureComponent {
 
         let shouldCalendarOpen = (isMMYYYYFormat(displayFormat) || isQQYYYYFormat(displayFormat));
 
-        if (isValidMMYYYYValue(this.state.newSelectedYear) || (e.target.classList.length <= 0)) {
+        if (isValidMMYYYYValue(this.state.newSelectedYear) || (e.target && e.target.classList && e.target.classList.length <= 0)) {
             shouldCalendarOpen = false;
         }
 
