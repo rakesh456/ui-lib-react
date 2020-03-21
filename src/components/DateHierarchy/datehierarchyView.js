@@ -740,7 +740,7 @@ class DatehierarchyView extends React.PureComponent {
                 }
             }
         });
-
+        this.updateSelectAllCheckboxHandler([...years]);
         this.setState({
             years: [...resultYears]
         });
