@@ -129,7 +129,7 @@ class DatePicker extends React.PureComponent {
         let newObj = {};
         if (items && items.length > 0) {
             items.forEach((item) => {
-                if (item && finalOption[item]) {
+                if (item && typeof finalOption[item] !== "undefined") {
                     newObj[item] = finalOption[item];
                 }
             });
