@@ -118,7 +118,7 @@ function datepickerRender(el) {
     }
     
     el.setDataOptions = function (updatedOptions) {
-        let newOptions = {...reverseFormatOptions(myComponentInstance.getDataOptions())};
+        let newOptions = {...reverseFormatOptions(myComponentInstance.getDataOptions(), true)};
         let key;
         let isChanged = false;
         if(!isUndefinedOrNull(updatedOptions)){

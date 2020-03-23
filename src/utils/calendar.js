@@ -198,10 +198,10 @@ export const currentFormatToYYYYMMDD = (date, options) => {
     return convertYYYYMMDD(getDateByFormat(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
-export const reverseFormatOptions = (options) => {
+export const reverseFormatOptions = (options, isFlag) => {
     let  newOptions = {...options}
     let  displayFormat = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
-    
+
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.lowerLimit, displayFormat) : dateToMMYYYY(options.lowerLimit)));
     }
@@ -219,7 +219,7 @@ export const reverseFormatOptions = (options) => {
                 if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
                 } else if(isMMYYYYFormat(displayFormat)){
-                    _array.push(dateToMMYYYY(ele));
+                    _array.push((isFlag === true)? dateToMMYYYY(ele) : ele);
                 } else if(isCalendarFormat(displayFormat)){
                     _array.push(getDateByFormatNew(ele, displayFormat));
                 }
