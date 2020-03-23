@@ -126,7 +126,7 @@ class DatePicker extends React.PureComponent {
         let options = { ...this.state.options };
         let datePickerOptions = { ...this.props.options };
         let finalOption = { ...DEFAULT_OPTIONS, ...datePickerOptions, ...options };
-        let newObj = {};
+        let newObj = {displayFormat: finalOption.displayFormat};
         if (items && items.length > 0) {
             items.forEach((item) => {
                 if (item && typeof finalOption[item] !== "undefined") {
@@ -134,7 +134,13 @@ class DatePicker extends React.PureComponent {
                 }
             });
 
-            return reverseFormatOptions(newObj);
+            let data = reverseFormatOptions(newObj);
+
+            if(items.indexOf('displayFormat') === -1){
+                delete data['displayFormat'];
+            }
+
+            return data;
         } else {
             return reverseFormatOptions(finalOption);
         }

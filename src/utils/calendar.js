@@ -202,6 +202,7 @@ export const reverseFormatOptions = (options, isFlag) => {
     let  newOptions = {...options}
     let  displayFormat = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
 
+    console.log(' displayFormat ', displayFormat);
     if(options.lowerLimit){
         newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.lowerLimit, displayFormat) : dateToMMYYYY(options.lowerLimit)));
     }
@@ -209,12 +210,13 @@ export const reverseFormatOptions = (options, isFlag) => {
     if(options.upperLimit){
         newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.upperLimit, displayFormat) : dateToMMYYYY(options.upperLimit)));
     }
-    
+
     if(options.disabledList && options.disabledList.length > 0){
         if(isYYYFormat(displayFormat)){
             newOptions['disabledList'] = [...options.disabledList] 
         } else {
             let _array = [];
+            
             options.disabledList.forEach((ele) => {
                 if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele))){
                     _array.push(ele)
