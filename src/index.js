@@ -31,7 +31,13 @@ import './components/QueryBuilder/query-builder.scss';
 
     window.CustomEvent = CustomEvent;
 })();
+Array.prototype.forEach.call(
+    document.getElementsByTagName('form-gen'),
+    (el) => {
+        formGeneratorRender(el);
+    })
 
+window.addFormGenerator = formGeneratorRender;
 // Datepicker render 
 Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),

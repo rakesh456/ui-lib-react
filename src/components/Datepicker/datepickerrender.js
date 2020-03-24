@@ -29,9 +29,10 @@ function trigger(elem, name, e) {
 }
 
 function datepickerRender(el) {
+    
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
-
+    
     options = formatOptions(options);
 
     if(isCalendarFormat(options.displayFormat)){

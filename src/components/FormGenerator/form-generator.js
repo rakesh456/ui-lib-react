@@ -11,7 +11,6 @@ import {
 import TagSelector from '../../components/TagSelector/tag-selector';
 import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
 
-
 class FormGenerator extends React.PureComponent {   
     
     /* Wrappers for Datepicker */
@@ -198,7 +197,8 @@ class FormGenerator extends React.PureComponent {
                         <div className = 'vs-gc-lbl-comp'> 
                         <div><label className = "vs-label">{labelText}</label></div>
                         {/* <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div> */}
-                        <div><date-picker data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></date-picker></div>
+                        <div><date-picker data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name} className=
+                        {elementProps.className}></date-picker></div>
                         </div>)
                     }
                     else if (elementType === 'datehierarchy')
