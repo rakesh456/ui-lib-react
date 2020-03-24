@@ -482,10 +482,6 @@ class DatePicker extends React.PureComponent {
             this.props.onKeyLeft();
         } else if(ARROWS.right === charCode){
             this.props.onKeyRight();
-        } else if(ARROWS.down === charCode){
-            this.props.onKeyDown();
-        } else if(ARROWS.up === charCode){
-            this.props.onKeyUp();
         }
 
         if (charCode === CONSTANTS.KEY_CODES.ESCAPE || charCode === CONSTANTS.KEY_CODES.TAB_KEY) {

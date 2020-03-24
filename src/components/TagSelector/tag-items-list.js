@@ -18,7 +18,8 @@ class ItemsList extends React.PureComponent {
     componentDidUpdate(prevProps) {
         let element = document.querySelector('.VS-ItemIndexed');
         if(!isUndefinedOrNull(element)){
-            element.scrollIntoView({behavior: "auto", block: "end"});
+            // element.scrollIntoView({behavior: "auto", block: "end"});
+            element.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
         }
     }
 
@@ -160,7 +161,7 @@ class ItemsList extends React.PureComponent {
     render() {
         const { showHierarchy } = this.props.options;
         return (
-            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style}>
+            <div id="VS-Scrollbar-TS" className={this.getContainerClass()} style={this.props.style}>
                 {
                     (showHierarchy === true) ?
                         this.renderHeirarchyItems()

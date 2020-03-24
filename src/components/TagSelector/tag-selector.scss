@@ -184,6 +184,7 @@ tag-selector{
     overflow-y: auto;
 }
 
+
 .VS-AutocompleteItems{
     height: auto;
     max-height: 224px;
@@ -238,7 +239,7 @@ tag-selector{
     height: 20px;
 }
 
-.VS-AutoCompleteItem-New {
+.VS-AutoCompleteItem {
     max-width: 256px;
     cursor: default;
     display: inline-block;
@@ -257,13 +258,13 @@ tag-selector{
     font-weight: bold;
 }
 
-.VS-AutoCompleteItem {
+.VS-AutoCompleteItem-New {
     max-width: 256px;
     cursor: default;
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
-    padding: 8px 0px 8px 16px !important;
+    padding: 8px 0px 4px 16px !important;
     white-space: nowrap;
     position: relative;
     margin-right: 2px;
@@ -325,30 +326,35 @@ tag-selector{
     // bottom: 22px;
 }
 
-.VS-AutoCompleteItem.VS-ExtraWidth{
+.VS-AutoCompleteItem-New.VS-ExtraWidth{
     max-width: 100%;
 }
 
-.VS-AutoCompleteItem .VS-AutoCompleteItem-Span{
-    max-width: 80%;
+.VS-AutoCompleteItem-New .VS-AutoCompleteItem-Span{
+    // max-width: 80%;
+    // text-overflow: ellipsis;
+    // white-space: nowrap;
+    // overflow: hidden;
+    // /* display: inline-flex; */
+    // float: left;
+    display: inline-block;
+    width: 200px;
     text-overflow: ellipsis;
-    white-space: nowrap;
     overflow: hidden;
-    /* display: inline-flex; */
-    float: left;
 }
 
 .VS-AutoCompleteItem-Icon {
     right: 0px;
-    top: 1px;
+    bottom: 4px;
     cursor: pointer;
     height: 30px;
     width: 30px;
     text-align: center;
-    background: $secondary-four-bright;
+    background: #5D717C;
     padding: 12px 14px;
     margin-left: 16px;
-    font-size: 10px;
+    font-size: 12px;
+    position: relative;
 }
 
 .VS-AutoCompleteItem-Icon.VS-Disabled{
@@ -368,19 +374,19 @@ tag-selector{
 // }
 
 
-#VS-Scrollbar::-webkit-scrollbar-track
+#VS-Scrollbar-TS::-webkit-scrollbar-track
 {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 	background-color: #F5F5F5;
 }
 
-#VS-Scrollbar::-webkit-scrollbar
+#VS-Scrollbar-TS::-webkit-scrollbar
 {
 	width: 6px;
 	background-color: #F5F5F5;
 }
 
-#VS-Scrollbar::-webkit-scrollbar-thumb
+#VS-Scrollbar-TS::-webkit-scrollbar-thumb
 {
 	background-color: #000000;
 }
