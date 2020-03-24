@@ -300,11 +300,12 @@ describe('Testing on function getLowerLimitFromOptions', () => {
 
 describe('Testing on function getSelectedMonthFromDate', () => {
     let input = ['05/16/2019', '2019/08/15', '02/2019/04', '', undefined]
-    let output = [4, 7, NaN, NaN, NaN]
+    let output = [5, 8, NaN, 3, 3]
     let messages = ['passing the correct format of date then function return month of the date ',
         'Passing changed format then function still returns the month of the date ',
         'Passing invalid format of the date then function retruns NaN',
         'Passing empty string then the funtion returns NaN']
+
     for (let i = 0; i < input.length; i++) {
         test(`${messages[i]}`, () => {
             expect(getSelectedMonthFromDate(input[i]))
@@ -318,7 +319,7 @@ describe('Testing on function getSelectedMonthFromDate', () => {
 
 describe('Testing on function getSelectedYearFromDate', () => {
     let input = ['05/16/2019', '2019/08/15', '02/2019/04', '', undefined]
-    let output = [2019, 2019, NaN, NaN, NaN]
+    let output = [2019, 2019, NaN, 2020, 2020]
     let messages = ['passing the correct format of date then function return full year of the date ',
         'Passing changed format then function still returns the full year of the date ',
         'Passing invalid format of the date then function retruns NaN',
@@ -911,10 +912,10 @@ describe('Testing on function getInvalidDateMessage', () => {
         expect(getInvalidDateMessage([{ inValidFormat: 'Not in valid format' }, { inValidFormat: 'Not in valid format' }], true, false)).toEqual('Not in valid format')
     })
     test('If date is valid and is invalid range then the function return "Outside allowed range"', () => {
-        expect(getInvalidDateMessage([{ outsideRange: 'Outside Range value' }], false, true)).toEqual('Outside allowed range')
+        expect(getInvalidDateMessage([{ outsideRange: 'Outside allowed range' }], false, true)).toEqual('Outside allowed range')
     })
     test('If both date and its range is valid', () => {
-        expect(getInvalidDateMessage([{ outsideRange: 'Outside Range value' }], false, false)).toEqual('')
+        expect(getInvalidDateMessage([{ outsideRange: 'Outside allowed range' }], false, false)).toEqual('Invalid')
     })
     test('If both date and range si invalid', () => {
         expect(getInvalidDateMessage([{ inValidFormat: 'Not in valid format' }], true, true)).toEqual('Not in valid format')

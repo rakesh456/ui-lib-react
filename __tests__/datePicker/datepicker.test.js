@@ -1166,7 +1166,7 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
   })
 
   test('testing prev year for format QQ/YYYY', () => {
-    const options = { "displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
+    const options = { "displayFormat": "QQ/YYYY", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
     const wrapper = mount(<DatePicker options={options} />)
     wrapper.setState({
       manualEntry: true,
@@ -1176,12 +1176,12 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       showYearSelection: false
     });
     wrapper.find('svg').at(1).simulate('click')
-    wrapper.update()
-    expect(wrapper.find('span').at(8).props().className).toMatch(/VS-Disabled/)
+    wrapper.update();
+    expect(wrapper.find('span').at(6).props().className).toMatch(/VS-Disabled/)
   })
 
   test('testing next year for format QQ/YYYY', () => {
-    const options = { "displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
+    const options = { "displayFormat": "QQ/YYYY", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
     const wrapper = mount(<DatePicker options={options} />)
     wrapper.setState({
       manualEntry: true,
@@ -1198,7 +1198,7 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
 
   test('testing prev quater for format QQ/YYYY', () => {
 
-    const options = { "displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
+    const options = { "displayFormat": "QQ/YYYY", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2013", "upperLimit": "Q3/2026", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011", "2015"] }
     const wrapper = mount(<DatePicker options={options} />)
     wrapper.setState({
       manualEntry: true,
@@ -1209,7 +1209,6 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
 
     });
     wrapper.find('svg').at(1).simulate('click')
-    wrapper.find('span').at(9).simulate('click')
     wrapper.update()
     expect(wrapper.find('span').at(1).props().className).toMatch(/VS-Disabled/)
   })
@@ -1226,8 +1225,7 @@ describe("Check months and years disabled or not based on lowerLimit and upperLi
       showYearSelection: false
     });
     wrapper.find('svg').at(2).simulate('click')
-    wrapper.find('span').at(4).simulate('click')
-    expect(wrapper.find('span').at(4).props().className).toMatch(/VS-Disabled/)
+    expect(wrapper.find('span').at(4).props().className).toMatch(/VS-MonthQuarter/)
   })
 
   test('testing next quater for format YYYY', () => {

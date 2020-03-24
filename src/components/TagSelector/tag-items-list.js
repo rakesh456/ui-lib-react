@@ -15,11 +15,11 @@ class ItemsList extends React.PureComponent {
     componentDidMount() {
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, next) {
         let element = document.querySelector('.VS-ItemIndexed');
-        if(!isUndefinedOrNull(element)){
-            // element.scrollIntoView({behavior: "auto", block: "end"});
-            element.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' })
+        var list = document.querySelector(".VS-AutocompleteItems")
+        if (!isUndefinedOrNull(element)) {
+            list.scrollTop = (element.offsetTop);
         }
     }
 
@@ -103,11 +103,11 @@ class ItemsList extends React.PureComponent {
     }
 
     getTooltipClassNames = (index, isLeft) => {
-        return ((this.props.filteredlistItems && (index + 1) >= this.props.filteredlistItems.length)? 'VS-TooltipText VS-TooltipText-Top' : 'VS-TooltipText') + ((isLeft === true)? ' VS-Left' : ' VS-Right');
+        return ((this.props.filteredlistItems && (index + 1) >= this.props.filteredlistItems.length) ? 'VS-TooltipText VS-TooltipText-Top' : 'VS-TooltipText') + ((isLeft === true) ? ' VS-Left' : ' VS-Right');
     }
 
     renderTooltip = (index, val, isLeft) => {
-        return ((val && val.length >= 20)? <span className={this.getTooltipClassNames(index, isLeft)}>{val}</span> : '');
+        return ((val && val.length >= 20) ? <span className={this.getTooltipClassNames(index, isLeft)}>{val}</span> : '');
     }
 
     renderLIItem(item, index) {

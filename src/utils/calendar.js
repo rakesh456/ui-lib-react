@@ -171,7 +171,7 @@ export const getProperFormattedDateNew = (date, options) => {
 
 // Function to get current formatted date
 export const currentFormatToYYYYMMDDNew = (date, options) => {
-    return convertYYYYMMDD(getDateByFormatNew(date, options.displayFormat), options);
+    return convertYYYYMMDD(getDateByFormatNew(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
 // Function to get proper formatted date from options
@@ -181,14 +181,14 @@ export const getProperFormattedDate = (date, options) => {
 
 // Function to get month from date
 export const getSelectedMonthFromDate = (date, options) => {
-    let _dt = !isUndefinedOrNull(date)? date : (!isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    let _dt = !isUndefinedOrNull(date)? date : (options && !isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
     const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
     return (_date)? _date.getMonth() + 1 : 0;
 }
 
 // Function to get year from date
 export const getSelectedYearFromDate = (date, options, isMonthYear) => {
-    let _dt = !isUndefinedOrNull(date)? date : (!isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    let _dt = !isUndefinedOrNull(date)? date : (options && !isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
     const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
     return _date.getFullYear();
 }

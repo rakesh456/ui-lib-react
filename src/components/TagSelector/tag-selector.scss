@@ -181,7 +181,6 @@ tag-selector{
     max-height: 224px;
     border: 1px solid #ddd;
     position: absolute;
-    overflow-y: auto;
 }
 
 
@@ -191,6 +190,7 @@ tag-selector{
     list-style: none;
     padding: 0px 0px 0px;
     margin: 0px;
+    overflow-y: auto;
 }
 
 .VS-NoData{
