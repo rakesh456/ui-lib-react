@@ -105,14 +105,6 @@ tag-selector{
     overflow: hidden;
 }
 
-.VS-CodeText {
-    // text-overflow: ellipsis;
-    // white-space: nowrap;
-    // overflow: hidden;
-    // width: 50%;
-    // float: left;
-}
-
 .VS-Tag-Input-Border.VS-ReadOnly,
 .VS-Tag-Input-Border.VS-ReadOnly .VS-TagSelector-Input {
     cursor: default;
@@ -323,7 +315,6 @@ tag-selector{
 
 .VS-TooltipText-Top{
     margin-top: -40px !important;
-    // bottom: 22px;
 }
 
 .VS-AutoCompleteItem-New.VS-ExtraWidth{
@@ -331,12 +322,6 @@ tag-selector{
 }
 
 .VS-AutoCompleteItem-New .VS-AutoCompleteItem-Span{
-    // max-width: 80%;
-    // text-overflow: ellipsis;
-    // white-space: nowrap;
-    // overflow: hidden;
-    // /* display: inline-flex; */
-    // float: left;
     display: inline-block;
     width: 200px;
     text-overflow: ellipsis;
@@ -361,18 +346,6 @@ tag-selector{
     background: $primary-two-bright !important;
     cursor: default !important;
 }
-
-// .VS-Scrollbar
-// {
-// 	margin-left: 30px;
-// 	float: left;
-// 	height: 300px;
-// 	width: 65px;
-// 	background: #F5F5F5;
-// 	overflow-y: scroll;
-// 	margin-bottom: 25px;
-// }
-
 
 #VS-Scrollbar-TS::-webkit-scrollbar-track
 {

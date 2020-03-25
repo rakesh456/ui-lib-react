@@ -100,28 +100,24 @@ export function getDefaultQQMMYYYYDateByFormat(options){
 // Get date by options
 export function checkValueByDisplayFormat(date, options, callback){
     if(options.displayFormat && isYearFormat(options.displayFormat)){
-        // if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
-        //     callback(date, false, false);
-        // } else {
-            if(isQQYYYYFormat(options.displayFormat)){
-                let _date = dateToQQYYYY(date);
-                let _validFormat = isValidQQYYYYValue(_date, options); 
-                let _validOutRange = isValidOutsideRangeDateQQYear(_date, options);
-                callback(_date, !_validFormat, !_validOutRange);
-            } else if(isMMYYYYFormat(options.displayFormat)){
-                let _date = dateToMMYYYY(date);
-                let _validFormat = isValidMMYYYYValue(_date, options); 
-                let _validOutRange = isValidOutsideRangeDateMonthYear(_date, options);
-                callback(_date, !_validFormat, !_validOutRange);
-            } else if(isYYYFormat(options.displayFormat)){
-                let _date = dateToYear(date);
-                let _validFormat = isValidYYYYValue(_date, options); 
-                let _validOutRange = isValidOutsideRangeDateYear(_date, options);
-                callback(_date, !_validFormat, !_validOutRange);
-            } else {
-                callback("", true, false);
-            }
-        //}
+        if(isQQYYYYFormat(options.displayFormat)){
+            let _date = dateToQQYYYY(date);
+            let _validFormat = isValidQQYYYYValue(_date, options); 
+            let _validOutRange = isValidOutsideRangeDateQQYear(_date, options);
+            callback(_date, !_validFormat, !_validOutRange);
+        } else if(isMMYYYYFormat(options.displayFormat)){
+            let _date = dateToMMYYYY(date);
+            let _validFormat = isValidMMYYYYValue(_date, options); 
+            let _validOutRange = isValidOutsideRangeDateMonthYear(_date, options);
+            callback(_date, !_validFormat, !_validOutRange);
+        } else if(isYYYFormat(options.displayFormat)){
+            let _date = dateToYear(date);
+            let _validFormat = isValidYYYYValue(_date, options); 
+            let _validOutRange = isValidOutsideRangeDateYear(_date, options);
+            callback(_date, !_validFormat, !_validOutRange);
+        } else {
+            callback("", true, false);
+        }
     } else {
         if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);

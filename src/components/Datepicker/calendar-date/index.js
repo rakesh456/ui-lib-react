@@ -100,7 +100,6 @@ class CalendarDate extends React.PureComponent {
 
     getCalendarContainerClass = () => {
         const { showButtons } = this.props.options;
-        // const { showButtons } = this.props;
         return `${CONSTANTS.CLASSES.VS_CALENDAR_CONTAINER} ${CONSTANTS.CLASSES.VS_MODAL} ` + ((showButtons && showButtons === true)? `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL_BUTTON}` : `${CONSTANTS.CLASSES.VS_SHAPE_ROUNDED_FILL}`);
     }
 

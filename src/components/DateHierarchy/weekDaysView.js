@@ -100,14 +100,6 @@ class WeekDaysView extends React.PureComponent {
         }
     }
 
-    renderAllWeeks = (month, quarter, year) => {
-        let monthHtml = [];
-        month.weeks.forEach((week, weekIndex) => {
-            monthHtml.push(this.renderWeeks(week, month, quarter, year, weekIndex));
-        });
-        return monthHtml;
-    }
-
     render() {
         const { options } = this.props;
         let year = this.props.year;
@@ -116,7 +108,6 @@ class WeekDaysView extends React.PureComponent {
         if (this.props.options && this.props.options.showQuarters === true) {
             return (
                 <div options={options}>
-                    {/* {this.renderAllWeeks(month, quarter, year)} */}
                     {month.weeks.map((week, weekIndex) => this.renderWeeks(week, month, quarter, year, weekIndex))}
                 </div>
             )

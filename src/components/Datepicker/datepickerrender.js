@@ -125,7 +125,6 @@ function datepickerRender(el) {
                                     isChanged = true;
                                 }
                             } else {
-                                // let _date = convertYYYYMMDDByFormat(value, newOptions.displayFormat);
                                 newOptions[option] = value;
                                 isChanged = true;
                             }

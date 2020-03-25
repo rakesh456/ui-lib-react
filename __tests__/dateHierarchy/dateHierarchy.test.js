@@ -3,7 +3,6 @@ import YearDisplay from "../../src/components/DateHierarchy/yearDisplay";
 import QuarterView from "../../src/components/DateHierarchy/quarterView";
 import MonthView from "../../src/components/DateHierarchy/monthView";
 import WeekDaysView from "../../src/components/DateHierarchy/weekDaysView";
-import DateHierarchy from "../../src/components/DateHierarchy/date-hierarchy";
 import React from "react";
 import ReactDOM from "react-dom";
 import { mount, shallow } from "enzyme";
@@ -12,10 +11,10 @@ import tree from "react-icons/lib/fa/tree";
 import compass from "react-icons/lib/fa/compass";
 
 // DateHierarchy renders without crashing
-test("DateHierarchy component renders without crashing", () => {
+test("DatehierarchyView component renders without crashing", () => {
     const div = document.createElement("div");
     const options = { "lowerLimit": "2020", "upperLimit": "2025", "showWeeks": false, "showQuarters": true, "disabledList": ["2021", "10/2020", "8/2022", "q3/2020", "Q2/2023", "w1/12/2020", "11/01/2020", "11/11/2022"] };
-    ReactDOM.render(<DateHierarchy options={options} />, div);
+    ReactDOM.render(<DatehierarchyView options={options} />, div);
 });
 
 // On passing Show Quarters=true the immediate child of year should be quarter

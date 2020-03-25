@@ -51,14 +51,9 @@ class ItemsList extends React.PureComponent {
         }
         const { currentItemIndex, currentHierarchyItemIndex } = this.props;
         return (((currentItemIndex === ind && currentHierarchyItemIndex === index) ? 'VS-ItemIndexed ' : '') + ((foundValue) ? "VS-ItemSelected VS-LiItems" : "VS-LiItems"));
-        // return ((foundValue) ? "VS-ItemSelected VS-LiItems" : "VS-LiItems");
     }
 
     renderSubitem(item, index) {
-        // const { currentHierarchyItemIndex } = this.props;
-        // if(currentHierarchyItemIndex === item.length){
-        //     this.props.updateHierarchyIndex();
-        // }
         const _uuid = guid();
         const items = Object.keys(item).map((ele, ind) => {
             return <li className={this.getHeirarchyLiListClass(item[ele], ind, index)} onClick={(e) => this.selectItem(e, item[ele])} key={ind + '_span'}> <span className='VS-CodeText'>{item[ele].value}</span> </li>;
@@ -169,7 +164,6 @@ class ItemsList extends React.PureComponent {
                 }
             </div>
         );
-        // return ( <div >test</div>);
     }
 }
 
