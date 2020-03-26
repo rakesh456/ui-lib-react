@@ -111,8 +111,7 @@ class YearDisplay extends React.PureComponent {
                                     let daysum = days.reduce((a, b) => +a + +b.state, 0);
                                     let isZero = days.some(checkZeroState);
                                     let isOne = days.some(checkOneState);
-
-                                    ['months'][index]['weeks'][index1]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (daysum === week.days.length) ? 1 : ((week.match === 1) ? flag : 0);
+                                    months[index]['weeks'][index1]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (daysum === week.days.length) ? 1 : ((week.match === 1) ? flag : 0);
                                 }
                             }
                         });
@@ -123,7 +122,7 @@ class YearDisplay extends React.PureComponent {
                         let isZero = weeks.some(checkZeroState);
                         let isOne = weeks.some(checkOneState);
 
-                        ['months'][index]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (weeksum === month.weeks.length) ? 1 : ((month.match === 1) ? flag : 0);
+                        months[index]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (weeksum === month.weeks.length) ? 1 : ((month.match === 1) ? flag : 0);
                     } else {
                         months[index]['days'].forEach((month, index1) => {
                             months[index]['days'][index1]['state'] = (flag === 0)? 0 : (months[index]['days'][index1]['mathc'] === 1)? flag : 0;
@@ -135,7 +134,7 @@ class YearDisplay extends React.PureComponent {
                         let isZero = days.some(checkZeroState);
                         let isOne = days.some(checkOneState);
 
-                        ['months'][index]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (daysum === month.days.length) ? 1 : ((month.match === 1) ? flag : 0);
+                        months[index]['state'] = (flag === 0)? 0 : (isZero && isOne) ? -1 : (daysum === month.days.length) ? 1 : ((month.match === 1) ? flag : 0);
                     }
                 });
             }
@@ -319,11 +318,20 @@ class YearDisplay extends React.PureComponent {
         return (flag === true) ? 'VS-Check-Checkmark VS-Check-Partial' : 'VS-Check-Checkmark';
     }
 
+    renderAllYears = (years) => {
+        let yearHtml = [];
+        years.forEach((year, index) => {
+            yearHtml.push(this.renderYear(year, index));
+        });
+        return yearHtml;
+    }
+
     render() {
         const { options, years } = this.props;
         return (
             <div options={options}>
                 <div>
+                    {/* {this.renderAllYears(years)} */}
                     {(years)?years.map((year, index) => this.renderYear(year, index)):''}
                 </div>
             </div>

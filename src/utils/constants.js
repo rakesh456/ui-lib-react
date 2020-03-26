@@ -1,8 +1,9 @@
 export const KEY_CODES = {
     ESCAPE:  27,
+    TAB_KEY:  9,
     SPACE:  32,
     COMMA:  44,
-    NINE:  57,
+    NINE:  57
 }
 
 export const CLASSES = {

@@ -1,6 +1,6 @@
 import { isUndefinedOrNull, isBlank, isValidDate, convertYYYYMMDD, getDateByFormat, getDateByFormatNew, ARROWS, convertYYYYMMDDByFormat, getYYYYMMDD, dateToYear, dateToMMYYYY, dateToQQYYYY } from "./utils";
 
-export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", disabledList: [], "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "showErrorMessage": false};
+export const DEFAULT_OPTIONS = {"displayFormat": "MM/DD/YYYY", disabledList: [], "iconAlignment":"Left", "dateStringAlignment": "Left", "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "showErrorMessage": false, "calendarLocation": "down"};
 export const CLENDAR_FORMATS = ["MM/DD/YYYY", "DD/MM/YYYY"];
 export const YEAR_FORMATS = ["YYYY", "MM/YYYY", "QQ/YYYY"];
 export const CURRENT_YEAR = +(new Date().getFullYear());
@@ -100,9 +100,9 @@ export function getDefaultQQMMYYYYDateByFormat(options){
 // Get date by options
 export function checkValueByDisplayFormat(date, options, callback){
     if(options.displayFormat && isYearFormat(options.displayFormat)){
-        if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
-            callback(date, false, false);
-        } else {
+        // if(isValidQQYYYYValue(date) || isValidMMYYYYValue(date) || isValidYYYYValue(date)){
+        //     callback(date, false, false);
+        // } else {
             if(isQQYYYYFormat(options.displayFormat)){
                 let _date = dateToQQYYYY(date);
                 let _validFormat = isValidQQYYYYValue(_date, options); 
@@ -121,7 +121,7 @@ export function checkValueByDisplayFormat(date, options, callback){
             } else {
                 callback("", true, false);
             }
-        }
+        //}
     } else {
         if(date){
             let _date = getDateByFormatNew(date, options.displayFormat);
@@ -171,7 +171,7 @@ export const getProperFormattedDateNew = (date, options) => {
 
 // Function to get current formatted date
 export const currentFormatToYYYYMMDDNew = (date, options) => {
-    return convertYYYYMMDD(getDateByFormatNew(date, options.displayFormat), options);
+    return convertYYYYMMDD(getDateByFormatNew(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
 // Function to get proper formatted date from options
@@ -181,13 +181,15 @@ export const getProperFormattedDate = (date, options) => {
 
 // Function to get month from date
 export const getSelectedMonthFromDate = (date, options) => {
-    const _date = new Date(currentFormatToYYYYMMDD(date, options));
-    return _date.getMonth();
+    let _dt = !isUndefinedOrNull(date)? date : (options && !isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
+    return (_date)? _date.getMonth() + 1 : 0;
 }
 
 // Function to get year from date
-export const getSelectedYearFromDate = (date, options) => {
-    const _date = new Date(currentFormatToYYYYMMDD(date, options));
+export const getSelectedYearFromDate = (date, options, isMonthYear) => {
+    let _dt = !isUndefinedOrNull(date)? date : (options && !isUndefinedOrNull(options.lowerLimit)? options.lowerLimit : new Date());
+    const _date = new Date(currentFormatToYYYYMMDDNew(_dt, options));
     return _date.getFullYear();
 }
 
@@ -196,20 +198,68 @@ export const currentFormatToYYYYMMDD = (date, options) => {
     return convertYYYYMMDD(getDateByFormat(date, (options)? options.displayFormat : 'MM/DD/YYYY'), options);
 }
 
+export const reverseFormatOptions = (options, isFlag) => {
+    let  newOptions = {...options}
+    let  displayFormat = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
+
+    if(options.lowerLimit){
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.lowerLimit, displayFormat) : dateToMMYYYY(options.lowerLimit)));
+    }
+    
+    if(options.upperLimit){
+        newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : (((!isMMYYYYFormat(displayFormat))? getDateByFormatNew(options.upperLimit, displayFormat) : dateToMMYYYY(options.upperLimit)));
+    }
+
+    if(options.disabledList && options.disabledList.length > 0){
+        if(isYYYFormat(displayFormat)){
+            newOptions['disabledList'] = [...options.disabledList] 
+        } else {
+            let _array = [];
+            
+            options.disabledList.forEach((ele) => {
+                if(isQQYYYYFormat(displayFormat) && (isValidQQYYYYValue(ele) || isValidYYYYValue(ele))){
+                    _array.push(ele)
+                } else if(isMMYYYYFormat(displayFormat)){
+                    _array.push((isFlag === true)? dateToMMYYYY(ele) : ele);
+                } else if(isCalendarFormat(displayFormat)){
+                    _array.push(getDateByFormatNew(ele, displayFormat));
+                }
+            });
+            newOptions['disabledList'] = [..._array] 
+        }
+    }
+
+    if(options.indicatorList && options.indicatorList.length > 0){
+        let _array = [];
+        options.indicatorList.forEach((ele) => {
+            let  _dates = [];
+            if(ele && ele.dates && ele.dates.length > 0){
+                ele.dates.forEach((date) => {
+                    _dates.push(getDateByFormatNew(date, displayFormat));
+                });
+            }
+            _array.push({'dates': _dates, 'color': ele.color});
+        });
+        newOptions['indicatorList'] = [..._array] 
+    }
+    
+    return newOptions;
+}
+
 // Function to format options
 export const formatOptions = (options) => {
     let  newOptions = {...options}
     newOptions['displayFormat'] = (isCalendarFormat(options.displayFormat) || isYearFormat(options.displayFormat))? options.displayFormat : DEFAULT_OPTIONS.displayFormat;
     let  displayFormat = newOptions['displayFormat'];
-
+    
     if(options.lowerLimit){
-        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit :((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
+        newOptions['lowerLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.lowerLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.lowerLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.lowerLimit));
     }
     
     if(options.upperLimit){
         newOptions['upperLimit'] = (isQQYYYYFormat(displayFormat) || isYYYFormat(displayFormat))? options.upperLimit : ((!isMMYYYYFormat(displayFormat))? getConvertedDate(options.upperLimit, displayFormat) : getConvertedDateYYYYMMDDD(options.upperLimit));
     }
-
+    
     if(options.disabledList && options.disabledList.length > 0){
         if(isYYYFormat(displayFormat)){
             newOptions['disabledList'] = [...options.disabledList] 
@@ -242,7 +292,7 @@ export const formatOptions = (options) => {
         });
         newOptions['indicatorList'] = [..._array] 
     }
-
+    
     return newOptions;
 }
 
@@ -418,8 +468,8 @@ export const checkDateInBetween = (date, from, to) => {
             return true;
         } else if(isDate(from) && isDate(_to) && (date.getTime() < from.getTime() || date.getTime() > _to.getTime())){
             return false;
-        } else if(isDate(from) && isDate(_to)){
-            let  _fromDt = new Date(from);
+        } else if(isDate(_from) && isDate(_to)){
+            let  _fromDt = new Date(_from);
             if(date.getTime() >= _fromDt.getTime() && date.getTime() <= _to.getTime()){
                 return true;
             } else {
@@ -614,7 +664,7 @@ export const isEqual = (val1, val2) => {
 
 // Function to get invalid date message. Return default message if not defined.
 export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInvalidRangeDate) => {
-    let  _msg = (isInvalidDate)? 'Invalid Date' : ((isInvalidRangeDate)? 'Outside allowed range' : '');
+    let  _msg = (isInvalidDate === true)? 'Invalid Date' : ((isInvalidRangeDate === true)? 'Outside allowed range' : '');
 
     if(!validationMessages || validationMessages.length <= 0){
        return _msg;
@@ -623,8 +673,10 @@ export const getInvalidDateMessage = (validationMessages, isInvalidDate, isInval
     validationMessages.forEach((msg) => {
         if(!isBlank(msg['inValidFormat']) && isInvalidDate){
             _msg = msg['inValidFormat'];
-        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate && _msg === ''){
+        } else if(!isBlank(msg['outsideRange']) && isInvalidRangeDate){
             _msg = msg['outsideRange'];
+        } else if(isBlank(_msg)){
+            _msg = 'Invalid';
         }
     });
     return _msg;
@@ -772,12 +824,12 @@ export const getNewUpdateValueByArrow = (value, isRecursive, options, displayFor
 
 // Function to check value is left or not
 export const isLeft = (value) => {
-    return (value.toLowerCase()) === 'left';
+    return ( value && ( value.toLowerCase()) === 'left');
 }
 
 // Function to check value is right or not
 export const isRight = (value) => {
-    return (value.toLowerCase()) === 'right';
+    return ( value && (value.toLowerCase()) === 'right');
 }
 
 // Function to return number of character allowed by display format

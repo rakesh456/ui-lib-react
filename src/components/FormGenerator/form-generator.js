@@ -89,6 +89,7 @@ class FormGenerator extends React.PureComponent {
                 /* Iterate on row elements */
                 option.rowElements.forEach((rowElement, index) => 
                 {
+                    console.log(index,rowElement)
                     let elementID = rowElement.props.id;
                     let elementType = rowElement.elementType;
                     let elementProps = rowElement.props;
@@ -212,7 +213,7 @@ class FormGenerator extends React.PureComponent {
                         <div className ='vs-gc-lbl-comp'> 
                         <div><label className='vs-label'>{labelText}</label></div>
                         {/* <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div> */}
-                            <div><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}> </date-hierarchy> </div>
+                            <div className="VS-formGen-DH"><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}> </date-hierarchy> </div>
                         </div>)
                     }
                     else if (elementType === 'tagselector')

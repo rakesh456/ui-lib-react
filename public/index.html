@@ -136,10 +136,10 @@
             }
         }
 
-        function submitForm() {
+        /* function submitForm() {
             var form = document.forms["myform"];
         }
-
+ */
         function getSelectedValuesById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedValues');
@@ -262,8 +262,10 @@
 // Test function for the custom event listener given by the user.
 
     function submitForm(event) {
-      //  console.log("Name", event.srcElement.id);
+       //alert("Name", event.srcElement.id);
         alert(event.type + " event detected on element ID: " + event.srcElement.id + ".");
+        //console.log(event.type + " event detected on element ID: " + event.srcElement.id + ".")
+       //console.log("clicked")
     }
 
     function skundSubmitForm(event) {
@@ -277,8 +279,9 @@
     <h1>Form Generator Output</h1>
     <div>   
       
-          
+      
         <!-- <form-gen id='formGen1' onSubmit="submitForm()" data-options=' -->
+   
         <form-gen id='formGen1' data-options='
         {
          "form":{

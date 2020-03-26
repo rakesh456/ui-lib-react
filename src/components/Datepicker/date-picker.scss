@@ -17,6 +17,7 @@ $complementary-two: #e6edf3;
 $complementary-three: #ccdbe7;
 $complementary-four: #80a5c3;
 $complementary-five: #bbbbbb;
+$complementary-six: rgba(199, 199, 199, 0.45);
 $text-black: #000000;
 $text-white: #ffffff;
 $text-tertiary: #bbbcbd;
@@ -115,12 +116,12 @@ date-picker{
 
 .VS-shape-rounded-fill, .VS-shape-rounded-fill-with-button, .VS-shape-rounded-fill-for-year, .VS-shape-rounded-fill-for-month, .VS-shape-rounded-fill-for-quarter {
     width: 216px;
-    height: 248px;
+    height: 260px;
     border-radius: 1px;
 }
 
 .VS-shape-rounded-fill-with-button {
-    height: 292px;
+    height: 298px;
 }
 
 .VS-shape-rounded-fill-for-year {
@@ -156,7 +157,7 @@ date-picker{
 }
 
 .VS-shape-rounded-fill-for-quarter {
-    height: 100px;
+    height: 120px;
     .VS-DateRowFlex{
         display: flex;
         margin: 3px auto;
@@ -187,10 +188,13 @@ date-picker{
     font-size: 10px;
 }
 
+.VS-DisabledDay{
+    color: $complementary-six
+}
+
 .VS-Day .VS-DayCurrent,
-.VS-DisabledDay,
 .VS-NextPrevDay{
-    color: $complementary-five;
+    color: $text-tertiary;
 }
 
 .VS-Year, .VS-MonthQuarter{
@@ -300,7 +304,7 @@ date-picker{
 
 .VS-Calendar-Input, .VS-Input-Icon .VS-Calendar-Input{
     border: 0px !important;
-    width: 165px !important;
+    width: 180px !important;
     margin: 7px 0px 0px;
 }
 

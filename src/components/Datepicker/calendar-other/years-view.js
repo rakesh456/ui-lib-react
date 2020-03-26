@@ -5,7 +5,7 @@ import {
     getYearsList,
     getSelectedYear,
     getYYYYForLowerLimit,
-    getYYYYForUpperLimit,
+    getYYYYForUpperLimit
 } from "../../../utils/calendar";
 
 import {
@@ -91,7 +91,20 @@ class YearsView extends React.PureComponent {
     checkYearIsEnabled = (year) => {
         const {disabledList} = this.props.options;
 
-        return (disabledList && disabledList.length > 0 && year)? ((disabledList.indexOf(year.toString()) !== -1)? false : true) : true;
+        const { lowerYearLimit, lowerMonthLimit } = getYYYYForLowerLimit(this.props.options);
+        const { upperYearLimit, upperMonthLimit } = getYYYYForUpperLimit(this.props.options);
+
+        const months = [...Array(12).keys()];
+        let allMonthDisabled = 0;
+        months.forEach((month) => {
+            const val = (('0' + (month + 1)).slice(-2)) + '/' + year.toString();
+            const disableByLimit = (lowerMonthLimit > month && lowerYearLimit === year)? true : ((upperMonthLimit <= month && upperYearLimit === year)? true : false);
+
+            if(disabledList.indexOf(val.toString()) !== -1 || disableByLimit === true){
+                allMonthDisabled++;
+            }
+        });
+        return (allMonthDisabled >= 12)? false : ((disabledList && disabledList.length > 0 && year)? ((disabledList.indexOf(year.toString()) !== -1)? false : true) : true);
     }
 
     renderYearValue = (year, index) => {

@@ -4,23 +4,22 @@ import {
     guid,
     isUndefinedOrNull
 } from "../../utils/utils";
-import { CountryService } from '../../services/CountryService';
 
 class ItemsList extends React.PureComponent {
     constructor(props) {
         super(props);
         const { maxItemCounter } = this.props.options;
         this.state = { selectedItems: [], maxItemCounter: maxItemCounter, newlyAddedElements: [] };
-        this.countryservice = new CountryService();
     }
 
     componentDidMount() {
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, next) {
         let element = document.querySelector('.VS-ItemIndexed');
-        if(!isUndefinedOrNull(element)){
-            element.scrollIntoView({behavior: "auto", block: "end"});
+        var list = document.querySelector(".VS-AutocompleteItems")
+        if (!isUndefinedOrNull(element)) {
+            list.scrollTop = (element.offsetTop);
         }
     }
 
@@ -88,7 +87,6 @@ class ItemsList extends React.PureComponent {
     }
 
     renderHeirarchyItems() {
-        const { allowNewValue } = this.props.options;
         const { filteredlistItems, listItems } = this.props;
 
         return (
@@ -97,9 +95,7 @@ class ItemsList extends React.PureComponent {
                     (listItems && listItems.length > 0) ?
                         (filteredlistItems && filteredlistItems.length > 0) ?
                             filteredlistItems.map((item, index) => this.renderHeirarchyItem(item, index))
-
-                            : (allowNewValue === true) ? 'Do you want to add "' + this.state.searchValue + '" to list' : 'No Data Found' :
-                            // : (allowNewValue === true) ? 'Do you want to add "' + this.props.searchValue + '" to list' : 'No Data Found' :
+                            : 'No Data Found' :
                         'No List Items'
                 }
             </ul>
@@ -107,11 +103,11 @@ class ItemsList extends React.PureComponent {
     }
 
     getTooltipClassNames = (index, isLeft) => {
-        return ((this.props.filteredlistItems && (index + 1) >= this.props.filteredlistItems.length)? 'VS-TooltipText VS-TooltipText-Top' : 'VS-TooltipText') + ((isLeft === true)? ' VS-Left' : ' VS-Right');
+        return ((this.props.filteredlistItems && (index + 1) >= this.props.filteredlistItems.length) ? 'VS-TooltipText VS-TooltipText-Top' : 'VS-TooltipText') + ((isLeft === true) ? ' VS-Left' : ' VS-Right');
     }
 
     renderTooltip = (index, val, isLeft) => {
-        return ((val && val.length >= 20)? <span className={this.getTooltipClassNames(index, isLeft)}>{val}</span> : '');
+        return ((val && val.length >= 20) ? <span className={this.getTooltipClassNames(index, isLeft)}>{val}</span> : '');
     }
 
     renderLIItem(item, index) {
@@ -148,9 +144,7 @@ class ItemsList extends React.PureComponent {
     addItemButton = () => {
         return (
             <span>{
-
-                <span>Do you want to add "{this.props.searchValue.value}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.searchValue)}>ADD</Button></span>
-                // <span>Do you want to add "{this.props.searchValue}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.searchValue)}>ADD</Button></span>
+                <span>Do you want to add "{this.props.searchValue}" to list? <br /><Button className="VS-AddButton" onClick={() => this.addNewItem(this.props.searchValue)}>ADD</Button></span>
             }
             </span>
         )
@@ -167,7 +161,7 @@ class ItemsList extends React.PureComponent {
     render() {
         const { showHierarchy } = this.props.options;
         return (
-            <div id="VS-Scrollbar" className={this.getContainerClass()} style={this.props.style}>
+            <div id="VS-Scrollbar-TS" className={this.getContainerClass()} style={this.props.style}>
                 {
                     (showHierarchy === true) ?
                         this.renderHeirarchyItems()

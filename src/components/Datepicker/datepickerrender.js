@@ -5,7 +5,6 @@ import {
     getDateByFormat,
     getDateByFormatNew,
     isUndefinedOrNull,
-    convertYYYYMMDDByFormat,
     isObject
 } from "../../utils/utils";
 import {
@@ -17,7 +16,9 @@ import {
     isValidMMYYYYValue,
     isValidQQYYYYValue,
     isValidYYYYValue,
-    getConvertedDate
+    getConvertedDate,
+    reverseFormatOptions,
+    isYearFormat
 } from "../../utils/calendar";
 
 import './date-picker.scss';
@@ -29,10 +30,9 @@ function trigger(elem, name, e) {
 }
 
 function datepickerRender(el) {
-    
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
-    
+
     options = formatOptions(options);
 
     if(isCalendarFormat(options.displayFormat)){
@@ -40,9 +40,9 @@ function datepickerRender(el) {
     }
 
     function callOnSelectedEvent(_date, el) {
-        // let ev = new CustomEvent("change");
-        // trigger(el, 'onChange', ev);
-        // el.dispatchEvent(ev);
+        let ev = new CustomEvent("change");
+        trigger(el, 'onChange', ev);
+        el.dispatchEvent(ev);
     }
     
     function onFocusHandler() {
@@ -52,6 +52,18 @@ function datepickerRender(el) {
     
     function onBlurHandler() {
         let ev = new CustomEvent('blur');
+        el.dispatchEvent(ev);
+    }
+
+    function onKeyLeftHandler() {
+        let ev = new CustomEvent("change");
+        trigger(el, 'onKeyLeft', ev);
+        el.dispatchEvent(ev);
+    }
+    
+    function onKeyRightHandler() {
+        let ev = new CustomEvent("change");
+        trigger(el, 'onKeyRight', ev);
         el.dispatchEvent(ev);
     }
 
@@ -73,6 +85,10 @@ function datepickerRender(el) {
     el.getValue = function () {
         return myComponentInstance.getSelectedValue();
     }
+    
+    el.getDataOptions = function (options) {
+        return myComponentInstance.getDataOptions(options);
+    }
 
     el.setValue = function (date) {
         checkValueByDisplayFormat(date, options, (_date, isInvalidDate, isInvalidRangeDate) => {
@@ -89,8 +105,8 @@ function datepickerRender(el) {
         myComponentInstance.refresh();
     }
     
-    el.setDataOption = function (updatedOptions) {
-        let newOptions = {...options};
+    el.setDataOptions = function (updatedOptions) {
+        let newOptions = {...reverseFormatOptions(myComponentInstance.getDataOptions(), true)};
         let key;
         let isChanged = false;
         if(!isUndefinedOrNull(updatedOptions)){
@@ -101,9 +117,18 @@ function datepickerRender(el) {
                     
                     if(!isUndefinedOrNull(option)){
                         if(option === 'lowerLimit' || option === 'upperLimit'){
-                            let _date = convertYYYYMMDDByFormat(value, newOptions.displayFormat);
-                            newOptions[option] = _date;
-                            isChanged = true;
+                            if(isYearFormat(newOptions.displayFormat)){
+                                if(isValidMMYYYYValue(value) || 
+                                isValidQQYYYYValue(value) ||
+                                isValidYYYYValue(value)){
+                                    newOptions[option] = value;
+                                    isChanged = true;
+                                }
+                            } else {
+                                // let _date = convertYYYYMMDDByFormat(value, newOptions.displayFormat);
+                                newOptions[option] = value;
+                                isChanged = true;
+                            }
                         } else if(option === 'disabledList' && Array.isArray(value)){
                             let _disabledList = [];
                             value.forEach((val) => {
@@ -140,20 +165,12 @@ function datepickerRender(el) {
                 }
             }
             if(isChanged === true){
-                myComponentInstance.setState({ options: {...newOptions}});
+                myComponentInstance.setState({ options: {...formatOptions(newOptions)}});
             }
         }
     }
 
     el.reload = function () {
-    }
-
-    el.getStartDate = function () {
-        return myComponentInstance.getStartDate();
-    }
-    
-    el.getEndDate = function () {
-        return myComponentInstance.getEndDate();
     }
 
     el.addEventListener('mousedown', (e) => { 
@@ -162,7 +179,7 @@ function datepickerRender(el) {
         }
     }, false);
 
-    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} />;
+    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyLeft={onKeyLeftHandler} onKeyRight={onKeyRightHandler} />;
 
     let myComponentInstance = ReactDOM.render(
         myComponentElement,
