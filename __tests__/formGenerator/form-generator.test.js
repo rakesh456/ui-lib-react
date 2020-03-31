@@ -546,10 +546,14 @@ test("Form Generator renders without crashing", () => {
     const label = wrapper.find('label');
     expect(label).toHaveLength(1);
     expect(label.text()).toEqual('Firstname');
+    expect(label.prop('name')).toEqual('Firstname');
+    expect(label.prop('className')).toEqual('Firstname');
     const input = wrapper.find('input');
     expect(input).toHaveLength(1);
     expect(input.prop('type')).toEqual('text');
     expect(input.prop('id')).toEqual('firstname');
+    expect(input.prop('className')).toEqual('my-firstname-class');
+    expect(input.prop('title')).toEqual('vs-body-regular-primary');
    })
 
     //7. check if email input with label is rendered

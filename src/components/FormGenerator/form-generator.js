@@ -19,8 +19,10 @@ class FormGenerator extends React.PureComponent {
             let tags = [];
             
             /*  Iterate on Radio and Checkbox */ 
-            const rows =  options.rows;  
-            if(rows.length!==0){
+            
+              
+           if(options.hasOwnProperty("rows"))
+           {const rows =  options.rows;
             rows.forEach((row, index) => 
             {    
                 console.log(row)           
@@ -77,7 +79,7 @@ class FormGenerator extends React.PureComponent {
 
                 /* Iterate on row elements */
                 let rowElements =  row.rowElements;
-                if(rowElements.length!==0){
+                
                 rowElements.forEach((rowElement, index) => 
                 {
                     
@@ -225,9 +227,16 @@ class FormGenerator extends React.PureComponent {
                                 )
                                )
                            );                       
-                   } }); // Iteration on row elements ends here
-            }}); // Iteration on rows ends here
-            }
+                   }
+                 }); // Iteration on row elements ends here
+                
+                
+        }); // Iteration on rows ends here
+    }
+    else{
+        //console.log("hellpo")
+        options.rows = []
+    } 
             
             return (
                 (options.form) 
