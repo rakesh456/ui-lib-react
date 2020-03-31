@@ -22,10 +22,10 @@ class FormGenerator extends React.PureComponent {
             
               
            if(options.hasOwnProperty("rows"))
-           {const rows =  options.rows;
+           {
+            const rows =  options.rows;
             rows.forEach((row, index) => 
-            {    
-                console.log(row)           
+            {               
                  let labelText = row.rowLabel ? row.rowLabel.name : "";
                 let noOfRowElements = row.rowElements.length;
                 let keyRowDiv = 'rowDiv'+index;
@@ -239,7 +239,7 @@ class FormGenerator extends React.PureComponent {
     } 
             
             return (
-                (options.form) 
+                (options.form && options.rows.length!==0) 
                     ?
                     React.createElement(
                     "div",

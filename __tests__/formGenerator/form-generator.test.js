@@ -546,8 +546,8 @@ test("Form Generator renders without crashing", () => {
     const label = wrapper.find('label');
     expect(label).toHaveLength(1);
     expect(label.text()).toEqual('Firstname');
-    expect(label.prop('name')).toEqual('Firstname');
-    expect(label.prop('className')).toEqual('Firstname');
+    expect(label.prop('className')).toEqual('vs-body-regular-primary');
+   
     const input = wrapper.find('input');
     expect(input).toHaveLength(1);
     expect(input.prop('type')).toEqual('text');
