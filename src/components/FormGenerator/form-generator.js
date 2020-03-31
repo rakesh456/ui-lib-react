@@ -1,15 +1,12 @@
 import React from "react";
-import DatePicker from '../../components/Datepicker/index';
+
 
 import * as CONSTANTS from '../../utils/constants'
-import { isUndefinedOrNull } from '../../utils/utils'
+/* import { isUndefinedOrNull } from '../../utils/utils'
 import {
     resetOptions,
     formatOptions    
-} from "../../utils/calendar";
-
-import TagSelector from '../../components/TagSelector/tag-selector';
-import DateHierarchy from '../../components/DateHierarchy/date-hierarchy';
+} from "../../utils/calendar"; */
 
 class FormGenerator extends React.PureComponent {   
     
@@ -22,51 +19,55 @@ class FormGenerator extends React.PureComponent {
 
     renderForm = () => {
         if (Object.keys(this.props.options) !== 0) 
-        {            
+        {    
+                   
             let options = this.props.options;
+            //console.log(options)
             let formProps = options.form ? options.form.props : '';
             formProps["key"] = options.form.id?"form"+options.form.id:"form1";
             let tags = [];
             
             /*  Iterate on Radio and Checkbox */            
             options.rows.forEach((option, index) => 
-            {                
-                let labelText = option.rowLabel ? option.rowLabel.name : "";
+            {               
+                 let labelText = option.rowLabel ? option.rowLabel.name : "";
                 let noOfRowElements = option.rowElements.length;
-                let labelKey = labelText + noOfRowElements;
-                let errorId = labelText ? labelText.replace(" ", "").replace(":","") +'_error' : '';
-                let inx = 'rowDiv'+index;
-                let keyRowLabel = 'rowLabelDiv'+index;
-                let keyRowElement = 'rowElementDiv' + index;
+                let keyRowDiv = 'rowDiv'+index;
+               
+                let keyRowLabel = 'rowLabel'
+                let keyLabelDiv = 'labelDiv' + index;
+                let keyElementDiv = 'elementDiv' + index;
+                //let keyRowElement = 'rowElement' + index;
                 
                 if (noOfRowElements > 1) {
                     var optionsInRows = option.rowElements;
 
 
                     optionsInRows.forEach((item, optionIndex) => {
+                        //console.log(optionIndex)
                         item.elementLabel.props["className"] = item.elementLabel.props["className"]?CONSTANTS.CLASSES.VS_RADIOBUTTON + " " + item.elementLabel.props["className"]:CONSTANTS.CLASSES.VS_RADIOBUTTON;
+                        item.elementLabel.props["key"] = keyRowLabel+optionIndex;
 
-                        // item.props["className"] = item.props["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + 
-                        // " " + item.props["className"] : CONSTANTS.CLASSES.VS_TEXTBOX;
-                        // item.props["key"] = "rowElementDiv" + optionIndex + "" + index;
                     })
 
 
                     tags.push(React.createElement(
                         "div",
-                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx}},
+                        { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv},
                         React.createElement(
                             "div",
-                            {key: {keyRowLabel}},
+                            {key: keyLabelDiv},
                             React.createElement(
                                 "label",
-                                { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+
+                                /* {className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` }, */
+                                {className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY} , ${option.rowLabel.props.className}`) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                 labelText,
                             )
                         ),
                         React.createElement(
                             "div",
-                            {key: keyRowElement},
+                            {key: keyElementDiv},
                             optionsInRows.map(item => React.createElement(
                                 "label",
                                 item.elementLabel ? item.elementLabel.props: '',
@@ -89,19 +90,19 @@ class FormGenerator extends React.PureComponent {
                 /* Iterate on row elements */
                 option.rowElements.forEach((rowElement, index) => 
                 {
-                    console.log(index,rowElement)
+                    
                     let elementID = rowElement.props.id;
                     let elementType = rowElement.elementType;
                     let elementProps = rowElement.props;
-                    let inx = 'divnew'+index;
-                    let labelKey = elementID + "label";
-                    let labelKeyOuter = labelKey + "Outer";    
+                    //let keyDiv = 'divRowElem'+index;
+                      
                     let keyRowLabel = 'rowLabelDiv'+index;
-                    let keyRowElement = 'rowElementDiv' + index;
+                   
+                    let keyRowElement= 'rowElementDiv' + index;
                     let elementError = elementID ? elementID+ '_error' : 'missingID_error';
 
                     elementProps.key = elementID;    
-                    
+                        
 
                     if (elementType === "input") {   
                         elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
@@ -109,13 +110,14 @@ class FormGenerator extends React.PureComponent {
                         if (elementProps.type !== "radio" && elementProps.type !== "checkbox") {    
                             tags.push(React.createElement(
                                 "div",
-                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
                                 React.createElement(
                                     "div",
                                     {key: keyRowLabel},
                                     React.createElement(
                                         "label",
-                                        { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                        /* { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` }, */
+                                        { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY} ${option.rowLabel.props.className}`) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                         labelText)),
                                 React.createElement(
                                     "div",
@@ -133,13 +135,14 @@ class FormGenerator extends React.PureComponent {
                         let items = rowElement.options;
                         tags.push(React.createElement(
                             "div",
-                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
                             React.createElement(
                                 "div",
                                 {key: keyRowLabel},
                                 React.createElement(
                                     "label",
-                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                   /*  { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` }, */
+                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY} ${option.rowLabel.props.className}`) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                     labelText
                                 )
                             ),
@@ -172,13 +175,14 @@ class FormGenerator extends React.PureComponent {
 
                         tags.push(React.createElement(
                             "div",
-                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                            { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
                             React.createElement(
                                 "div",
                                 {key: keyRowLabel},
                                 React.createElement(
                                     "label",
-                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                    /* { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` }, */
+                                    { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY} ${option.rowLabel.props.className}`) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                     labelText)),
                             React.createElement(
                                 "div",
@@ -191,41 +195,41 @@ class FormGenerator extends React.PureComponent {
                     }
                     else if (elementType === 'datepicker')
                     {
-                        let options = JSON.parse(elementProps['data-options']);
-                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
-                        options = formatOptions(options);
+                        //let options = JSON.parse(elementProps['data-options']);
+                        //options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        //options = formatOptions(options);
                         tags.push(
-                        <div className = 'vs-gc-lbl-comp'> 
-                        <div><label className = "vs-label">{labelText}</label></div>
+                        <div className = 'vs-gc-lbl-comp' key={keyRowDiv}> 
+                        <div key={keyLabelDiv}><label className = "vs-label">{labelText}</label></div>
                         {/* <div><DatePicker options={options} onFocus={this.datePickerWrapper} onSelect={this.datePickerWrapper} onBlur={this.datePickerWrapper}/></div> */}
-                        <div><date-picker data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name} className=
+                        <div key={keyElementDiv}><date-picker data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name} className=
                         {elementProps.className}></date-picker></div>
                         </div>)
                     }
                     else if (elementType === 'datehierarchy')
                     {
-                        let options = JSON.parse(elementProps['data-options']);
+                        //let options = JSON.parse(elementProps['data-options']);
                         let ID = elementProps.id ? elementProps.id : '';
                         let elementName = elementProps.name ? elementProps.name : '';
-                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
-                        options = formatOptions(options);
+                        //options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        //options = formatOptions(options);
                         tags.push(
-                        <div className ='vs-gc-lbl-comp'> 
-                        <div><label className='vs-label'>{labelText}</label></div>
-                        {/* <div><DateHierarchy options={options} onFocus={this.dateHierarchyWrapper} onSelect={this.dateHierarchyWrapper} onBlur={this.dateHierarchyWrapper}/></div> */}
-                            <div className="VS-formGen-DH"><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}> </date-hierarchy> </div>
+                        <div className ='vs-gc-lbl-comp' key={keyRowDiv}> 
+                        <div key={keyLabelDiv}><label className='vs-label'>{labelText}</label></div>
+                       
+                            <div key={keyElementDiv}><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}> </date-hierarchy> </div>
                         </div>)
                     }
                     else if (elementType === 'tagselector')
                     {
-                        let options = JSON.parse(elementProps['data-options']);
-                        options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
-                        options = formatOptions(options);
+                        //let options = JSON.parse(elementProps['data-options']);
+                        //options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
+                        //options = formatOptions(options);
                         tags.push(
-                        <div className ='vs-gc-lbl-comp'>
-                        <div><label className='vs-label'>{labelText}</label></div>
-                        {/* <div><TagSelector options={options} onFocus={this.tagSelectorWrapper} onSelect={this.tagSelectorWrapper} onBlur={this.tagSelectorWrapper}/></div> */}
-                        <div><tag-selector data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></tag-selector> </div>
+                        <div className ='vs-gc-lbl-comp' key={keyRowDiv}>
+                        <div key={keyLabelDiv}><label className='vs-label'>{labelText}</label></div>
+                       
+                        <div key={keyElementDiv}><tag-selector data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></tag-selector> </div>
                         </div>)
                     }
                     
@@ -233,13 +237,14 @@ class FormGenerator extends React.PureComponent {
                    {
                        tags.push(React.createElement(
                            "div",
-                           { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : {inx} },
+                           { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
                            React.createElement(
                                "div",
                                {key: keyRowLabel},
                                React.createElement(
                                 "label",
-                                { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
+                                /* { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` + ' ' + option.rowLabel.props.className) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` }, */
+                                { className: option.rowLabel ? (`${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY} ${option.rowLabel.props.className}`) : `${CONSTANTS.CLASSES.VS_BODY_REGULAR_PRIMARY}` },
                                 labelText)),
                                 React.createElement(
                                     "div",

@@ -105,14 +105,6 @@ tag-selector{
     overflow: hidden;
 }
 
-.VS-CodeText {
-    // text-overflow: ellipsis;
-    // white-space: nowrap;
-    // overflow: hidden;
-    // width: 50%;
-    // float: left;
-}
-
 .VS-Tag-Input-Border.VS-ReadOnly,
 .VS-Tag-Input-Border.VS-ReadOnly .VS-TagSelector-Input {
     cursor: default;
@@ -323,7 +315,6 @@ tag-selector{
 
 .VS-TooltipText-Top{
     margin-top: -40px !important;
-    // bottom: 22px;
 }
 
 .VS-AutoCompleteItem-New.VS-ExtraWidth{

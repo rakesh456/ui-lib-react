@@ -13,6 +13,7 @@ function resetFormGenOptions(options) {
 
 function formGeneratorRender(el) {
     try {
+       
         let options = JSON.parse(el.getAttribute('data-options'));
 
         options = (isUndefinedOrNull(options)) ? resetFormGenOptions({}) : resetFormGenOptions(options);

@@ -1,20 +1,13 @@
 import 'react-app-polyfill/ie11';
 import 'react-app-polyfill/stable';
 import * as serviceWorker from './serviceWorker';
-import formGeneratorRender from "./components/FormGenerator/formgeneratorrender";
 import datepickerRender from "./components/Datepicker/datepickerrender";
-import queryBuilderRender from "./components/QueryBuilder/querybuilderrender";
 import tagSelectorRender from "./components/TagSelector/tagselectorrender";
 import dateHierarchyRender from "./components/DateHierarchy/datehierarchyrender";
-
-import {
-    isUndefinedOrNull
-} from "../src/utils/utils";
-
+import formGeneratorRender from "./components/FormGenerator/formgeneratorrender";
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
-import './components/QueryBuilder/query-builder.scss';
 
 
 (function () {
@@ -63,20 +56,3 @@ Array.prototype.forEach.call(
 window.addDateHierarchyRender = dateHierarchyRender;
 
 serviceWorker.unregister();
-
-// Form generator render 
-Array.prototype.forEach.call(
-    document.getElementsByTagName('form-gen'),
-    (el) => {
-        formGeneratorRender(el);
-    })
-
-window.addFormGenerator = formGeneratorRender;
-
-// Query builder render 
-Array.prototype.forEach.call(
-    document.getElementsByTagName('query-builder'),
-    (el) => {
-        queryBuilderRender(el);
-    })
-window.addReactDatepicker = datepickerRender;

@@ -42,7 +42,7 @@ function dateHierarchyRender(el) {
     el.getDates = function () {
         return HierarchyComponentInstance.getDates();
     }
-    // fun
+    
     el.refresh = function () {
         return HierarchyComponentInstance.refresh();
     }

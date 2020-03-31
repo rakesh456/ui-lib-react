@@ -75,6 +75,10 @@ module.exports = {
     plugins: [
         new MiniCssExtractPlugin({
             filename: '[name].css'
+        }),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            filename: './index.html'
         })
     ]
 };

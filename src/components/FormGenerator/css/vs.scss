@@ -68,8 +68,6 @@ $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 $font-normal: 'normal';
 
-.VS-Form-Generator-Wrapper{
-
 @font-face {
   font-family: $font-family;
   font-style: $font-normal;
@@ -122,9 +120,7 @@ $font-normal: 'normal';
   letter-spacing: normal;
   color: #000000;
   margin: 0; }
-.VS-formGen-DH{
-  margin-left: -20px;
-}
+
 .vs-baseline-light-primary {
   font-family: "Roboto", Arial, sans-serif;
   font-size: 12px;
@@ -8735,5 +8731,3 @@ input[type=range]::-ms-thumb {
   line-height: 1.33;
   letter-spacing: normal;
   margin: 0; }
-
-}
