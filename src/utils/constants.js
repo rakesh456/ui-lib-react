@@ -66,4 +66,17 @@ export const CLASSES = {
     VS_CHECK_MARK: 'vs-checkmark',
     VS_TEXTAREA: 'vs-textarea',
     
+    
+}
+
+export const FORM_GEN = { 
+ELEMENT_TYPE:{
+INPUT: 'input',
+SELECT: 'select',
+DATEPICKER: 'datepicker',
+TAGSELECTOR: 'tagselector',
+RADIO: 'radio',
+CHECKBOX: 'checkbox',
+TEXTAREA: 'textarea',
+DATEHIERARCHY: 'datehierarchy'},
 }

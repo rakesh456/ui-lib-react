@@ -91,7 +91,7 @@ class FormGenerator extends React.PureComponent {
                     let elementError = elementID ? elementID+ '_error' : 'missingID_error';
                     elementProps.key = elementID;   
 
-                    if (elementType === "input") {   
+                    if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.INPUT) {   
                         elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTBOX + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTBOX;
                                              
                         if (elementProps.type !== "radio" && elementProps.type !== "checkbox") {    
@@ -117,7 +117,7 @@ class FormGenerator extends React.PureComponent {
                             ));
                         }
                     }
-                    else if (elementType === "select") {
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.SELECT) {
                         let items = rowElement.options;
                         tags.push(React.createElement(
                             "div",
@@ -155,7 +155,7 @@ class FormGenerator extends React.PureComponent {
                             
                         ));
                     }
-                    else if (elementType === "textarea") {
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.TEXTAREA) {
                         elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_TEXTAREA + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_TEXTAREA;
 
                         tags.push(React.createElement(
@@ -177,7 +177,7 @@ class FormGenerator extends React.PureComponent {
                         )
                         );
                     }
-                    else if (elementType === 'datepicker')
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.DATEPICKER)
                     {
                         tags.push(
                         <div className = 'vs-gc-lbl-comp' key={keyRowDiv}> 
@@ -186,7 +186,7 @@ class FormGenerator extends React.PureComponent {
                         </div>
                         )
                     }
-                    else if (elementType === 'datehierarchy')
+                    else if (elementType === CONSTANTS.FORM_GEN.VS_DATEHIERARCHY)
                     {
                         
                         let ID = elementProps.id ? elementProps.id : '';
@@ -198,7 +198,7 @@ class FormGenerator extends React.PureComponent {
                         </div>
                         )
                     }
-                    else if (elementType === 'tagselector')
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.TAGSELECTOR)
                     {
                         tags.push(
                         <div className ='vs-gc-lbl-comp' key={keyRowDiv}>

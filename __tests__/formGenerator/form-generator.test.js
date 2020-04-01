@@ -313,6 +313,31 @@ test("Form Generator renders without crashing", () => {
     ReactDOM.render(<FormGen options={options} />, div);
   });
 
+  // check if form is rendered if no row items have been passed
+  test('check if form is rendered if no row items have been passed',()=>{
+    const options = {
+        "form":{
+            "props":{
+                "id":"form1",
+                "action":"https://www.fintellix.com",
+                "method":"get"
+            },
+            "eventHandlers":[
+                {
+                    "event":"submit",
+                    "handler":"SubmitForm"
+                }
+            ]
+            }
+            
+    }
+    const wrapper = mount(<FormGen options={options}/>)
+                    
+    const form = wrapper.find('form');
+    expect(form).toHaveLength(1);
+    expect(form.prop('id')).toEqual('form1');
+
+  })
   
    //1. check if id is set to form
                   test('id is set to form', () => {
@@ -434,14 +459,40 @@ test("Form Generator renders without crashing", () => {
                                 }
                             ]
                             },
-                            "rows":[]
+                            "rows":[{
+                                "rowElements":[
+                                    {
+                                        "elementType":"input",
+                                        "props":{
+                                        "type":"text",
+                                        "id":"firstname",
+                                        "className":"my-firstname-class",
+                                        "title":"Firstname",
+                                        "placeholder":"Your input",
+                                        "required":"required"
+                                        },
+                                        "eventHandlers":[
+                                        {
+                                            "event":"change",
+                                            "handler":"submitForm"
+                                        }
+                                        ]
+                                    }
+                                ],
+                                "rowLabel":{
+                                    "name":"Firstname",
+                                    "props":{
+                                        "className":"vs-body-regular-primary"
+                                    }
+                                }
+                            }]
                     }
                     const submitFunction = jest.fn();
                     const wrapper = mount(<FormGen options={options} onSubmit={submitFunction}/>)
                    
                     const form = wrapper.find('form');
                     form.simulate('submit');
-                    expect(submitFunction).toHaveBeenCalledTimes(0)
+                    expect(submitFunction).toHaveBeenCalled()
                    })
 
 
@@ -546,14 +597,15 @@ test("Form Generator renders without crashing", () => {
     const label = wrapper.find('label');
     expect(label).toHaveLength(1);
     expect(label.text()).toEqual('Firstname');
-    expect(label.prop('className')).toEqual('vs-body-regular-primary');
-   
+    expect(label.prop('className')).toEqual('vs_body_regular_primary vs-body-regular-primary');
+    //expect(label.prop('className')).toEqual('vs_body_regular_primary');
+    console.log(label.debug())
     const input = wrapper.find('input');
     expect(input).toHaveLength(1);
     expect(input.prop('type')).toEqual('text');
     expect(input.prop('id')).toEqual('firstname');
-    expect(input.prop('className')).toEqual('my-firstname-class');
-    expect(input.prop('title')).toEqual('vs-body-regular-primary');
+    expect(input.prop('className')).toEqual('vs-textbox my-firstname-class');
+    expect(input.prop('title')).toEqual('Firstname');
    })
 
     //7. check if email input with label is rendered
