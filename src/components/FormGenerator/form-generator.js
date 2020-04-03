@@ -12,6 +12,7 @@ class FormGenerator extends React.PureComponent {
 
     renderForm = () => {
         const options = this.props.options;
+        
         if (Object.keys(options) !== 0) 
         {        
             let formProps = options.form ? options.form.props : '';
@@ -186,26 +187,52 @@ class FormGenerator extends React.PureComponent {
                         </div>
                         )
                     }
-                    else if (elementType === CONSTANTS.FORM_GEN.VS_DATEHIERARCHY)
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.DATEHIERARCHY)
                     {
                         
                         let ID = elementProps.id ? elementProps.id : '';
                         let elementName = elementProps.name ? elementProps.name : '';
+                
                         tags.push(
                         <div className ='vs-gc-lbl-comp' key={keyRowDiv}> 
                         <div key={keyLabelDiv}><label className='vs-label'>{labelText}</label></div>
-                            <div key={keyElementDiv}><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName}></date-hierarchy> </div>
+                            <div key={keyElementDiv}><date-hierarchy data-options = {elementProps['data-options']} id = {ID} name= {elementName} className={elementProps.className}></date-hierarchy> </div>
                         </div>
                         )
                     }
                     else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.TAGSELECTOR)
                     {
+                        console.log("class",elementProps)
                         tags.push(
                         <div className ='vs-gc-lbl-comp' key={keyRowDiv}>
                         <div key={keyLabelDiv}><label className='vs-label'>{labelText}</label></div>
-                        <div key={keyElementDiv}><tag-selector data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name}></tag-selector> </div>
+                        <div key={keyElementDiv}><tag-selector data-options = {elementProps['data-options']} id = {elementProps.id} name= {elementProps.name} className= {elementProps.className}></tag-selector> </div>
                         </div>
                         )
+                    }
+                    else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.BUTTON)
+                    {
+                        console.log("class",elementProps)
+                       
+                            elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_BUTTON + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_BUTTON;
+
+                            tags.push(React.createElement(
+                                "div",
+                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
+                               
+                                React.createElement(
+                                    "button",
+                                   elementProps,
+                                "Submit"),
+                                React.createElement(
+                                    "button",
+                                   elementProps,
+                                "Reset"
+                                )
+    
+                            )
+                            );
+                       
                     }
                    else 
                    {
@@ -239,7 +266,7 @@ class FormGenerator extends React.PureComponent {
     } 
             
             return (
-                (options.form && options.rows.length!==0) 
+                (options.form) 
                     ?
                     React.createElement(
                     "div",
@@ -247,23 +274,13 @@ class FormGenerator extends React.PureComponent {
                     React.createElement(
                         "form",
                         formProps,
-                        tags,
-                        React.createElement(
-                            "button",
-                            {className: 'vs-button vs-primary-one-outline',
-                            value: 'submit',
-                            type: 'submit'},
-                        "Submit"),
-                        React.createElement(
-                            "button",
-                            {className: 'vs-button vs-primary-one-outline',
-                            value: 'reset',
-                            type: 'reset'
-                        },
-                        "Reset"
-                        )))
+                        tags
+                       ))
                  : 
                  <div> {tags}</div>
+                
+
+
             )
         }
         else {

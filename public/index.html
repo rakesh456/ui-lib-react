@@ -535,7 +535,8 @@
                      "props":{
                         "id":"tagselectorID",
                         "name":"tagselector",
-                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}"
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}",
+                        "className":"my-tagselector-class"
                      },
                      "eventHandlers":[
                         {
@@ -559,7 +560,8 @@
                       "props":{
                          "id":"hierarchyID",
                          "name":"datehierarchy",
-                         "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}"
+                         "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}",
+                         "className":"my-datehierarchy-class"
                       },
                       "eventHandlers":[
                          {
@@ -706,7 +708,28 @@
                       "className":"vs-label"
                    }
                 }
-             }
+             },
+             {
+               "rowElements":[
+                  {
+                     "elementType":"button",
+                     "props":{
+                        "type":"submit",
+                        "id":"submitID",
+                        "className":" vs-primary-one-outline",
+                        "title":"Submit",
+                        "name":"Submit"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"submit",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ]
+               
+            }
              
          ]
       }

@@ -65,7 +65,7 @@ export const CLASSES = {
     VS_RADIO_DOT: 'vs-radio-dot',
     VS_CHECK_MARK: 'vs-checkmark',
     VS_TEXTAREA: 'vs-textarea',
-    
+    VS_BUTTON: 'vs-button',
     
 }
 
@@ -77,6 +77,8 @@ DATEPICKER: 'datepicker',
 TAGSELECTOR: 'tagselector',
 RADIO: 'radio',
 CHECKBOX: 'checkbox',
+DATEHIERARCHY: 'datehierarchy',
 TEXTAREA: 'textarea',
-DATEHIERARCHY: 'datehierarchy'},
+BUTTON: 'button'
+}
 }
