@@ -302,7 +302,7 @@
                          "id":"countries",
                          "className":"vs-dropdown",
                          "required":"required",
-                         "defaultValue":"IN"
+                         "defaultValue":""
                       },
                       "eventHandlers":[
                          {
@@ -417,7 +417,28 @@
                   }
                ]
                
-            }
+            },
+            {
+                "rowElements":[
+                   {
+                      "elementType":"button",
+                      "props":{
+                         "type":"reset",
+                         "id":"resetID",
+                         "className":" vs-primary-one-outline",
+                         "title":"Reset",
+                         "name":"Reset"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"submit",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ]
+                
+             }
              
          ]
       }
