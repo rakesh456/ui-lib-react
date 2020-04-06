@@ -534,13 +534,20 @@ test("Form Generator renders without crashing", () => {
                              }
                               ]
                     }
-                    const submitFunction = jest.fn();
+                    /* const submitFunction = jest.fn();
                     const wrapper = mount(<FormGen options={options} onSubmit={submitFunction}/>)
                    
                     const form = wrapper.find('form');
                     console.log(wrapper.debug())
-                    //form.simulate('submit');
-                    //expect(submitFunction).toHaveBeenCalledTimes(1)
+                    form.simulate('submit');
+                    expect(submitFunction).toHaveBeenCalled() */
+                    const handleSubmit = jest.fn();
+                    const component = mount(
+                        <FormGen />
+                    );
+                    component.find('button').simulate('click');
+                    expect(handleSubmit).toHaveBeenCalledTimes(1);
+                    //expect(handleSubmit).toBeCalledWith({username: testValues.username, password: testValues.password});
                    })
 
 /*
