@@ -496,59 +496,59 @@ test("Form Generator renders without crashing", () => {
                    })
 
  //4. calls submit function when form is submitted
-                  test('calls submit function when form is submitted', () => {
-                    const options = {
-                        "form":{
-                            "props":{
-                                "id":"form1",
-                                "action":"https://www.fintellix.com",
-                                "method":"get"
-                            },
-                            "eventHandlers":[
-                                {
-                                    "event":"submit",
-                                    "handler":"SubmitFunction"
-                                }
-                            ]
-                            },
-                            "rows":[ {
-                                "rowElements":[
-                                   {
-                                      "elementType":"button",
-                                      "props":{
-                                         "type":"submit",
-                                         "id":"submitID",
-                                         "className":" vs-primary-one-outline",
-                                         "title":"Submit",
-                                         "name":"Submit"
-                                      },
-                                      "eventHandlers":[
-                                         {
-                                            "event":"submit",
-                                            "handler":"submitForm"
-                                         }
-                                      ]
-                                   }
-                                ]
+                //   test('calls submit function when form is submitted', () => {
+                //     const options = {
+                //         "form":{
+                //             "props":{
+                //                 "id":"form1",
+                //                 "action":"https://www.fintellix.com",
+                //                 "method":"get"
+                //             },
+                //             "eventHandlers":[
+                //                 {
+                //                     "event":"submit",
+                //                     "handler":"SubmitFunction"
+                //                 }
+                //             ]
+                //             },
+                //             "rows":[ {
+                //                 "rowElements":[
+                //                    {
+                //                       "elementType":"button",
+                //                       "props":{
+                //                          "type":"submit",
+                //                          "id":"submitID",
+                //                          "className":" vs-primary-one-outline",
+                //                          "title":"Submit",
+                //                          "name":"Submit"
+                //                       },
+                //                       "eventHandlers":[
+                //                          {
+                //                             "event":"submit",
+                //                             "handler":"submitForm"
+                //                          }
+                //                       ]
+                //                    }
+                //                 ]
                                 
-                             }
-                              ]
-                    }
-                    /* const submitFunction = jest.fn();
-                    const wrapper = mount(<FormGen options={options} onSubmit={submitFunction}/>)
+                //              }
+                //               ]
+                //     }
+                //     /* const submitFunction = jest.fn();
+                //     const wrapper = mount(<FormGen options={options} onSubmit={submitFunction}/>)
                    
-                    const form = wrapper.find('form');
-                    console.log(wrapper.debug())
-                    form.simulate('submit');
-                    expect(submitFunction).toHaveBeenCalled() */
-                    const handleSubmit = jest.fn();
-                    const component = mount(
-                        <FormGen />
-                    );
-                    component.find('button').simulate('click');
-                    expect(handleSubmit).toHaveBeenCalledTimes(1);
-                    //expect(handleSubmit).toBeCalledWith({username: testValues.username, password: testValues.password});
-                   })
+                //     const form = wrapper.find('form');
+                //     console.log(wrapper.debug())
+                //     form.simulate('submit');
+                //     expect(submitFunction).toHaveBeenCalled() */
+                //     const handleSubmit = jest.fn();
+                //     const component = mount(
+                //         <FormGen />
+                //     );
+                //     component.find('button').simulate('click');
+                //     expect(handleSubmit).toHaveBeenCalledTimes(1);
+                //     //expect(handleSubmit).toBeCalledWith({username: testValues.username, password: testValues.password});
+                //    })
 
 /*
      //5. check for event handlers 
