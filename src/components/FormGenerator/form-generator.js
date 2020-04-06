@@ -212,25 +212,15 @@ class FormGenerator extends React.PureComponent {
                     }
                     else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.BUTTON)
                     {
-                        console.log("class",elementProps)
+                        
                        
                             elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_BUTTON + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_BUTTON;
 
-                            tags.push(React.createElement(
-                                "div",
-                                { className: `${CONSTANTS.CLASSES.VS_GC_LBL_COMP}`, key : keyRowDiv },
-                               
+                            tags.push(
                                 React.createElement(
                                     "button",
                                    elementProps,
-                                "Submit"),
-                                React.createElement(
-                                    "button",
-                                   elementProps,
-                                "Reset"
-                                )
-    
-                            )
+                                elementProps.name)
                             );
                        
                     }
