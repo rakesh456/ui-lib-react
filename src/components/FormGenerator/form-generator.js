@@ -202,7 +202,7 @@ class FormGenerator extends React.PureComponent {
                     }
                     else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.TAGSELECTOR)
                     {
-                        console.log("class",elementProps)
+                        
                         tags.push(
                         <div className ='vs-gc-lbl-comp' key={keyRowDiv}>
                         <div key={keyLabelDiv}><label className='vs-label'>{labelText}</label></div>
@@ -212,7 +212,7 @@ class FormGenerator extends React.PureComponent {
                     }
                     else if (elementType === CONSTANTS.FORM_GEN.ELEMENT_TYPE.BUTTON)
                     {
-                        console.log("class",elementProps)
+                        
                        
                             elementProps["className"] = elementProps["className"] ? CONSTANTS.CLASSES.VS_BUTTON + " " + elementProps["className"]: CONSTANTS.CLASSES.VS_BUTTON;
 
@@ -261,7 +261,7 @@ class FormGenerator extends React.PureComponent {
         }); // Iteration on rows ends here
     }
     else{
-        //console.log("hellpo")
+        
         options.rows = []
     } 
             

@@ -5,102 +5,19 @@
     <title>React Component with Event</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <script>
-
-        function onInputHandler() {
-            console.log('onInputHandler called ');
-        }
-
-        function onFocusHandler() {
-            console.log('onFocusHandler called ');
-        }
-
-        function onChangeHandler() {
-            console.log('onChangeHandler called ');
-        }
-
-        function onBlurHandler() {
-            console.log('onBlurHandler called ');
-        }
-
-        function onKeyDownHandler() {
-            console.log('onKeyDownHandler called ');
-        }
-
-        function onKeyUpHandler() {
-            console.log('onKeyUpHandler called ');
-        }
-
-        function onKeyLeftHandler() {
-            console.log('onKeyLeftHandler called ');
-        }
-
-        function onKeyRightHandler() {
-            console.log('onKeyRightHandler called ');
-        }
-
-        function onDoubleClickHandler() {
-            console.log('onDoubleClickHandler called ');
-        }
-
-        function onMouseDownHandler() {
-            console.log('onMouseDownHandler called ');
-        }
-
-        function onMouseUpHandler() {
-            console.log('onMouseUpHandler called ');
-        }
-
-        function onMouseEnterHandler() {
-            console.log('onMouseEnterHandler called ');
-        }
-
-        function onMouseLeaveHandler() {
-            console.log('onMouseLeaveHandler called ');
-        }
-
-        function onMouseMoveHandler() {
-            console.log('onMouseMoveHandler called ');
-        }
-
-        function onMouseOverHandler() {
-            console.log('onMouseOverHandler called ');
-        }
-
-        function onMouseOutHandler() {
-            console.log('onMouseOutHandler called ');
-        }
-
-        function onWheelHandler() {
-            console.log('onWheelHandler called ');
-        }
-        
         // Form-gen
         function submitForm() {
-            var form = document.forms["myform"];
+         alert("Form submit captured")
+        }
+
+        function handleChange(e) {
+         let str_alert = JSON.stringify(e, null, 4);
+         alert(str_alert);
+         console.log(e);
         }
 
     </script>
-    <style>
-        .div-buttons {
-            display: block;
-            margin: 10px;
-        }
-
-        .col-100 {
-            width: 100%;
-            /* float: left; */
-        }
-
-        .col-50 {
-            width: 50%;
-            float: left;
-        }
-
-        .col-25 {
-            width: 25%;
-            float: left;
-        }
-    </style>
+    
   </head>
 
 
@@ -122,7 +39,7 @@
             "eventHandlers":[
                {
                   "event":"submit",
-                  "handler":"skundSubmitForm"
+                  "handler":"submitForm"
                }
             ]
          },
@@ -142,7 +59,7 @@
                      "eventHandlers":[
                         {
                            "event":"change",
-                           "handler":"submitForm"
+                           "handler":"handleChange"
                         }
                      ]
                   }
@@ -189,7 +106,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -215,7 +132,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -241,7 +158,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -270,7 +187,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -298,7 +215,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -323,7 +240,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ],
                       "options":[
@@ -380,7 +297,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    },
@@ -401,7 +318,7 @@
                       "eventHandlers":[
                          {
                             "event":"change",
-                            "handler":"submitForm"
+                            "handler":"handleChange"
                          }
                       ]
                    }
@@ -427,7 +344,7 @@
                      "eventHandlers":[
                         {
                            "event":"submit",
-                           "handler":"submitForm"
+                           "handler":"handleChange"
                         }
                      ]
                   }
