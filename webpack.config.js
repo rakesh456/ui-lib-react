@@ -7,17 +7,12 @@ const devMode = process.env.NODE_ENV !== 'production';
 module.exports = {
     mode: 'production',
     entry: {
-        bundle: ['./src/index.js'],
-        styles: [
-            './src/components/Datepicker/date-picker.scss',
-            './src/components/TagSelector/tag-selector.scss',
-            './src/components/DateHierarchy/date-hierarchy.scss'
-        ]
+        bundle: ['./src/index.js']
     },
     output: {
         path: path.resolve(__dirname, 'build'),
         publicPath: '/',
-        filename: '[name].js'
+        filename: 'form-gen.bundle.js'
     },
     devServer: {
         contentBase: "./build",
