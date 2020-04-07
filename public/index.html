@@ -178,10 +178,11 @@
             }
         }
 
-        /* function submitForm() {
-            var form = document.forms["myform"];
+         function submitForm() {
+            //var form = document.forms["myform"];
+            console.log("onBlurHandler called")
         }
- */
+ 
         function getSelectedValuesById(id) {
             let tagElement1 = document.getElementById(id);
             let divElement = document.getElementById('SelectedValues');
@@ -337,7 +338,7 @@
                      },
                      "eventHandlers":[
                         {
-                           "event":"change",
+                           "event":"blur",
                            "handler":"submitForm"
                         }
                      ]
@@ -719,6 +720,27 @@
                         "className":" vs-primary-one-outline",
                         "title":"Submit",
                         "name":"Submit"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"submit",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ]
+               
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"button",
+                     "props":{
+                        "type":"reset",
+                        "id":"resetID",
+                        "className":" vs-primary-one-outline",
+                        "title":"Reset",
+                        "name":"Reset"
                      },
                      "eventHandlers":[
                         {
