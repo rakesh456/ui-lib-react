@@ -683,7 +683,7 @@ class DatePicker extends React.PureComponent {
                                 }
                             </div>
                             {
-                                ((isInvalidDate === true || isInvalidRangeDate === true) && showErrorMessage === true) ?
+                                ((isInvalidDate === true || isInvalidRangeDate === true) && showErrorMessage === true && shouldCalendarOpen === false) ?
                                     <span className={`${CONSTANTS.CLASSES.VS_INVALID_TEXT}`}>{getInvalidDateMessage(options.validationMessages, isInvalidDate, isInvalidRangeDate)}</span> : ''
                             }
                         </div>

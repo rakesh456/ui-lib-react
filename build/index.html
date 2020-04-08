@@ -22,6 +22,14 @@
             console.log('onKeyUpHandler called ');
         }
 
+        function onKeyLeftHandler() {
+            console.log('onKeyLeftHandler called ');
+        }
+
+        function onKeyRightHandler() {
+            console.log('onKeyRightHandler called ');
+        }
+
         function onDoubleClickHandler() {
             console.log('onDoubleClickHandler called ');
         }
@@ -60,12 +68,29 @@
 
         function setValue(id, value) {
             let element = document.getElementById(id);
+
+            element.setDataOptions({ "lowerLimit": "10/01/2016", "upperLimit": "12/01/2022" });
             element.setValue(value);
         }
-        
-        function getValue(id){
+
+        function setDataOptions(id) {
+            let element = document.getElementById(id);
+            element.setDataOptions({ "lowerLimit": "01/2015", "upperLimit": "12/2022", "iconAlignment": "Right" });
+        }
+
+        function getValue(id) {
             let element = document.getElementById(id);
             console.log(' element ', element.getValue());
+        }
+
+        function getDataOptions(id) {
+            let element = document.getElementById(id);
+            console.log(id, ' getDataOptions ', JSON.stringify(element.getDataOptions(['disabledList', 'displayFormat'])));
+        }
+
+        function getDataOptionsForQQYY(id) {
+            let element = document.getElementById(id);
+            console.log(id, ' getDataOptions ', JSON.stringify(element.getDataOptions()));
         }
 
         function refresh(id) {
@@ -82,7 +107,7 @@
 
         function bodyOnload() {
             let element = document.getElementById('datepicker1');
-            let elementDiv = document.getElementById('display2');
+            let elementDiv = document.getElementById('displayMMYYYY');
 
             let tagselector1 = document.getElementById('tagselector1');
             let tagselector2 = document.getElementById('tagselector2');
@@ -630,14 +655,9 @@
             let dateValue = element.getValue();
             let element2 = document.getElementById(divId);
 
-            console.log(' dateValue ', dateValue);
             if (element2) {
                 element2.innerHTML = 'From displayValue function : ' + dateValue;
             }
-        }
-
-        function submitForm() {
-            var form = document.forms["myform"];
         }
 
         function getSelectedValuesById(id) {
@@ -727,6 +747,16 @@
             let json = ["2/1/2000", "2/2/2000", "2/3/2020", "2/4/2020", "2/5/2020", "2/6/2020", "2/7/2020", "2/8/2020", "2/9/2020", "2/10/2020", "2/11/2020", "2/12/2020", "2/13/2020", "2/14/2020", "2/15/2020", "2/16/2020", "2/17/2020", "2/18/2020", "2/19/2020", "2/20/2020", "2/21/2020", "2/22/2020", "2/23/2020", "2/24/2020"];
             console.log('json', json);
             element.setValues(json);
+        }
+
+        function set(id) {
+            let elem = document.getElementById(id)
+            elem.setDataOptions({ "displayFormat": "QQ/YYYY", "iconAlignment": "Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true })
+        }
+
+        // Form-generator functions
+        function submitForm() {
+            var form = document.forms["myform"];
         }</script><style>.div-buttons {
             display: block;
             margin: 10px;
@@ -734,7 +764,7 @@
 
         .col-100 {
             width: 100%;
-            /* float: left; */
+            display: inline-block;
         }
 
         .col-50 {
@@ -745,4 +775,452 @@
         .col-25 {
             width: 25%;
             float: left;
-        }</style><link href="/bundle.css" rel="stylesheet"><link href="/styles.css" rel="stylesheet"></head><body><h2>Datepicker</h2><p>{}</p><div><date-picker name="dob" id="datepicker1" data-options="{}" onchange="displayValue('datepicker1', 'display1')" oninput="onInputHandler()"></date-picker></div><br><div id="display1"></div><div id="displayLower1"></div><div id="displayUpper1"></div><button onclick="displayValue('datepicker1', 'display1')">Display</button> <button onclick="getValue('datepicker1');">Get Value</button> <button onclick="setValue('datepicker1', '01/09/2019');">Set Value to 01/09/2019</button> <button onclick="setValue('datepicker1', '01/12/2019');">Set Value to 01/12/2019</button> <button onclick="refresh('datepicker1');">Refresh</button><br><br><p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p><date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onchange="displayValue('datepickerNew', 'displayNew')" oninput="onInputHandler()"></date-picker><br><div id="displayNew"></div><div id="displayLowerNew"></div><div id="displayUpperNew"></div><button onclick="getValue('datepickerNew');">Get Value</button> <button onclick="setValue('datepickerNew', '11/25/2019');">Set Value to 11/25/2019</button> <button onclick="setValue('datepickerNew', '10/15/2020');">Set Value to 10/15/2020</button> <button onclick="refresh('datepickerNew');">Refresh</button><br><p>Display format : MM/YYYY</p><p>{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2011", "upperLimit": "12/2014", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2011", "12/2011", "11/2013", "10/2024"]}</p><date-picker name="dob" id="datepicker2" data-options='{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2011", "upperLimit": "12/2014", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2011", "12/2011", "01/2012", "02/2012", "03/2012", "04/2012", "05/2012", "01/2012", "01/2012", "01/2012", "01/2012", "01/2012", "01/2012", "01/2012", "11/2013", "10/2024"]}' onselected="displayValue('datepicker2', 'display2')" oninput="onInputHandler()"></date-picker><br><div id="display2"></div><div id="displayLower2"></div><div id="displayUpper2"></div><button onclick="getValue('datepicker2');">Get Value</button> <button onclick="setValue('datepicker2', '11/2019');">Set Value to 11/2019</button> <button onclick="setValue('datepicker2', '11/2017');">Set Value to 11/2017</button> <button onclick="refresh('datepicker2');">Refresh</button><br><p>Display format : QQ/YYYY</p><p>{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit1": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p><date-picker name="dob" id="datepicker3" data-options='{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}' onselected="displayValue('datepicker3', 'display3')" oninput="onInputHandler()"></date-picker><br><div id="display3"></div><div id="displayLower3"></div><div id="displayUpper3"></div><button onclick="getValue('datepicker3');">Get Value</button> <button onclick="setValue('datepicker3', 'Q3/2019');">Set Value to Q3/2019</button> <button onclick="setValue('datepicker3', 'Q2/2017');">Set Value to Q2/2017</button> <button onclick="refresh('datepicker3');">Refresh</button><br><p>Display format : YYYY</p><p>{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p><date-picker name="dob" id="datepicker4" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}' onselected="displayValue('datepicker4', 'display4')" oninput="onInputHandler()"></date-picker><br><div id="display4"></div><div id="displayLower4"></div><div id="displayUpper4"></div><button onclick="getValue('datepicker4');">Get Value</button> <button onclick="setValue('datepicker4', '2019');">Set Value to 2019</button> <button onclick="setValue('datepicker4', '2016');">Set Value to 2016</button> <button onclick="refresh('datepicker4');">Refresh</button><h2>Tag selector</h2><p>{"placeholder": "Select country", "maxItemCounter": 2, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "showHelper": true, "searchWithHelper": true}</p><label>Select Country :</label><tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 2, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "showHelper": true, "searchWithHelper": true}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><p>{"placeholder": "Select skills", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "data": [{ "value": "Javascript", "key": "Javascript" }, { "value": "CSS", "key": "CSS" }, { "value": "JQuery", "key": "JQuery" }, { "value": "Angular", "key": "Angular" }, { "value": "MonogDB", "key": "MonogDB" },{ "value": "NodeJs", "key": "NodeJs" }]}</p><label>Select Skill :</label><tag-selector name="countries" id="tagselector3" data-options='{"placeholder": "Select skills", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "data": [{ "value": "Javascript", "key": "Javascript" }, { "value": "CSS", "key": "CSS" }, { "value": "JQuery", "key": "JQuery" }, { "value": "Angular", "key": "Angular" }, { "value": "MonogDB", "key": "MonogDB" },{ "value": "NodeJs", "key": "NodeJs" }]}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><p>{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": false, "showHierarchy": true}</p><label>Select State :</label><tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": true, "showHierarchy": true, "readOnly":false}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><br><div class="div-buttons"><button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> : <span>To display selected values</span><div id="SelectedValues"></div></div><div class="div-buttons"><button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button> : <span>To display selected items counter</span><div id="SelectedCounter"></div></div><div class="div-buttons"><button onclick="appendNewElementById('tagselector1');">Append new element</button> : <span>It will append new element in list i.e. <q>{"key": "Test", "value": "BPO"}</q></span></div><div class="div-buttons"><button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button> : <span>It will return newly added element</span><div id="NewlyAddedElements"></div></div><div class="div-buttons"><button onclick="setSelectedItems('tagselector1');">Set Selected Items</button> : <span>It will set two selected items : i.e <q>[{"key": "AL", "value": "Albania"}, {"key": "TR", "value": "Turkey"}]</q></span></div><div class="div-buttons"><button onclick="refreshTagSelector('tagselector1');">Refresh</button> : <span>It will clear selected items</span></div><div class="div-buttons"><button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button> : <span>To remove item from list and selected items i.e. <q>{"key": "AL", "value": "Albania"}</q></span></div><h2>Date Hierarchy</h2><p>data-options={"lowerLimit": "2000", "upperLimit": "2025", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}</p><div class="col-100"><button onclick="getValues('datehierarchy')">Get Value</button> <button onclick="setValues('datehierarchy')">Set Values</button><div id="selectedDates"></div><div class="col-25"><h4>showQuarters = true & showWeeks = true & height = 550px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2018", "upperLimit": "2025", "showQuarters": true, "showWeeks": true, "expandResults": false, "height": "350", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025", "01/2020", "02/2020", "03/2020"]}'></date-hierarchy></div><div class="col-25"><h4>showQuarters = false & showWeeks = true & height = 600px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": true, "height": "600", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div><div class="col-25"><h4>showQuarters = true & showWeeks = false & height not set default = 200px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": false, "expandResults": false, "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div><div class="col-25"><h4>showQuarters = false & showWeeks = false & height = 500px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": false, "height": "500", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div></div><script src="/bundle.js"></script><script src="/styles.js"></script></body></html>
+        }</style><link href="/bundle.css" rel="stylesheet"><link href="/styles.css" rel="stylesheet"></head><body><h2>Datepicker</h2><p>{"displayFormat": "DD/MM/YYYY", "iconAlignment":"left", "showErrorMessage": true, "dateStringAlignment": "left", "lowerLimit": "08/07/2017", "upperLimit": "30/12/2018", "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": ""}] , "isDisabled": false, "showButtons": false, "dateButtonPrimary": "Ok", "showClearIcon": false, "manualEntry": true, "disabledList": ["08/07/2017", "09/07/2017", "01/11/2020", "20/11/2019"], "indicatorList": [{ "dates": ["01/10/2019","02/11/2019"], "color": "#333" }, { "dates": ["02/09/2019","01/08/2019"], "color": "#ff0000" }]}</p><div><date-picker name="dob" id="datepicker1" data-options="{}" onchange="displayValue('datepicker1', 'display1')" oninput="onInputHandler()"></date-picker></div><br><div id="display1"></div><div id="displayLower1"></div><div id="displayUpper1"></div><button onclick="displayValue('datepicker1', 'display1')">Display</button> <button onclick="getValue('datepicker1');">Get Value</button> <button onclick="setValue('datepicker1', '01/09/2019');">Set Value to 01/09/2019</button> <button onclick="setValue('datepicker1', '01/12/2019');">Set Value to 01/12/2019</button> <button onclick="refresh('datepicker1');">Refresh</button><br><br><p>{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}</p><date-picker name="dob" id="datepickerNew" data-options='{"displayFormat": "MM/DD/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/25/2000", "upperLimit": "11/29/2001", "showErrorMessage": true, "validationMessages": [{"inValidFormat": "Invalid DOB"}, { "outsideRange": "Date is out of range"}] , "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/25/2000", "11/29/2000", "11/13/2019", "11/14/2019"], "indicatorList": [{ "dates": ["10/01/2019","11/01/2019"], "color": "#333" }, { "dates": ["09/02/2019","08/01/2019"], "color": "#ff0000" }]}' onkeyleft="onKeyLeftHandler()" onkeyright="onKeyRightHandler()" onchange="displayValue('datepickerNew', 'displayNew')" oninput="onInputHandler()"></date-picker><br><div id="displayNew"></div><div id="displayLowerNew"></div><div id="displayUpperNew"></div><button onclick="getValue('datepickerNew');">Get Value</button> <button onclick="setValue('datepickerNew', '11/25/2019');">Set Value to 11/25/2019</button> <button onclick="setValue('datepickerNew', '10/15/2020');">Set Value to 10/15/2020</button> <button onclick="getDataOptions('datepickerNew');">Get Data Options</button> <button onclick="refresh('datepickerNew');">Refresh</button><br><p>Display format : MM/YYYY</p><p>{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2012", "upperLimit": "12/2014", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2012", "12/2012", "11/2013", "10/2024"]}</p><date-picker name="dob" id="datepickerMMYYYY" data-options='{"displayFormat": "MM/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "11/2012", "upperLimit": "12/2014", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["11/2012", "12/2012", "11/2013", "10/2024"]}' onselected="displayValue('datepickerMMYYYY', 'displayMMYYYY')" oninput="onInputHandler()"></date-picker><br><div id="displayMMYYYY"></div><div id="displayLower2"></div><div id="displayUpper2"></div><button onclick="getValue('datepickerMMYYYY');">Get Value</button> <button onclick="setValue('datepickerMMYYYY', '11/2019');">Set Value to 11/2019</button> <button onclick="setValue('datepickerMMYYYY', '11/2017');">Set Value to 11/2017</button> <button onclick="setDataOptions('datepickerMMYYYY');">Set data options</button> <button onclick="getDataOptions('datepickerMMYYYY');">Get Data Options</button> <button onclick="refresh('datepickerMMYYYY');">Refresh</button><br><p>Display format : QQ/YYYY</p><p>{"displayFormat": "QQ/YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2015", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2011", "Q3/2011"]}</p><date-picker name="dob" id="datepickerQQYYYY" data-options='{"displayFormat": "QQ/YYYY", "defaultDate": "Q1/2015", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "Q2/2011", "upperLimit": "Q3/2037", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["Q2/2012", "Q3/2012"]}' onselected="displayValue('datepickerQQYYYY', 'displayQQYYYY')" oninput="onInputHandler()"></date-picker><br><div id="displayQQYYYY"></div><div id="displayLower3"></div><div id="displayUpper3"></div><button onclick="getValue('datepickerQQYYYY');">Get Value</button> <button onclick="setValue('datepickerQQYYYY', 'Q3/2019');">Set Value to Q3/2019</button> <button onclick="setValue('datepickerQQYYYY', 'Q2/2017');">Set Value to Q2/2017</button> <button onclick="getDataOptionsForQQYY('datepickerQQYYYY');">Get Data Options for QQ/YYYY</button> <button onclick="refresh('datepickerQQYYYY');">Refresh</button><br><p>Display format : YYYY</p><p>{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": false, "manualEntry": true, "disabledList": ["2007", "2008"]}</p><date-picker name="dob" id="datepickerYYYY" data-options='{"displayFormat": "YYYY", "iconAlignment":"Left", "dateStringAlignment": "Left", "lowerLimit": "2007", "upperLimit": "2018", "showErrorMessage": true, "isDisabled": false, "showButtons": false, "showClearIcon": true, "manualEntry": true, "disabledList": ["2007", "2008"]}' onselected="displayValue('datepickerYYYY', 'display4')" oninput="onInputHandler()"></date-picker><br><div id="display4"></div><div id="displayLower4"></div><div id="displayUpper4"></div><button onclick="getValue('datepickerYYYY');">Get Value</button> <button onclick="setValue('datepickerYYYY', '2019');">Set Value to 2019</button> <button onclick="setValue('datepickerYYYY', '2016');">Set Value to 2016</button> <button onclick="refresh('datepickerYYYY');">Refresh</button><h2>Tag selector</h2><p>{"placeholder": "Select country", "maxItemCounter": 2, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "showHelper": true, "searchWithHelper": true}</p><label>Select Country :</label><tag-selector name="countries" id="tagselector1" data-options='{"placeholder": "Select country", "maxItemCounter": 3, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "showHelper": true, "searchWithHelper": true}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><p>{"placeholder": "Select skills", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "data": [{ "value": "Javascript", "key": "Javascript" }, { "value": "CSS", "key": "CSS" }, { "value": "JQuery", "key": "JQuery" }, { "value": "Angular", "key": "Angular" }, { "value": "MonogDB", "key": "MonogDB" },{ "value": "NodeJs", "key": "NodeJs" }]}</p><label>Select Skill :</label><tag-selector name="countries" id="tagselector3" data-options='{"placeholder": "Select skills", "maxItemCounter": 2, "searchWithHelper": true, "canRemoveAll": true, "allowNewValue": true, "showHierarchy": false, "data": [{ "value": "Javascript", "key": "Javascript" }, { "value": "CSS", "key": "CSS" }, { "value": "JQuery", "key": "JQuery" }, { "value": "Angular", "key": "Angular" }, { "value": "MonogDB", "key": "MonogDB" },{ "value": "NodeJs", "key": "NodeJs" }]}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><p>{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": false, "showHierarchy": true}</p><label>Select State :</label><tag-selector name="states" id="tagselector2" data-options='{"placeholder": "Select state", "maxItemCounter": 2, "searchWithHelper": false, "canRemoveAll": true, "showHierarchy": true, "readOnly":false}' onfocus="onFocusHandler()" onkeydown="onKeyDownHandler()" onselect="onSelectHandler(e)" ondeselect="onDeSelectHandler(e)" onnotfound="onNotFoundHandler()"></tag-selector><br><div class="div-buttons"><button onclick="getSelectedValuesById('tagselector1');">Get Selected Value</button> : <span>To display selected values</span><div id="SelectedValues"></div></div><div class="div-buttons"><button onclick="getSelectedCounterById('tagselector1');">Get Selected Counter</button> : <span>To display selected items counter</span><div id="SelectedCounter"></div></div><div class="div-buttons"><button onclick="appendNewElementById('tagselector1');">Append new element</button> : <span>It will append new element in list i.e. <q>{"key": "Test", "value": "BPO"}</q></span></div><div class="div-buttons"><button onclick="getNewlyAddedById('tagselector1');">Get Newly Added</button> : <span>It will return newly added element</span><div id="NewlyAddedElements"></div></div><div class="div-buttons"><button onclick="setSelectedItems('tagselector1');">Set Selected Items</button> : <span>It will set two selected items : i.e <q>[{"key": "AL", "value": "Albania"}, {"key": "TR", "value": "Turkey"}]</q></span></div><div class="div-buttons"><button onclick="refreshTagSelector('tagselector1');">Refresh</button> : <span>It will clear selected items</span></div><div class="div-buttons"><button onclick="remove('tagselector1', 'tagselector2');">Remove Item</button> : <span>To remove item from list and selected items i.e. <q>{"key": "AL", "value": "Albania"}</q></span></div><h2>Date Hierarchy</h2><p>data-options={"lowerLimit": "2000", "upperLimit": "2025", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}</p><div class="col-100"><button onclick="getValues('datehierarchy')">Get Value</button> <button onclick="setValues('datehierarchy')">Set Values</button><div id="selectedDates"></div><div class="col-50"><h4>showQuarters = true & showWeeks = true & height = 550px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2018", "upperLimit": "2025", "showQuarters": true, "showWeeks": true, "expandResults": false, "height": "350", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025", "01/2020", "02/2020", "03/2020"]}'></date-hierarchy></div><div class="col-50"><h4>showQuarters = false & showWeeks = true & height = 600px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": true, "height": "600", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div><div class="col-50"><h4>showQuarters = true & showWeeks = false & height not set default = 200px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": true, "showWeeks": false, "expandResults": false, "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div><div class="col-50"><h4>showQuarters = false & showWeeks = false & height = 500px</h4><date-hierarchy id="datehierarchy" data-options='{"lowerLimit": "2000", "upperLimit": "2025", "showQuarters": false, "showWeeks": false, "height": "500", "disabledList":["01/01/2000","02/04/2000","09/05/2000", "8/01/2000", "11/11/2025"]}'></date-hierarchy></div></div><h1>Form Generator Output</h1><div class="col-100"><form-gen id="formGen1" data-options='
+        {
+         "form":{
+            "props":{
+               "id":"form1",
+               "action":"https://www.fintellix.com",
+               "method":"get"
+            },
+            "eventHandlers":[
+               {
+                  "event":"submit",
+                  "handler":"submitForm"
+               }
+            ]
+         },
+         "rows":[
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"firstname",
+                        "className":"my-firstname-class",
+                        "title":"Firstname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"blur",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Firstname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"input",
+                     "props":{
+                        "type":"text",
+                        "id":"lastname",
+                        "className":"lastname-class",
+                        "title":"Lastname",
+                        "placeholder":"Your input",
+                        "required":"required"
+                     }
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Lastname",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+                "rowElements":[
+                   {
+                      "elementType":"input",
+                      "props":{
+                         "type":"email",
+                         "id":"email",
+                         "className":"email-class",
+                         "title":"Email",
+                         "placeholder":"Your input"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Email",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"input",
+                      "props":{
+                         "type":"password",
+                         "id":"password",
+                         "className":"password-class",
+                         "title":"Password",
+                         "placeholder":"Your input"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Password",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"input",
+                      "props":{
+                         "type":"file",
+                         "id":"file",
+                         "className":"file-class",
+                         "title":"Upload File",
+                         "placeholder":"Select File"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Upload Your File",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"textarea",
+                      "props":{
+                         "id":"story",
+                         "name":"story",
+                         "rows":"5",
+                         "cols":"33",
+                         "maxLength":"500",
+                         "required":"required",
+                         "className":"my-textarea",
+                         "placeholder":"Your input"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Your Story:",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"datepicker",
+                      "props":{
+                         "id":"datepickerID",
+                         "name":"datepicker",
+                         "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }],\"calendarLocation\":\"down\"}",
+                         "className":"my-datepicker-class"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"blur",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Select Date:",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"datepicker",
+                     "props":{
+                        "id":"datepickerID",
+                        "name":"datepicker",
+                        "data-options":"{\"displayFormat\": \"DD/MM/YYYY\", \"iconAlignment\":\"left\", \"showErrorMessage\": true, \"dateStringAlignment\": \"left\", \"lowerLimit\": \"08/07/2017\", \"upperLimit\": \"30/12/2018\", \"validationMessages\": [{\"inValidFormat\": \"Invalid DOB\"}, { \"outsideRange\": \"\"}] , \"isDisabled\": false, \"showButtons\": false, \"dateButtonPrimary\": \"Ok\", \"showClearIcon\": false, \"manualEntry\": true, \"disabledList\": [\"08/07/2017\", \"09/07/2017\", \"01/11/2020\", \"20/11/2019\"], \"indicatorList\": [{ \"dates\": [\"01/10/2019\",\"02/11/2019\"], \"color\": \"#333\" }, { \"dates\": [\"02/09/2019\",\"01/08/2019\"], \"color\": \"#ff0000\" }],\"calendarLocation\":\"down\"}",
+                        "className":"my-datepicker-class"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"blur",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select Date:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"tagselector",
+                     "props":{
+                        "id":"tagselectorID",
+                        "name":"tagselector",
+                        "data-options":"{\"placeholder\": \"Select skills\", \"maxItemCounter\": 2, \"searchWithHelper\": true, \"canRemoveAll\": true, \"allowNewValue\": true, \"showHierarchy\": false, \"data\": [{ \"value\": \"Javascript\", \"key\": \"Javascript\" }, { \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"Javascript\", \"key\": \"Javascript\" },{ \"value\": \"CSS\", \"key\": \"CSS\" }, { \"value\": \"JQuery\", \"key\": \"JQuery\" }, { \"value\": \"Angular\", \"key\": \"Angular\" }, { \"value\": \"MonogDB\", \"key\": \"MonogDB\" },{ \"value\": \"NodeJs\", \"key\": \"NodeJs\" }]}",
+                        "className":"my-tagselector-class"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"blur",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ],
+               "rowLabel":{
+                  "name":"Select a Tag:",
+                  "props":{
+                     "className":"vs-body-regular-primary"
+                  }
+               }
+            },
+            {
+                "rowElements":[
+                   {
+                      "elementType":"datehierarchy",
+                      "props":{
+                         "id":"hierarchyID",
+                         "name":"datehierarchy",
+                         "data-options":"{\"lowerLimit\":\"2000\",\"upperLimit\":\"2025\",\"disabledList\":[\"01/01/2000\",\"02/04/2000\",\"09/05/2000\", \"8/01/2000\", \"11/11/2025\"]}",
+                         "className":"my-datehierarchy-class"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Select Date(s):",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"img",
+                      "props":{
+                         "id":"imgID",
+                         "name":"profileImage",
+                         "src":"https://www.prlog.org/12405743-fintellix-logo.png",
+                         "alt":"Smiley face",
+                         "width":"100px",
+                         "height":"50px",
+                         "className":"myImageClass"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Image:",
+                   "props":{
+                      "class":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"select",
+                      "props":{
+                         "id":"countries",
+                         "className":"vs-dropdown",
+                         "required":"required",
+                         "defaultValue":"IN"
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ],
+                      "options":[
+                         {
+                            "props":{
+                               "value":""
+                            },
+                            "optionLabel":"Select One"
+                         },
+                         {
+                            "props":{
+                               "value":"IN"
+                            },
+                            "optionLabel":"India"
+                         },
+                         {
+                            "props":{
+                               "value":"US"
+                            },
+                            "optionLabel":"USA"
+                         },
+                         {
+                            "props":{
+                               "value":"CA"
+                            },
+                            "optionLabel":"Canada"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Select Country",
+                   "props":{
+                      "className":"vs-body-regular-primary"
+                   }
+                }
+             },
+             {
+                "rowElements":[
+                   {
+                      "elementType":"input",
+                      "props":{
+                         "type":"radio",
+                         "id":"male",
+                         "name":"gender",
+                         "className":"male-class"
+                      },
+                      "elementLabel":{
+                         "name":"male",
+                         "props":{
+                            "className":"vs-radiobutton1"
+                         }
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   },
+                   {
+                      "elementType":"input",
+                      "props":{
+                         "type":"radio",
+                         "id":"female",
+                         "name":"gender",
+                         "required":"required"
+                      },
+                      "elementLabel":{
+                         "name":"female",
+                         "props":{
+                            "className":"vs-radiobutton2"
+                         }
+                      },
+                      "eventHandlers":[
+                         {
+                            "event":"change",
+                            "handler":"submitForm"
+                         }
+                      ]
+                   }
+                ],
+                "rowLabel":{
+                   "name":"Gender",
+                   "props":{
+                      "className":"vs-label"
+                   }
+                }
+             },
+             {
+               "rowElements":[
+                  {
+                     "elementType":"button",
+                     "props":{
+                        "type":"submit",
+                        "id":"submitID",
+                        "className":" vs-primary-one-outline",
+                        "title":"Submit",
+                        "name":"Submit"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"submit",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ]
+               
+            },
+            {
+               "rowElements":[
+                  {
+                     "elementType":"button",
+                     "props":{
+                        "type":"reset",
+                        "id":"resetID",
+                        "className":" vs-primary-one-outline",
+                        "title":"Reset",
+                        "name":"Reset"
+                     },
+                     "eventHandlers":[
+                        {
+                           "event":"submit",
+                           "handler":"submitForm"
+                        }
+                     ]
+                  }
+               ]
+               
+            }
+             
+         ]
+      }
+       
+        '></form-gen></div><script src="/bundle.js"></script><script src="/styles.js"></script></body></html>

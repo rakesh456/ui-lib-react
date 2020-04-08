@@ -52,6 +52,10 @@ $font-family: 'Roboto', sans-serif;
         border: none;
         box-shadow: none;
     }
+
+    *, *:before, *:after {
+        box-sizing: content-box;
+    }
 }
 
 tag-selector{
