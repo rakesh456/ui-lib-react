@@ -40,8 +40,7 @@ function datepickerRender(el) {
     }
 
     function callOnSelectedEvent(_date, el) {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onChange', ev);
+        let ev = new CustomEvent("change");        
         el.dispatchEvent(ev);
     }
     
@@ -82,7 +81,7 @@ function datepickerRender(el) {
         el.setAttribute('selected-date', date);
     }
 
-    el.getValue = function () {
+    el.getValue = function () {        
         return myComponentInstance.getSelectedValue();
     }
     
