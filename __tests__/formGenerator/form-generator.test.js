@@ -3,7 +3,6 @@ import FormGen from "../../src/components/FormGenerator/form-generator";
 import React from "react";
 import ReactDOM from "react-dom";
 import { shallow, mount } from "enzyme";
-const mockHandleClick = jest.fn();
 
 // 0. Checking whereas all the options are rendering properly or not.
 test("Form Generator renders without crashing", () => {
@@ -314,7 +313,7 @@ test("Form Generator renders without crashing", () => {
     ReactDOM.render(<FormGen options={options} />, div);
   });
  
-  // check if form is rendered if no row items have been passed
+  //1. check if form is rendered if no row items have been passed
   test('check if form is rendered if no row items have been passed',()=>{
     const options = {
         "form":{
@@ -332,14 +331,12 @@ test("Form Generator renders without crashing", () => {
             }
             
     }
-    const wrapper = mount(<FormGen options={options}/>)
-                    
+    const wrapper = mount(<FormGen options={options}/>);          
     const form = wrapper.find('form');
     expect(form.prop('id')).toEqual('form1');
-    //console.log(wrapper.debug())
   }) 
    
-   //1. check if id is set to form
+   //2. check if id is set to form
                   test('id is set to form', () => {
                     const options = {
                          "form":{
@@ -383,14 +380,13 @@ test("Form Generator renders without crashing", () => {
                                 }
                             }]
                     }
-                    const wrapper = mount(<FormGen options={options}/>)
-                    //console.log(wrapper.debug())
+                    const wrapper = mount(<FormGen options={options}/>);
                     const form = wrapper.find('form');
                     expect(form).toHaveLength(1);
                     expect(form.prop('id')).toEqual('form1');
                    }) 
 
- //2. check if action and method is set to form
+ //3. check if action and method is set to form
                   test('action and method is set to form', () => {
                     const options = {
                         "form":{
@@ -444,7 +440,7 @@ test("Form Generator renders without crashing", () => {
                     console.log(wrapper.debug())
                    })
 
- //3. check for validation, if required is set to input type 
+ //4. check for validation, if required is set to input type 
                   test('if required is set to input type', () => {
                     const options = {
                         "form":{
@@ -488,134 +484,15 @@ test("Form Generator renders without crashing", () => {
                                 }
                             }]
                     }
-                    const wrapper = mount(<FormGen options={options}/>)
-                    
+                    const wrapper = mount(<FormGen options={options}/>);
                     const form = wrapper.find('input');
                     expect(form).toHaveLength(1);
                     expect(form.prop('required')).toEqual('required');
                     expect(form.prop('id')).toEqual('firstname');
                    })
-/*
- //4. calls submit function when form is submitted
-                  test('calls submit function when form is submitted', () => {
-                    const options = {
-                        "form":{
-                            "props":{
-                                "id":"form1",
-                                "action":"https://www.fintellix.com",
-                                "method":"get"
-                            },
-                            "eventHandlers":[
-                                {
-                                    "event":"submit",
-                                    "handler":"SubmitFunction"
-                                }
-                            ]
-                            },
-                            "rows":[ {
-                                "rowElements":[
-                                   {
-                                      "elementType":"button",
-                                      "props":{
-                                         "type":"submit",
-                                         "id":"submitID",
-                                         "className":" vs-primary-one-outline",
-                                         "title":"Submit",
-                                         "name":"Submit"
-                                      },
-                                      "eventHandlers":[
-                                         {
-                                            "event":"submit",
-                                            "handler":"submitForm"
-                                         }
-                                      ]
-                                   }
-                                ]
-                                
-                             }
-                              ]
-                    }
-                    /* const submitFunction = jest.fn();
-                    const wrapper = mount(<FormGen options={options} onSubmit={submitFunction}/>)
-                   
-                    const form = wrapper.find('form');
-                    console.log(wrapper.debug())
-                    form.simulate('submit');
-                    expect(submitFunction).toHaveBeenCalled() */
-                    //const handleSubmit = jest.fn();
-                    //const component = mount(
-                    //    <FormGen />
-                    //);
-                    //component.find('button').simulate('click');
-                    //expect(handleSubmit).toHaveBeenCalledTimes(1);
-                    //expect(handleSubmit).toBeCalledWith({username: testValues.username, password: testValues.password});
-                   //}) 
 
 
-     //5. check for event handlers 
-                  test('check for event handlers', () => {
-                    const options = {
-                        "form":{
-                            "props":{
-                                "id":"form1",
-                                "action":"https://www.fintellix.com",
-                                "method":"get"
-                            },
-                            "eventHandlers":[
-                                {
-                                    "event":"submit",
-                                    "handler":"SubmitForm"
-                                }
-                            ]
-                            },
-                            "rows":[{
-                                "rowElements":[
-                                    {
-                                        "elementType":"input",
-                                        "props":{
-                                        "type":"text",
-                                        "id":"firstname",
-                                        "className":"my-firstname-class",
-                                        "title":"Firstname",
-                                        "placeholder":"Your input",
-                                        "required":"required"
-                                        },
-                                        "eventHandlers":[
-                                        {
-                                            "event":"blur",
-                                            "handler":"onBlurHandler"
-                                        }
-                                        ]
-                                    }
-                                ],
-                                "rowLabel":{
-                                    "name":"Firstname",
-                                    "props":{
-                                        "className":"vs-body-regular-primary"
-                                    }
-                                }
-                            }]
-                    }
-                    //const onBlurHandler = jest.fn();
-                    //const wrapper = mount(<FormGen options={options}/>)
-                  // wrapper.instance().onBlur() = jest.fn();
-                    //const input = wrapper.find('input');
-                    //expect(input).toHaveLength(1);
-                    //expect(input.event('blur').toHaveBeenCalledTimes(1);
-                    //expect(mockHandleClick).toHaveBeenCalledTimes(1);
-
-                    const onBlurHandler = jest.fn(() => true);
-                    const component = mount(<FormGen options={options}/>); 
-                    const input = component.find('input');   
-                    input.simulate('blur');
-                    console.log(component.debug())
-                    //expect(onBlurHandler).toHaveBeenCalled();
-
-                    //expect(input.prop('handler')).toEqual('onBlurHandler');
-                   }) 
-                   
-
-   //6. check if text input with label is rendered
+   //5. check if text input with label is rendered
   test('renders text input with label', () => {
     const options = {
         "form":{
@@ -660,7 +537,7 @@ test("Form Generator renders without crashing", () => {
                 }
             }]
     }
-    const wrapper = mount(<FormGen options={options}/>)
+    const wrapper = mount(<FormGen options={options}/>);
     const label = wrapper.find('label');
     expect(label).toHaveLength(1);
     expect(label.text()).toEqual('Firstname');
@@ -675,7 +552,7 @@ test("Form Generator renders without crashing", () => {
     expect(input.prop('placeholder')).toEqual('Your input');
    })
 
-    //7. check if email input with label is rendered
+    //6. check if email input with label is rendered
   test('renders email input with label', () => {
     const options = {
         "form":{
@@ -719,7 +596,7 @@ test("Form Generator renders without crashing", () => {
                     }
                  }]
     }
-    const wrapper = mount(<FormGen options={options}/>)
+    const wrapper = mount(<FormGen options={options}/>);
     const label = wrapper.find('label');
     expect(label).toHaveLength(1);
     expect(label.text()).toEqual('Email');
@@ -733,7 +610,7 @@ test("Form Generator renders without crashing", () => {
     expect(input.prop('placeholder')).toEqual('Your input');
    })
 
-    //8. check if password input with label is rendered
+    //7. check if password input with label is rendered
   test('renders password input with label', () => {
     const options = {
         "form":{
@@ -792,7 +669,7 @@ test("Form Generator renders without crashing", () => {
    })
 
  
-    //9. check if file input with label is rendered
+    //8. check if file input with label is rendered
     test('renders file input with label', () => {
         const options = {
             "form":{
@@ -836,7 +713,7 @@ test("Form Generator renders without crashing", () => {
                         }
                      }]
         }
-        const wrapper = mount(<FormGen options={options}/>)
+        const wrapper = mount(<FormGen options={options}/>);
         const label = wrapper.find('label');
         expect(label).toHaveLength(1);
         expect(label.text()).toEqual('Upload Your File');
@@ -851,7 +728,7 @@ test("Form Generator renders without crashing", () => {
        })
 
 
- //10. check if textarea is rendered with label
+ //9. check if textarea is rendered with label
        test('renders textarea input with label', () => {
         const options = {
             "form":{
@@ -898,7 +775,7 @@ test("Form Generator renders without crashing", () => {
                         }
                      }]
         }
-        const wrapper = mount(<FormGen options={options}/>)
+        const wrapper = mount(<FormGen options={options}/>);
         const label = wrapper.find('label');
         expect(label).toHaveLength(1);
         expect(label.text()).toEqual('Your Story:');
@@ -956,7 +833,7 @@ test("Form Generator renders without crashing", () => {
                             }
                          }]
             }
-            const wrapper = mount(<FormGen options={options}/>)
+            const wrapper = mount(<FormGen options={options}/>);
             const label = wrapper.find('label');
             expect(label).toHaveLength(1);
             expect(label.text()).toEqual('Select Date:');
@@ -1011,7 +888,7 @@ test("Form Generator renders without crashing", () => {
                             }
                          }]
             }
-            const wrapper = mount(<FormGen options={options}/>)
+            const wrapper = mount(<FormGen options={options}/>);
             const label = wrapper.find('label');
             expect(label).toHaveLength(1);
             expect(label.text()).toEqual('Select a Tag:');
@@ -1020,7 +897,6 @@ test("Form Generator renders without crashing", () => {
             expect(input).toHaveLength(1);
             expect(input.prop('id')).toEqual('tagselectorID');
             expect(input.prop('name')).toEqual('tagselector');
-            //expect(input.prop('className')).toEqual('my-tagselector-class');
            })
 
         
@@ -1075,7 +951,6 @@ test("Form Generator renders without crashing", () => {
             expect(input).toHaveLength(1);
             expect(input.prop('id')).toEqual('hierarchyID');
             expect(input.prop('name')).toEqual('datehierarchy');
-            //expect(input.prop('className')).toEqual('my-datehierarchy-class');
            })
 
            
@@ -1125,7 +1000,7 @@ test("Form Generator renders without crashing", () => {
                             }
                          }]
             }
-            const wrapper = mount(<FormGen options={options}/>)
+            const wrapper = mount(<FormGen options={options}/>);
             const label = wrapper.find('label');
             expect(label).toHaveLength(1);
             expect(label.text()).toEqual('Image:');
@@ -1209,7 +1084,7 @@ test("Form Generator renders without crashing", () => {
                             }
                          }]
             }
-            const wrapper = mount(<FormGen options={options}/>)
+            const wrapper = mount(<FormGen options={options}/>);
             const label = wrapper.find('label');
             expect(label).toHaveLength(1);
             expect(label.text()).toEqual('Select Country');
@@ -1292,7 +1167,7 @@ test("Form Generator renders without crashing", () => {
                         }
                      }]
         }
-        const wrapper = mount(<FormGen options={options}/>)
+        const wrapper = mount(<FormGen options={options}/>);
         const label1 = wrapper.find('label').at(0);
         expect(label1).toHaveLength(1);
         expect(label1.text()).toEqual('Gender');
@@ -1305,7 +1180,6 @@ test("Form Generator renders without crashing", () => {
         expect(label3).toHaveLength(1);
         expect(label3.text()).toEqual('female');
         expect(label3.prop('className')).toEqual('vs-radiobutton vs-radiobutton2');
-        
         const input_first = wrapper.find('input').at(0);
         expect(input_first).toHaveLength(1);
         expect(input_first.prop('type')).toEqual('radio');
