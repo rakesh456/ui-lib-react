@@ -8,6 +8,7 @@ import formGeneratorRender from "./components/FormGenerator/formgeneratorrender"
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
+import './components/FormGenerator/form-generator.scss';
 
 
 (function () {

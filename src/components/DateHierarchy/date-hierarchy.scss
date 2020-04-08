@@ -47,6 +47,18 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
+
+.VS-Hierarchy{
+    *, *:before, *:after {
+        box-sizing: content-box !important; 
+    }
+
+    input[type=text]:focus{
+        border: none;
+        box-shadow: none;
+    }
+}
+
 .mrgL43{
     margin-left: 43px !important;
 }
@@ -221,12 +233,12 @@ $font-family: 'Roboto', sans-serif;
 .VS-Hierarchy{
   position: relative;
   background: #fff;
-  width: 315px;
+  width: 317px;
   padding-top: 0px;
   padding-right: 0px;
   padding-bottom: 00px;
   padding-left: 0px;
-  margin: 5px 20px;
+  margin: 5px 20px 5px 0px;
   border: 1px solid #ddd;
 }
 

@@ -561,7 +561,7 @@ class TagSelector extends React.PureComponent {
 		const readOnlyClass = readOnly === true ? "VS-ReadOnly" : "";
 
 		return (
-			<div className="VS-App">
+			<div className="VS-App VS-Tag-Selector-Wrapper">
 				<div id={`${_uuid}`}></div>
 				<header className="VS-App-header">
 					<div>

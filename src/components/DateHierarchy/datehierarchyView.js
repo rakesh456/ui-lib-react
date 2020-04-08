@@ -1386,7 +1386,7 @@ class DatehierarchyView extends React.PureComponent {
     
     getScrollHeight = () => {
         const { height } = this.props.options;
-        return (!isUndefinedOrNull(height) && height >= 200)? (height - 64) + 'px' : "136px";
+        return (!isUndefinedOrNull(height) && height >= 200)? (height - 68) + 'px' : "132px";
     }
 
     render() {

@@ -46,6 +46,18 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
+
+.VS-DatepickerContainer{
+    *, *:before, *:after {
+        box-sizing: content-box !important; 
+    }
+
+    input[type=text]:focus{
+        border: none;
+        box-shadow: none;
+    }
+}
+
 date-picker{
     z-index: 9989;
 }
@@ -81,9 +93,7 @@ date-picker{
 }
 
 .VS-InvalidText{
-    position: absolute;
-    top: 100%;
-    left: 0px;
+    position: relative;
     color: $cg-crimson-90;
 }
 

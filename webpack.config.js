@@ -11,7 +11,8 @@ module.exports = {
         styles: [
             './src/components/Datepicker/date-picker.scss',
             './src/components/TagSelector/tag-selector.scss',
-            './src/components/DateHierarchy/date-hierarchy.scss'
+            './src/components/DateHierarchy/date-hierarchy.scss',
+            './src/components/FormGenerator/form-generator.scss'
         ]
     },
     output: {
