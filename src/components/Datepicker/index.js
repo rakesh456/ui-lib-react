@@ -426,12 +426,6 @@ class DatePicker extends React.PureComponent {
         const { options } = this.state;
         let { displayFormat, lowerLimit, upperLimit } = options;
 
-        if(ARROWS.left === charCode){
-            this.props.onKeyLeft();
-        } else if(ARROWS.right === charCode){
-            this.props.onKeyRight();
-        }
-
         if (charCode === CONSTANTS.KEY_CODES.ESCAPE || charCode === CONSTANTS.KEY_CODES.TAB_KEY) {
             this.setState({ shouldCalendarOpen: false });
         } else {

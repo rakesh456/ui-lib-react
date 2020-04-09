@@ -20,6 +20,12 @@ class YearDisplay extends React.PureComponent {
         this.setState({ years: [...years] });
     }
 
+    onInput = () => {
+        if(this.props.onInput){
+            this.props.onInput();
+        }
+    };
+
     toggleYearChild(year, showChild) {
         let years = [...this.getYears()];
         year['showChild'] = showChild;
@@ -192,7 +198,9 @@ class YearDisplay extends React.PureComponent {
                 years: [...years]
             })
             this.props.onUpdateSelectAllCheckbox([...years], year);
+            this.props.onChangeYear();
         }
+        
     }
 
     onChangeQuarterHandler = (quarterObj) => {
@@ -243,8 +251,8 @@ class YearDisplay extends React.PureComponent {
                     <label className={this.getLabelContainerClass(year)} key={'year' + index}>{year.year}
                         {
                             (year.state) ?
-                                <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, false)}></input> :
-                                <input className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
+                                <input onInput={this.onInput} className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, false)}></input> :
+                                <input onInput={this.onInput} className="VS-Checkbox" type="checkbox" checked={year.state} onChange={() => this.toggleYearCheck(year, true)}></input>
                         }
                         <span className={this.getYearCheckBoxClass(year, index)} ></span>
                         {

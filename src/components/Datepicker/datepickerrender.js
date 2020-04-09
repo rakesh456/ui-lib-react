@@ -54,18 +54,6 @@ function datepickerRender(el) {
         el.dispatchEvent(ev);
     }
 
-    function onKeyLeftHandler() {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onKeyLeft', ev);
-        el.dispatchEvent(ev);
-    }
-    
-    function onKeyRightHandler() {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onKeyRight', ev);
-        el.dispatchEvent(ev);
-    }
-
     function onSelectHandler(date) {
         const _date = getDateByFormatNew(date, options.displayFormat);
         setSelectedAttr(el, _date);
@@ -177,7 +165,7 @@ function datepickerRender(el) {
         }
     }, false);
 
-    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyLeft={onKeyLeftHandler} onKeyRight={onKeyRightHandler} />;
+    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler}  />;
 
     let myComponentInstance = ReactDOM.render(
         myComponentElement,

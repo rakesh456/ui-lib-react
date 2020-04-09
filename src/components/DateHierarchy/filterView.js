@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "reactstrap";
 import { getSearchObj, quarterChangeCallback, monthChangeCallback, weekChangeCallback, dayChangeCallback, weekDayChangeCallback, getListOfYears } from "../../utils/datehierarchyutils";
 import { isUndefinedOrNull, isBlank } from "../../utils/utils";
 import YearDisplay from "./yearDisplay";
@@ -33,12 +34,12 @@ class FilterView extends React.PureComponent {
         }
     }
 
-    onAddCurrentSelectionChange = ({ target }) => {
+    onAddCurrentSelectionChange = (e) => {
         this.setState({
-            isAddCurrentSelection: target.checked,
-            isExcludeFromSelection: !target.checked
+            isAddCurrentSelection: e.target.checked,
+            isExcludeFromSelection: !e.target.checked
         });
-        this.props.onAddToSelectionAndExcludeFromSelectionChange(target.checked);
+        this.props.onAddToSelectionAndExcludeFromSelectionChange(e.target.checked);
     }
 
     onExcludeFromSelectionChange = ({ target }) => {
@@ -747,11 +748,11 @@ class FilterView extends React.PureComponent {
                         (isNoDataFound === false)?
                         (this.checkSelectAllSearchResultValues()) ?
                             <label className="VS-Checkbox-Container VS-Action">Select All Search Results
-                                    <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
+                                    <Input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)} />
                                 <span className="VS-Check-Checkmark"></span>
                             </label> :
                             <label className="VS-Checkbox-Container VS-Action">Select All Search Results
-                                    <input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)}></input>
+                                    <Input className="VS-Checkbox" type="checkbox" checked={isSelectAllSearchResult} onChange={(e) => this.onSelectSearchResultChange(e)} />
                                 <span className="VS-Check-Checkmark VS-Check-Partial"></span>
                             </label> : ''
                     }
