@@ -23,12 +23,6 @@ import {
 
 import './date-picker.scss';
 
-function trigger(elem, name, e) {
-     // eslint-disable-next-line
-    let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
-    func.call(elem, e);
-}
-
 function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
