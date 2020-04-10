@@ -180,7 +180,7 @@ class TagSelector extends React.PureComponent {
 		// this.setState({ shouldListOpen: false});
 		this.props.onBlur();
 	};
-
+	
 	onKeyDownHandler = evt => {
 		if (evt) {
 			evt = evt ? evt : window.event;
@@ -278,15 +278,20 @@ class TagSelector extends React.PureComponent {
 				if (!objectIncludesInArray(this.state.selectedItems, "key", item.key)) {
 					let selectedItems = [...this.state.selectedItems];
 					selectedItems.push(item);
-					this.setState({ selectedItems: selectedItems });
+					this.setState({ selectedItems: selectedItems }, () => {
+						this.props.onSelect(item);
+						this.props.onValueChange();
+					});
 				} else {
 					let selectedItems = [...this.state.selectedItems];
 					selectedItems = selectedItems.filter(obj => {
 						return obj.key !== item.key;
 					});
-					this.setState({ selectedItems: selectedItems });
+					this.setState({ selectedItems: selectedItems }, () => {
+						this.props.onSelect(item);
+						this.props.onValueChange();
+					});
 				}
-				this.props.onSelect(item);
 			}
 		}
 	};
@@ -404,13 +409,19 @@ class TagSelector extends React.PureComponent {
 		if (!objectIncludesInArray(this.state.selectedItems, "key", item.key)) {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems.push(item);
-			this.setState({ selectedItems: selectedItems });
+			this.setState({ selectedItems: selectedItems }, () => {
+				this.props.onSelect(item);
+				this.props.onValueChange();
+			});
 		} else {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems = selectedItems.filter(obj => {
 				return obj.key !== item.key;
 			});
-			this.setState({ selectedItems: selectedItems });
+			this.setState({ selectedItems: selectedItems }, () => {
+				this.props.onDeSelect(item);
+				this.props.onValueChange();
+			});
 		}
 
 		// this.state.searchValue = "";
@@ -463,11 +474,15 @@ class TagSelector extends React.PureComponent {
 		if (index >= 0) {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems.splice(index, 1);
-			this.setState({ selectedItems: selectedItems });
-			// this.props.onDeSelect(item);
+			this.setState({ selectedItems: selectedItems }, () => {
+				this.props.onDeSelect(item);
+				this.props.onValueChange();
+			});
 		} else {
-			// this.props.onDeSelect(this.state.selectedItems);
-			this.setState({ selectedItems: [] });
+			this.setState({ selectedItems: [] }, () => {
+				this.props.onDeSelect(item);
+				this.props.onValueChange();
+			});
 		}
 	}
 

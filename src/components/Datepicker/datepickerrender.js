@@ -23,12 +23,6 @@ import {
 
 import './date-picker.scss';
 
-function trigger(elem, name, e) {
-     // eslint-disable-next-line
-    let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
-    func.call(elem, e);
-}
-
 function datepickerRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options))? resetOptions({}) : resetOptions(options);
@@ -40,8 +34,7 @@ function datepickerRender(el) {
     }
 
     function callOnSelectedEvent(_date, el) {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onChange', ev);
+        let ev = new CustomEvent("change");        
         el.dispatchEvent(ev);
     }
     
@@ -52,18 +45,6 @@ function datepickerRender(el) {
     
     function onBlurHandler() {
         let ev = new CustomEvent('blur');
-        el.dispatchEvent(ev);
-    }
-
-    function onKeyLeftHandler() {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onKeyLeft', ev);
-        el.dispatchEvent(ev);
-    }
-    
-    function onKeyRightHandler() {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onKeyRight', ev);
         el.dispatchEvent(ev);
     }
 
@@ -82,7 +63,7 @@ function datepickerRender(el) {
         el.setAttribute('selected-date', date);
     }
 
-    el.getValue = function () {
+    el.getValue = function () {        
         return myComponentInstance.getSelectedValue();
     }
     
@@ -179,7 +160,7 @@ function datepickerRender(el) {
         }
     }, false);
 
-    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyLeft={onKeyLeftHandler} onKeyRight={onKeyRightHandler} />;
+    let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler}  />;
 
     let myComponentInstance = ReactDOM.render(
         myComponentElement,

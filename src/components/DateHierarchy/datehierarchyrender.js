@@ -11,6 +11,12 @@ import {
 
 import './date-hierarchy.scss';
 
+function trigger(elem, name, e) {
+    // eslint-disable-next-line
+   let func = new Function('e', 'with(document) { with(this) {' + elem.getAttribute(name) + '} }');
+   func.call(elem, e);
+}
+
 function dateHierarchyRender(el) {
     let options = JSON.parse(el.getAttribute('data-options'));
     options = (isUndefinedOrNull(options)) ? resetDateHierarchyOptions({}) : resetDateHierarchyOptions(options);
@@ -23,10 +29,11 @@ function dateHierarchyRender(el) {
         let ev = new CustomEvent('focus');
         el.dispatchEvent(ev);
     }
-
-    function onChangeHandler() {
+    
+    function onValueChangeHandler() {
         let ev = new CustomEvent("change");
-        el.dispatchEvent(ev);
+        trigger(el, 'onValueChange', ev);
+        // el.dispatchEvent(ev);
     }
 
     function onBlurHandler() {
@@ -34,9 +41,10 @@ function dateHierarchyRender(el) {
         el.dispatchEvent(ev);
     }
 
-    function onInputHandler() {
+    function onCustomInputHandler() {
         let ev = new CustomEvent("input");
-        el.dispatchEvent(ev);
+        trigger(el, 'onInput', ev);
+        // el.dispatchEvent(ev);
     }
 
     el.getDates = function () {
@@ -47,7 +55,8 @@ function dateHierarchyRender(el) {
         return HierarchyComponentInstance.refresh();
     }
 
-    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput={onInputHandler} />
+    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onCustomInput={onCustomInputHandler} onValueChange={onValueChangeHandler} />
+
     el.setValues = function (json) {
         HierarchyComponentInstance.setValues(json);
     }

@@ -234,10 +234,11 @@ class DatePicker extends React.PureComponent {
         if (showButtons === true) {
             this.setState({ selectedDate: newDate, shouldCalendarOpen: true, isInvalidDate: false });
         } else {
-            this.setState({ selectedDate: newDate, shouldCalendarOpen: false, isInvalidDate: false });
-            if (this.props.onSelect) {
-                this.props.onSelect(newDate);
-            }
+            this.setState({ selectedDate: newDate, shouldCalendarOpen: false, isInvalidDate: false }, () => {
+                if (this.props.onSelect) {
+                    this.props.onSelect(newDate);
+                }
+            });            
         }
     }
 
@@ -398,10 +399,7 @@ class DatePicker extends React.PureComponent {
                             if (_validQQYear) {
                                 if (!showButtons) {
                                     this.setState({ selectedYear: _upperYear });
-                                }
-                                if (this.props.onSelect) {
-                                    this.props.onSelect(_upperYear);
-                                }
+                                }                                
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
@@ -415,10 +413,7 @@ class DatePicker extends React.PureComponent {
                             if (_validMonthYear) {
                                 if (!showButtons) {
                                     this.setState({ selectedYear: selectedYear });
-                                }
-                                if (this.props.onSelect) {
-                                    this.props.onSelect(selectedYear);
-                                }
+                                }                                
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
@@ -432,10 +427,7 @@ class DatePicker extends React.PureComponent {
                             if (_validDateYear) {
                                 if (!showButtons) {
                                     this.setState({ selectedYear: selectedYear });
-                                }
-                                if (this.props.onSelect) {
-                                    this.props.onSelect(selectedYear);
-                                }
+                                }                                
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
                             } else {
                                 this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
@@ -452,10 +444,7 @@ class DatePicker extends React.PureComponent {
                             if (!showButtons) {
                                 this.setState({ selectedDate: this.state.selectedDate });
                             }
-                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(this.state.selectedDate);
-                            }
+                            this.setState({ isInvalidDate: false, isInvalidRangeDate: false });                            
                         } else {
                             this.setState({ isInvalidDate: false, isInvalidRangeDate: true });
                         }
@@ -477,12 +466,6 @@ class DatePicker extends React.PureComponent {
         const charCode = (evt.which) ? evt.which : evt.keyCode;
         const { options } = this.state;
         let { displayFormat, lowerLimit, upperLimit } = options;
-
-        if(ARROWS.left === charCode){
-            this.props.onKeyLeft();
-        } else if(ARROWS.right === charCode){
-            this.props.onKeyRight();
-        }
 
         if (charCode === CONSTANTS.KEY_CODES.ESCAPE || charCode === CONSTANTS.KEY_CODES.TAB_KEY) {
             this.setState({ shouldCalendarOpen: false });
