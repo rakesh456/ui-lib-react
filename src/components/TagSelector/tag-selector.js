@@ -178,7 +178,7 @@ class TagSelector extends React.PureComponent {
 	onBlur = () => {
 		this.props.onBlur();
 	};
-
+	
 	onKeyDownHandler = evt => {
 		if (evt) {
 			evt = evt ? evt : window.event;
@@ -401,12 +401,16 @@ class TagSelector extends React.PureComponent {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems.push(item);
 			this.setState({ selectedItems: selectedItems });
+			this.props.onSelect(item);
+			this.props.onValueChange();
 		} else {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems = selectedItems.filter(obj => {
 				return obj.key !== item.key;
 			});
 			this.setState({ selectedItems: selectedItems });
+			this.props.onDeSelect(item);
+			this.props.onValueChange();
 		}
 
 		this.inputEl.focus();
@@ -454,8 +458,12 @@ class TagSelector extends React.PureComponent {
 			let selectedItems = [...this.state.selectedItems];
 			selectedItems.splice(index, 1);
 			this.setState({ selectedItems: selectedItems });
+			this.props.onDeSelect(item);
+			this.props.onValueChange();
 		} else {
 			this.setState({ selectedItems: [] });
+			this.props.onDeSelect(item);
+			this.props.onValueChange();
 		}
 	}
 

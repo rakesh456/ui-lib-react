@@ -29,12 +29,6 @@ function dateHierarchyRender(el) {
         let ev = new CustomEvent('focus');
         el.dispatchEvent(ev);
     }
-
-    function onChangeCallHandler() {
-        let ev = new CustomEvent("change");
-        trigger(el, 'onChangeCall', ev);
-        // el.dispatchEvent(ev);
-    }
     
     function onValueChangeHandler() {
         let ev = new CustomEvent("change");
@@ -61,7 +55,7 @@ function dateHierarchyRender(el) {
         return HierarchyComponentInstance.refresh();
     }
 
-    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onChangeCall={onChangeCallHandler} onBlur={onBlurHandler} onCustomInput={onCustomInputHandler} onValueChange={onValueChangeHandler} />
+    var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onCustomInput={onCustomInputHandler} onValueChange={onValueChangeHandler} />
 
     el.setValues = function (json) {
         HierarchyComponentInstance.setValues(json);
