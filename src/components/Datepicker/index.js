@@ -664,11 +664,11 @@ class DatePicker extends React.PureComponent {
                                     (showClearIcon === true) ?
                                         <span className={`${CONSTANTS.CLASSES.VS_PULL_RIGHT} ${CONSTANTS.CLASSES.VS_MRG_T5}`}><FaClose className={`${CONSTANTS.CLASSES.VS_SHAPE} ${CONSTANTS.CLASSES.VS_TEXT_DARK} ${CONSTANTS.CLASSES.VS_CLOSE_ICON}`} onClick={() => this.onClearButtonClickHandler()} /></span> : ''
                                 }
-                                {
-                                    ((isInvalidDate === true || isInvalidRangeDate === true) && showErrorMessage === true) ?
-                                        <span className={`${CONSTANTS.CLASSES.VS_INVALID_TEXT}`}>{getInvalidDateMessage(options.validationMessages, isInvalidDate, isInvalidRangeDate)}</span> : ''
-                                }
                             </div>
+                            {
+                                ((isInvalidDate === true || isInvalidRangeDate === true) && showErrorMessage === true && shouldCalendarOpen === false) ?
+                                    <span className={`${CONSTANTS.CLASSES.VS_INVALID_TEXT}`}>{getInvalidDateMessage(options.validationMessages, isInvalidDate, isInvalidRangeDate)}</span> : ''
+                            }
                         </div>
                         {
                             (shouldCalendarOpen && isDisabled === false && showMonthSelection === false && showYearSelection === false) ?

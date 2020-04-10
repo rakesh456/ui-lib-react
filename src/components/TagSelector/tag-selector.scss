@@ -47,6 +47,17 @@ $gui-no-data: #eeeeee;
 $gui-error-red: #fd462a;
 $font-family: 'Roboto', sans-serif;
 
+.VS-Tag-Selector-Wrapper{
+    input[type=text]:focus{
+        border: none;
+        box-shadow: none;
+    }
+
+    *, *:before, *:after {
+        box-sizing: content-box;
+    }
+}
+
 tag-selector{
     z-index: 9989;
 }
@@ -168,7 +179,7 @@ tag-selector{
 
 .VS-TagSelectorContainer{
     background-color: #fff;
-    width: 328px;
+    width: 327px;
     height: auto;
     max-height: 224px;
     border: 1px solid #ddd;
