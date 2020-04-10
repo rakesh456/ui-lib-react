@@ -1,5 +1,4 @@
-import { isCalendarFormat, isYearFormat, isValidQQYYYYValue, isValidDDMMYYYYValue, isValidMMYYYYValue, isValidYYYYValue, isDDMMYYYYFormat, isMMDDYYYYFormat, isQQYYYYFormat, isMMYYYYFormat, isYYYFormat, getConvertedDateYYYYMMDDD, getUpperLimitFromOptions, getLowerLimitFromOptions, getSelectedMonthFromDate, DEFAULT_OPTIONS, getSelectedYearFromDate, getMonthShortNameByIndex, getMonthNameByIndex, getMonthIndex, zeroPad, getMonthDays, getPreviousMonth, getNextMonth, isDate, isSameDay, getIsoDate, checkDateInBetween, dateIsInDisabledList, isValidOutsideRangeDateQQYear, isValidOutsideRangeDateYear, isValidOutsideRangeDateMonthYear, isValidOutsideRangeDate, resetOptions, getYYYYForLowerLimit, getYYYYForUpperLimit, isEqual, valueIsInDisabledList, checkIsInValidLowerUpper, isLeft, isRight, checkFullMonthOrYearDisabled, getInvalidDateMessage, getNewUpdateDateByArrow, formatOptions } from '../../src/utils/calendar';
-
+import { isCalendarFormat, isYearFormat, isValidQQYYYYValue, isValidDDMMYYYYValue, isValidMMYYYYValue, isValidYYYYValue, isDDMMYYYYFormat, isMMDDYYYYFormat, isQQYYYYFormat, isMMYYYYFormat, isYYYFormat, getConvertedDateYYYYMMDDD, getUpperLimitFromOptions, getLowerLimitFromOptions, getSelectedMonthFromDate, DEFAULT_OPTIONS, getSelectedYearFromDate, getMonthShortNameByIndex, getMonthNameByIndex, getMonthIndex, zeroPad, getMonthDays, getPreviousMonth, getNextMonth, isDate, isSameDay, getIsoDate, checkDateInBetween, dateIsInDisabledList, isValidOutsideRangeDateQQYear, isValidOutsideRangeDateYear, isValidOutsideRangeDateMonthYear, isValidOutsideRangeDate, resetOptions, getYYYYForLowerLimit, getYYYYForUpperLimit, isEqual, valueIsInDisabledList, checkIsInValidLowerUpper, isLeft, isRight, checkFullMonthOrYearDisabled, getInvalidDateMessage, getNewUpdateDateByArrow, formatOptions, CURRENT_YEAR, CURRENT_MONTH } from '../../src/utils/calendar';
 // 1. Test for isCalendarFormat
 
 describe('Testing on function isCalendarFormat', () => {
@@ -299,8 +298,9 @@ describe('Testing on function getLowerLimitFromOptions', () => {
 // 16. Test for  getSelectedMonthFromDate
 
 describe('Testing on function getSelectedMonthFromDate', () => {
-    let input = ['05/16/2019', '2019/08/15', '02/2019/04', '', undefined]
-    let output = [5, 8, NaN, 3, 3]
+    let input = ['05/16/2019', '2019/08/15', '02/2019/04', '', undefined];
+    console.log('CURRENT_MONTH ', CURRENT_MONTH);
+    let output = [5, 8, NaN, CURRENT_MONTH, CURRENT_MONTH]
     let messages = ['passing the correct format of date then function return month of the date ',
         'Passing changed format then function still returns the month of the date ',
         'Passing invalid format of the date then function retruns NaN',
@@ -319,7 +319,7 @@ describe('Testing on function getSelectedMonthFromDate', () => {
 
 describe('Testing on function getSelectedYearFromDate', () => {
     let input = ['05/16/2019', '2019/08/15', '02/2019/04', '', undefined]
-    let output = [2019, 2019, NaN, 2020, 2020]
+    let output = [2019, 2019, NaN, CURRENT_YEAR, CURRENT_YEAR]
     let messages = ['passing the correct format of date then function return full year of the date ',
         'Passing changed format then function still returns the full year of the date ',
         'Passing invalid format of the date then function retruns NaN',

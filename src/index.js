@@ -4,6 +4,7 @@ import * as serviceWorker from './serviceWorker';
 import datepickerRender from "./components/Datepicker/datepickerrender";
 import tagSelectorRender from "./components/TagSelector/tagselectorrender";
 import dateHierarchyRender from "./components/DateHierarchy/datehierarchyrender";
+import formGeneratorRender from "./components/FormGenerator/formgeneratorrender";
 import './components/Datepicker/date-picker.scss';
 import './components/TagSelector/tag-selector.scss';
 import './components/DateHierarchy/date-hierarchy.scss';
@@ -23,7 +24,13 @@ import './components/DateHierarchy/date-hierarchy.scss';
 
     window.CustomEvent = CustomEvent;
 })();
+Array.prototype.forEach.call(
+    document.getElementsByTagName('form-gen'),
+    (el) => {
+        formGeneratorRender(el);
+    })
 
+window.addFormGenerator = formGeneratorRender;
 // Datepicker render 
 Array.prototype.forEach.call(
     document.getElementsByTagName('date-picker'),
