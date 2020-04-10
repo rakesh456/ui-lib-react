@@ -244,3 +244,5 @@ export const preventOnInputCallWhileFocus = (cb) => {
         cb(e);
     };
 }
+
+export const tempFunction = () => {}
