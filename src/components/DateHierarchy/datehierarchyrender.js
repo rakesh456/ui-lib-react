@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import DatehierarchyView from './datehierarchyView';
 import {
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    preventOnInputCallWhileFocus
 } from "../../utils/utils";
 
 import {
@@ -55,6 +56,8 @@ function dateHierarchyRender(el) {
         return HierarchyComponentInstance.refresh();
     }
 
+    el.addEventListener("input", preventOnInputCallWhileFocus({}), true);
+    
     var HierarchyComponentElement = <DatehierarchyView options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onCustomInput={onCustomInputHandler} onValueChange={onValueChangeHandler} />
 
     el.setValues = function (json) {

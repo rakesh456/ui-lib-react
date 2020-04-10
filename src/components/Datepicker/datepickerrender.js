@@ -5,6 +5,7 @@ import {
     getDateByFormat,
     getDateByFormatNew,
     isUndefinedOrNull,
+    preventOnInputCallWhileFocus,
     isObject
 } from "../../utils/utils";
 import {
@@ -158,6 +159,8 @@ function datepickerRender(el) {
             e.preventDefault(); 
         }
     }, false);
+
+    el.addEventListener("input", preventOnInputCallWhileFocus({}), true);
 
     let myComponentElement = <DatePicker options={options} onSelect={onSelectHandler} onYearSelect={onYearSelectHandler} onFocus={onFocusHandler} onBlur={onBlurHandler}  />;
 

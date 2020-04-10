@@ -225,3 +225,22 @@ export const sortBy = fn => (a, b) => {
 export const cloneData = (data) => {
     return JSON.parse(JSON.stringify(data));
 }
+
+
+export const preventOnInputCallWhileFocus = (cb) => {
+    if (!window.navigator.userAgent.match(/MSIE|Trident/)) return cb;
+
+    return function (e) {
+        var t = e.target,
+            active = (t === document.activeElement);
+        if (!active || (t.placeholder && t.composition_started !== true)) {
+            t.composition_started = active;
+            if ((!active && t.tagName === 'TEXTAREA') || t.tagName === 'INPUT') {
+                e.stopPropagation();
+                e.preventDefault();
+                return false;
+            }
+        }
+        cb(e);
+    };
+}

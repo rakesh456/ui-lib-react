@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import TagSelector from "./tag-selector";
 import {
-    isUndefinedOrNull
+    isUndefinedOrNull,
+    preventOnInputCallWhileFocus
 } from "../../utils/utils";
 
 import {
@@ -100,6 +101,8 @@ function tagSelectorRender(el) {
     el.refresh = function () {
         tagComponentInstance.refresh();
     }
+
+    el.addEventListener("input", preventOnInputCallWhileFocus({}), true);
 
     let tagComponentElement = <TagSelector options={options} onFocus={onFocusHandler} onBlur={onBlurHandler} onKeyDown={onKeyDownHandler} onSelect={onSelectHandler} onDeSelect={onDeSelectHandler} onNotFound={onNotFoundHandler} onValueChange={onValueChangeHandler} />;
 
