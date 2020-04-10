@@ -7,7 +7,6 @@ import * as CONSTANTS from '../../../utils/constants'
 
 import {
     convertYYYYMMDD,
-    getDateByFormatNew,
     isValidDate
 } from "../../../utils/utils";
 import {
