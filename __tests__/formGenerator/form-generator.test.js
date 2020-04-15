@@ -1098,7 +1098,7 @@ test("Form Generator renders without crashing", () => {
 
                     
     //16. check if radio button with label is rendered
-    test('renders file input with label', () => {
+    test('check if radio button with label is rendered', () => {
         const options = {
             "form":{
                 "props":{
@@ -1190,4 +1190,158 @@ test("Form Generator renders without crashing", () => {
         expect(input_second.prop('type')).toEqual('radio');
         expect(input_second.prop('name')).toEqual('gender');
         expect(input_second.prop('id')).toEqual('female');
+       }) 
+
+                          
+    //17. check if checkbox button with label is rendered
+    test('check if checkbox button with label is rendered', () => {
+        const options = {
+            "form":{
+                "props":{
+                    "id":"form1",
+                    "action":"https://www.fintellix.com",
+                    "method":"get"
+                },
+                "eventHandlers":[
+                    {
+                        "event":"submit",
+                        "handler":"SubmitForm"
+                    }
+                ]
+                },
+                "rows":[
+                    {
+                        "rowElements":[
+                           {
+                              "elementType":"input",
+                              "props":{
+                                 "type":"checkbox",
+                                 "id":"male",
+                                 "name":"gender",
+                                 "className":"male-class"
+                              },
+                              "elementLabel":{
+                                 "name":"male",
+                                 "props":{
+                                    "className":"vs-checkbox"
+                                 }
+                              },
+                              "eventHandlers":[
+                                 {
+                                    "event":"change",
+                                    "handler":"submitForm"
+                                 }
+                              ]
+                           },
+                           {
+                              "elementType":"input",
+                              "props":{
+                                 "type":"checkbox",
+                                 "id":"female",
+                                 "name":"gender",
+                                 "required":"required"
+                              },
+                              "elementLabel":{
+                                 "name":"female",
+                                 "props":{
+                                    "className":"vs-checkbox"
+                                 }
+                              },
+                              "eventHandlers":[
+                                 {
+                                    "event":"change",
+                                    "handler":"submitForm"
+                                 }
+                              ]
+                           }
+                        ],
+                        "rowLabel":{
+                           "name":"Gender",
+                           "props":{
+                              "className":"vs-label"
+                           }
+                        }
+                     }]
+        }
+        const wrapper = mount(<FormGen options={options}/>);
+        const label1 = wrapper.find('label').at(0);
+        expect(label1).toHaveLength(1);
+        expect(label1.text()).toEqual('Gender');
+        expect(label1.prop('className')).toEqual('vs_body_regular_primary , vs-label');
+        const label2 = wrapper.find('label').at(1);
+        expect(label2).toHaveLength(1);
+        expect(label2.text()).toEqual('male');
+        expect(label2.prop('className')).toEqual('vs-radiobutton vs-checkbox');
+        const label3 = wrapper.find('label').at(2);
+        expect(label3).toHaveLength(1);
+        expect(label3.text()).toEqual('female');
+        expect(label3.prop('className')).toEqual('vs-radiobutton vs-checkbox');
+        const input_first = wrapper.find('input').at(0);
+        expect(input_first).toHaveLength(1);
+        expect(input_first.prop('type')).toEqual('checkbox');
+        expect(input_first.prop('name')).toEqual('gender');
+        expect(input_first.prop('id')).toEqual('male');
+        const input_second = wrapper.find('input').at(1);
+        expect(input_second).toHaveLength(1);
+        expect(input_second.prop('type')).toEqual('checkbox');
+        expect(input_second.prop('name')).toEqual('gender');
+        expect(input_second.prop('id')).toEqual('female');
+       }) 
+
+       //18. event handler
+    test('check if event handlers are being called', () => {
+        const options = {
+            "form":{
+                "props":{
+                    "id":"form1",
+                    "action":"https://www.fintellix.com",
+                    "method":"get"
+                },
+                "eventHandlers":[
+                    {
+                        "event":"submit",
+                        "handler":"SubmitForm"
+                    }
+                ]
+                },
+                "rows":[
+                    {
+                        "rowElements":[
+                            {
+                                "elementType":"input",
+                                "props":{
+                                "type":"text",
+                                "id":"firstname",
+                                "className":"my-firstname-class",
+                                "title":"Firstname",
+                                "placeholder":"Your input",
+                                "required":"required"
+                                },
+                                "eventHandlers":[
+                                {
+                                    "event":"blur",
+                                    "handler":"handleEnterKey"
+                                }
+                                ]
+                            }
+                        ],
+                        "rowLabel":{
+                            "name":"Firstname",
+                            "props":{
+                                "className":"vs-body-regular-primary"
+                            }
+                        }
+                    }]
+        }
+
+        const mockLogout = jest.fn();
+        const component = mount(<FormGen options={options} />);
+        component.find('input').simulate('blur');
+        expect(mockLogout).toHaveBeenCalled();
+       
+
+        /* map.keyup({ key: 'Enter' });
+        expect(component.handleEnterKey).toHaveBeenCalled();
+ */
+        
        }) 

@@ -10,9 +10,18 @@ class FormGenerator extends React.PureComponent {
     // Wrapper for Tag Selector
     tagSelectorWrapper() {}
 
+  /*   constructor(props) {
+        super(props);
+        
+        this.state = {
+         options: this.props.options
+        } */
+        
+    
+
     renderForm = () => {
         const options = this.props.options;
-        
+        //const options = this.state.options;
         if (Object.keys(options) !== 0) 
         {        
             let formProps = options.form ? options.form.props : '';
@@ -249,7 +258,7 @@ class FormGenerator extends React.PureComponent {
     }
     else{
         //console.log("hellpo")
-        options.rows = []
+        options.rows = [];
     } 
             
             return (

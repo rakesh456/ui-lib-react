@@ -55,16 +55,51 @@ function formGeneratorRender(el) {
             return FormGenComponentInstance.refresh();
         }
 
+        el.getDataOptions = function(options)
+        {
+            return FormGenComponentInstance.getDataOptions(options);
+        }
+
+        el.createFormGenHTML = function(json)
+        {
+            var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput={onInputHandler} />
+
+        }
+       /*  el.setDataOptions = function(updateOptions)
+        {
+           
+            let newOptions = {...options}
+            let key;
+            let isChanged = false;
+            if(!isUndefinedOrNull(updateOptions)){
+                for (key in updateOptions) {
+
+                    if (updateOptions.hasOwnProperty(key)) {
+                        const value = updateOptions[key];
+                        const option = key; 
+                        console.log(option)
+                        //console.log({...(updateOptions)})
+                       if(option==='form')
+                       {
+                        console.log(value)
+                       }
+                    }
+                }
+            }
+
+        } */
+       
+
         var FormGenComponentElement = <FormGenerator options={options} onSubmit={submitHandler} onFocus={onFocusHandler} onChange={onChangeHandler} onBlur={onBlurHandler} onInput={onInputHandler} />
         el.setValues = function (json) {
             FormGenComponentInstance.setValues(json);
         }
 
         // eslint-disable-next-line
-        var FormGenComponentInstance = ReactDOM.render(
+       /*  var FormGenComponentInstance = ReactDOM.render(
             FormGenComponentElement,
             el
-        )
+        ) */
 
         /* Custom event Listeners provided by the user */
         if (options.form !== undefined && options.form.props !== undefined
