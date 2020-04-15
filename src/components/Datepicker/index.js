@@ -51,7 +51,7 @@ class DatePicker extends React.PureComponent {
         super(props);
         const datePickerOptions = { ...this.props.options };
         const displayFormat = (datePickerOptions) ? datePickerOptions.displayFormat : '';
-        this.state = { selectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false, isDisabled: false, isDisabledFull: false, options: datePickerOptions };
+        this.state = { selectedDate: "", prevSelectedDate: "", shouldCalendarOpen: false, isInvalidDate: false, isInvalidRangeDate: false, selectedYear: "", newSelectedYear: "", isValidChar: false, isCalendar: isCalendarFormat(displayFormat), isMonthYear: isYearFormat(displayFormat), allowedNextChar: true, showMonthSelection: false, showYearSelection: false, isMonthSelected: false, isYearSelected: false, isDisabled: false, isDisabledFull: false, options: datePickerOptions };
     }
 
     // Component lifecycle methods started
@@ -230,12 +230,14 @@ class DatePicker extends React.PureComponent {
     // Component method handler called from child started
     onSelectHandler = date => {
         const { displayFormat, showButtons } = this.state.options;
+        const { selectedDate } = this.state;
+        const prevSelectedDate = selectedDate;
         const newDate = getDateByFormat(date, displayFormat);
         if (showButtons === true) {
-            this.setState({ selectedDate: newDate, shouldCalendarOpen: true, isInvalidDate: false });
+            this.setState({ selectedDate: newDate, prevSelectedDate: prevSelectedDate, shouldCalendarOpen: true, isInvalidDate: false });
         } else {
             this.setState({ selectedDate: newDate, shouldCalendarOpen: false, isInvalidDate: false }, () => {
-                if (this.props.onSelect) {
+                if (prevSelectedDate !== newDate && this.props.onSelect) {
                     this.props.onSelect(newDate);
                 }
             });            
@@ -244,20 +246,23 @@ class DatePicker extends React.PureComponent {
 
     onYearSelectHandler = year => {
         const { showButtons } = this.state.options;
-
+        const { selectedYear } = this.state;
+        const prevSelectedYear = selectedYear;
         if (showButtons === true) {
             this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: true, isInvalidDate: false });
         } else {
-            this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: false, isInvalidDate: false });
-            if (this.props.onYearSelect) {
-                this.props.onYearSelect(year);
-            }
+            this.setState({ selectedYear: year, newSelectedYear: year, shouldCalendarOpen: false, isInvalidDate: false }, () => {
+                if (prevSelectedYear !== year && this.props.onYearSelect) {
+                    this.props.onYearSelect(year);
+                }
+            });
         }
     }
 
     onSelectButtonClickHandler = () => {
         this.setState({ shouldCalendarOpen: false });
-        if (this.props.onSelect) {
+        const {prevSelectedDate, selectedDate} = this.state;
+        if (prevSelectedDate !== selectedDate && this.props.onSelect) {
             this.props.onSelect(this.state.selectedDate);
         }
     }
@@ -464,7 +469,7 @@ class DatePicker extends React.PureComponent {
     onKeyDownHandler = (evt) => {
         evt = (evt) ? evt : window.event;
         const charCode = (evt.which) ? evt.which : evt.keyCode;
-        const { options } = this.state;
+        const { options, selectedDate } = this.state;
         let { displayFormat, lowerLimit, upperLimit } = options;
 
         if (charCode === CONSTANTS.KEY_CODES.ESCAPE || charCode === CONSTANTS.KEY_CODES.TAB_KEY) {
@@ -474,39 +479,43 @@ class DatePicker extends React.PureComponent {
             lowerLimit = (lowerLimit) ? ((isValidDate(lowerLimit)) ? lowerLimit : null) : null;
             upperLimit = (upperLimit) ? ((isValidDate(upperLimit)) ? upperLimit : null) : null;
 
-            if (!this.state.isMonthYear && this.state.shouldCalendarOpen && !isUndefinedOrNull(this.state.selectedDate)) {
+            if (!this.state.isMonthYear && this.state.shouldCalendarOpen && !isUndefinedOrNull(selectedDate)) {
                 if (evt.ctrlKey || evt.metaKey) {
                     switch (evt.keyCode) {
                         case ARROWS.left: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, true, false);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.right: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, true, false);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.up: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, true, false);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.down: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, true, false);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         default: {
@@ -517,35 +526,39 @@ class DatePicker extends React.PureComponent {
                 } else if (evt.shiftKey) {
                     switch (evt.keyCode) {
                         case ARROWS.left: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, false, true);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.left, false, true);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.right: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, true);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.right, false, true);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.up: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, false, true);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.up, false, true);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         case ARROWS.down: {
-                            const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, false, true);
-                            this.setState({ selectedDate: updatedDate });
-                            if (this.props.onSelect) {
-                                this.props.onSelect(updatedDate);
-                            }
+                            const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, ARROWS.down, false, true);
+                            this.setState({ selectedDate: updatedDate }, () => {
+                                if (this.props.onSelect) {
+                                    this.props.onSelect(updatedDate);
+                                }
+                            });
                             break;
                         }
                         default: {
@@ -553,15 +566,14 @@ class DatePicker extends React.PureComponent {
                         }
                     }
                 } else {
-
-
                     if (ARROW_KEYS.indexOf(charCode) !== -1) {
-                        const updatedDate = getNewUpdateDateByArrow(this.state.selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
+                        const updatedDate = getNewUpdateDateByArrow(selectedDate, false, options, displayFormat, lowerLimit, upperLimit, charCode, false, false);
 
-                        this.setState({ selectedDate: updatedDate });
-                        if (this.props.onSelect) {
-                            this.props.onSelect(updatedDate);
-                        }
+                        this.setState({ selectedDate: updatedDate }, () => {   
+                            if (this.props.onSelect) {
+                                this.props.onSelect(updatedDate);
+                            }
+                        });
                     }
                 }
             }
